@@ -1,0 +1,32 @@
+{
+  "name": "dea-commands",
+  "version": "1.0.0",
+  "description": "The official commands handler for the DEA bot.",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "node src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RealBlazeIt/dea-commands.git"
+  },
+  "keywords": [
+    "dea",
+    "commands",
+    "discord.js",
+    "nodejs"
+  ],
+  "author": "John#0969",
+  "license": "AGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/RealBlazeIt/dea-commands/issues"
+  },
+  "homepage": "https://github.com/RealBlazeIt/dea-commands#readme",
+  "dependencies": {
+    "bufferutil": "^3.0.1",
+    "dea-util": "github:RealBlazeIt/dea-util",
+    "discord.js": "github:hydrabolt/discord.js",
+    "require-all": "^2.2.0",
+    "uws": "^8.14.0"
+  }
+}

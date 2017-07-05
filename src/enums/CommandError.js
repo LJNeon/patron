@@ -1,0 +1,1 @@
+module.exports = Object.freeze({ Precondition: 1, TypeReader: 2, CommandNotFound: 3, InvalidArgCount: 4, InvalidPrefix: 5, Exception: 6 });

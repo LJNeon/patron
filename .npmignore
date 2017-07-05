@@ -1,0 +1,15 @@
+# Packages
+node_modules/
+
+# Miscellaneous
+.tmp/
+.vscode/
+docs/
+
+webpack/
+
+# NPM ignore
+.eslintrc.json
+.gitattributes
+.gitignore
+.travis.yml
