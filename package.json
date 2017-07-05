@@ -23,10 +23,8 @@
   },
   "homepage": "https://github.com/RealBlazeIt/dea-commands#readme",
   "dependencies": {
-    "bufferutil": "^3.0.1",
     "dea-util": "github:RealBlazeIt/dea-util",
-    "discord.js": "github:hydrabolt/discord.js",
-    "require-all": "^2.2.0",
-    "uws": "^8.14.0"
+    "discord.js": "^11.1.0",
+    "require-all": "^2.2.0"
   }
 }
