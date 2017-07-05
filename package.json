@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/RealBlazeIt/patron#readme",
   "dependencies": {
+    "discord.js": "^11.1.0",
     "require-all": "^2.2.0"
   }
 }
