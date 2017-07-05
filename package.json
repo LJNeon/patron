@@ -1,17 +1,17 @@
 {
-  "name": "dea-commands",
+  "name": "patron",
   "version": "1.0.0",
-  "description": "The official commands handler for the DEA bot.",
+  "description": "The cleanest discord.js command framework.",
   "main": "src/index.js",
   "scripts": {
     "test": "node src/index.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/RealBlazeIt/dea-commands.git"
+    "url": "git+https://github.com/RealBlazeIt/patron.git"
   },
   "keywords": [
-    "dea",
+    "patron",
     "commands",
     "discord.js",
     "nodejs"
@@ -19,12 +19,10 @@
   "author": "John#0969",
   "license": "AGPL-3.0",
   "bugs": {
-    "url": "https://github.com/RealBlazeIt/dea-commands/issues"
+    "url": "https://github.com/RealBlazeIt/patron/issues"
   },
-  "homepage": "https://github.com/RealBlazeIt/dea-commands#readme",
+  "homepage": "https://github.com/RealBlazeIt/patron#readme",
   "dependencies": {
-    "dea-util": "github:RealBlazeIt/dea-util",
-    "discord.js": "^11.1.0",
     "require-all": "^2.2.0"
   }
 }
