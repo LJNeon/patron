@@ -30,6 +30,7 @@
       {
         "args": "none"
       }
-    ]
+    ],
+	"no-console": "off"
   }
 }

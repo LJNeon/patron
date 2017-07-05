@@ -25,5 +25,6 @@
   "dependencies": {
     "discord.js": "^11.1.0",
     "require-all": "^2.2.0"
-  }
+  },
+  "eslintIgnore": ["**/*.json"]
 }
