@@ -1,5 +1,3 @@
-console.log(require('./enums/Default.js').Author);
-
 module.exports = {
   Argument: require('./structures/Argument.js'),
   ArgumentPrecondition: require('./structures/ArgumentPrecondition.js'),
