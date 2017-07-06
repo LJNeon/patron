@@ -8,24 +8,26 @@ class MemberTypeReader extends TypeReader {
 
   async read(command, context, arg, input) {
     if (/^<@!?[0-9]+>$/.test(input)) {
-      try {
-        const member = await context.guild.fetchMember(input.replace(/<@|!|>/g, ''), false);
+      const member = context.guild.members.get(input.replace(/<@|!|>/g, ''));
+
+      if (member !== undefined) {
         return TypeReaderResult.fromSuccess(member);
-      } catch (err) {
+      } else {
         return TypeReaderResult.fromError(command, 'Member not found.');
       }
     } else if (/^[0-9]+$/.test(input)) {
-      try {
-        const member = await context.guild.fetchMember(input, false);
+      const member = context.guild.members.get(input);
+
+      if (member !== undefined) {
         return TypeReaderResult.fromSuccess(member);
-      } catch (err) {
+      } else {
         return TypeReaderResult.fromError(command, 'Member not found.');
       }
-    } else if (/^.+#\d{4}$/.test(input)) {
-      await context.guild.fetchMembers(input.replace(/#\d{4}/, ''), 50);
+    }
+    
+    const lowerInput = input.toLowerCase();
 
-      const lowerInput = input.toLowerCase();
-
+    if (/^.+#\d{4}$/.test(input)) {
       const member = context.guild.find((v) => v.user.tag.toLowerCase() === lowerInput);
 
       if (member !== null) {
@@ -35,17 +37,13 @@ class MemberTypeReader extends TypeReader {
       }
     }
 
-    await context.guild.fetchMembers(input, 50);
-
-    const lowerInput = input.toLowerCase();
-
-    let member = context.guild.members.find((v) => v.user.username.toLowerCase() === lowerInput);
+    let member = context.guild.members.find((v) => v.user.username.toLowerCase() === lowerInput || v.user.nickname.toLowerCase() === lowerInput);
 
     if (member !== null) {
       return TypeReaderResult.fromSuccess(member);
     }
 
-    member = context.guild.members.find((v) => v.user.username.toLowerCase().includes(lowerInput));
+    member = context.guild.members.find((v) => v.user.username.toLowerCase().includes(lowerInput) || v.user.nickname.toLowerCase().includes(lowerInput));
 
     if (member !== null) {
       return TypeReaderResult.fromSuccess(member);
