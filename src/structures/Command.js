@@ -59,11 +59,11 @@ class Command {
 module.exports = Command;
 
 const validateCommand = function(command, name) {
-  if (typeof command.name  !== 'string' || command.name === command.name.toLowerCase()) {
+  if (typeof command.name  !== 'string' || command.name !== command.name.toLowerCase()) {
     throw new TypeError(name + ': The name must be a lowercase string.');
   } else if (!Array.isArray(command.aliases)) {
     throw new TypeError(name + ': The aliases must be an array.');
-  } else if (typeof command.group !== 'string' || command.name === command.name.toLowerCase()) {
+  } else if (typeof command.group !== 'string' || command.name !== command.name.toLowerCase()) {
     throw new TypeError(name + ': The group must be a lowercase string.');
   } else if (typeof command.description !== 'string') {
     throw new TypeError(name + ': The description must be a string.');
@@ -76,7 +76,7 @@ const validateCommand = function(command, name) {
   }
 
   for (const alias of command.aliases) {
-    if (typeof alias !== 'string' && alias === alias.toLowerCase()) {
+    if (typeof alias !== 'string' && alias !== alias.toLowerCase()) {
       throw new TypeError(name + ': All command aliases must be lowercase strings.');
     }
   }
