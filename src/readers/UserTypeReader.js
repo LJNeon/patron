@@ -49,20 +49,6 @@ class UserTypeReader extends TypeReader {
       return TypeReaderResult.fromSuccess(user);
     }
 
-    if (context.guild !== null) {
-      let member = context.guild.members.find((v) => v.nickname.toLowerCase() === lowerInput);
-
-      if (member !== null) {
-        return TypeReaderResult.fromSuccess(member.user);
-      }
-
-      member = context.guild.members.find((v) => v.nickname.toLowerCase().includes(lowerInput));
-
-      if (member !== null) {
-        return TypeReaderResult.fromSuccess(member.user);
-      }
-    }
-
     return TypeReaderResult.fromError(command, 'User not found.');
   }
 }
