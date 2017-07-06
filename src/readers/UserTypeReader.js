@@ -37,13 +37,13 @@ class UserTypeReader extends TypeReader {
       }
     }
 
-    let user = context.client.users.find((v) => v.username.toLowerCase() === lowerInput || v.nickname.toLowerCase() === lowerInput);
+    let user = context.client.users.find((v) => v.username.toLowerCase() === lowerInput);
 
     if (user !== null) {
       return TypeReaderResult.fromSuccess(user);
     }
 
-    user = context.client.users.find((v) => v.username.toLowerCase().includes(lowerInput) || v.nickname.toLowerCase().includes(lowerInput));
+    user = context.client.users.find((v) => v.username.toLowerCase().includes(lowerInput));
 
     if (user !== null) {
       return TypeReaderResult.fromSuccess(user);
