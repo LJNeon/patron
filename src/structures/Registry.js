@@ -13,7 +13,7 @@ class Registry {
   }
 
   registerDefaultTypeReaders() {
-    return this.registerTypeReadersIn(path.join(__dirname, 'readers'));
+    return this.registerTypeReadersIn(path.join(path.dirname(require.main.filename), 'readers'));
   }
 
   registerTypeReadersIn(path) {
