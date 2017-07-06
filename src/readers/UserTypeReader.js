@@ -14,7 +14,7 @@ class UserTypeReader extends TypeReader {
       } catch (err) {
         return TypeReaderResult.fromError(command, 'User not found.');
       }
-    } else if (Number.isInteger(input)) {
+    } else if (/^[0-9]+$/.test(input)) {
       try {
         const user = await context.client.fetchUser(input, false);
         return TypeReaderResult.fromSuccess(user);

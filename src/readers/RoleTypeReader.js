@@ -13,7 +13,7 @@ class RoleTypeReader extends TypeReader {
       if (role !== undefined) {
         return TypeReaderResult.fromSuccess(role);
       }
-    } else if (Number.isInteger(input)) {
+    } else if (/^[0-9]+$/.test(input)) {
       const role = context.guild.roles.get(input, '');
 
       if (role !== undefined) {

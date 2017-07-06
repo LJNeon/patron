@@ -14,7 +14,7 @@ class MemberTypeReader extends TypeReader {
       } catch (err) {
         return TypeReaderResult.fromError(command, 'Member not found.');
       }
-    } else if (Number.isInteger(input)) {
+    } else if (/^[0-9]+$/.test(input)) {
       try {
         const member = await context.guild.fetchMember(input, false);
         return TypeReaderResult.fromSuccess(member);

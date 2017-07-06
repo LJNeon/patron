@@ -13,7 +13,7 @@ class ChannelTypeReader extends TypeReader {
       if (channel !== undefined) {
         return TypeReaderResult.fromSuccess(channel);
       }
-    } else if (Number.isInteger(input)) {
+    } else if (/^[0-9]+$/.test(input)) {
       const channel = context.guild.channels.get(input, '');
 
       if (channel !== undefined) {
