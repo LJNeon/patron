@@ -4,7 +4,7 @@ const Precondition = require('./Precondition.js');
 class Command {
   constructor(options) {
     this.name = options.name;
-    this.aliases = options.aliases;
+    this.aliases = options.aliases = [];
     this.group = options.group;
     this.description = options.description;
     this.guildOnly = options.guildOnly || true;
