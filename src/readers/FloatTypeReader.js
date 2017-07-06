@@ -9,7 +9,7 @@ class FloatTypeReader extends TypeReader {
   async read(command, context, arg, input) {
     const result = Number.parseFloat(input);
 
-    if (result !== Number.NaN) {
+    if (!Number.isNaN(result)) {
       return TypeReaderResult.fromSuccess(result);
     } else {
       return TypeReaderResult.fromError(command, 'You have provided an invalid ' + arg.name + '.');
