@@ -8,7 +8,7 @@ class Argument {
     this.example = options.example;
     this.default = options.default;
     this.preconditions = options.preconditions !== undefined ?  options.preconditions : [];
-    this.isOptional = options.default !== undefined;
+    this.isOptional = options.default === undefined;
     this.isRemainder = options.isRemainder !== undefined ?  options.isRemainder : false;
 
     validateArgument(this, this.constructor.name);
@@ -22,8 +22,8 @@ const validateArgument = function(argument, name) {
     throw new TypeError(name + ': The name must be a string.');
   } else if (typeof argument.key !== 'string' || argument.key !== argument.key.toLowerCase()) {
     throw new TypeError(name + ': The key must be a lowercase string.');
-  } else if (argument.key.includes(' ')) {
-    throw new TypeError(name + ': The key may not contain spaces.');
+  } else if (/\s/.test(argument.key)) {
+    throw new TypeError(name + ': The key may not contain any whitespace characters.');
   } else if (typeof argument.type !== 'string' || argument.type !== argument.type.toLowerCase()) {
     throw new TypeError(name + ': The type must be a lowercase string.');
   } else if (typeof argument.example !== 'string') {
