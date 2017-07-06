@@ -48,7 +48,7 @@ class Handler {
             args[command.args[i].key] = context.author; 
             break;
           case Default.Member:
-            args[command.args[i].key] = await context.guild.fetchMember(context.author); 
+            args[command.args[i].key] = context.guild.member(context.author); 
             break;
           case Default.Channel:
             args[command.args[i].key] = context.channel; 
@@ -57,7 +57,7 @@ class Handler {
             args[command.args[i].key] = context.role; 
             break;
           case Default.HighestRole: 
-            args[command.args[i].key] = (await context.guild.fetchMember(context.author)).highestRole;
+            args[command.args[i].key] = context.guild.member(context.author).highestRole;
             break;
           default:
             args[command.args[i].key] = command.args[i].default;
