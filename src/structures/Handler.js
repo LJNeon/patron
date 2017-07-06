@@ -74,8 +74,8 @@ class Handler {
       if (!typeReaderResult.isSuccess) {
         return typeReaderResult;
       }
-			
-      for (const precondition of typeReaderResult.value.preconditions) {
+
+      for (const precondition of command.args[i].preconditions) {
         const preconditionResult = await precondition.run(command, context, command.args[i], typeReaderResult.value);
 				
         if (!preconditionResult.isSuccess) {
