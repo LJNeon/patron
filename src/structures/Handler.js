@@ -9,7 +9,7 @@ class Handler {
   }
 	
   async run(context, prefix) {
-    const split = this.context.message.content.match(/".+"|\S+/g);
+    const split = context.message.content.match(/".+"|\S+/g);
 		
     if (split === null || !split[0].startsWith(prefix)) {
       return new Result({ isSuccess: false, commandError: CommandError.InvalidPrefix, errorReason: 'The provided prefix is invalid.' });

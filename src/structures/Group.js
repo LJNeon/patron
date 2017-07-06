@@ -4,7 +4,7 @@ const Precondition = require('./Precondition.js');
 class Group {
   constructor(options) {
     this.name = options.name;
-    this.preconditions = options.preconditions || [];
+    this.preconditions = options.preconditions !== undefined ?  options.preconditions : [];
     this.commands = new discord.Collection();
 
     validateGroup(this, this.constructor.name);

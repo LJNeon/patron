@@ -4,12 +4,12 @@ const Precondition = require('./Precondition.js');
 class Command {
   constructor(options) {
     this.name = options.name;
-    this.aliases = options.aliases = [];
+    this.aliases = options.aliases !== undefined ?  options.aliases : [];
     this.group = options.group;
     this.description = options.description;
-    this.guildOnly = options.guildOnly || true;
-    this.preconditions = options.preconditions || [];
-    this.args = options.args || [];
+    this.guildOnly = options.guildOnly !== undefined ?  options.guildOnly : true;
+    this.preconditions = options.preconditions !== undefined ?  options.preconditions : [];
+    this.args = options.args !== undefined ?  options.args : [];
     this.trigger = null;
 
     validateCommand(this, this.constructor.name);
