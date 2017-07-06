@@ -23,8 +23,10 @@
   },
   "homepage": "https://github.com/RealBlazeIt/patron#readme",
   "dependencies": {
-    "discord.js": "^11.1.0",
+    "discord.js": "github:hydrabolt/discord.js",
     "require-all": "^2.2.0"
   },
-  "eslintIgnore": ["**/*.json"]
+  "eslintIgnore": [
+    "**/*.json"
+  ]
 }
