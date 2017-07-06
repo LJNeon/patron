@@ -10,13 +10,13 @@ class RoleTypeReader extends TypeReader {
     if (/^<@&[0-9]+>$/.test(input)) {
       const role = context.guild.roles.get(input.replace(/<@&|>/g, ''));
 
-      if (role !== undefined) {
+      if (role) {
         return TypeReaderResult.fromSuccess(role);
       }
     } else if (/^[0-9]+$/.test(input)) {
       const role = context.guild.roles.get(input, '');
 
-      if (role !== undefined) {
+      if (role) {
         return TypeReaderResult.fromSuccess(role);
       }
     }

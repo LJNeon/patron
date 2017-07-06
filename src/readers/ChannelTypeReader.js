@@ -10,13 +10,13 @@ class ChannelTypeReader extends TypeReader {
     if (/^<#[0-9]+>$/.test(input)) {
       const channel = context.guild.channels.get(input.replace(/<#|>/g, ''));
 
-      if (channel !== undefined) {
+      if (channel) {
         return TypeReaderResult.fromSuccess(channel);
       }
     } else if (/^[0-9]+$/.test(input)) {
       const channel = context.guild.channels.get(input, '');
 
-      if (channel !== undefined) {
+      if (channel) {
         return TypeReaderResult.fromSuccess(channel);
       }
     }

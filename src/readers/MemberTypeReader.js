@@ -28,7 +28,7 @@ class MemberTypeReader extends TypeReader {
 
       const member = context.guild.find((v) => v.user.tag.toLowerCase() === lowerInput);
 
-      if (member !== null) {
+      if (member) {
         return TypeReaderResult.fromSuccess(member);
       } else {
         return TypeReaderResult.fromError(command, 'Member not found.');
@@ -41,13 +41,13 @@ class MemberTypeReader extends TypeReader {
 
     let member = context.guild.members.find((v) => v.user.username.toLowerCase() === lowerInput);
 
-    if (member !== null) {
+    if (member) {
       return TypeReaderResult.fromSuccess(member);
     }
 
     member = context.guild.members.find((v) => v.user.username.toLowerCase().includes(lowerInput));
 
-    if (member !== null) {
+    if (member) {
       return TypeReaderResult.fromSuccess(member);
     }
 
