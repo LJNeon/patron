@@ -37,13 +37,13 @@ class MemberTypeReader extends TypeReader {
       }
     }
 
-    let member = context.guild.members.find((v) => v.user.username.toLowerCase() === lowerInput || v.user.nickname.toLowerCase() === lowerInput);
+    let member = context.guild.members.find((v) => v.user.username.toLowerCase() === lowerInput || v.nickname.toLowerCase() === lowerInput);
 
     if (member !== null) {
       return TypeReaderResult.fromSuccess(member);
     }
 
-    member = context.guild.members.find((v) => v.user.username.toLowerCase().includes(lowerInput) || v.user.nickname.toLowerCase().includes(lowerInput));
+    member = context.guild.members.find((v) => v.user.username.toLowerCase().includes(lowerInput) || v.nickname.toLowerCase().includes(lowerInput));
 
     if (member !== null) {
       return TypeReaderResult.fromSuccess(member);
