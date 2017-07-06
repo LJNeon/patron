@@ -1,4 +1,5 @@
 const Result = require('../results/Result.js');
+const Default = require('../enums/Default.js');
 const CommandError = require('../enums/CommandError.js');
 const ExceptionResult = require('../results/ExceptionResult.js');
 
@@ -30,6 +31,10 @@ class Handler {
 		
     command.trigger = commandName;
 
+    if (command.guildOnly && context.guild === null) {
+      return new Result({ isSuccess: false, commandError: CommandError.GuildOnly, errorReason: 'This command may only be used inside a server.' });
+    }
+
     const args = {};
 		
     for (let i = 0; i < command.args.length; i++) {
@@ -38,7 +43,27 @@ class Handler {
       if (input === undefined && !command.args[i].isOptional) {
         return new Result({ isSuccess: false, command: command, commandError: CommandError.InvalidArgCount, errorReason: 'You have provided an invalid number of arguments.' });
       } else if (input === undefined && command.args[i].isOptional) {
-        args[command.args[i].key] = command.args[i].default;
+        switch (command.args[i].default) {
+          case Default.Author:
+            args[command.args[i].key] = context.author; 
+            break;
+          case Default.Member:
+            args[command.args[i].key] = await context.guild.fetchMember(context.author); 
+            break;
+          case Default.Channel:
+            args[command.args[i].key] = context.channel; 
+            break;
+          case Default.Guild:
+            args[command.args[i].key] = context.role; 
+            break;
+          case Default.HighestRole: 
+            args[command.args[i].key] = (await context.guild.fetchMember(context.author)).highestRole;
+            break;
+          default:
+            args[command.args[i].key] = command.args[i].default;
+            break;
+        }
+
         continue;
       } else {
         input = input.replace(/"/g, '');

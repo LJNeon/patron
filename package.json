@@ -24,6 +24,7 @@
   "homepage": "https://github.com/RealBlazeIt/patron#readme",
   "dependencies": {
     "discord.js": "github:hydrabolt/discord.js",
+    "es6-enum": "^1.1.0",
     "require-all": "^2.2.0"
   },
   "eslintIgnore": [

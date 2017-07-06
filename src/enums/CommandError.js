@@ -1,1 +1,3 @@
-module.exports = Object.freeze({ Precondition: 1, TypeReader: 2, CommandNotFound: 3, InvalidArgCount: 4, InvalidPrefix: 5, Exception: 6 });
+const Enum = require('es6-enum');
+
+module.exports = new Enum('Precondition', 'TypeReader', 'GuildOnly', 'CommandNotFound', 'InvalidArgCount', 'InvalidPrefix', 'Exception');
