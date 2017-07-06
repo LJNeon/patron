@@ -8,7 +8,7 @@ class Argument {
     this.example = options.example;
     this.default = options.default;
     this.preconditions = options.preconditions !== undefined ?  options.preconditions : [];
-    this.isOptional = options.default === undefined;
+    this.isOptional = options.default !== undefined;
     this.isRemainder = options.isRemainder !== undefined ?  options.isRemainder : false;
 
     validateArgument(this, this.constructor.name);
