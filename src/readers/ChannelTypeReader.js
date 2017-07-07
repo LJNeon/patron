@@ -22,7 +22,7 @@ class ChannelTypeReader extends TypeReader {
     } else {
       const channel = context.guild.channels.find((v) => v.name.toLowerCase() === input);
 
-      if (channel !== undefined) {
+      if (channel !== null) {
         return TypeReaderResult.fromSuccess(channel);
       }
     }
