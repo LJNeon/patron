@@ -35,6 +35,14 @@ class Handler {
       return new Result({ isSuccess: false, commandError: CommandError.GuildOnly, errorReason: 'This command may only be used inside a server.' });
     }
 
+    for (const precondition of command.group.preconditions.concat(command.preconditions)) {
+      const result = await precondition.run(command, context);
+      
+      if (!result.isSuccess) {
+        return result;
+      }
+    }
+
     const args = {};
 		
     for (let i = 0; i < command.args.length; i++) {
@@ -85,15 +93,7 @@ class Handler {
 			
       args[command.args[i].key] = typeReaderResult.value;
     }
-		
-    for (const precondition of command.group.preconditions.concat(command.preconditions)) {
-      const result = await precondition.run(command, context, args);
-      
-      if (!result.isSuccess) {
-        return result;
-      }
-    }
-		
+	
     try {
       await command.run(context, args);
       return new Result({ isSuccess: true, command: command });
