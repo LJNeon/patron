@@ -9,13 +9,13 @@ class Handler {
   }
 	
   async run(context, prefix) {
-    const split = context.message.content.match(/".+"|\S+/g);
+    const split = context.message.content.toLowerCase().match(/".+"|\S+/g);
 		
-    if (split === null || !split[0].startsWith(prefix)) {
-      return new Result({ isSuccess: false, commandError: CommandError.InvalidPrefix, errorReason: 'The provided prefix is invalid.' });
+    if (split === null) {
+      return new Result({ isSuccess: false, commandError: CommandError.CommandNotFound, errorReason: 'This command does not exist.' });
     }
 		
-    const commandName = split.shift().slice(prefix.length).toLowerCase();
+    const commandName = split.shift().slice(prefix.length);
 		
     let command = this.registry.commands.get(commandName);
 		

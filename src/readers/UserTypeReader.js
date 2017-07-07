@@ -7,28 +7,22 @@ class UserTypeReader extends TypeReader {
   }
 
   async read(command, context, arg, input) {
-    if (/^<@!?[0-9]+>$/.test(input)) {
-      const user = context.client.users.get(input.replace(/<@|!|>/g, ''));
-
-      if (user !== undefined) {
-        return TypeReaderResult.fromSuccess(user);
-      } else {
-        return TypeReaderResult.fromError(command, 'User not found.');
+    if (context.client.options.fetchAllMembers) { 
+      if (/^<@!?[0-9]+>$/.test(input)) {
+        return this.getUserResult(command, context, input.replace(/<@|!|>/g, ''));
+      } else if (/^[0-9]+$/.test(input)) {
+        return this.getUserResult(command, context, input);
       }
-    } else if (/^[0-9]+$/.test(input)) {
-      const user = context.client.users.get(input);
-
-      if (user !== undefined) {
-        return TypeReaderResult.fromSuccess(user);
-      } else {
-        return TypeReaderResult.fromError(command, 'User not found.');
+    } else {
+      if (/^<@!?[0-9]+>$/.test(input)) {
+        return this.fetchUserResult(command, context, input.replace(/<@|!|>/g, ''));
+      } else if (/^[0-9]+$/.test(input)) {
+        return this.fetchUserResult(command, context, input);
       }
     }
-    
-    const lowerInput = input.toLowerCase();
 
     if (/^.+#\d{4}$/.test(input)) {
-      const user = context.client.users.find((v) => v.tag.toLowerCase() === lowerInput);
+      const user = context.client.users.find((v) => v.tag.toLowerCase() === input);
 
       if (user !== null) {
         return TypeReaderResult.fromSuccess(user);
@@ -37,19 +31,39 @@ class UserTypeReader extends TypeReader {
       }
     }
 
-    let user = context.client.users.find((v) => v.username.toLowerCase() === lowerInput);
+    let user = context.client.users.find((v) => v.username.toLowerCase() === input);
 
     if (user !== null) {
       return TypeReaderResult.fromSuccess(user);
     }
 
-    user = context.client.users.find((v) => v.username.toLowerCase().includes(lowerInput));
+    user = context.client.users.find((v) => v.username.toLowerCase().includes(input));
 
     if (user !== null) {
       return TypeReaderResult.fromSuccess(user);
     }
 
     return TypeReaderResult.fromError(command, 'User not found.');
+  }
+
+  async fetchUserResult(command, context, input) {
+    try {
+      const user = await context.client.fetchUser(input);
+
+      return TypeReaderResult.fromSuccess(user);
+    } catch (err) {
+      return TypeReaderResult.fromError(command, 'User not found.');
+    }
+  }
+
+  getUserResult(command, context, input) {
+    const user = context.client.users.get(input);
+
+    if (user !== undefined) {
+      return TypeReaderResult.fromSuccess(user);
+    } else {
+      return TypeReaderResult.fromError(command, 'User not found.');
+    }
   }
 }
 

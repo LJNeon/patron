@@ -19,10 +19,15 @@ class ChannelTypeReader extends TypeReader {
       if (channel !== undefined) {
         return TypeReaderResult.fromSuccess(channel);
       }
-    }
-    // TODO: Add voice and text channel type readers, and search via channel names.
+    } else {
+      const channel = context.guild.channels.find((v) => v.toLowerCase() === input);
 
-    return TypeReaderResult.fromError(command, 'You have provided an invalid ' + arg.name + '.');
+      if (channel !== undefined) {
+        return TypeReaderResult.fromSuccess(channel);
+      }
+    }
+
+    return TypeReaderResult.fromError(command, 'Channel not found.');
   }
 }
 

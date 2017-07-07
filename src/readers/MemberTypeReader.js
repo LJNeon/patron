@@ -7,28 +7,22 @@ class MemberTypeReader extends TypeReader {
   }
 
   async read(command, context, arg, input) {
-    if (/^<@!?[0-9]+>$/.test(input)) {
-      const member = context.guild.members.get(input.replace(/<@|!|>/g, ''));
-
-      if (member !== undefined) {
-        return TypeReaderResult.fromSuccess(member);
-      } else {
-        return TypeReaderResult.fromError(command, 'Member not found.');
+    if (context.client.options.fetchAllMembers) { 
+      if (/^<@!?[0-9]+>$/.test(input)) {
+        return this.getMemberResult(command, context, input.replace(/<@|!|>/g, ''));
+      } else if (/^[0-9]+$/.test(input)) {
+        return this.getMemberResult(command, context, input);
       }
-    } else if (/^[0-9]+$/.test(input)) {
-      const member = context.guild.members.get(input);
-
-      if (member !== undefined) {
-        return TypeReaderResult.fromSuccess(member);
-      } else {
-        return TypeReaderResult.fromError(command, 'Member not found.');
+    } else {
+      if (/^<@!?[0-9]+>$/.test(input)) {
+        return this.fetchMemberResult(command, context, input.replace(/<@|!|>/g, ''));
+      } else if (/^[0-9]+$/.test(input)) {
+        return this.fetchMemberResult(command, context, input);
       }
     }
-    
-    const lowerInput = input.toLowerCase();
 
     if (/^.+#\d{4}$/.test(input)) {
-      const member = context.guild.find((v) => v.user.tag.toLowerCase() === lowerInput);
+      const member = context.guild.members.find((v) => v.user.tag.toLowerCase() === input);
 
       if (member !== null) {
         return TypeReaderResult.fromSuccess(member);
@@ -37,19 +31,45 @@ class MemberTypeReader extends TypeReader {
       }
     }
 
-    let member = context.guild.members.find((v) => v.user.username.toLowerCase() === lowerInput);
+    let member = context.guild.members.find((v) => v.user.username.toLowerCase() === input);
 
     if (member !== null) {
       return TypeReaderResult.fromSuccess(member);
     }
 
-    member = context.guild.members.find((v) => v.user.username.toLowerCase().includes(lowerInput));
+    member = context.guild.members.find((v) => v.user.username.toLowerCase().includes(input));
 
     if (member !== null) {
       return TypeReaderResult.fromSuccess(member);
     }
 
     return TypeReaderResult.fromError(command, 'Member not found.');
+  }
+
+  async fetchMemberResult(command, context, input) {
+    try {
+      const user = await context.client.fetchUser(input);
+
+      const member = context.guild.member(user);
+
+      if (member !== null) {
+        return TypeReaderResult.fromSuccess(member);
+      } else {
+        return TypeReaderResult.fromError(command, 'Member not found.');
+      }
+    } catch (err) {
+      return TypeReaderResult.fromError(command, 'Member not found.');
+    }
+  }
+
+  getMemberResult(command, context, input) {
+    const member = context.guild.members.get(input);
+
+    if (member !== undefined) {
+      return TypeReaderResult.fromSuccess(member);
+    } else {
+      return TypeReaderResult.fromError(command, 'Member not found.');
+    }
   }
 }
 
