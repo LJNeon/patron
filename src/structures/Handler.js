@@ -36,10 +36,14 @@ class Handler {
     }
 
     for (const precondition of command.group.preconditions.concat(command.preconditions)) {
-      const result = await precondition.run(command, context);
+      try {
+        const result = await precondition.run(command, context);
       
-      if (!result.isSuccess) {
-        return result;
+        if (!result.isSuccess) {
+          return result;
+        }
+      } catch (err) {
+        return ExceptionResult.fromError(command, err);
       }
     }
 
@@ -84,10 +88,14 @@ class Handler {
       }
 
       for (const precondition of command.args[i].preconditions) {
-        const preconditionResult = await precondition.run(command, context, command.args[i], typeReaderResult.value);
-				
-        if (!preconditionResult.isSuccess) {
-          return preconditionResult;
+        try {
+          const preconditionResult = await precondition.run(command, context, command.args[i], typeReaderResult.value);
+        
+          if (!preconditionResult.isSuccess) {
+            return preconditionResult;
+          }
+        } catch (err) {
+          return ExceptionResult.fromError(command, err);
         }
       }
 			
