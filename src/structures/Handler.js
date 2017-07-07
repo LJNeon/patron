@@ -38,9 +38,9 @@ class Handler {
     const args = {};
 		
     for (let i = 0; i < command.args.length; i++) {
-      let input = split[i];
+      let input = command.args[i].isRemainder ? split.join(' ') : split.shift();
 			
-      if (input === undefined && !command.args[i].isOptional) {
+      if (!input && !command.args[i].isOptional) {
         return new Result({ isSuccess: false, command: command, commandError: CommandError.InvalidArgCount, errorReason: 'You have provided an invalid number of arguments.' });
       } else if (input === undefined && command.args[i].isOptional) {
         switch (command.args[i].default) {
