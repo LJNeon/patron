@@ -20,7 +20,7 @@ class RoleTypeReader extends TypeReader {
         return TypeReaderResult.fromSuccess(role);
       }
     } else {
-      const role = context.guild.roles.find((v) => v.toLowerCase() === input);
+      const role = context.guild.roles.find((v) => v.name.toLowerCase() === input);
 
       if (role !== undefined) {
         return TypeReaderResult.fromSuccess(role);
