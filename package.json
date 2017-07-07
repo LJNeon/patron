@@ -1,5 +1,5 @@
 {
-  "name": "patron",
+  "name": "patron.js",
   "version": "1.0.0",
   "description": "The cleanest discord.js command framework.",
   "main": "src/index.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/RealBlazeIt/patron.git"
+    "url": "git+https://github.com/RealBlazeIt/patron.js.git"
   },
   "keywords": [
     "patron",
@@ -19,9 +19,9 @@
   "author": "John#0969",
   "license": "AGPL-3.0",
   "bugs": {
-    "url": "https://github.com/RealBlazeIt/patron/issues"
+    "url": "https://github.com/RealBlazeIt/patron.js/issues"
   },
-  "homepage": "https://github.com/RealBlazeIt/patron#readme",
+  "homepage": "https://github.com/RealBlazeIt/patron.js#readme",
   "dependencies": {
     "discord.js": "^11.1.0",
     "es6-enum": "^1.1.0",
