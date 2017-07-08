@@ -21,8 +21,10 @@ class UserTypeReader extends TypeReader {
       }
     }
 
+    const lowerInput = input.toLowerCase();
+
     if (/^.+#\d{4}$/.test(input)) {
-      const user = context.client.users.find((v) => v.tag.toLowerCase() === input);
+      const user = context.client.users.find((v) => v.tag.toLowerCase() === lowerInput);
 
       if (user !== null) {
         return TypeReaderResult.fromSuccess(user);
@@ -31,13 +33,13 @@ class UserTypeReader extends TypeReader {
       }
     }
 
-    let user = context.client.users.find((v) => v.username.toLowerCase() === input);
+    let user = context.client.users.find((v) => v.username.toLowerCase() === lowerInput);
 
     if (user !== null) {
       return TypeReaderResult.fromSuccess(user);
     }
 
-    user = context.client.users.find((v) => v.username.toLowerCase().includes(input));
+    user = context.client.users.find((v) => v.username.toLowerCase().includes(lowerInput));
 
     if (user !== null) {
       return TypeReaderResult.fromSuccess(user);

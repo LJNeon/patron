@@ -21,8 +21,11 @@ class MemberTypeReader extends TypeReader {
       }
     }
 
+    const lowerInput = input.toLowerCase();
+
     if (/^.+#\d{4}$/.test(input)) {
-      const member = context.guild.members.find((v) => v.user.tag.toLowerCase() === input);
+      
+      const member = context.guild.members.find((v) => v.user.tag.toLowerCase() === lowerInput);
 
       if (member !== null) {
         return TypeReaderResult.fromSuccess(member);
@@ -31,13 +34,13 @@ class MemberTypeReader extends TypeReader {
       }
     }
 
-    let member = context.guild.members.find((v) => v.user.username.toLowerCase() === input);
+    let member = context.guild.members.find((v) => v.user.username.toLowerCase() === lowerInput);
 
     if (member !== null) {
       return TypeReaderResult.fromSuccess(member);
     }
 
-    member = context.guild.members.find((v) => v.user.username.toLowerCase().includes(input));
+    member = context.guild.members.find((v) => v.user.username.toLowerCase().includes(lowerInput));
 
     if (member !== null) {
       return TypeReaderResult.fromSuccess(member);
