@@ -51,10 +51,10 @@ class Handler {
 		
     for (let i = 0; i < command.args.length; i++) {
       let input = command.args[i].isRemainder ? split.join(' ') : split.shift();
-			
+
       if (!input && !command.args[i].isOptional) {
         return new Result({ isSuccess: false, command: command, commandError: CommandError.InvalidArgCount, errorReason: 'You have provided an invalid number of arguments.' });
-      } else if (input === undefined && command.args[i].isOptional) {
+      } else if (!input && command.args[i].isOptional) {
         switch (command.args[i].default) {
           case Default.Author:
             args[command.args[i].key] = context.author; 
