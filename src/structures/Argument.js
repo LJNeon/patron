@@ -20,10 +20,8 @@ module.exports = Argument;
 const validateArgument = function(argument, name) {
   if (typeof argument.name !== 'string') {
     throw new TypeError(name + ': The name must be a string.');
-  } else if (typeof argument.key !== 'string' || argument.key !== argument.key.toLowerCase()) {
-    throw new TypeError(name + ': The key must be a lowercase string.');
-  } else if (/\s/.test(argument.key)) {
-    throw new TypeError(name + ': The key may not contain any whitespace characters.');
+  } else if (typeof argument.key !== 'string' || /\s/.test(argument.key)) {
+    throw new TypeError(name + ': The key must be a string that does not contain any whitespace characters.');
   } else if (typeof argument.type !== 'string' || argument.type !== argument.type.toLowerCase()) {
     throw new TypeError(name + ': The type must be a lowercase string.');
   } else if (typeof argument.example !== 'string') {
