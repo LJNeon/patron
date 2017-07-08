@@ -15,7 +15,7 @@ class Handler {
       return new Result({ isSuccess: false, commandError: CommandError.CommandNotFound, errorReason: 'This command does not exist.' });
     }
 		
-    const commandName = split.shift().slice(prefix.length);
+    const commandName = split.shift().slice(prefix.length).toLowerCase();
 		
     let command = this.registry.commands.get(commandName);
 		
