@@ -9,7 +9,7 @@ class Handler {
   }
 	
   async run(context, prefix) {
-    const split = context.message.content.match(/".+"|\S+/g);
+    const split = context.message.content.match(/"[\S\s]+"|[\S\n]+/g);
 		
     if (split === null) {
       return new Result({ isSuccess: false, commandError: CommandError.CommandNotFound, errorReason: 'This command does not exist.' });
