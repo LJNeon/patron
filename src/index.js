@@ -4,7 +4,6 @@ module.exports = {
   Command: require('./structures/Command.js'),
   CommandError: require('./enums/CommandError.js'),
   Default: require('./enums/Default.js'),
-  ExceptionResult: require('./results/ExceptionResult.js'),
   Group: require('./structures/Group.js'),
   Handler: require('./structures/Handler.js'),
   Precondition: require('./structures/Precondition.js'),
