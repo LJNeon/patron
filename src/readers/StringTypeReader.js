@@ -6,7 +6,7 @@ class StringTypeReader extends TypeReader {
     super({ type: 'string' });
   }
 
-  async read(command, context, arg, input) {
+  async read(command, msg, arg, input) {
     return TypeReaderResult.fromSuccess(input);
   }
 }

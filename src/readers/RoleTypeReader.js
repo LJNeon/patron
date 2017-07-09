@@ -6,22 +6,22 @@ class RoleTypeReader extends TypeReader {
     super({ type: 'role' });
   }
 
-  async read(command, context, arg, input) {
+  async read(command, msg, arg, input) {
     if (/^<@&[0-9]+>$/.test(input)) {
-      const role = context.guild.roles.get(input.replace(/<@&|>/g, ''));
+      const role = msg.guild.roles.get(input.replace(/<@&|>/g, ''));
 
       if (role !== undefined) {
         return TypeReaderResult.fromSuccess(role);
       }
     } else if (/^[0-9]+$/.test(input)) {
-      const role = context.guild.roles.get(input, '');
+      const role = msg.guild.roles.get(input, '');
 
       if (role !== undefined) {
         return TypeReaderResult.fromSuccess(role);
       }
     } else {
       const lowerInput = input.toLowerCase();
-      const role = context.guild.roles.find((v) => v.name.toLowerCase() === lowerInput);
+      const role = msg.guild.roles.find((v) => v.name.toLowerCase() === lowerInput);
 
       if (role !== null) {
         return TypeReaderResult.fromSuccess(role);

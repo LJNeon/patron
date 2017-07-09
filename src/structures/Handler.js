@@ -8,8 +8,8 @@ class Handler {
     this.registry= registry;
   }
 	
-  async run(context, prefix) {
-    const split = context.message.content.match(/"[\S\s]+"|[\S\n]+/g);
+  async run(msg, prefix) {
+    const split = msg.content.match(/"[\S\s]+"|[\S\n]+/g);
 		
     if (split === null) {
       return new Result({ isSuccess: false, commandError: CommandError.CommandNotFound, errorReason: 'This command does not exist.' });
@@ -31,13 +31,13 @@ class Handler {
 		
     command.trigger = commandName;
 
-    if (command.guildOnly && context.guild === null) {
+    if (command.guildOnly && msg.guild === null) {
       return new Result({ isSuccess: false, commandError: CommandError.GuildOnly, errorReason: 'This command may only be used inside a server.' });
     }
 
     for (const precondition of command.group.preconditions.concat(command.preconditions)) {
       try {
-        const result = await precondition.run(command, context);
+        const result = await precondition.run(command, msg);
       
         if (!result.isSuccess) {
           return result;
@@ -57,19 +57,19 @@ class Handler {
       } else if (!input && command.args[i].isOptional) {
         switch (command.args[i].default) {
           case Default.Author:
-            args[command.args[i].key] = context.author; 
+            args[command.args[i].key] = msg.author; 
             break;
           case Default.Member:
-            args[command.args[i].key] = context.guild.member(context.author); 
+            args[command.args[i].key] = msg.guild.member(msg.author); 
             break;
           case Default.Channel:
-            args[command.args[i].key] = context.channel; 
+            args[command.args[i].key] = msg.channel; 
             break;
           case Default.Guild:
-            args[command.args[i].key] = context.role; 
+            args[command.args[i].key] = msg.guild;
             break;
           case Default.HighestRole: 
-            args[command.args[i].key] = context.guild.member(context.author).highestRole;
+            args[command.args[i].key] = msg.guild.member(msg.author).highestRole;
             break;
           default:
             args[command.args[i].key] = command.args[i].default;
@@ -81,7 +81,7 @@ class Handler {
         input = input.replace(/"/g, '');
       }
 			
-      const typeReaderResult = await this.registry.typeReaders.get(command.args[i].type).read(command, context, command.args[i], input);
+      const typeReaderResult = await this.registry.typeReaders.get(command.args[i].type).read(command, msg, command.args[i], input);
 			
       if (!typeReaderResult.isSuccess) {
         return typeReaderResult;
@@ -89,7 +89,7 @@ class Handler {
 
       for (const precondition of command.args[i].preconditions) {
         try {
-          const preconditionResult = await precondition.run(command, context, command.args[i], typeReaderResult.value);
+          const preconditionResult = await precondition.run(command, msg, command.args[i], typeReaderResult.value);
         
           if (!preconditionResult.isSuccess) {
             return preconditionResult;
@@ -103,7 +103,7 @@ class Handler {
     }
 	
     try {
-      await command.run(context, args);
+      await command.run(msg, args);
       return new Result({ isSuccess: true, command: command });
     } catch (err) {
       return ExceptionResult.fromError(command, err);

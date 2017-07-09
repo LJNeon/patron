@@ -6,25 +6,25 @@ class UserTypeReader extends TypeReader {
     super({ type: 'user' });
   }
 
-  async read(command, context, arg, input) {
-    if (context.client.options.fetchAllMembers) { 
+  async read(command, msg, arg, input) {
+    if (msg.client.options.fetchAllMembers) { 
       if (/^<@!?[0-9]+>$/.test(input)) {
-        return this.getUserResult(command, context, input.replace(/<@|!|>/g, ''));
+        return this.getUserResult(command, msg, input.replace(/<@|!|>/g, ''));
       } else if (/^[0-9]+$/.test(input)) {
-        return this.getUserResult(command, context, input);
+        return this.getUserResult(command, msg, input);
       }
     } else {
       if (/^<@!?[0-9]+>$/.test(input)) {
-        return this.fetchUserResult(command, context, input.replace(/<@|!|>/g, ''));
+        return this.fetchUserResult(command, msg, input.replace(/<@|!|>/g, ''));
       } else if (/^[0-9]+$/.test(input)) {
-        return this.fetchUserResult(command, context, input);
+        return this.fetchUserResult(command, msg, input);
       }
     }
 
     const lowerInput = input.toLowerCase();
 
     if (/^.+#\d{4}$/.test(input)) {
-      const user = context.client.users.find((v) => v.tag.toLowerCase() === lowerInput);
+      const user = msg.client.users.find((v) => v.tag.toLowerCase() === lowerInput);
 
       if (user !== null) {
         return TypeReaderResult.fromSuccess(user);
@@ -33,13 +33,13 @@ class UserTypeReader extends TypeReader {
       }
     }
 
-    let user = context.client.users.find((v) => v.username.toLowerCase() === lowerInput);
+    let user = msg.client.users.find((v) => v.username.toLowerCase() === lowerInput);
 
     if (user !== null) {
       return TypeReaderResult.fromSuccess(user);
     }
 
-    user = context.client.users.find((v) => v.username.toLowerCase().includes(lowerInput));
+    user = msg.client.users.find((v) => v.username.toLowerCase().includes(lowerInput));
 
     if (user !== null) {
       return TypeReaderResult.fromSuccess(user);
@@ -48,9 +48,9 @@ class UserTypeReader extends TypeReader {
     return TypeReaderResult.fromError(command, 'User not found.');
   }
 
-  async fetchUserResult(command, context, input) {
+  async fetchUserResult(command, msg, input) {
     try {
-      const user = await context.client.fetchUser(input);
+      const user = await msg.client.fetchUser(input);
 
       return TypeReaderResult.fromSuccess(user);
     } catch (err) {
@@ -58,8 +58,8 @@ class UserTypeReader extends TypeReader {
     }
   }
 
-  getUserResult(command, context, input) {
-    const user = context.client.users.get(input);
+  getUserResult(command, msg, input) {
+    const user = msg.client.users.get(input);
 
     if (user !== undefined) {
       return TypeReaderResult.fromSuccess(user);

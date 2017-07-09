@@ -1,5 +1,5 @@
 class Precondition {
-  async run(command, context) {
+  async run(command, msg) {
     throw new Error(this.constructor.name + ' has no run method.');
   }
 }

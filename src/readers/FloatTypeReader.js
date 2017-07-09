@@ -6,7 +6,7 @@ class FloatTypeReader extends TypeReader {
     super({ type: 'float' });
   }
 
-  async read(command, context, arg, input) {
+  async read(command, msg, arg, input) {
     const result = Number.parseFloat(input);
 
     if (!Number.isNaN(result)) {

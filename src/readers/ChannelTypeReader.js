@@ -6,15 +6,15 @@ class ChannelTypeReader extends TypeReader {
     super({ type: 'channel' });
   }
 
-  async read(command, context, arg, input) {
+  async read(command, msg, arg, input) {
     if (/^<#[0-9]+>$/.test(input)) {
-      const channel = context.guild.channels.get(input.replace(/<#|>/g, ''));
+      const channel = msg.guild.channels.get(input.replace(/<#|>/g, ''));
 
       if (channel !== undefined) {
         return TypeReaderResult.fromSuccess(channel);
       }
     } else if (/^[0-9]+$/.test(input)) {
-      const channel = context.guild.channels.get(input, '');
+      const channel = msg.guild.channels.get(input, '');
 
       if (channel !== undefined) {
         return TypeReaderResult.fromSuccess(channel);
@@ -22,7 +22,7 @@ class ChannelTypeReader extends TypeReader {
     } else {
       const lowerInput = input.toLowerCase();
 
-      const channel = context.guild.channels.find((v) => v.name.toLowerCase() === lowerInput);
+      const channel = msg.guild.channels.find((v) => v.name.toLowerCase() === lowerInput);
 
       if (channel !== null) {
         return TypeReaderResult.fromSuccess(channel);

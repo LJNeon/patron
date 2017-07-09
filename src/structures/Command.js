@@ -15,7 +15,7 @@ class Command {
     validateCommand(this, this.constructor.name);
   }
 
-  async run(context, args) {
+  async run(msg, args) {
     throw new Error(this.constructor.name + ' does not have a run method.');
   }
 

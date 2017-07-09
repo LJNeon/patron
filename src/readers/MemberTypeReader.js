@@ -6,18 +6,18 @@ class MemberTypeReader extends TypeReader {
     super({ type: 'member' });
   }
 
-  async read(command, context, arg, input) {
-    if (context.client.options.fetchAllMembers) { 
+  async read(command, msg, arg, input) {
+    if (msg.client.options.fetchAllMembers) { 
       if (/^<@!?[0-9]+>$/.test(input)) {
-        return this.getMemberResult(command, context, input.replace(/<@|!|>/g, ''));
+        return this.getMemberResult(command, msg, input.replace(/<@|!|>/g, ''));
       } else if (/^[0-9]+$/.test(input)) {
-        return this.getMemberResult(command, context, input);
+        return this.getMemberResult(command, msg, input);
       }
     } else {
       if (/^<@!?[0-9]+>$/.test(input)) {
-        return this.fetchMemberResult(command, context, input.replace(/<@|!|>/g, ''));
+        return this.fetchMemberResult(command, msg, input.replace(/<@|!|>/g, ''));
       } else if (/^[0-9]+$/.test(input)) {
-        return this.fetchMemberResult(command, context, input);
+        return this.fetchMemberResult(command, msg, input);
       }
     }
 
@@ -25,7 +25,7 @@ class MemberTypeReader extends TypeReader {
 
     if (/^.+#\d{4}$/.test(input)) {
       
-      const member = context.guild.members.find((v) => v.user.tag.toLowerCase() === lowerInput);
+      const member = msg.guild.members.find((v) => v.user.tag.toLowerCase() === lowerInput);
 
       if (member !== null) {
         return TypeReaderResult.fromSuccess(member);
@@ -34,13 +34,13 @@ class MemberTypeReader extends TypeReader {
       }
     }
 
-    let member = context.guild.members.find((v) => v.user.username.toLowerCase() === lowerInput);
+    let member = msg.guild.members.find((v) => v.user.username.toLowerCase() === lowerInput);
 
     if (member !== null) {
       return TypeReaderResult.fromSuccess(member);
     }
 
-    member = context.guild.members.find((v) => v.user.username.toLowerCase().includes(lowerInput));
+    member = msg.guild.members.find((v) => v.user.username.toLowerCase().includes(lowerInput));
 
     if (member !== null) {
       return TypeReaderResult.fromSuccess(member);
@@ -49,11 +49,11 @@ class MemberTypeReader extends TypeReader {
     return TypeReaderResult.fromError(command, 'Member not found.');
   }
 
-  async fetchMemberResult(command, context, input) {
+  async fetchMemberResult(command, msg, input) {
     try {
-      const user = await context.client.fetchUser(input);
+      const user = await msg.client.fetchUser(input);
 
-      const member = context.guild.member(user);
+      const member = msg.guild.member(user);
 
       if (member !== null) {
         return TypeReaderResult.fromSuccess(member);
@@ -65,8 +65,8 @@ class MemberTypeReader extends TypeReader {
     }
   }
 
-  getMemberResult(command, context, input) {
-    const member = context.guild.members.get(input);
+  getMemberResult(command, msg, input) {
+    const member = msg.guild.members.get(input);
 
     if (member !== undefined) {
       return TypeReaderResult.fromSuccess(member);

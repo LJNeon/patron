@@ -3,7 +3,6 @@ module.exports = {
   ArgumentPrecondition: require('./structures/ArgumentPrecondition.js'),
   Command: require('./structures/Command.js'),
   CommandError: require('./enums/CommandError.js'),
-  Context: require('./structures/Context.js'),
   Default: require('./enums/Default.js'),
   ExceptionResult: require('./results/ExceptionResult.js'),
   Group: require('./structures/Group.js'),
