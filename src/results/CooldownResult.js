@@ -10,7 +10,7 @@ class CooldownResult extends Result {
   }
 
   static fromError(command, cooldown, remaining) {
-    return new CooldownResult({ isSuccess: false, command: command, commandError: CommandError.Cooldown, cooldown: cooldown, remaining: remaining });
+    return new CooldownResult({ isSuccess: false, command: command, commandError: CommandError.Cooldown, errorReason:'This command is on a cooldown.', cooldown: cooldown, remaining: remaining });
   }
 }
 
