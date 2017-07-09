@@ -11,6 +11,9 @@ class Command {
     this.preconditions = options.preconditions !== undefined ? options.preconditions : [];
     this.args = options.args !== undefined ? options.args : [];
     this.trigger = null;
+    this.hasCooldown = options.cooldown !== undefined;
+    this.cooldown = this.hasCooldown ? options.cooldown : 0;
+    this._cooldowns = this.hasCooldown ? new Map() : null;
 
     validateCommand(this, this.constructor.name);
   }
@@ -73,6 +76,8 @@ const validateCommand = function(command, name) {
     throw new TypeError(name + ': The preconditions must be an array.');
   } else if (!Array.isArray(command.args)) {
     throw new TypeError(name + ': The arguments must be an array.');
+  } else if (typeof command.cooldown !== 'number') {
+    throw new TypeError(name + ': The cooldown must be a number.');
   }
 
   for (const alias of command.aliases) {

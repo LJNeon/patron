@@ -1,6 +1,7 @@
 const Result = require('../results/Result.js');
 const Default = require('../enums/Default.js');
 const CommandError = require('../enums/CommandError.js');
+const CooldownResult = require('../results/CooldownResult.js');
 const ExceptionResult = require('../results/ExceptionResult.js');
 
 class Handler {
@@ -101,10 +102,27 @@ class Handler {
 			
       args[command.args[i].key] = typeReaderResult.value;
     }
-	
+    
+    if (command.hasCooldown) {
+      const cooldown = command._cooldowns.get(msg.author.id + (msg.guild !== null ? msg.guild.id : ''));
+
+      if (cooldown !== undefined) {
+        const difference = cooldown - Date.now();
+
+        if (difference >= 0) {
+          return CooldownResult.fromError(command, command.cooldown, difference);
+        }
+      }
+    }
+
     try {
       await command.run(msg, args);
-      return new Result({ isSuccess: true, command: command });
+
+      if (command.hasCooldown) {
+        command._cooldowns.set(msg.author.id + (msg.guild !== null ? msg.guild.id : ''), Date.now() + command.cooldown);
+      }
+
+      return new Result({ isSuccess: true, command: command }); 
     } catch (err) {
       return ExceptionResult.fromError(command, err);
     }
