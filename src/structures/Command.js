@@ -101,7 +101,7 @@ const validateCommand = function(command, name) {
   for (const precondition of command.preconditions) {
     if (typeof precondition !== 'object') {
       throw new TypeError(name + ': All precondition exports must be an instance of the precondition.');
-    } else if (!(precondition.prototype instanceof Precondition)) {
+    } else if (!(precondition instanceof Precondition)) {
       throw new TypeError(name + ': All command preconditions must inherit the Precondition class.');
     }
   }
