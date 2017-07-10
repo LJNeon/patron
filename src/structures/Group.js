@@ -4,6 +4,7 @@ const Precondition = require('./Precondition.js');
 class Group {
   constructor(options) {
     this.name = options.name;
+    this.description = options.description !== undefined ? options.description : '';
     this.preconditions = options.preconditions !== undefined ? options.preconditions : [];
     this.commands = new discord.Collection();
 
@@ -16,6 +17,8 @@ module.exports = Group;
 const validateGroup = function(group, name) {
   if (typeof group.name !== 'string' || group.name !== group.name.toLowerCase()) {
     throw new TypeError(name + ': All group names must be a lowercase string.');
+  } else if (typeof group.name !== 'string') {
+    throw new TypeError(name + ': All group descriptions must be a string.');
   }
 
   for (const precondition of group.preconditions) {
