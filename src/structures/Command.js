@@ -40,7 +40,7 @@ class Command {
         before += '@';
       }
 
-      if (arg.type === 'textChannel') {
+      if (arg.type === 'textchannel') {
         before += '#';
       }
 
