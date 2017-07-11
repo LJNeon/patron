@@ -100,9 +100,9 @@ class Command {
         throw new TypeError(name + ': All arguments must be instances of the Argument class.');
       } else if (arg.isRemainder && arg.name !== command.args[command.args.length - 1].name) {
         throw new Error(name + ': Only the last argument of a command may be the remainder.');
-      } else if (command.args.filterArray((value) => value.name === arg.name).length > 1) {
+      } else if (command.args.filter((value) => value.name === arg.name).length > 1) {
         throw new Error(name + ': There is more than one argument by the name of ' + arg.name + '.');
-      } else if (command.args.filterArray((value) => value.key === arg.key).length > 1) {
+      } else if (command.args.filter((value) => value.key === arg.key).length > 1) {
         throw new Error(name + ': There is more than one argument by the key of ' + arg.key + '.');
       }
     }
