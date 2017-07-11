@@ -1,8 +1,8 @@
 const TypeReader = require('../structures/TypeReader.js');
 const TypeReaderResult = require('../results/TypeReaderResult.js');
-const textChannelMentionRegex = /^<#[0-9]+>$/;
-const idRegex = /^[0-9]+$/;
-const parseIdRegex = /<#|>/g;
+const TypeReaderUtil = require('../utility/TypeReaderUtil.js');
+const regexes = require('../Constants/regexes.js');
+const config = require('../constants/config.json');
 
 class TextChannelTypeReader extends TypeReader {
   constructor() {
@@ -10,26 +10,34 @@ class TextChannelTypeReader extends TypeReader {
   }
 
   async read(command, msg, arg, input) {
-    if (textChannelMentionRegex.test(input)) {
-      const channel = msg.guild.channels.get(input.replace(parseIdRegex, ''));
+    if (regexes.textChannelMention.test(input)) {
+      const channel = msg.guild.channels.get(input.replace(regexes.parseTextChannelId, ''));
 
       if (channel !== undefined && channel.type === 'text') {
         return TypeReaderResult.fromSuccess(channel);
+      } else {
+        return TypeReaderResult.fromError(command, 'Text channel not found.');
       }
-    } else if (idRegex.test(input)) {
+    } else if (regexes.id.test(input)) {
       const channel = msg.guild.channels.get(input);
 
       if (channel !== undefined && channel.type === 'text') {
         return TypeReaderResult.fromSuccess(channel);
+      } else {
+        return TypeReaderResult.fromError(command, 'Text channel not found.');
       }
-    } else {
-      const lowerInput = input.toLowerCase();
+    } 
 
-      const channel = msg.guild.channels.find((v) => v.name.toLowerCase() === lowerInput && v.type === 'text');
+    const lowerInput = input.toLowerCase();
 
-      if (channel !== null) {
-        return TypeReaderResult.fromSuccess(channel);
-      }
+    const matches = msg.guild.channels.filterArray((v) => v.name.toLowerCase().includes(lowerInput) && v.type === 'text');
+
+    if (matches.length > config.maxMatches) {
+      return TypeReader.fromError(command, 'Multiple matches found, please be more specific.');
+    } else if (matches.length > 1) {
+      return TypeReader.fromError(command, 'Multiple matches found: ' + TypeReaderUtil.formatNameable(matches) + '.');
+    } else if (matches.length === 1) {
+      return TypeReaderResult.fromSuccess(matches[0]);
     }
 
     return TypeReaderResult.fromError(command, 'Text channel not found.');

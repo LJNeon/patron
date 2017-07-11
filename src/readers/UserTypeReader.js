@@ -1,9 +1,8 @@
 const TypeReader = require('../structures/TypeReader.js');
 const TypeReaderResult = require('../results/TypeReaderResult.js');
-const userMentionRegex = /^<@!?[0-9]+>$/;
-const idRegex = /^[0-9]+$/;
-const parseIdRegex = /<@|!|>/g;
-const usernameAndDiscrimRegex = /^.+#\d{4}$/;
+const TypeReaderUtil = require('../utility/TypeReaderUtil.js');
+const regexes = require('../Constants/regexes.js');
+const config = require('../constants/config.json');
 
 class UserTypeReader extends TypeReader {
   constructor() {
@@ -12,22 +11,22 @@ class UserTypeReader extends TypeReader {
 
   async read(command, msg, arg, input) {
     if (msg.client.options.fetchAllMembers) { 
-      if (userMentionRegex.test(input)) {
-        return this.getUserResult(command, msg, input.replace(parseIdRegex, ''));
-      } else if (idRegex.test(input)) {
-        return this.getUserResult(command, msg, input);
+      if (regexes.userMention.test(input)) {
+        return this.constructor.getUserResult(command, msg, input.replace(regexes.parseUserId, ''));
+      } else if (regexes.id.test(input)) {
+        return this.constructor.getUserResult(command, msg, input);
       }
     } else {
-      if (userMentionRegex.test(input)) {
-        return this.fetchUserResult(command, msg, input.replace(parseIdRegex, ''));
-      } else if (idRegex.test(input)) {
-        return this.fetchUserResult(command, msg, input);
+      if (regexes.userMention.test(input)) {
+        return this.constructor.fetchUserResult(command, msg, input.replace(regexes.parseUserId, ''));
+      } else if (regexes.id.test(input)) {
+        return this.constructor.fetchUserResult(command, msg, input);
       }
     }
 
     const lowerInput = input.toLowerCase();
 
-    if (usernameAndDiscrimRegex.test(input)) {
+    if (regexes.usernameAndDiscrim.test(input)) {
       const user = msg.client.users.find((v) => v.tag.toLowerCase() === lowerInput);
 
       if (user !== null) {
@@ -37,22 +36,32 @@ class UserTypeReader extends TypeReader {
       }
     }
 
-    let user = msg.client.users.find((v) => v.username.toLowerCase() === lowerInput);
+    let matches = [];
 
-    if (user !== null) {
-      return TypeReaderResult.fromSuccess(user);
+    if (msg.guild !== null) {
+      const memberMatches = msg.guild.members.filterArray((v) => {
+        return v.nickname !== null && v.nickname.toLowerCase().includes(lowerInput);
+      });
+
+      for (const member of memberMatches) {
+        matches.push(member.user);
+      }
     }
 
-    user = msg.client.users.find((v) => v.username.toLowerCase().includes(lowerInput));
+    matches.concat(msg.client.users.filterArray((v) => v.username.toLowerCase().includes(lowerInput)));
 
-    if (user !== null) {
-      return TypeReaderResult.fromSuccess(user);
+    if (matches.length > config.maxMatches) {
+      return TypeReader.fromError(command, 'Multiple matches found, please be more specific.');
+    } else if (matches.length > 1) {
+      return TypeReader.fromError(command, 'Multiple matches found: ' + TypeReaderUtil.formatUsers(matches) + '.');
+    } else if (matches.length === 1) {
+      return TypeReaderResult.fromSuccess(matches[0]);
     }
 
     return TypeReaderResult.fromError(command, 'User not found.');
   }
 
-  async fetchUserResult(command, msg, input) {
+  static async fetchUserResult(command, msg, input) {
     try {
       const user = await msg.client.fetchUser(input);
 
@@ -62,7 +71,7 @@ class UserTypeReader extends TypeReader {
     }
   }
 
-  getUserResult(command, msg, input) {
+  static getUserResult(command, msg, input) {
     const user = msg.client.users.get(input);
 
     if (user !== undefined) {

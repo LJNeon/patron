@@ -106,7 +106,7 @@ class Registry {
       }
 
       for (const alias of command.aliases.concat([command.name])) {
-        if (this.commands.has(alias) || this.commands.filter((value) => value.aliases.some((v) => v === alias)).length > 0) {
+        if (this.commands.has(alias) || this.commands.filterArray((value) => value.aliases.some((v) => v === alias)).length > 0) {
           throw new Error('A command with the name ' + alias + ' is already registered.');
         }
       }

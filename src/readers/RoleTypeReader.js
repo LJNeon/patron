@@ -1,8 +1,8 @@
 const TypeReader = require('../structures/TypeReader.js');
 const TypeReaderResult = require('../results/TypeReaderResult.js');
-const roleMentionRegex = /^<@&[0-9]+>$/;
-const idRegex = /^[0-9]+$/;
-const parseIdRegex = /<@&|>/g;
+const TypeReaderUtil = require('../utility/TypeReaderUtil.js');
+const regexes = require('../Constants/regexes.js');
+const config = require('../constants/config.json');
 
 class RoleTypeReader extends TypeReader {
   constructor() {
@@ -10,25 +10,33 @@ class RoleTypeReader extends TypeReader {
   }
 
   async read(command, msg, arg, input) {
-    if (roleMentionRegex.test(input)) {
-      const role = msg.guild.roles.get(input.replace(parseIdRegex, ''));
+    if (regexes.roleMention.test(input)) {
+      const role = msg.guild.roles.get(input.replace(regexes.parseRoleId, ''));
 
       if (role !== undefined) {
         return TypeReaderResult.fromSuccess(role);
+      } else {
+        return TypeReaderResult.fromError(command, 'Role not found.');
       }
-    } else if (idRegex.test(input)) {
+    } else if (regexes.id.test(input)) {
       const role = msg.guild.roles.get(input, '');
 
       if (role !== undefined) {
         return TypeReaderResult.fromSuccess(role);
+      } else {
+        return TypeReaderResult.fromError(command, 'Role not found.');
       }
-    } else {
-      const lowerInput = input.toLowerCase();
-      const role = msg.guild.roles.find((v) => v.name.toLowerCase() === lowerInput);
+    }
 
-      if (role !== null) {
-        return TypeReaderResult.fromSuccess(role);
-      }
+    const lowerInput = input.toLowerCase();
+    const matches = msg.guild.roles.filterArray((v) => v.name.toLowerCase().includes(lowerInput));
+
+    if (matches.length > config.maxMatches) {
+      return TypeReader.fromError(command, 'Multiple matches found, please be more specific.');
+    } else if (matches.length > 1) {
+      return TypeReader.fromError(command, 'Multiple matches found: ' + TypeReaderUtil.formatNameable(matches) + '.');
+    } else if (matches.length === 1) {
+      return TypeReaderResult.fromSuccess(matches[0]);
     }
 
     return TypeReaderResult.fromError(command, 'Role not found.');

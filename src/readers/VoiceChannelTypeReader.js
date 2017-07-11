@@ -1,6 +1,8 @@
 const TypeReader = require('../structures/TypeReader.js');
 const TypeReaderResult = require('../results/TypeReaderResult.js');
-const idRegex = /^[0-9]+$/;
+const TypeReaderUtil = require('../utility/TypeReaderUtil.js');
+const regexes = require('../Constants/regexes.js');
+const config = require('../constants/config.json');
 
 class VoiceTypeReader extends TypeReader {
   constructor() {
@@ -8,20 +10,24 @@ class VoiceTypeReader extends TypeReader {
   }
 
   async read(command, msg, arg, input) {
-    if (idRegex.test(input)) {
+    if (regexes.id.test(input)) {
       const channel = msg.guild.channels.get(input);
 
       if (channel !== undefined && channel.type === 'voice') {
         return TypeReaderResult.fromSuccess(channel);
       }
-    } else {
-      const lowerInput = input.toLowerCase();
+    }
 
-      const channel = msg.guild.channels.find((v) => v.name.toLowerCase() === lowerInput && v.type === 'voice');
+    const lowerInput = input.toLowerCase();
 
-      if (channel !== null) {
-        return TypeReaderResult.fromSuccess(channel);
-      }
+    const matches = msg.guild.channels.filterArray((v) => v.name.toLowerCase().includes(lowerInput) && v.type === 'voice');
+
+    if (matches.length > config.maxMatches) {
+      return TypeReader.fromError(command, 'Multiple matches found, please be more specific.');
+    } else if (matches.length > 1) {
+      return TypeReader.fromError(command, 'Multiple matches found: ' + TypeReaderUtil.formatNameable(matches) + '.');
+    } else if (matches.length === 1) {
+      return TypeReaderResult.fromSuccess(matches[0]);
     }
 
     return TypeReaderResult.fromError(command, 'Voice channel not found.');

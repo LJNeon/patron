@@ -5,15 +5,15 @@ const CooldownResult = require('../results/CooldownResult.js');
 const ExceptionResult = require('../results/ExceptionResult.js');
 const PreconditionResult = require('../results/PreconditionResult.js');
 const PermissionUtil = require('../utility/PermissionUtil.js');
-const argumentRegex = /"[\S\s]+?"|[\S\n]+/g;
+const regexes = require('../Constants/regexes.js');
 
 class Handler {
   constructor(registry) {
-    this.registry= registry;
+    this.registry = registry;
   }
 	
   async run(msg, prefix) {
-    const split = msg.content.match(argumentRegex);
+    const split = msg.content.match(regexes.argument);
 		
     if (split === null) {
       return new Result({ isSuccess: false, commandError: CommandError.CommandNotFound, errorReason: 'This command does not exist.' });
@@ -94,7 +94,7 @@ class Handler {
 
         continue;
       } else {
-        input = input.replace(/"/g, '');
+        input = input.replace(regexes.quotes, '');
       }
 			
       const typeReaderResult = await this.registry.typeReaders.get(command.args[i].type).read(command, msg, command.args[i], input);
