@@ -3,6 +3,9 @@ const Default = require('../enums/Default.js');
 const CommandError = require('../enums/CommandError.js');
 const CooldownResult = require('../results/CooldownResult.js');
 const ExceptionResult = require('../results/ExceptionResult.js');
+const PreconditionResult = require('../results/PreconditionResult.js');
+const PermissionUtil = require('../utility/PermissionUtil.js');
+const argumentRegex = /"[\S\s]+?"|[\S\n]+/g;
 
 class Handler {
   constructor(registry) {
@@ -10,7 +13,7 @@ class Handler {
   }
 	
   async run(msg, prefix) {
-    const split = msg.content.match(/"[\S\s]+"|[\S\n]+/g);
+    const split = msg.content.match(argumentRegex);
 		
     if (split === null) {
       return new Result({ isSuccess: false, commandError: CommandError.CommandNotFound, errorReason: 'This command does not exist.' });
@@ -34,6 +37,18 @@ class Handler {
 
     if (command.guildOnly && msg.guild === null) {
       return new Result({ isSuccess: false, commandError: CommandError.GuildOnly, errorReason: 'This command may only be used inside a server.' });
+    }
+
+    for (const permission of command.userPermissions) {
+      if (!msg.guild.member(msg.author).hasPermission(permission)) {
+        return PreconditionResult.fromError(command, 'This command may only be used by users with the ' + PermissionUtil.format(permission) + ' permission.');
+      }
+    }
+
+    for (const permission of command.botPermissions) {
+      if (!msg.guild.me.hasPermission(permission)) {
+        return PreconditionResult.fromError(command, msg.client.user.username + ' cannot execute this command without the ' + PermissionUtil.format(permission) + ' permission.');
+      }
     }
 
     for (const precondition of command.group.preconditions.concat(command.preconditions)) {

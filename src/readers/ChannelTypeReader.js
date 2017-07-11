@@ -1,5 +1,8 @@
 const TypeReader = require('../structures/TypeReader.js');
 const TypeReaderResult = require('../results/TypeReaderResult.js');
+const channelMentionRegex = /^<#[0-9]+>$/;
+const idRegex = /^[0-9]+$/;
+const parseIdRegex = /<#|>/g;
 
 class ChannelTypeReader extends TypeReader {
   constructor() {
@@ -7,13 +10,13 @@ class ChannelTypeReader extends TypeReader {
   }
 
   async read(command, msg, arg, input) {
-    if (/^<#[0-9]+>$/.test(input)) {
-      const channel = msg.guild.channels.get(input.replace(/<#|>/g, ''));
+    if (channelMentionRegex.test(input)) {
+      const channel = msg.guild.channels.get(input.replace(parseIdRegex, ''));
 
       if (channel !== undefined) {
         return TypeReaderResult.fromSuccess(channel);
       }
-    } else if (/^[0-9]+$/.test(input)) {
+    } else if (idRegex.test(input)) {
       const channel = msg.guild.channels.get(input, '');
 
       if (channel !== undefined) {

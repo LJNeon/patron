@@ -17,7 +17,7 @@ module.exports = Group;
 const validateGroup = function(group, name) {
   if (typeof group.name !== 'string' || group.name !== group.name.toLowerCase()) {
     throw new TypeError(name + ': All group names must be a lowercase string.');
-  } else if (typeof group.name !== 'string') {
+  } else if (typeof group.description !== 'string') {
     throw new TypeError(name + ': All group descriptions must be a string.');
   }
 

@@ -1,5 +1,9 @@
 const TypeReader = require('../structures/TypeReader.js');
 const TypeReaderResult = require('../results/TypeReaderResult.js');
+const userMentionRegex = /^<@!?[0-9]+>$/;
+const idRegex = /^[0-9]+$/;
+const parseIdRegex = /<@|!|>/g;
+const usernameAndDiscrimRegex = /^.+#\d{4}$/;
 
 class UserTypeReader extends TypeReader {
   constructor() {
@@ -8,22 +12,22 @@ class UserTypeReader extends TypeReader {
 
   async read(command, msg, arg, input) {
     if (msg.client.options.fetchAllMembers) { 
-      if (/^<@!?[0-9]+>$/.test(input)) {
-        return this.getUserResult(command, msg, input.replace(/<@|!|>/g, ''));
-      } else if (/^[0-9]+$/.test(input)) {
+      if (userMentionRegex.test(input)) {
+        return this.getUserResult(command, msg, input.replace(parseIdRegex, ''));
+      } else if (idRegex.test(input)) {
         return this.getUserResult(command, msg, input);
       }
     } else {
-      if (/^<@!?[0-9]+>$/.test(input)) {
-        return this.fetchUserResult(command, msg, input.replace(/<@|!|>/g, ''));
-      } else if (/^[0-9]+$/.test(input)) {
+      if (userMentionRegex.test(input)) {
+        return this.fetchUserResult(command, msg, input.replace(parseIdRegex, ''));
+      } else if (idRegex.test(input)) {
         return this.fetchUserResult(command, msg, input);
       }
     }
 
     const lowerInput = input.toLowerCase();
 
-    if (/^.+#\d{4}$/.test(input)) {
+    if (usernameAndDiscrimRegex.test(input)) {
       const user = msg.client.users.find((v) => v.tag.toLowerCase() === lowerInput);
 
       if (user !== null) {
