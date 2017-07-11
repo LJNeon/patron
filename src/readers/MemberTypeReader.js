@@ -41,9 +41,9 @@ class MemberTypeReader extends TypeReader {
     });
 
     if (matches.length > config.maxMatches) {
-      return TypeReader.fromError(command, 'Multiple matches found, please be more specific.');
+      return TypeReaderResult.fromError(command, 'Multiple matches found, please be more specific.');
     } else if (matches.length > 1) {
-      return TypeReader.fromError(command, 'Multiple matches found: ' + TypeReaderUtil.formatMembers(matches) + '.');
+      return TypeReaderResult.fromError(command, 'Multiple matches found: ' + TypeReaderUtil.formatMembers(matches) + '.');
     } else if (matches.length === 1) {
       return TypeReaderResult.fromSuccess(matches[0]);
     }

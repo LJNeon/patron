@@ -33,9 +33,9 @@ class TextChannelTypeReader extends TypeReader {
     const matches = msg.guild.channels.filterArray((v) => v.name.toLowerCase().includes(lowerInput) && v.type === 'text');
 
     if (matches.length > config.maxMatches) {
-      return TypeReader.fromError(command, 'Multiple matches found, please be more specific.');
+      return TypeReaderResult.fromError(command, 'Multiple matches found, please be more specific.');
     } else if (matches.length > 1) {
-      return TypeReader.fromError(command, 'Multiple matches found: ' + TypeReaderUtil.formatNameable(matches) + '.');
+      return TypeReaderResult.fromError(command, 'Multiple matches found: ' + TypeReaderUtil.formatNameable(matches) + '.');
     } else if (matches.length === 1) {
       return TypeReaderResult.fromSuccess(matches[0]);
     }

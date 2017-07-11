@@ -51,9 +51,9 @@ class UserTypeReader extends TypeReader {
     matches = matches.concat(msg.client.users.filterArray((v) => v.username.toLowerCase().includes(lowerInput)));
 
     if (matches.length > config.maxMatches) {
-      return TypeReader.fromError(command, 'Multiple matches found, please be more specific.');
+      return TypeReaderResult.fromError(command, 'Multiple matches found, please be more specific.');
     } else if (matches.length > 1) {
-      return TypeReader.fromError(command, 'Multiple matches found: ' + TypeReaderUtil.formatUsers(matches) + '.');
+      return TypeReaderResult.fromError(command, 'Multiple matches found: ' + TypeReaderUtil.formatUsers(matches) + '.');
     } else if (matches.length === 1) {
       return TypeReaderResult.fromSuccess(matches[0]);
     }
