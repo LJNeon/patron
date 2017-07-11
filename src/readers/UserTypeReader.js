@@ -48,7 +48,7 @@ class UserTypeReader extends TypeReader {
       }
     }
 
-    matches.concat(msg.client.users.filterArray((v) => v.username.toLowerCase().includes(lowerInput)));
+    matches = matches.concat(msg.client.users.filterArray((v) => v.username.toLowerCase().includes(lowerInput)));
 
     if (matches.length > config.maxMatches) {
       return TypeReader.fromError(command, 'Multiple matches found, please be more specific.');
