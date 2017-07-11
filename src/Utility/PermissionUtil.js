@@ -1,11 +1,11 @@
 const StringUtil = require('./StringUtil.js');
-const wordRegex = /\S+/g;
+const allCapsWordRegex = /[A-Z]+/g;
 
 class PermissionUtil {
   static format(permission) {
     let formattedPermission = '';
 
-    for (const word in permission.match(wordRegex)) {
+    for (const word of permission.match(allCapsWordRegex)) {
       formattedPermission += StringUtil.upperFirstChar(word) + ' ';
     }
 
