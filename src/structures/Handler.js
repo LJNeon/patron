@@ -1,15 +1,15 @@
+const Parser = require('./Parser.js');
 const Result = require('../results/Result.js');
-const Default = require('../enums/Default.js');
 const CommandError = require('../enums/CommandError.js');
 const CooldownResult = require('../results/CooldownResult.js');
 const ExceptionResult = require('../results/ExceptionResult.js');
-const PreconditionResult = require('../results/PreconditionResult.js');
 const PermissionUtil = require('../utility/PermissionUtil.js');
 const regexes = require('../constants/regexes.js');
 
 class Handler {
   constructor(registry) {
     this.registry = registry;
+    this.parser = new Parser(registry);
   }
 	
   async run(msg, prefix) {
@@ -35,20 +35,18 @@ class Handler {
 		
     command.trigger = commandName;
 
-    if (command.guildOnly && msg.guild === null) {
+    const inGuild = msg.guild !== null;
+
+    if (command.guildOnly && !inGuild) {
       return new Result({ isSuccess: false, commandError: CommandError.GuildOnly, errorReason: 'This command may only be used inside a server.' });
     }
 
-    for (const permission of command.userPermissions) {
-      if (!msg.guild.member(msg.author).hasPermission(permission)) {
-        return PreconditionResult.fromError(command, 'This command may only be used by users with the ' + PermissionUtil.format(permission) + ' permission.');
-      }
+    if (command.userPermissions.length > 0 && !msg.guild.member(msg.author).hasPermission(command.userPermissions)) {
+      return new Result({ isSuccess: false, command: command, commandError: CommandError.UserPermission, errorReason: 'This command may only be used by users with the ' + PermissionUtil.format(command.userPermissions) + ' permission' + (command.userPermissions.length > 1 ? 's' : '') + '.' });
     }
 
-    for (const permission of command.botPermissions) {
-      if (!msg.guild.me.hasPermission(permission)) {
-        return PreconditionResult.fromError(command, msg.client.user.username + ' cannot execute this command without the ' + PermissionUtil.format(permission) + ' permission.');
-      }
+    if (command.botPermissions.length > 0 && !msg.guild.me.hasPermission(command.botPermissions)) {
+      return new Result({ isSuccess: false, command: command, commandError: CommandError.BotPermission, errorReason: msg.client.user.username + ' cannot execute this command without the ' + PermissionUtil.format(command.botPermissions) + ' permission' + (command.botPermissions.length > 1 ? 's' : '') + '.' });
     }
 
     for (const precondition of command.group.preconditions.concat(command.preconditions)) {
@@ -63,61 +61,6 @@ class Handler {
       }
     }
 
-    const args = {};
-		
-    for (let i = 0; i < command.args.length; i++) {
-      let input = command.args[i].isRemainder ? split.join(' ') : split.shift();
-
-      if (!input && !command.args[i].isOptional) {
-        return new Result({ isSuccess: false, command: command, commandError: CommandError.InvalidArgCount, errorReason: 'You have provided an invalid number of arguments.' });
-      } else if (!input && command.args[i].isOptional) {
-        switch (command.args[i].default) {
-          case Default.Author:
-            args[command.args[i].key] = msg.author; 
-            break;
-          case Default.Member:
-            args[command.args[i].key] = msg.guild.member(msg.author); 
-            break;
-          case Default.Channel:
-            args[command.args[i].key] = msg.channel; 
-            break;
-          case Default.Guild:
-            args[command.args[i].key] = msg.guild;
-            break;
-          case Default.HighestRole: 
-            args[command.args[i].key] = msg.guild.member(msg.author).highestRole;
-            break;
-          default:
-            args[command.args[i].key] = command.args[i].default;
-            break;
-        }
-
-        continue;
-      } else {
-        input = input.replace(regexes.quotes, '');
-      }
-			
-      const typeReaderResult = await this.registry.typeReaders.get(command.args[i].type).read(command, msg, command.args[i], input);
-			
-      if (!typeReaderResult.isSuccess) {
-        return typeReaderResult;
-      }
-
-      for (const precondition of command.args[i].preconditions) {
-        try {
-          const preconditionResult = await precondition.run(command, msg, command.args[i], typeReaderResult.value);
-        
-          if (!preconditionResult.isSuccess) {
-            return preconditionResult;
-          }
-        } catch (err) {
-          return ExceptionResult.fromError(command, err);
-        }
-      }
-			
-      args[command.args[i].key] = typeReaderResult.value;
-    }
-    
     if (command.hasCooldown) {
       const cooldown = command._cooldowns.get(msg.author.id + (msg.guild !== null ? msg.guild.id : ''));
 
@@ -130,11 +73,53 @@ class Handler {
       }
     }
 
+    const args = {};
+
+    for (let i = 0; i < command.args.length; i++) {
+      let value = [];
+
+      if (command.args[i].infinite) {
+        for (const input of split) {
+          const result = await this.parser.parseArgument(command, command.args[i], msg, input);
+
+          if (!result.isSuccess) {
+            return result;
+          }
+
+          value.push(result.value);
+        }
+      } else {
+        let input = command.args[i].remainder ? split.join(' ') : split.shift();
+
+        const result = await this.parser.parseArgument(command, command.args[i], msg, input);
+
+        if (!result.isSuccess) {
+          return result;
+        }
+
+        value = result.value;
+      }
+
+      for (const precondition of command.args[i].preconditions) {
+        try {
+          const preconditionResult = await precondition.run(command, msg, command.args[i], value);
+        
+          if (!preconditionResult.isSuccess) {
+            return preconditionResult;
+          }
+        } catch (err) {
+          return ExceptionResult.fromError(command, err);
+        }
+      }
+			
+      args[command.args[i].key] = value;
+    }
+
     try {
       await command.run(msg, args);
 
       if (command.hasCooldown) {
-        command._cooldowns.set(msg.author.id + (msg.guild !== null ? msg.guild.id : ''), Date.now() + command.cooldown);
+        command._cooldowns.set(msg.author.id + (inGuild ? msg.guild.id : ''), Date.now() + command.cooldown);
       }
 
       return new Result({ isSuccess: true, command: command }); 

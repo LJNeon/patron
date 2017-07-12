@@ -12,13 +12,13 @@ class UserTypeReader extends TypeReader {
   async read(command, msg, arg, input) {
     if (msg.client.options.fetchAllMembers) { 
       if (regexes.userMention.test(input)) {
-        return this.constructor.getUserResult(command, msg, input.replace(regexes.parseUserId, ''));
+        return this.constructor.getUserResult(command, msg, input.replace(regexes.parseId, ''));
       } else if (regexes.id.test(input)) {
         return this.constructor.getUserResult(command, msg, input);
       }
     } else {
       if (regexes.userMention.test(input)) {
-        return this.constructor.fetchUserResult(command, msg, input.replace(regexes.parseUserId, ''));
+        return this.constructor.fetchUserResult(command, msg, input.replace(regexes.parseId, ''));
       } else if (regexes.id.test(input)) {
         return this.constructor.fetchUserResult(command, msg, input);
       }

@@ -11,7 +11,7 @@ class TextChannelTypeReader extends TypeReader {
 
   async read(command, msg, arg, input) {
     if (regexes.textChannelMention.test(input)) {
-      const channel = msg.guild.channels.get(input.replace(regexes.parseTextChannelId, ''));
+      const channel = msg.guild.channels.get(input.replace(regexes.parseId, ''));
 
       if (channel !== undefined && channel.type === 'text') {
         return TypeReaderResult.fromSuccess(channel);

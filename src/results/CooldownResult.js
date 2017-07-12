@@ -4,7 +4,6 @@ const CommandError = require('../enums/CommandError.js');
 class CooldownResult extends Result {
   constructor(options) {
     super(options);
-
     this.cooldown = options.cooldown;
     this.remaining = options.remaining;
   }

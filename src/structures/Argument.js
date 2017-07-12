@@ -8,9 +8,10 @@ class Argument {
     this.type = options.type;
     this.example = options.example;
     this.default = options.default;
+    this.infinite = options.infinite !== undefined ? options.infinite : false;
     this.preconditions = options.preconditions !== undefined ? options.preconditions : [];
     this.isOptional = options.default !== undefined;
-    this.isRemainder = options.isRemainder !== undefined ? options.isRemainder : false;
+    this.remainder = options.remainder !== undefined ? options.remainder : false;
 
     this.constructor.validateArgument(this, this.constructor.name);
   }
@@ -18,12 +19,18 @@ class Argument {
   static validateArgument(argument, name) {
     if (typeof argument.name !== 'string') {
       throw new TypeError(name + ': The name must be a string.');
-    } else if (typeof argument.key !== 'string' || regexes.noWhiteSpace.test(argument.key)) {
+    } else if (typeof argument.key !== 'string' || regexes.whiteSpace.test(argument.key)) {
       throw new TypeError(name + ': The key must be a string that does not contain any whitespace characters.');
     } else if (typeof argument.type !== 'string' || argument.type !== argument.type.toLowerCase()) {
       throw new TypeError(name + ': The type must be a lowercase string.');
     } else if (typeof argument.example !== 'string') {
       throw new TypeError(name + ': The example must be a string.');
+    } else if (typeof argument.infinite !== 'boolean') {
+      throw new TypeError(name + ': The infinite setting must be a boolean.');
+    } else if (typeof argument.remainder !== 'boolean') {
+      throw new TypeError(name + ': The remainder setting must be a boolean.');
+    } else if (argument.infinite && argument.remainder) {
+      throw new Error(name + ': An argument may not be infinite and remainder.');
     } else if (!Array.isArray(argument.preconditions)) {
       throw new TypeError(name + ': The preconditions must be an array.');
     }
