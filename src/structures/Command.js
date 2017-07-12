@@ -44,6 +44,10 @@ class Command {
         before += '#';
       }
 
+      if (arg.infinite) {
+        after = '...' + after;
+      }
+
       usage += ' ' + before + arg.name + after;
     }
 

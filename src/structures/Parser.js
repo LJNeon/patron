@@ -13,33 +13,27 @@ class Parser {
     if (!input && !argument.isOptional) {
       return new Result({ isSuccess: false, command: command, commandError: CommandError.InvalidArgCount, errorReason: 'You have provided an invalid number of arguments.' });
     } else if (!input && argument.isOptional) {
-      let value;
-
-      switch (argument.default) {
-        case Default.Author:
-          value = msg.author;
-          break;
-        case Default.Member:
-          value = msg.guild.member(msg.author);
-          break;
-        case Default.Channel:
-          value = msg.channel;
-          break;
-        case Default.Guild:
-          value = msg.guild;
-          break;
-        case Default.HighestRole: 
-          value = msg.guild.member(msg.author).highestRole;
-          break;
-        default:
-          value = argument.default;
-          break;
-      }
-      
-      return TypeReaderResult.fromSuccess(value);
+      return TypeReaderResult.fromSuccess(this.defaultValue(argument, msg));
     }
     
     return this.registry.typeReaders.get(argument.type).read(command, msg, argument, input.replace(regexes.quotes, ''));
+  }
+
+  defaultValue(argument, msg) {
+    switch (argument.default) {
+      case Default.Author:
+        return msg.author;
+      case Default.Member:
+        return msg.guild.member(msg.author);
+      case Default.Channel:
+        return msg.channel;
+      case Default.Guild:
+        return msg.guild;
+      case Default.HighestRole: 
+        return msg.guild.member(msg.author).highestRole;
+      default:
+        return argument.default;
+    }
   }
 }
 

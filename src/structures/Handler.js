@@ -79,14 +79,22 @@ class Handler {
       let value = [];
 
       if (command.args[i].infinite) {
-        for (const input of split) {
-          const result = await this.parser.parseArgument(command, command.args[i], msg, input);
+        const noArgsLeft = split.length === 0;
 
-          if (!result.isSuccess) {
-            return result;
+        if (noArgsLeft && command.isOptional) {
+          value = this.parser.defaultValue(command.args[i], msg);
+        } else if (noArgsLeft && !command.isOptional) {
+          return new Result({ isSuccess: false, command: command, commandError: CommandError.InvalidArgCount, errorReason: 'You have provided an invalid number of arguments.' });
+        } else {
+          for (const input of split) {
+            const result = await this.parser.parseArgument(command, command.args[i], msg, input);
+
+            if (!result.isSuccess) {
+              return result;
+            }
+
+            value.push(result.value);
           }
-
-          value.push(result.value);
         }
       } else {
         let input = command.args[i].remainder ? split.join(' ') : split.shift();
