@@ -82,7 +82,7 @@ class Handler {
         const noArgsLeft = split.length === 0;
 
         if (noArgsLeft && command.args[i].isOptional) {
-          value = this.parser.defaultValue(command.args[i], msg);
+          value = [this.parser.defaultValue(command.args[i], msg)];
         } else if (noArgsLeft && !command.args[i].isOptional) {
           return new Result({ isSuccess: false, command: command, commandError: CommandError.InvalidArgCount, errorReason: 'You have provided an invalid number of arguments.' });
         } else {
