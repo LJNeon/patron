@@ -5,7 +5,7 @@ const CooldownResult = require('../results/CooldownResult.js');
 const ExceptionResult = require('../results/ExceptionResult.js');
 const PreconditionResult = require('../results/PreconditionResult.js');
 const PermissionUtil = require('../utility/PermissionUtil.js');
-const regexes = require('../Constants/regexes.js');
+const regexes = require('../constants/regexes.js');
 
 class Handler {
   constructor(registry) {

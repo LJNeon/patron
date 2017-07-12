@@ -1,5 +1,5 @@
 const ArgumentPrecondition = require('./ArgumentPrecondition.js');
-const regexes = require('../Constants/regexes.js');
+const regexes = require('../constants/regexes.js');
 
 class Argument {
   constructor(options) {
