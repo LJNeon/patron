@@ -1,3 +1,3 @@
-import Enum from 'es6-enum';
+const Enum = require('es6-enum');
 
-export default new Enum('Author', 'Member', 'Channel', 'Guild', 'HighestRole');
+module.exports = new Enum('Author', 'Member', 'Channel', 'Guild', 'HighestRole');

@@ -1,3 +1,3 @@
-import Enum from 'es6-enum';
+const Enum = require('es6-enum');
 
-export default new Enum('Precondition', 'UserPermission', 'BotPermission', 'TypeReader', 'GuildOnly', 'CommandNotFound', 'Cooldown', 'InvalidArgCount', 'Exception');
+module.exports = new Enum('Precondition', 'UserPermission', 'BotPermission', 'TypeReader', 'GuildOnly', 'CommandNotFound', 'Cooldown', 'InvalidArgCount', 'Exception');

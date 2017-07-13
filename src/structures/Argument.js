@@ -1,5 +1,5 @@
-import ArgumentPrecondition from './ArgumentPrecondition.js';
-import regexes from '../constants/regexes.js';
+const ArgumentPrecondition = require('./ArgumentPrecondition.js');
+const regexes = require('../constants/regexes.js');
 
 class Argument {
   constructor(options) {
@@ -45,4 +45,4 @@ class Argument {
   }
 }
 
-export default Argument;
+module.exports = Argument;

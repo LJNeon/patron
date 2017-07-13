@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   argument: /"[\S\s]+?"|[\S\n]+/g,
   id: /^\d{17,19}/,
   whiteSpace: /\s/,

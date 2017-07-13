@@ -1,5 +1,5 @@
-import Result from './Result.js';
-import CommandError from '../enums/CommandError.js';
+const Result = require('./Result.js');
+const CommandError = require('../enums/CommandError.js');
 
 class ExceptionResult extends Result {
   static fromError(command, error) {
@@ -7,4 +7,4 @@ class ExceptionResult extends Result {
   }
 }
 
-export default ExceptionResult;
+module.exports = ExceptionResult;

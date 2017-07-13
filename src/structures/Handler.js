@@ -1,10 +1,10 @@
-import Parser from './Parser.js';
-import Result from '../results/Result.js';
-import CommandError from '../enums/CommandError.js';
-import CooldownResult from '../results/CooldownResult.js';
-import ExceptionResult from '../results/ExceptionResult.js';
-import PermissionUtil from '../utility/PermissionUtil.js';
-import regexes from '../constants/regexes.js';
+const Parser = require('./Parser.js');
+const Result = require('../results/Result.js');
+const CommandError = require('../enums/CommandError.js');
+const CooldownResult = require('../results/CooldownResult.js');
+const ExceptionResult = require('../results/ExceptionResult.js');
+const PermissionUtil = require('../utility/PermissionUtil.js');
+const regexes = require('../constants/regexes.js');
 
 class Handler {
   constructor(registry) {
@@ -62,7 +62,7 @@ class Handler {
     }
 
     if (command.hasCooldown) {
-      const cooldown = command.cooldowns.get(message.author.id + (message.guild !== null ? message.guild.id : ''));
+      const cooldown = command._cooldowns.get(message.author.id + (message.guild !== null ? message.guild.id : ''));
 
       if (cooldown !== undefined) {
         const difference = cooldown - Date.now();
@@ -127,7 +127,7 @@ class Handler {
       await command.run(message, args);
 
       if (command.hasCooldown) {
-        command.cooldowns.set(message.author.id + (inGuild ? message.guild.id : ''), Date.now() + command.cooldown);
+        command._cooldowns.set(message.author.id + (inGuild ? message.guild.id : ''), Date.now() + command.cooldown);
       }
 
       return new Result({ success: true, command: command });
@@ -137,4 +137,4 @@ class Handler {
   }
 }
 
-export default Handler;
+module.exports = Handler;

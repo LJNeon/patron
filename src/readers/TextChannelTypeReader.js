@@ -1,8 +1,8 @@
-import TypeReader from '../structures/TypeReader.js';
-import TypeReaderResult from '../results/TypeReaderResult.js';
-import TypeReaderUtil from '../utility/TypeReaderUtil.js';
-import regexes from '../constants/regexes.js';
-import config from '../constants/config.json';
+const TypeReader = require('../structures/TypeReader.js');
+const TypeReaderResult = require('../results/TypeReaderResult.js');
+const TypeReaderUtil = require('../utility/TypeReaderUtil.js');
+const regexes = require('../constants/regexes.js');
+const config = require('../constants/config.json');
 
 class TextChannelTypeReader extends TypeReader {
   constructor() {
@@ -44,4 +44,4 @@ class TextChannelTypeReader extends TypeReader {
   }
 }
 
-export default new TextChannelTypeReader();
+module.exports = new TextChannelTypeReader();

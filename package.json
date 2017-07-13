@@ -6,7 +6,7 @@
   "types": "./typings/index.d.ts",
   "scripts": {
     "test": "node src/index.js",
-    "lint": "eslint --fix src/** && tslint --fix typings/index.d.ts"
+	"lint": "eslint src/** --fix"
   },
   "repository": {
     "type": "git",
@@ -33,7 +33,6 @@
     "**/*.json"
   ],
   "devDependencies": {
-    "eslint": "^4.2.0",
     "tslint": "^5.5.0",
     "typescript": "^2.4.1"
   }

@@ -4,4 +4,4 @@ class Precondition {
   }
 }
 
-export default Precondition;
+module.exports = Precondition;

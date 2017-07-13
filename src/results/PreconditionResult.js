@@ -1,5 +1,5 @@
-import Result from './Result.js';
-import CommandError from '../enums/CommandError.js';
+const Result = require('./Result.js');
+const CommandError = require('../enums/CommandError.js');
 
 class PreconditionResult extends Result {
   static fromSuccess() {
@@ -11,4 +11,4 @@ class PreconditionResult extends Result {
   }
 }
 
-export default PreconditionResult;
+module.exports = PreconditionResult;

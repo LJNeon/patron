@@ -1,5 +1,5 @@
-import Result from './Result.js';
-import CommandError from '../enums/CommandError.js';
+const Result = require('./Result.js');
+const CommandError = require('../enums/CommandError.js');
 
 class TypeReaderResult extends Result {
   static fromSuccess(value) {
@@ -11,4 +11,4 @@ class TypeReaderResult extends Result {
   }
 }
 
-export default TypeReaderResult;
+module.exports = TypeReaderResult;

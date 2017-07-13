@@ -4,13 +4,13 @@
       "tslint:recommended"
   ],
   "rules": {
-    "class-name": true,
+  "class-name": true,
     "indent": [
-	  true,
-	  "spaces",
-	  2
-	],
-	"no-duplicate-variable": true,
+      true,
+      "spaces",
+	    2
+    ],
+    "no-duplicate-variable": true,
     "no-trailing-whitespace": true,
     "no-unsafe-finally": true,
     "no-var-keyword": true,
@@ -23,9 +23,8 @@
       "always"
     ],
     "triple-equals": [
-      true
-    ],
-	"max-classes-per-file": false,
-	"interface-name": false
+       true,
+       "allow-null-check"
+    ]
   }
 }

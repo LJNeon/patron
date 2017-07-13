@@ -4,4 +4,4 @@ class StringUtil {
   }
 }
 
-export default StringUtil;
+module.exports = StringUtil;

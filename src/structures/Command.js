@@ -1,6 +1,6 @@
-import discord from 'discord.js';
-import Argument from './Argument.js';
-import Precondition from './Precondition.js';
+const discord = require('discord.js');
+const Argument = require('./Argument.js');
+const Precondition = require('./Precondition.js');
 
 class Command {
   constructor(options) {
@@ -16,7 +16,7 @@ class Command {
     this.trigger = null;
     this.hasCooldown = options.cooldown !== undefined;
     this.cooldown = this.hasCooldown ? options.cooldown : 0;
-    this.cooldowns = this.hasCooldown ? new discord.Collection() : null;
+    this._cooldowns = this.hasCooldown ? new discord.Collection() : null;
 
     this.constructor.validateCommand(this, this.constructor.name);
   }
@@ -120,4 +120,4 @@ class Command {
   }
 }
 
-export default Command;
+module.exports = Command;
