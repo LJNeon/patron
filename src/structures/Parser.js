@@ -12,7 +12,7 @@ class Parser {
       return TypeReaderResult.fromSuccess(this.defaultValue(argument, message));
     }
 
-    return command.type.read(command, message, argument, input.replace(regexes.quotes, ''));
+    return argument.type.read(command, message, argument, input.replace(regexes.quotes, ''));
   }
 
   defaultValue(argument, message) {
