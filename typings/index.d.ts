@@ -34,6 +34,9 @@ declare module 'patron.js' {
     public readonly hasCooldown: Boolean;
     private _cooldowns: Collection<string, number>;
     public trigger: string;
+    public run(message: Message, args: Array<Argument>): Promise<any>;
+    public getUsage(): string;
+    public getExample(): string;
     private static validateCommand(command: Command, name: string): void;
   }
 
