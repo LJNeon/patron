@@ -105,7 +105,7 @@ declare module 'patron.js' {
   export class Registry {
     public readonly commands: Collection<string, Command>;
     public readonly groups: Collection<string, Group>;
-    public readonly typeReaders: Map<string, TypeReader>;
+    public readonly typeReaders: Collection<string, TypeReader>;
     public registerDefaultTypeReaders(): Registry;
     public registerTypeReadersIn(path: string): Registry;
     public registerTypeReaders(typeReaders: Array<TypeReader>): Registry;
