@@ -31,10 +31,6 @@
 	  "error", 
 	  "always"
 	],
-	"array-bracket-newline": [
-	  "error", 
-	  { "minItems": 2 }
-	],
 	"no-multiple-empty-lines": [
 	  "error",
 	  { "max": 1 }
@@ -60,7 +56,6 @@
 	  "never"
 	],
 	"array-bracket-spacing": "error",
-	"array-element-newline": "error",
 	"no-var": "error",
 	"no-else-return": "error",
 	"no-empty-function": "error",
