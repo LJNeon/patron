@@ -1,15 +1,27 @@
 const StringUtil = require('./StringUtil.js');
-const allCapsWordRegex = /[A-Z]+/g;
+const regexes = require('../constants/regexes');
 
 class PermissionUtil {
-  static format(permission) {
-    let formattedPermission = '';
+  static format(permissions) {
+    let formattedPermissions = '';
 
-    for (const word of permission.match(allCapsWordRegex)) {
-      formattedPermission += StringUtil.upperFirstChar(word) + ' ';
+    for (let i = 0; i < permissions.length; i++) {
+      const lastIteration = i === permissions.length - 1;
+
+      if (lastIteration) {
+        formattedPermissions += ' and';
+      }
+
+      for (const word of permissions[i].match(regexes.permission)) {
+        formattedPermissions += ' ' + StringUtil.upperFirstChar(word);
+      }
+
+      if (!lastIteration) {
+        formattedPermissions += ', ';
+      }
     }
 
-    return formattedPermission.trim();
+    return formattedPermissions.trim();
   }
 }
 

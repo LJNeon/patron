@@ -9,9 +9,9 @@ class TextChannelTypeReader extends TypeReader {
     super({ type: 'textchannel' });
   }
 
-  async read(command, msg, arg, input) {
+  async read(command, message, arg, input) {
     if (regexes.textChannelMention.test(input)) {
-      const channel = msg.guild.channels.get(input.replace(regexes.parseId, ''));
+      const channel = message.guild.channels.get(input.replace(regexes.parseId, ''));
 
       if (channel !== undefined && channel.type === 'text') {
         return TypeReaderResult.fromSuccess(channel);
@@ -19,7 +19,7 @@ class TextChannelTypeReader extends TypeReader {
         return TypeReaderResult.fromError(command, 'Text channel not found.');
       }
     } else if (regexes.id.test(input)) {
-      const channel = msg.guild.channels.get(input);
+      const channel = message.guild.channels.get(input);
 
       if (channel !== undefined && channel.type === 'text') {
         return TypeReaderResult.fromSuccess(channel);
@@ -30,12 +30,12 @@ class TextChannelTypeReader extends TypeReader {
 
     const lowerInput = input.toLowerCase();
 
-    const matches = msg.guild.channels.filterArray((v) => v.name.toLowerCase().includes(lowerInput) && v.type === 'text');
+    const matches = message.guild.channels.filterArray((v) => v.name.toLowerCase().includes(lowerInput) && v.type === 'text');
 
     if (matches.length > config.maxMatches) {
       return TypeReaderResult.fromError(command, 'Multiple matches found, please be more specific.');
     } else if (matches.length > 1) {
-      return TypeReaderResult.fromError(command, 'Multiple matches found: ' + TypeReaderUtil.formatNameable(matches) + '.');
+      return TypeReaderResult.fromError(command, 'Multiple matches found: ' + TypeReaderUtil.formatNameables(matches) + '.');
     } else if (matches.length === 1) {
       return TypeReaderResult.fromSuccess(matches[0]);
     }

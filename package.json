@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "The cleanest discord.js command framework.",
   "main": "src/index.js",
+  "types": "./typings/index.d.ts",
   "scripts": {
     "test": "node src/index.js"
   },
@@ -29,5 +30,9 @@
   },
   "eslintIgnore": [
     "**/*.json"
-  ]
+  ],
+  "devDependencies": {
+    "tslint": "^5.5.0",
+    "typescript": "^2.4.1"
+  }
 }

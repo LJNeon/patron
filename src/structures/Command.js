@@ -1,3 +1,4 @@
+const discord = require('discord.js');
 const Argument = require('./Argument.js');
 const Precondition = require('./Precondition.js');
 
@@ -15,12 +16,12 @@ class Command {
     this.trigger = null;
     this.hasCooldown = options.cooldown !== undefined;
     this.cooldown = this.hasCooldown ? options.cooldown : 0;
-    this._cooldowns = this.hasCooldown ? new Map() : null;
+    this._cooldowns = this.hasCooldown ? new discord.Collection() : null;
 
     this.constructor.validateCommand(this, this.constructor.name);
   }
 
-  async run(msg, args) {
+  async run(message, args) {
     throw new Error(this.constructor.name + ' does not have a run method.');
   }
 
@@ -31,7 +32,7 @@ class Command {
       let before = '<';
       let after = '>';
 
-      if (arg.isOptional) {
+      if (arg.optional) {
         before = '[';
         after = ']';
       }

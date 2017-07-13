@@ -9,9 +9,9 @@ class GuildTypeReader extends TypeReader {
     super({ type: 'guild' });
   }
 
-  async read(command, msg, arg, input) {
+  async read(command, message, arg, input) {
     if (regexes.id.test(input)) {
-      const guild = msg.client.guilds.get(input);
+      const guild = message.client.guilds.get(input);
 
       if (guild !== undefined) {
         return TypeReaderResult.fromSuccess(guild);
@@ -22,12 +22,12 @@ class GuildTypeReader extends TypeReader {
 
     const lowerInput = input.toLowerCase();
 
-    const matches = msg.client.guilds.filterArray((v) => v.name.toLowerCase().includes(lowerInput));
+    const matches = message.client.guilds.filterArray((v) => v.name.toLowerCase().includes(lowerInput));
 
     if (matches.length > config.maxMatches) {
       return TypeReaderResult.fromError(command, 'Multiple matches found, please be more specific.');
     } else if (matches.length > 1) {
-      return TypeReaderResult.fromError(command, 'Multiple matches found: ' + TypeReaderUtil.formatNameable(matches) + '.');
+      return TypeReaderResult.fromError(command, 'Multiple matches found: ' + TypeReaderUtil.formatNameables(matches) + '.');
     } else if (matches.length === 1) {
       return TypeReaderResult.fromSuccess(matches[0]);
     }

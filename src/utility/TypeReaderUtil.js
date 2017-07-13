@@ -19,10 +19,10 @@ class TypeReaderUtil {
     return formattedMembers.slice(0, -2);
   }
 
-  static formatNameable(array) {
+  static formatNameables(nameables) {
     let formattedNameables = '';
 
-    for (const obj of array) {
+    for (const obj of nameables) {
       formattedNameables += obj.name + ', ';
     }
 

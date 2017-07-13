@@ -4,16 +4,14 @@ const CommandError = require('../enums/CommandError.js');
 class TypeReaderResult extends Result {
   constructor(options) {
     super(options);
-
-    this.value = options.value;
   }
 
   static fromSuccess(value) {
-    return new TypeReaderResult({ isSuccess: true, value: value });
+    return new TypeReaderResult({ success: true, value: value });
   }
 
   static fromError(command, reason) {
-    return new TypeReaderResult({ isSuccess: false, command: command, commandError: CommandError.TypeReader, errorReason: reason });
+    return new TypeReaderResult({ success: false, command: command, commandError: CommandError.TypeReader, errorReason: reason });
   }
 }
 

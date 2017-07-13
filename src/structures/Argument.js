@@ -10,7 +10,7 @@ class Argument {
     this.default = options.default;
     this.infinite = options.infinite !== undefined ? options.infinite : false;
     this.preconditions = options.preconditions !== undefined ? options.preconditions : [];
-    this.isOptional = options.default !== undefined;
+    this.optional = options.default !== undefined;
     this.remainder = options.remainder !== undefined ? options.remainder : false;
 
     this.constructor.validateArgument(this, this.constructor.name);

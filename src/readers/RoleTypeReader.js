@@ -9,9 +9,9 @@ class RoleTypeReader extends TypeReader {
     super({ type: 'role' });
   }
 
-  async read(command, msg, arg, input) {
+  async read(command, message, arg, input) {
     if (regexes.roleMention.test(input)) {
-      const role = msg.guild.roles.get(input.replace(regexes.parseId, ''));
+      const role = message.guild.roles.get(input.replace(regexes.parseId, ''));
 
       if (role !== undefined) {
         return TypeReaderResult.fromSuccess(role);
@@ -19,7 +19,7 @@ class RoleTypeReader extends TypeReader {
         return TypeReaderResult.fromError(command, 'Role not found.');
       }
     } else if (regexes.id.test(input)) {
-      const role = msg.guild.roles.get(input, '');
+      const role = message.guild.roles.get(input, '');
 
       if (role !== undefined) {
         return TypeReaderResult.fromSuccess(role);
@@ -29,12 +29,12 @@ class RoleTypeReader extends TypeReader {
     }
 
     const lowerInput = input.toLowerCase();
-    const matches = msg.guild.roles.filterArray((v) => v.name.toLowerCase().includes(lowerInput));
+    const matches = message.guild.roles.filterArray((v) => v.name.toLowerCase().includes(lowerInput));
 
     if (matches.length > config.maxMatches) {
       return TypeReaderResult.fromError(command, 'Multiple matches found, please be more specific.');
     } else if (matches.length > 1) {
-      return TypeReaderResult.fromError(command, 'Multiple matches found: ' + TypeReaderUtil.formatNameable(matches) + '.');
+      return TypeReaderResult.fromError(command, 'Multiple matches found: ' + TypeReaderUtil.formatNameables(matches) + '.');
     } else if (matches.length === 1) {
       return TypeReaderResult.fromSuccess(matches[0]);
     }

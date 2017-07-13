@@ -5,32 +5,28 @@ const TypeReaderResult = require('../results/TypeReaderResult.js');
 const regexes = require('../constants/regexes.js');
 
 class Parser {
-  constructor(registry) {
-    this.registry = registry;
-  }
-
-  async parseArgument(command, argument, msg, input) {
-    if (!input && !argument.isOptional) {
-      return new Result({ isSuccess: false, command: command, commandError: CommandError.InvalidArgCount, errorReason: 'You have provided an invalid number of arguments.' });
-    } else if (!input && argument.isOptional) {
-      return TypeReaderResult.fromSuccess(this.defaultValue(argument, msg));
+  async parseArgument(command, message, argument, input) {
+    if (!input && !argument.optional) {
+      return new Result({ success: false, command: command, commandError: CommandError.InvalidArgCount, errorReason: 'You have provided an invalid number of arguments.' });
+    } else if (!input && argument.optional) {
+      return TypeReaderResult.fromSuccess(this.defaultValue(argument, message));
     }
     
-    return this.registry.typeReaders.get(argument.type).read(command, msg, argument, input.replace(regexes.quotes, ''));
+    return command.type.read(command, message, argument, input.replace(regexes.quotes, ''));
   }
 
-  defaultValue(argument, msg) {
+  defaultValue(argument, message) {
     switch (argument.default) {
       case Default.Author:
-        return msg.author;
+        return message.author;
       case Default.Member:
-        return msg.guild.member(msg.author);
+        return message.guild.member(message.author);
       case Default.Channel:
-        return msg.channel;
+        return message.channel;
       case Default.Guild:
-        return msg.guild;
+        return message.guild;
       case Default.HighestRole: 
-        return msg.guild.member(msg.author).highestRole;
+        return message.guild.member(message.author).highestRole;
       default:
         return argument.default;
     }

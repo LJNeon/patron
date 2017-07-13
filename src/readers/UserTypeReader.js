@@ -9,25 +9,25 @@ class UserTypeReader extends TypeReader {
     super({ type: 'user' });
   }
 
-  async read(command, msg, arg, input) {
-    if (msg.client.options.fetchAllMembers) { 
+  async read(command, message, arg, input) {
+    if (message.client.options.fetchAllMembers) { 
       if (regexes.userMention.test(input)) {
-        return this.constructor.getUserResult(command, msg, input.replace(regexes.parseId, ''));
+        return this.constructor.getUserResult(command, message, input.replace(regexes.parseId, ''));
       } else if (regexes.id.test(input)) {
-        return this.constructor.getUserResult(command, msg, input);
+        return this.constructor.getUserResult(command, message, input);
       }
     } else {
       if (regexes.userMention.test(input)) {
-        return this.constructor.fetchUserResult(command, msg, input.replace(regexes.parseId, ''));
+        return this.constructor.fetchUserResult(command, message, input.replace(regexes.parseId, ''));
       } else if (regexes.id.test(input)) {
-        return this.constructor.fetchUserResult(command, msg, input);
+        return this.constructor.fetchUserResult(command, message, input);
       }
     }
 
     const lowerInput = input.toLowerCase();
 
     if (regexes.usernameAndDiscrim.test(input)) {
-      const user = msg.client.users.find((v) => v.tag.toLowerCase() === lowerInput);
+      const user = message.client.users.find((v) => v.tag.toLowerCase() === lowerInput);
 
       if (user !== null) {
         return TypeReaderResult.fromSuccess(user);
@@ -38,8 +38,8 @@ class UserTypeReader extends TypeReader {
 
     let matches = [];
 
-    if (msg.guild !== null) {
-      const memberMatches = msg.guild.members.filterArray((v) => {
+    if (message.guild !== null) {
+      const memberMatches = message.guild.members.filterArray((v) => {
         return v.nickname !== null && v.nickname.toLowerCase().includes(lowerInput);
       });
 
@@ -48,7 +48,7 @@ class UserTypeReader extends TypeReader {
       }
     }
 
-    matches = matches.concat(msg.client.users.filterArray((v) => v.username.toLowerCase().includes(lowerInput)));
+    matches = matches.concat(message.client.users.filterArray((v) => v.username.toLowerCase().includes(lowerInput)));
 
     if (matches.length > config.maxMatches) {
       return TypeReaderResult.fromError(command, 'Multiple matches found, please be more specific.');
@@ -61,9 +61,9 @@ class UserTypeReader extends TypeReader {
     return TypeReaderResult.fromError(command, 'User not found.');
   }
 
-  static async fetchUserResult(command, msg, input) {
+  static async fetchUserResult(command, message, input) {
     try {
-      const user = await msg.client.fetchUser(input);
+      const user = await message.client.fetchUser(input);
 
       return TypeReaderResult.fromSuccess(user);
     } catch (err) {
@@ -71,8 +71,8 @@ class UserTypeReader extends TypeReader {
     }
   }
 
-  static getUserResult(command, msg, input) {
-    const user = msg.client.users.get(input);
+  static getUserResult(command, message, input) {
+    const user = message.client.users.get(input);
 
     if (user !== undefined) {
       return TypeReaderResult.fromSuccess(user);

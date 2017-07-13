@@ -7,11 +7,11 @@ class PreconditionResult extends Result {
   }
 
   static fromSuccess() {
-    return new PreconditionResult({ isSuccess: true });
+    return new PreconditionResult({ success: true });
   }
 
   static fromError(command, reason) {
-    return new PreconditionResult({ isSuccess: false, command: command, commandError: CommandError.Precondition, errorReason: reason });
+    return new PreconditionResult({ success: false, command: command, commandError: CommandError.Precondition, errorReason: reason });
   }
 }
 

@@ -12,11 +12,11 @@ class Handler {
     this.parser = new Parser(registry);
   }
 	
-  async run(msg, prefix) {
-    const split = msg.content.match(regexes.argument);
+  async run(message, prefix) {
+    const split = message.content.match(regexes.argument);
 		
     if (split === null) {
-      return new Result({ isSuccess: false, commandError: CommandError.CommandNotFound, errorReason: 'This command does not exist.' });
+      return new Result({ success: false, commandError: CommandError.CommandNotFound, errorReason: 'This command does not exist.' });
     }
 		
     const commandName = split.shift().slice(prefix.length).toLowerCase();
@@ -29,31 +29,31 @@ class Handler {
       if (matches.length > 0) {
         command = matches[0];
       } else {
-        return new Result({ isSuccess: false, commandError: CommandError.CommandNotFound, errorReason: 'This command does not exist.' });
+        return new Result({ success: false, commandError: CommandError.CommandNotFound, errorReason: 'This command does not exist.' });
       }
     }
 		
     command.trigger = commandName;
 
-    const inGuild = msg.guild !== null;
+    const inGuild = message.guild !== null;
 
     if (command.guildOnly && !inGuild) {
-      return new Result({ isSuccess: false, commandError: CommandError.GuildOnly, errorReason: 'This command may only be used inside a server.' });
+      return new Result({ success: false, commandError: CommandError.GuildOnly, errorReason: 'This command may only be used inside a server.' });
     }
 
-    if (command.userPermissions.length > 0 && !msg.guild.member(msg.author).hasPermission(command.userPermissions)) {
-      return new Result({ isSuccess: false, command: command, commandError: CommandError.UserPermission, errorReason: 'This command may only be used by users with the ' + PermissionUtil.format(command.userPermissions) + ' permission' + (command.userPermissions.length > 1 ? 's' : '') + '.' });
+    if (command.userPermissions.length > 0 && !message.guild.member(message.author).hasPermission(command.userPermissions)) {
+      return new Result({ success: false, command: command, commandError: CommandError.UserPermission, errorReason: 'This command may only be used by users with the ' + PermissionUtil.format(command.userPermissions) + ' permission' + (command.userPermissions.length > 1 ? 's' : '') + '.' });
     }
 
-    if (command.botPermissions.length > 0 && !msg.guild.me.hasPermission(command.botPermissions)) {
-      return new Result({ isSuccess: false, command: command, commandError: CommandError.BotPermission, errorReason: msg.client.user.username + ' cannot execute this command without the ' + PermissionUtil.format(command.botPermissions) + ' permission' + (command.botPermissions.length > 1 ? 's' : '') + '.' });
+    if (command.botPermissions.length > 0 && !message.guild.me.hasPermission(command.botPermissions)) {
+      return new Result({ success: false, command: command, commandError: CommandError.BotPermission, errorReason: message.client.user.username + ' cannot execute this command without the ' + PermissionUtil.format(command.botPermissions) + ' permission' + (command.botPermissions.length > 1 ? 's' : '') + '.' });
     }
 
     for (const precondition of command.group.preconditions.concat(command.preconditions)) {
       try {
-        const result = await precondition.run(command, msg);
+        const result = await precondition.run(command, message);
       
-        if (!result.isSuccess) {
+        if (!result.success) {
           return result;
         }
       } catch (err) {
@@ -62,7 +62,7 @@ class Handler {
     }
 
     if (command.hasCooldown) {
-      const cooldown = command._cooldowns.get(msg.author.id + (msg.guild !== null ? msg.guild.id : ''));
+      const cooldown = command._cooldowns.get(message.author.id + (message.guild !== null ? message.guild.id : ''));
 
       if (cooldown !== undefined) {
         const difference = cooldown - Date.now();
@@ -81,15 +81,15 @@ class Handler {
       if (command.args[i].infinite) {
         const noArgsLeft = split.length === 0;
 
-        if (noArgsLeft && command.args[i].isOptional) {
-          value = [this.parser.defaultValue(command.args[i], msg)];
-        } else if (noArgsLeft && !command.args[i].isOptional) {
-          return new Result({ isSuccess: false, command: command, commandError: CommandError.InvalidArgCount, errorReason: 'You have provided an invalid number of arguments.' });
+        if (noArgsLeft && command.args[i].optional) {
+          value = [this.parser.defaultValue(command.args[i], message)];
+        } else if (noArgsLeft && !command.args[i].optional) {
+          return new Result({ success: false, command: command, commandError: CommandError.InvalidArgCount, errorReason: 'You have provided an invalid number of arguments.' });
         } else {
           for (const input of split) {
-            const result = await this.parser.parseArgument(command, command.args[i], msg, input);
+            const result = command.type.read(command, message, command.args[i], input.replace(regexes.quotes, ''));
 
-            if (!result.isSuccess) {
+            if (!result.success) {
               return result;
             }
 
@@ -99,9 +99,9 @@ class Handler {
       } else {
         let input = command.args[i].remainder ? split.join(' ') : split.shift();
 
-        const result = await this.parser.parseArgument(command, command.args[i], msg, input);
+        const result = await this.parser.parseArgument(command, message, command.args[i], input);
 
-        if (!result.isSuccess) {
+        if (!result.success) {
           return result;
         }
 
@@ -110,9 +110,9 @@ class Handler {
 
       for (const precondition of command.args[i].preconditions) {
         try {
-          const preconditionResult = await precondition.run(command, msg, command.args[i], value);
+          const preconditionResult = await precondition.run(command, message, command.args[i], value);
         
-          if (!preconditionResult.isSuccess) {
+          if (!preconditionResult.success) {
             return preconditionResult;
           }
         } catch (err) {
@@ -124,13 +124,13 @@ class Handler {
     }
 
     try {
-      await command.run(msg, args);
+      await command.run(message, args);
 
       if (command.hasCooldown) {
-        command._cooldowns.set(msg.author.id + (inGuild ? msg.guild.id : ''), Date.now() + command.cooldown);
+        command._cooldowns.set(message.author.id + (inGuild ? message.guild.id : ''), Date.now() + command.cooldown);
       }
 
-      return new Result({ isSuccess: true, command: command }); 
+      return new Result({ success: true, command: command }); 
     } catch (err) {
       return ExceptionResult.fromError(command, err);
     }

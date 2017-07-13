@@ -5,7 +5,7 @@ class TypeReader {
     this.constructor.validateTypeReader(this, this.constructor.name);
   }
 
-  async read(command, msg, arg, input) {
+  async read(command, message, argument, input) {
     throw new Error(this.constructor.name + ' has no read method.');
   }
 

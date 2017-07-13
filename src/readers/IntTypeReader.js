@@ -6,7 +6,7 @@ class IntTypeReader extends TypeReader {
     super({ type: 'int' });
   }
 
-  async read(command, msg, arg, input) {
+  async read(command, message, arg, input) {
     const result = Number.parseFloat(input);
 
     if (Number.isInteger(result)) {

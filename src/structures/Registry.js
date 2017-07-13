@@ -102,7 +102,9 @@ class Registry {
       } else if (!(command instanceof Command)) {
         throw new Error('All commands must inherit the Command class.');
       } else if (!this.groups.has(command.group)) {
-        throw new Error('The group ' + command.group + ' is not registered.');
+        throw new Error('The ' + command.group + ' group is not registered.');
+      } else if (!this.typeReaders.has(command.type)) {
+        throw new Error('The ' + command.type + ' type reader does not exist.');
       }
 
       for (const alias of command.aliases.concat([command.name])) {
@@ -114,6 +116,7 @@ class Registry {
       const group = this.groups.get(command.group);
 
       command.group = group;
+      command.type = this.typeReaders.get(command.type);
       group.commands.set(command.name, command);
       this.commands.set(command.name, command);
     }
