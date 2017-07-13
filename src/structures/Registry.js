@@ -103,13 +103,17 @@ class Registry {
         throw new Error('All commands must inherit the Command class.');
       } else if (!this.groups.has(command.group)) {
         throw new Error('The ' + command.group + ' group is not registered.');
-      } else if (!this.typeReaders.has(command.type)) {
-        throw new Error('The ' + command.type + ' type reader does not exist.');
       }
 
       for (const alias of command.aliases.concat([command.name])) {
         if (this.commands.has(alias) || this.commands.filterArray((value) => value.aliases.some((v) => v === alias)).length > 0) {
           throw new Error('A command with the name ' + alias + ' is already registered.');
+        }
+      }
+
+      for (const arg of command.args) {
+        if (!this.typeReaders.has(arg.type)) {
+          throw new Error('The ' + arg.type + ' type reader does not exist.');
         }
       }
 
