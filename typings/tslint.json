@@ -26,6 +26,7 @@
       true
     ],
 	"max-classes-per-file": false,
-	"interface-name": false
+	"interface-name": false,
+	"trailing-comma": "never"
   }
 }

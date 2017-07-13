@@ -111,16 +111,17 @@ class Registry {
         }
       }
 
-      for (const arg of command.args) {
-        if (!this.typeReaders.has(arg.type)) {
-          throw new Error('The ' + arg.type + ' type reader does not exist.');
+      for (let i = 0; i < command.args.length; i++) {
+        if (!this.typeReaders.has(command.args[i].type)) {
+          throw new Error('The ' + command.args[i].type + ' type reader does not exist.');
         }
+
+        command.args[i] = this.typeReaders.get(command.type);
       }
 
       const group = this.groups.get(command.group);
 
       command.group = group;
-      command.type = this.typeReaders.get(command.type);
       group.commands.set(command.name, command);
       this.commands.set(command.name, command);
     }

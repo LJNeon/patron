@@ -32,8 +32,8 @@ declare module 'patron.js' {
     public readonly args: Argument[];
     public readonly coooldown: number;
     public readonly hasCooldown: boolean;
-    public trigger: string;
-    private cooldowns: Collection<string, number>;
+    public readonly trigger: string;
+    private readonly cooldowns: Collection<string, number>;
     constructor(options: CommandOptions);
     public run(message: Message, args: Argument[]): Promise<any>;
     public getUsage(): string;
@@ -49,7 +49,7 @@ declare module 'patron.js' {
     CommandNotFound,
     Cooldown,
     InvalidArgCount,
-    Exception,
+    Exception
   }
 
   export class CooldownResult extends Result {
@@ -62,7 +62,7 @@ declare module 'patron.js' {
     Member,
     Channel,
     Guild,
-    HighestRole,
+    HighestRole
   }
 
   export class ExceptionResult extends Result {
