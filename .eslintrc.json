@@ -5,7 +5,8 @@
   },
   "extends": "eslint:recommended",
   "parserOptions": {
-    "ecmaVersion": 2017
+    "ecmaVersion": 2017,
+	"sourceType": "module"
   },
   "rules": {
     "indent": [
@@ -29,10 +30,6 @@
 	"eqeqeq": [
 	  "error", 
 	  "always"
-	],
-	"array-bracket-newline": [
-	  "error", 
-	  { "minItems": 2 }
 	],
 	"no-multiple-empty-lines": [
 	  "error",
@@ -59,7 +56,6 @@
 	  "never"
 	],
 	"array-bracket-spacing": "error",
-	"array-element-newline": "error",
 	"no-var": "error",
 	"no-else-return": "error",
 	"no-empty-function": "error",
@@ -94,6 +90,7 @@
 	"arrow-spacing": "error",
 	"key-spacing": "error",
 	"switch-colon-spacing": "error",
+	"eol-last": "error",
     "no-console": "off"
   }
 }

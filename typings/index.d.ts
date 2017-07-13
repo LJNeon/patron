@@ -1,18 +1,18 @@
 declare module 'patron.js' {
-  import { Message, Collection, GuildMember, User } from 'discord.js';
+  import { Collection, GuildMember, Message, User } from 'discord.js';
 
   export class Argument {
-    constructor(options: ArgumentOptions);
-    public readonly name : string;
-    public readonly key : string;
-    public readonly type : TypeReader;
+    private static validateArgument(argument: Argument, name: string): void;
+    public readonly name: string;
+    public readonly key: string;
+    public readonly type: TypeReader;
     public readonly example: string;
     public readonly default: any;
     public readonly infinite: boolean;
-    public readonly preconditions: Array<ArgumentPrecondition>;
+    public readonly preconditions: ArgumentPrecondition[];
     public readonly remainder: boolean;
     public readonly optional: boolean;
-    private static validateArgument(argument: Argument, name: string): void;
+    constructor(options: ArgumentOptions);
   }
 
   export class ArgumentPrecondition {
@@ -20,24 +20,24 @@ declare module 'patron.js' {
   }
 
   export class Command {
-    constructor(options: CommandOptions);
+    private static validateCommand(command: Command, name: string): void;
     public readonly name: string;
-    public readonly aliases: Array<string>;
+    public readonly aliases: string[];
     public readonly group: Group;
     public readonly description: string;
     public readonly guildOnly: boolean;
-    public readonly userPermissions: Array<string>;
-    public readonly botPermissions: Array<string>;
-    public readonly preconditions: Array<Precondition>;
-    public readonly args: Array<Argument>;
+    public readonly userPermissions: string[];
+    public readonly botPermissions: string[];
+    public readonly preconditions: Precondition[];
+    public readonly args: Argument[];
     public readonly coooldown: number;
-    public readonly hasCooldown: Boolean;
-    private _cooldowns: Collection<string, number>;
+    public readonly hasCooldown: boolean;
     public trigger: string;
-    public run(message: Message, args: Array<Argument>): Promise<any>;
+    private cooldowns: Collection<string, number>;
+    constructor(options: CommandOptions);
+    public run(message: Message, args: Argument[]): Promise<any>;
     public getUsage(): string;
     public getExample(): string;
-    private static validateCommand(command: Command, name: string): void;
   }
 
   export enum CommandError {
@@ -49,12 +49,12 @@ declare module 'patron.js' {
     CommandNotFound,
     Cooldown,
     InvalidArgCount,
-    Exception
+    Exception,
   }
 
   export class CooldownResult extends Result {
-    constructor(options: ResultOptions);
     public static fromError(command: Command, cooldown: number, remaining: number): CooldownResult;
+    constructor(options: ResultOptions);
   }
 
   export enum Default {
@@ -62,27 +62,27 @@ declare module 'patron.js' {
     Member,
     Channel,
     Guild,
-    HighestRole
+    HighestRole,
   }
 
   export class ExceptionResult extends Result {
-    constructor(options: ResultOptions);
     public static fromError(command: Command, error: Error): ExceptionResult;
+    constructor(options: ResultOptions);
   }
 
   export class Group {
-    constructor(options: GroupOptions);
+    private static validateGroup(group: Group, name: string): void;
     public readonly name: string;
     public readonly description: string;
-    public readonly preconditions: Array<Precondition>;
+    public readonly preconditions: Precondition[];
     public readonly commands: Collection<string, Command>;
-    private static validateGroup(group: Group, name: string): void;
+    constructor(options: GroupOptions);
   }
 
   export class Handler {
-    constructor(registry: Registry);
     public readonly registry: Registry;
     public readonly parser: Parser;
+    constructor(registry: Registry);
     public run(message: Message, prefix: string): Promise<Result>;
   }
 
@@ -92,7 +92,7 @@ declare module 'patron.js' {
   }
 
   export class PermissionUtil {
-    public static format(permission: Array<string>): string;
+    public static format(permission: string[]): string;
   }
 
   export class Precondition {
@@ -100,9 +100,9 @@ declare module 'patron.js' {
   }
 
   export class PreconditionResult extends Result {
-    constructor(options: ResultOptions);
     public static fromSuccess(): PreconditionResult;
     public static fromError(command: Command, reason: string): PreconditionResult;
+    constructor(options: ResultOptions);
   }
 
   export class Registry {
@@ -111,23 +111,23 @@ declare module 'patron.js' {
     public readonly typeReaders: Collection<string, TypeReader>;
     public registerDefaultTypeReaders(): Registry;
     public registerTypeReadersIn(path: string): Registry;
-    public registerTypeReaders(typeReaders: Array<TypeReader>): Registry;
+    public registerTypeReaders(typeReaders: TypeReader[]): Registry;
     public registerGroupsIn(path: string): Registry;
-    public registerGroups(groups: Array<Group>): Registry;
+    public registerGroups(groups: Group[]): Registry;
     public registerCommandsIn(path: string): Registry;
-    public registerCommands(commands: Array<Command>): Registry;
+    public registerCommands(commands: Command[]): Registry;
   }
 
   export class Result {
-    constructor(options: ResultOptions);
     public readonly success: boolean;
     public readonly command: Command;
-    public readonly commandError: CommandError
+    public readonly commandError: CommandError;
     public readonly errorReason: string;
     public readonly error: Error;
     public readonly value: any;
     public readonly cooldown: number;
     public readonly remaining: number;
+    constructor(options: ResultOptions);
   }
 
   export class StringUtil {
@@ -135,66 +135,66 @@ declare module 'patron.js' {
   }
 
   export class TypeReader {
-    constructor(options: TypeReaderOptions);
-    public readonly type: string;
-    public read(command: Command, message: Message, argument: Argument, input: string): Promise<Result>;
     private static validateTypeReader(typeReader: TypeReader, name: string): void;
+    public readonly type: string;
+    constructor(options: TypeReaderOptions);
+    public read(command: Command, message: Message, argument: Argument, input: string): Promise<Result>;
   }
 
   export class TypeReaderResult extends Result {
-    constructor(options: ResultOptions);
     public static fromSuccess(value: any): TypeReaderResult;
     public static fromError(command: Command, reason: string): TypeReaderResult;
+    constructor(options: ResultOptions);
   }
 
   export class TypeReaderUtil {
     public static formatMembers(members: GuildMember): string;
     public static formatUsers(users: User): string;
-    public static formatNameables(nameables: Array<any>): string;
+    public static formatNameables(nameables: any[]): string;
   }
 
-  type ArgumentOptions = {
-    name: string,
-    key: string,
-    type: string,
-    example: string,
-    default: any,
-    infinite: boolean,
-    remainder: boolean,
-    preconditions: Array<ArgumentPrecondition>
+  interface ArgumentOptions {
+    name: string;
+    key: string;
+    type: string;
+    example: string;
+    default: any;
+    infinite: boolean;
+    remainder: boolean;
+    preconditions: ArgumentPrecondition[];
   }
 
-  type CommandOptions = {
-    name: string,
-    aliases: Array<string>,
-    group: string,
-    description: string,
-    guildOnly: boolean,
-    userPermissions: Array<string>,
-    botPermissions: Array<string>,
-    preconditions: Array<Precondition>,
-    args: Array<Argument>,
-    coooldown: number
+  interface CommandOptions {
+    name: string;
+    aliases: string[];
+    group: string;
+    description: string;
+    guildOnly: boolean;
+    userPermissions: string[];
+    botPermissions: string[];
+    preconditions: Precondition[];
+    args: Argument[];
+    coooldown: number;
   }
 
-  type GroupOptions = {
-    name: string,
-    description: string,
-    preconditions: Array<Precondition>
+  interface GroupOptions {
+    name: string;
+    description: string;
+    preconditions: Precondition[];
   }
 
-  type ResultOptions = {
-    success: boolean,
-    command: Command,
-    commandError: CommandError,
-    errorReason: string,
-    error: Error,
-    value: any,
-    cooldown: number,
-    remaining: number
+  interface ResultOptions {
+    success: boolean;
+    command: Command;
+    commandError: CommandError;
+    errorReason: string;
+    error: Error;
+    value: any;
+    cooldown: number;
+    remaining: number;
   }
 
-  type TypeReaderOptions = {
-    type: string
+  interface TypeReaderOptions {
+    type: string;
   }
 }
