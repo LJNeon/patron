@@ -116,7 +116,7 @@ class Registry {
           throw new Error('The ' + command.args[i].type + ' type reader does not exist.');
         }
 
-        command.args[i] = this.typeReaders.get(command.type);
+        command.args[i].type = this.typeReaders.get(command.type);
       }
 
       const group = this.groups.get(command.group);
