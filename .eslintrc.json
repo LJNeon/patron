@@ -48,8 +48,8 @@
 	  "always"
 	],
 	"space-before-function-paren": [
-	  "error",
-	  { "named": "never" }
+	  "error", 
+	  "never"
 	],
 	"multiline-ternary": [
 	  "error", 
