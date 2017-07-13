@@ -51,8 +51,8 @@
 	  "always"
 	],
 	"space-before-function-paren": [
-	  "error", 
-	  "never"
+	  "error",
+	  { "named": "never" }
 	],
 	"multiline-ternary": [
 	  "error", 
@@ -92,6 +92,8 @@
 	"prefer-arrow-callback": "error",
 	"prefer-const": "error",
 	"arrow-spacing": "error",
+	"key-spacing": "error",
+	"switch-colon-spacing": "error",
     "no-console": "off"
   }
 }
