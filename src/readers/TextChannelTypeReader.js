@@ -15,18 +15,18 @@ class TextChannelTypeReader extends TypeReader {
 
       if (channel !== undefined && channel.type === 'text') {
         return TypeReaderResult.fromSuccess(channel);
-      } else {
-        return TypeReaderResult.fromError(command, 'Text channel not found.');
       }
+
+      return TypeReaderResult.fromError(command, 'Text channel not found.');
     } else if (regexes.id.test(input)) {
       const channel = message.guild.channels.get(input);
 
       if (channel !== undefined && channel.type === 'text') {
         return TypeReaderResult.fromSuccess(channel);
-      } else {
-        return TypeReaderResult.fromError(command, 'Text channel not found.');
       }
-    } 
+
+      return TypeReaderResult.fromError(command, 'Text channel not found.');
+    }
 
     const lowerInput = input.toLowerCase();
 

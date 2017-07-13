@@ -15,17 +15,17 @@ class RoleTypeReader extends TypeReader {
 
       if (role !== undefined) {
         return TypeReaderResult.fromSuccess(role);
-      } else {
-        return TypeReaderResult.fromError(command, 'Role not found.');
       }
+
+      return TypeReaderResult.fromError(command, 'Role not found.');
     } else if (regexes.id.test(input)) {
       const role = message.guild.roles.get(input, '');
 
       if (role !== undefined) {
         return TypeReaderResult.fromSuccess(role);
-      } else {
-        return TypeReaderResult.fromError(command, 'Role not found.');
       }
+
+      return TypeReaderResult.fromError(command, 'Role not found.');
     }
 
     const lowerInput = input.toLowerCase();

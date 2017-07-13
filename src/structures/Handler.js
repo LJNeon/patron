@@ -11,28 +11,28 @@ class Handler {
     this.registry = registry;
     this.parser = new Parser(registry);
   }
-	
+
   async run(message, prefix) {
     const split = message.content.match(regexes.argument);
-		
+
     if (split === null) {
       return new Result({ success: false, commandError: CommandError.CommandNotFound, errorReason: 'This command does not exist.' });
     }
-		
+
     const commandName = split.shift().slice(prefix.length).toLowerCase();
-		
+
     let command = this.registry.commands.get(commandName);
-		
+
     if (command === undefined) {
       const matches = this.registry.commands.filterArray((value) => value.aliases.some((v) => v === commandName));
-			
+
       if (matches.length > 0) {
         command = matches[0];
       } else {
         return new Result({ success: false, commandError: CommandError.CommandNotFound, errorReason: 'This command does not exist.' });
       }
     }
-		
+
     command.trigger = commandName;
 
     const inGuild = message.guild !== null;
@@ -52,7 +52,7 @@ class Handler {
     for (const precondition of command.group.preconditions.concat(command.preconditions)) {
       try {
         const result = await precondition.run(command, message);
-      
+
         if (!result.success) {
           return result;
         }
@@ -97,7 +97,7 @@ class Handler {
           }
         }
       } else {
-        let input = command.args[i].remainder ? split.join(' ') : split.shift();
+        const input = command.args[i].remainder ? split.join(' ') : split.shift();
 
         const result = await this.parser.parseArgument(command, message, command.args[i], input);
 
@@ -111,7 +111,7 @@ class Handler {
       for (const precondition of command.args[i].preconditions) {
         try {
           const preconditionResult = await precondition.run(command, message, command.args[i], value);
-        
+
           if (!preconditionResult.success) {
             return preconditionResult;
           }
@@ -119,7 +119,7 @@ class Handler {
           return ExceptionResult.fromError(command, err);
         }
       }
-			
+
       args[command.args[i].key] = value;
     }
 
@@ -130,7 +130,7 @@ class Handler {
         command._cooldowns.set(message.author.id + (inGuild ? message.guild.id : ''), Date.now() + command.cooldown);
       }
 
-      return new Result({ success: true, command: command }); 
+      return new Result({ success: true, command: command });
     } catch (err) {
       return ExceptionResult.fromError(command, err);
     }

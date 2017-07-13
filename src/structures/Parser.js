@@ -11,7 +11,7 @@ class Parser {
     } else if (!input && argument.optional) {
       return TypeReaderResult.fromSuccess(this.defaultValue(argument, message));
     }
-    
+
     return command.type.read(command, message, argument, input.replace(regexes.quotes, ''));
   }
 
@@ -25,7 +25,7 @@ class Parser {
         return message.channel;
       case Default.Guild:
         return message.guild;
-      case Default.HighestRole: 
+      case Default.HighestRole:
         return message.guild.member(message.author).highestRole;
       default:
         return argument.default;

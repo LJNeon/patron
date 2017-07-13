@@ -11,9 +11,9 @@ class IntTypeReader extends TypeReader {
 
     if (Number.isInteger(result)) {
       return TypeReaderResult.fromSuccess(result);
-    } else {
-      return TypeReaderResult.fromError(command, 'You have provided an invalid ' + arg.name + '.');
     }
+
+    return TypeReaderResult.fromError(command, 'You have provided an invalid ' + arg.name + '.');
   }
 }
 

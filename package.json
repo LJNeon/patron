@@ -5,7 +5,8 @@
   "main": "src/index.js",
   "types": "./typings/index.d.ts",
   "scripts": {
-    "test": "node src/index.js"
+    "test": "node src/index.js",
+	"lint": "eslint src/** --fix"
   },
   "repository": {
     "type": "git",

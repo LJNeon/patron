@@ -2,10 +2,6 @@ const Result = require('./Result.js');
 const CommandError = require('../enums/CommandError.js');
 
 class TypeReaderResult extends Result {
-  constructor(options) {
-    super(options);
-  }
-
   static fromSuccess(value) {
     return new TypeReaderResult({ success: true, value: value });
   }

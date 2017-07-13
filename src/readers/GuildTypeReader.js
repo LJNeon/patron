@@ -15,9 +15,9 @@ class GuildTypeReader extends TypeReader {
 
       if (guild !== undefined) {
         return TypeReaderResult.fromSuccess(guild);
-      } else {
-        return TypeReaderResult.fromError(command, 'Guild not found.');
       }
+
+      return TypeReaderResult.fromError(command, 'Guild not found.');
     }
 
     const lowerInput = input.toLowerCase();

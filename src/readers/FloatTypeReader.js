@@ -11,9 +11,9 @@ class FloatTypeReader extends TypeReader {
 
     if (!Number.isNaN(result)) {
       return TypeReaderResult.fromSuccess(result);
-    } else {
-      return TypeReaderResult.fromError(command, 'You have provided an invalid ' + arg.name + '.');
     }
+
+    return TypeReaderResult.fromError(command, 'You have provided an invalid ' + arg.name + '.');
   }
 }
 

@@ -10,18 +10,16 @@ class UserTypeReader extends TypeReader {
   }
 
   async read(command, message, arg, input) {
-    if (message.client.options.fetchAllMembers) { 
+    if (message.client.options.fetchAllMembers) {
       if (regexes.userMention.test(input)) {
         return this.constructor.getUserResult(command, message, input.replace(regexes.parseId, ''));
       } else if (regexes.id.test(input)) {
         return this.constructor.getUserResult(command, message, input);
       }
-    } else {
-      if (regexes.userMention.test(input)) {
-        return this.constructor.fetchUserResult(command, message, input.replace(regexes.parseId, ''));
-      } else if (regexes.id.test(input)) {
-        return this.constructor.fetchUserResult(command, message, input);
-      }
+    } else if (regexes.userMention.test(input)) {
+      return this.constructor.fetchUserResult(command, message, input.replace(regexes.parseId, ''));
+    } else if (regexes.id.test(input)) {
+      return this.constructor.fetchUserResult(command, message, input);
     }
 
     const lowerInput = input.toLowerCase();
@@ -31,9 +29,9 @@ class UserTypeReader extends TypeReader {
 
       if (user !== null) {
         return TypeReaderResult.fromSuccess(user);
-      } else {
-        return TypeReaderResult.fromError(command, 'User not found.');
       }
+
+      return TypeReaderResult.fromError(command, 'User not found.');
     }
 
     let matches = [];
@@ -76,9 +74,9 @@ class UserTypeReader extends TypeReader {
 
     if (user !== undefined) {
       return TypeReaderResult.fromSuccess(user);
-    } else {
-      return TypeReaderResult.fromError(command, 'User not found.');
     }
+
+    return TypeReaderResult.fromError(command, 'User not found.');
   }
 }
 

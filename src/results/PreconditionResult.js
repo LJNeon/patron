@@ -2,10 +2,6 @@ const Result = require('./Result.js');
 const CommandError = require('../enums/CommandError.js');
 
 class PreconditionResult extends Result {
-  constructor(options) {
-    super(options);
-  }
-
   static fromSuccess() {
     return new PreconditionResult({ success: true });
   }

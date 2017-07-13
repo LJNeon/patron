@@ -10,18 +10,16 @@ class MemberTypeReader extends TypeReader {
   }
 
   async read(command, message, arg, input) {
-    if (message.client.options.fetchAllMembers) { 
+    if (message.client.options.fetchAllMembers) {
       if (regexes.userMention.test(input)) {
         return this.constructor.getMemberResult(command, message, input.replace(regexes.parseId, ''));
       } else if (regexes.id.test(input)) {
         return this.constructor.getMemberResult(command, message, input);
       }
-    } else {
-      if (regexes.userMention.test(input)) {
-        return this.constructor.fetchMemberResult(command, message, input.replace(regexes.parseId, ''));
-      } else if (regexes.id.test(input)) {
-        return this.constructor.fetchMemberResult(command, message, input);
-      }
+    } else if (regexes.userMention.test(input)) {
+      return this.constructor.fetchMemberResult(command, message, input.replace(regexes.parseId, ''));
+    } else if (regexes.id.test(input)) {
+      return this.constructor.fetchMemberResult(command, message, input);
     }
 
     const lowerInput = input.toLowerCase();
@@ -31,9 +29,9 @@ class MemberTypeReader extends TypeReader {
 
       if (member !== null) {
         return TypeReaderResult.fromSuccess(member);
-      } else {
-        return TypeReaderResult.fromError(command, 'Member not found.');
       }
+
+      return TypeReaderResult.fromError(command, 'Member not found.');
     }
 
     const matches = message.guild.members.filterArray((v) => {
@@ -59,9 +57,9 @@ class MemberTypeReader extends TypeReader {
 
       if (member !== null) {
         return TypeReaderResult.fromSuccess(member);
-      } else {
-        return TypeReaderResult.fromError(command, 'Member not found.');
       }
+
+      return TypeReaderResult.fromError(command, 'Member not found.');
     } catch (err) {
       return TypeReaderResult.fromError(command, 'Member not found.');
     }
@@ -72,9 +70,9 @@ class MemberTypeReader extends TypeReader {
 
     if (member !== undefined) {
       return TypeReaderResult.fromSuccess(member);
-    } else {
-      return TypeReaderResult.fromError(command, 'Member not found.');
     }
+
+    return TypeReaderResult.fromError(command, 'Member not found.');
   }
 }
 
