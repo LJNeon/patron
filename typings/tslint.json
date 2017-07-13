@@ -1,0 +1,30 @@
+{
+  "defaultSeverity": "error",
+  "extends": [
+      "tslint:recommended"
+  ],
+  "rules": {
+  "class-name": true,
+    "indent": [
+      true,
+      "spaces",
+	    2
+    ],
+    "no-duplicate-variable": true,
+    "no-trailing-whitespace": true,
+    "no-unsafe-finally": true,
+    "no-var-keyword": true,
+    "quotemark": [
+      true,
+      "single"
+    ],
+    "semicolon": [
+      true,
+      "always"
+    ],
+    "triple-equals": [
+       true,
+       "allow-null-check"
+    ]
+  }
+}
