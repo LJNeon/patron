@@ -1,5 +1,5 @@
-const discord = require('discord.js');
-const Precondition = require('./Precondition.js');
+import discord from 'discord.js';
+import Precondition from './Precondition.js';
 
 class Group {
   constructor(options) {
@@ -28,4 +28,4 @@ class Group {
   }
 }
 
-module.exports = Group;
+export default Group;

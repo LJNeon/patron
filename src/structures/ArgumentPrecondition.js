@@ -4,4 +4,4 @@ class ArgumentPrecondition {
   }
 }
 
-module.exports = ArgumentPrecondition;
+export default ArgumentPrecondition;

@@ -30,4 +30,4 @@ class TypeReaderUtil {
   }
 }
 
-module.exports = TypeReaderUtil;
+export default TypeReaderUtil;

@@ -1,5 +1,5 @@
-const TypeReader = require('../structures/TypeReader.js');
-const TypeReaderResult = require('../results/TypeReaderResult.js');
+import TypeReader from '../structures/TypeReader.js';
+import TypeReaderResult from '../results/TypeReaderResult.js';
 
 class IntTypeReader extends TypeReader {
   constructor() {
@@ -17,4 +17,4 @@ class IntTypeReader extends TypeReader {
   }
 }
 
-module.exports = new IntTypeReader();
+export default new IntTypeReader();

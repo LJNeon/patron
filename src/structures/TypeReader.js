@@ -16,4 +16,4 @@ class TypeReader {
   }
 }
 
-module.exports = TypeReader;
+export default TypeReader;

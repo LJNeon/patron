@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   Argument: require('./structures/Argument.js'),
   ArgumentPrecondition: require('./structures/ArgumentPrecondition.js'),
   Command: require('./structures/Command.js'),

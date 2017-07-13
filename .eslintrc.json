@@ -5,7 +5,8 @@
   },
   "extends": "eslint:recommended",
   "parserOptions": {
-    "ecmaVersion": 2017
+    "ecmaVersion": 2017,
+	"sourceType": "module"
   },
   "rules": {
     "indent": [
@@ -94,6 +95,7 @@
 	"arrow-spacing": "error",
 	"key-spacing": "error",
 	"switch-colon-spacing": "error",
+	"eol-last": "error",
     "no-console": "off"
   }
 }

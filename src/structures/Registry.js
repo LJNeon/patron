@@ -1,9 +1,9 @@
-const discord = require('discord.js');
-const path = require('path');
-const requireAll = require('require-all');
-const Command = require('./Command.js');
-const Group = require('./Group.js');
-const TypeReader = require('./TypeReader.js');
+import discord from 'discord.js';
+import path from 'path';
+import requireAll from 'require-all';
+import Command from './Command.js';
+import Group from './Group.js';
+import TypeReader from './TypeReader.js';
 
 class Registry {
   constructor() {
@@ -129,4 +129,4 @@ class Registry {
   }
 }
 
-module.exports = Registry;
+export default Registry;

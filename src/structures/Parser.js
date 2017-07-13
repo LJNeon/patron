@@ -1,8 +1,8 @@
-const Default = require('../enums/Default.js');
-const CommandError = require('../enums/CommandError.js');
-const Result = require('../results/Result.js');
-const TypeReaderResult = require('../results/TypeReaderResult.js');
-const regexes = require('../constants/regexes.js');
+import Default from '../enums/Default.js';
+import CommandError from '../enums/CommandError.js';
+import Result from '../results/Result.js';
+import TypeReaderResult from '../results/TypeReaderResult.js';
+import regexes from '../constants/regexes.js';
 
 class Parser {
   async parseArgument(command, message, argument, input) {
@@ -33,4 +33,4 @@ class Parser {
   }
 }
 
-module.exports = Parser;
+export default Parser;

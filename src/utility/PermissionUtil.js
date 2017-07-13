@@ -1,5 +1,5 @@
-const StringUtil = require('./StringUtil.js');
-const regexes = require('../constants/regexes');
+import StringUtil from './StringUtil.js';
+import regexes from '../constants/regexes';
 
 class PermissionUtil {
   static format(permissions) {
@@ -25,4 +25,4 @@ class PermissionUtil {
   }
 }
 
-module.exports = PermissionUtil;
+export default PermissionUtil;
