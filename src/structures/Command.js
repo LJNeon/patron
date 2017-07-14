@@ -37,11 +37,13 @@ class Command {
         after = ']';
       }
 
-      if (arg.type === 'role' || arg.type === 'member' || arg.type === 'user') {
+      const type = arg.type.type;
+
+      if (type === 'role' || type === 'member' || type === 'user') {
         before += '@';
       }
 
-      if (arg.type === 'textchannel') {
+      if (type === 'textchannel') {
         before += '#';
       }
 
