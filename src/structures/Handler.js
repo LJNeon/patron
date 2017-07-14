@@ -41,11 +41,11 @@ class Handler {
       return new Result({ success: false, commandError: CommandError.GuildOnly, errorReason: 'This command may only be used inside a server.' });
     }
 
-    if (command.userPermissions.length > 0 && !message.guild.member(message.author).hasPermission(command.userPermissions)) {
+    if (inGuild && command.userPermissions.length > 0 && !message.guild.member(message.author).hasPermission(command.userPermissions)) {
       return new Result({ success: false, command: command, commandError: CommandError.UserPermission, errorReason: 'This command may only be used by users with the ' + PermissionUtil.format(command.userPermissions) + ' permission' + (command.userPermissions.length > 1 ? 's' : '') + '.' });
     }
 
-    if (command.botPermissions.length > 0 && !message.guild.me.hasPermission(command.botPermissions)) {
+    if (inGuild && command.botPermissions.length > 0 && !message.guild.me.hasPermission(command.botPermissions)) {
       return new Result({ success: false, command: command, commandError: CommandError.BotPermission, errorReason: message.client.user.username + ' cannot execute this command without the ' + PermissionUtil.format(command.botPermissions) + ' permission' + (command.botPermissions.length > 1 ? 's' : '') + '.' });
     }
 
