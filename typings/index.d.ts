@@ -81,18 +81,8 @@ declare module 'patron.js' {
 
   export class Handler {
     public readonly registry: Registry;
-    public readonly parser: Parser;
     constructor(registry: Registry);
     public run(message: Message, prefix: string): Promise<Result>;
-  }
-
-  export class Parser {
-    public parseArgument(command: Command, argument: Argument, message: Message, input: string): Promise<Result>;
-    public defaultValue(argument: Argument, message: Message): any;
-  }
-
-  export class PermissionUtil {
-    public static format(permission: string[]): string;
   }
 
   export class Precondition {
@@ -130,10 +120,6 @@ declare module 'patron.js' {
     constructor(options: ResultOptions);
   }
 
-  export class StringUtil {
-    public static upperFirstChar(input: string): string;
-  }
-
   export class TypeReader {
     private static validateTypeReader(typeReader: TypeReader, name: string): void;
     public readonly type: string;
@@ -145,12 +131,6 @@ declare module 'patron.js' {
     public static fromSuccess(value: any): TypeReaderResult;
     public static fromError(command: Command, reason: string): TypeReaderResult;
     constructor(options: ResultOptions);
-  }
-
-  export class TypeReaderUtil {
-    public static formatMembers(members: GuildMember): string;
-    public static formatUsers(users: User): string;
-    public static formatNameables(nameables: any[]): string;
   }
 
   interface ArgumentOptions {
