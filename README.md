@@ -11,6 +11,4 @@
     <a href="https://david-dm.org/RealBlazeIt/patron.js"><img src="https://david-dm.org/RealBlazeIt/patron.js.svg" alt="Dependencies" /></a>
 </div>
 
-# patron.js
-
 The cleanest discord.js command framework.
