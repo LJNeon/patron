@@ -10,5 +10,7 @@
     <a href="https://travis-ci.org/RealBlazeIt/patron.js"><img src="https://travis-ci.org/RealBlazeIt/patron.js.svg?branch=master" alt="Build Status" /></a>
     <a href="https://david-dm.org/RealBlazeIt/patron.js"><img src="https://david-dm.org/RealBlazeIt/patron.js.svg" alt="Dependencies" /></a>
 </div>
-
+<br />
+<div align="center">
 The cleanest discord.js command framework.
+</div>
