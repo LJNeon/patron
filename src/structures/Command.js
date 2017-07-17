@@ -2,7 +2,39 @@ const discord = require('discord.js');
 const Argument = require('./Argument.js');
 const Precondition = require('./Precondition.js');
 
+/**
+ * @prop {string} name The name of the command.
+ * @prop {string[]} aliases The aliases of the command.
+ * @prop {Group} group The group of the command.
+ * @prop {string} description The description of the command.
+ * @prop {boolean} guildOnly Whether the command may only be used in guild text channels.
+ * @prop {string[]} userPermissions The permissions required by the invoker to use the command.
+ * @prop {string[]} botPermissions The permissions required by the bot to execute the command.
+ * @prop {Precondition[]} preconditions The preconditions to be ran on the command.
+ * @prop {Argument[]} args The arguments of the command.
+ * @prop {string?} trigger The alias of the command used to trigger it.
+ * @prop {boolean} hasCooldown Whether the command has a cooldown.
+ * @prop {number} cooldown The length of the cooldown in milliseconds.
+ * @prop {Collection<string, number>} cooldowns The current collection of all user cooldowns on the command.
+ */
 class Command {
+  /**
+   * @typedef {object} CommandOptions The command options.
+   * @prop {string} name The name of the command.
+   * @prop {string[]} aliases The aliases of the command.
+   * @prop {Group} group The group of the command.
+   * @prop {string} description The description of the command.
+   * @prop {boolean} [guildOnly=true] Whether the command may only be used in guild text channels.
+   * @prop {string[]} userPermissions The permissions required by the invoker to use the command.
+   * @prop {string[]} botPermissions The permissions required by the bot to execute the command.
+   * @prop {Precondition[]} preconditions The preconditions to be ran on the command.
+   * @prop {Argument[]} args The arguments of the command.
+   * @prop {number} cooldown The length of the cooldown in milliseconds.
+   */
+
+  /**
+   * @param {CommandOptions} options
+   */
   constructor(options) {
     this.name = options.name;
     this.aliases = options.aliases !== undefined ? options.aliases : [];
@@ -16,15 +48,23 @@ class Command {
     this.trigger = null;
     this.hasCooldown = options.cooldown !== undefined;
     this.cooldown = this.hasCooldown ? options.cooldown : 0;
-    this._cooldowns = this.hasCooldown ? new discord.Collection() : null;
+    this.cooldowns = this.hasCooldown ? new discord.Collection() : null;
 
     this.constructor.validateCommand(this, this.constructor.name);
   }
 
+  /**
+   * @param {Message} message The received message.
+   * @param {object} args The arguments of the command.
+   * @returns {Promise} Resolves once the execution of the command is complete.
+   */
   async run(message, args) {
     throw new Error(this.constructor.name + ' does not have a run method.');
   }
 
+  /**
+   * @returns {string} The usage of the command.
+   */
   getUsage() {
     let usage = this.trigger || this.name;
 
@@ -53,6 +93,9 @@ class Command {
     return usage;
   }
 
+  /**
+   * @returns {string} An example of usage of the command.
+   */
   getExample() {
     let example = this.trigger || this.name;
 
@@ -63,6 +106,11 @@ class Command {
     return example;
   }
 
+  /**
+   * @param {Command} command The command to validate.
+   * @param {string} name The name of the command.
+   * @private
+   */
   static validateCommand(command, name) {
     if (typeof command.name  !== 'string' || command.name !== command.name.toLowerCase()) {
       throw new TypeError(name + ': The name must be a lowercase string.');

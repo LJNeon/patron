@@ -1,21 +1,53 @@
 const ArgumentPrecondition = require('./ArgumentPrecondition.js');
 const regexes = require('../constants/regexes.js');
 
+/**
+ * A command argument.
+ * @prop {string} name The name of the argument.
+ * @prop {string} key The key of the argument, acting as the name of the property on the args object.
+ * @prop {TypeReader} type The type reader of the argument.
+ * @prop {string} example An example of the argument.
+ * @prop {*?} defaultValue The default value of the argument.
+ * @prop {boolean} infinite Allow this argument accept an infinite number of values and return them in an array.
+ * @prop {ArgumentPrecondition[]} preconditions The preconditions to be ran on the argument.
+ * @prop {boolean} optional Whether the argument is optional.
+ * @prop {boolean} remainder Whether the argument is the remainder.
+ */
 class Argument {
+  /**
+   * @typedef {object} ArgumentOptions The argument options.
+   * @prop {string} name The name of the argument.
+   * @prop {string} key The key of the argument, acting as the name of the property on the args object.
+   * @prop {TypeReader} type The type reader of the argument.
+   * @prop {string} example An example of the argument.
+   * @prop {*} [defaultValue=undefined] The default value of the argument.
+   * @prop {boolean} [infinite=false] Allow this argument accept an infinite number of values and return them in an array.
+   * @prop {ArgumentPrecondition[]} preconditions The preconditions to be ran on the argument.
+   * @prop {boolean} [remainder=false] Whether the argument is the remainder.
+   */
+
+  /**
+   * @param {ArgumentOptions} options The argument options.
+   */
   constructor(options) {
     this.name = options.name;
     this.key = options.key;
     this.type = options.type;
     this.example = options.example;
-    this.default = options.default;
+    this.defaultValue = options.defaultValue;
     this.infinite = options.infinite !== undefined ? options.infinite : false;
     this.preconditions = options.preconditions !== undefined ? options.preconditions : [];
-    this.optional = options.default !== undefined;
+    this.optional = options.defaultValue !== undefined;
     this.remainder = options.remainder !== undefined ? options.remainder : false;
 
     this.constructor.validateArgument(this, this.constructor.name);
   }
 
+  /**
+   * @param {Argument} argument The argument to validate.
+   * @param {string} name The name of the argument.
+   * @private
+   */
   static validateArgument(argument, name) {
     if (typeof argument.name !== 'string') {
       throw new TypeError(name + ': The name must be a string.');

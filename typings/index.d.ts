@@ -7,12 +7,20 @@ declare module 'patron.js' {
     public readonly key: string;
     public readonly type: TypeReader;
     public readonly example: string;
-    public readonly default: any;
+    public readonly defaultValue: any;
     public readonly infinite: boolean;
     public readonly preconditions: ArgumentPrecondition[];
     public readonly remainder: boolean;
     public readonly optional: boolean;
     constructor(options: ArgumentOptions);
+  }
+
+  export enum ArgumentDefault {
+    Author,
+    Member,
+    Channel,
+    Guild,
+    HighestRole
   }
 
   export class ArgumentPrecondition {
@@ -35,7 +43,7 @@ declare module 'patron.js' {
     public readonly trigger: string;
     private readonly cooldowns: Collection<string, number>;
     constructor(options: CommandOptions);
-    public run(message: Message, args: Argument[]): Promise<any>;
+    public run(message: Message, args: object): Promise<any>;
     public getUsage(): string;
     public getExample(): string;
   }
@@ -57,14 +65,6 @@ declare module 'patron.js' {
     constructor(options: ResultOptions);
   }
 
-  export enum Default {
-    Author,
-    Member,
-    Channel,
-    Guild,
-    HighestRole
-  }
-
   export class ExceptionResult extends Result {
     public static fromError(command: Command, error: Error): ExceptionResult;
     constructor(options: ResultOptions);
@@ -81,8 +81,14 @@ declare module 'patron.js' {
 
   export class Handler {
     public readonly registry: Registry;
+    public readonly parser: Parser;
     constructor(registry: Registry);
     public run(message: Message, prefix: string): Promise<Result>;
+  }
+
+  export class Parser {
+    public parseArgument(command: Command, message: Message, argument: Argument, input: string): Promise<Result>;
+    public defaultValue(argument: Argument, message: Message): any;
   }
 
   export class Precondition {
@@ -138,7 +144,7 @@ declare module 'patron.js' {
     key: string;
     type: string;
     example: string;
-    default: any;
+    argumentDefault: any;
     infinite: boolean;
     remainder: boolean;
     preconditions: ArgumentPrecondition[];
