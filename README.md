@@ -1,7 +1,7 @@
 <div align="center">
     <br />
     <p>
-        <a href="https://github.com/RealBlazeIt/patron.js"><img src="http://i.imgur.com/6j61q1V.png" width="600" alt="patron.js" /></a>
+        <a href="https://github.com/RealBlazeIt/patron.js"><img src="https://i.imgur.com/6j61q1V.png" width="600" alt="patron.js" /></a>
     </p>
     <br />
     <a href="https://discord.gg/gvyma7H"><img src="https://discordapp.com/api/guilds/290759415362224139/embed.png" alt="Discord Server" /></a>
