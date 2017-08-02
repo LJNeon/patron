@@ -7,6 +7,9 @@
   "parserOptions": {
     "ecmaVersion": 2017
   },
+  "plugins": [
+	"jsdoc"
+  ],
   "rules": {
     "indent": [
       "error",
@@ -24,7 +27,9 @@
     ],
     "no-unused-vars": [
       "error",
-      { "args": "none" }
+      { 
+        "args": "none" 
+      }
     ],
     "eqeqeq": [
       "error", 
@@ -32,7 +37,9 @@
     ],
     "no-multiple-empty-lines": [
       "error",
-      { "max": 1 }
+      { 
+        "max": 1 
+      }
     ],
     "yoda": [
       "error", 
@@ -48,7 +55,9 @@
     ],
     "space-before-function-paren": [
       "error",
-      { "named": "never" }
+      { 
+        "named": "never" 
+      }
     ],
     "multiline-ternary": [
       "error", 
@@ -90,6 +99,15 @@
     "key-spacing": "error",
     "switch-colon-spacing": "error",
     "eol-last": "error",
-    "no-console": "off"
+    "no-console": "off",
+    "jsdoc/check-param-names": 1,
+    "jsdoc/check-tag-names": 1,
+    "jsdoc/check-types": 1,
+    "jsdoc/require-description-complete-sentence": 1,
+    "jsdoc/require-param": 1,
+    "jsdoc/require-param-description": 1,
+    "jsdoc/require-param-type": 1,
+    "jsdoc/require-returns-description": 1,
+    "jsdoc/require-returns-type": 1
   }
 }

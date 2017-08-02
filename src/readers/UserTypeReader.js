@@ -2,7 +2,7 @@ const TypeReader = require('../structures/TypeReader.js');
 const TypeReaderResult = require('../results/TypeReaderResult.js');
 const TypeReaderUtil = require('../utility/TypeReaderUtil.js');
 const regexes = require('../constants/regexes.js');
-const config = require('../constants/config.json');
+const config = require('../constants/config.js');
 
 class UserTypeReader extends TypeReader {
   constructor() {

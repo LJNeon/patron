@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: structures/Registry.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: structures/Registry.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const discord = require('discord.js');
+const path = require('path');
+const requireAll = require('require-all');
+const Command = require('./Command.js');
+const Group = require('./Group.js');
+const TypeReader = require('./TypeReader.js');
+
+/**
+ * A registry containing all commands, groups and type readers.
+ */
+class Registry {
+  constructor() {
+    this.commands = new discord.Collection();
+    this.groups = new discord.Collection();
+    this.typeReaders = new discord.Collection();
+  }
+
+  /**
+   * @returns {Registry} The registry being used.
+   */
+  registerDefaultTypeReaders() {
+    return this.registerTypeReadersIn(path.join(__dirname, '/../readers'));
+  }
+
+  /**
+   * @param {string} path The path containing the type readers to be registered.
+   * @returns {Registry} The registry being used.
+   */
+  registerTypeReadersIn(path) {
+    const obj = requireAll(path);
+    const typeReaders = [];
+
+    for (const typeReader of Object.values(obj)) {
+      typeReaders.push(typeReader);
+    }
+
+    return this.registerTypeReaders(typeReaders);
+  }
+
+  /**
+   * @param {TypeReader[]} typeReaders An array of type readers to register.
+   * @returns {Registry} The registry being used.
+   */
+  registerTypeReaders(typeReaders) {
+    if (!Array.isArray(typeReaders)) {
+      throw new TypeError('TypeReaders must be an array.');
+    }
+
+    for (const typeReader of typeReaders) {
+      if (typeof typeReader !== 'object') {
+        throw new TypeError('All type reader exports must be an instance of the type reader.');
+      } else if (!(typeReader instanceof TypeReader)) {
+        throw new Error('All type readers must be inherit the TypeReader class.');
+      } else if (this.typeReaders.has(typeReader.type)) {
+        throw new Error('The ' + typeReader.type + ' type reader already exists.');
+      }
+
+      this.typeReaders.set(typeReader.type, typeReader);
+    }
+
+    return this;
+  }
+
+  /**
+   * @param {string} path The path containing the groups to be registered.
+   * @returns {Registry} The registry being used.
+   */
+  registerGroupsIn(path) {
+    const obj = requireAll(path);
+    const groups = [];
+
+    for (const group of Object.values(obj)) {
+      groups.push(group);
+    }
+
+    return this.registerGroups(groups);
+  }
+
+  /**
+   * @param {Group[]} groups An array of groups to be registered.
+   * @returns {Registry} The registry being used.
+   */
+  registerGroups(groups) {
+    if (!Array.isArray(groups)) {
+      throw new TypeError('Groups must be an array.');
+    }
+
+    for (const group of groups) {
+      if (typeof group !== 'object') {
+        throw new TypeError('All group exports must be an instance of the group.');
+      } else if (!(group instanceof Group)) {
+        throw new Error('All groups must inherit the Group class.');
+      } else if (this.groups.has(group.name)) {
+        throw new Error('The ' + group.name + ' group already exists.');
+      }
+
+      this.groups.set(group.name, group);
+    }
+
+    return this;
+  }
+
+  /**
+   * @param {string} path The path containing the commands to be registered.
+   * @returns {Registry} The registry being used.
+   */
+  registerCommandsIn(path) {
+    const obj = requireAll(path);
+    const commands = [];
+
+    for (const group of Object.values(obj)) {
+      for (const command of Object.values(group)) {
+        commands.push(command);
+      }
+    }
+
+    return this.registerCommands(commands);
+  }
+
+  /**
+   * @param {Command[]} commands An array of commands to register.
+   * @returns {Registry} The registry being used.
+   */
+  registerCommands(commands) {
+    if (!Array.isArray(commands)) {
+      throw new TypeError('Commands must be an array.');
+    }
+
+    for (const command of commands) {
+      if (typeof command !== 'object') {
+        throw new TypeError('All command exports must be an instance of the command.');
+      } else if (!(command instanceof Command)) {
+        throw new Error('All commands must inherit the Command class.');
+      } else if (!this.groups.has(command.group)) {
+        throw new Error('The ' + command.group + ' group is not registered.');
+      }
+
+      for (const alias of command.aliases.concat([command.name])) {
+        if (this.commands.has(alias) || this.commands.filterArray((value) => value.aliases.some((v) => v === alias)).length > 0) {
+          throw new Error('A command with the name ' + alias + ' is already registered.');
+        }
+      }
+
+      for (let i = 0; i &lt; command.args.length; i++) {
+        if (!this.typeReaders.has(command.args[i].type)) {
+          throw new Error('The ' + command.args[i].type + ' type reader does not exist.');
+        }
+
+        command.args[i].type = this.typeReaders.get(command.args[i].type);
+      }
+
+      const group = this.groups.get(command.group);
+
+      command.group = group;
+      group.commands.set(command.name, command);
+      this.commands.set(command.name, command);
+    }
+
+    return this;
+  }
+}
+
+module.exports = Registry;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Argument.html">Argument</a></li><li><a href="ArgumentPrecondition.html">ArgumentPrecondition</a></li><li><a href="Command.html">Command</a></li><li><a href="CooldownResult.html">CooldownResult</a></li><li><a href="ExceptionResult.html">ExceptionResult</a></li><li><a href="Group.html">Group</a></li><li><a href="Handler.html">Handler</a></li><li><a href="Precondition.html">Precondition</a></li><li><a href="PreconditionResult.html">PreconditionResult</a></li><li><a href="Registry.html">Registry</a></li><li><a href="Result.html">Result</a></li><li><a href="TypeReader.html">TypeReader</a></li><li><a href="TypeReaderResult.html">TypeReaderResult</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ArgumentDefault">ArgumentDefault</a></li><li><a href="global.html#CommandError">CommandError</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.3</a> on Wed Aug 02 2017 11:42:26 GMT-0500 (Central Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

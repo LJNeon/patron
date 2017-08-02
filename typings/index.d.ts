@@ -34,13 +34,12 @@ declare module 'patron.js' {
     public readonly group: Group;
     public readonly description: string;
     public readonly guildOnly: boolean;
-    public readonly userPermissions: string[];
+    public readonly memberPermissions: string[];
     public readonly botPermissions: string[];
     public readonly preconditions: Precondition[];
     public readonly args: Argument[];
     public readonly coooldown: number;
     public readonly hasCooldown: boolean;
-    public readonly trigger: string;
     private readonly cooldowns: Collection<string, number>;
     constructor(options: CommandOptions);
     public run(message: Message, args: object): Promise<any>;
@@ -50,7 +49,7 @@ declare module 'patron.js' {
 
   export enum CommandError {
     Precondition,
-    UserPermission,
+    MemberPermission,
     BotPermission,
     TypeReader,
     GuildOnly,
@@ -62,12 +61,12 @@ declare module 'patron.js' {
 
   export class CooldownResult extends Result {
     public static fromError(command: Command, cooldown: number, remaining: number): CooldownResult;
-    constructor(options: ResultOptions);
+    private constructor(options: CooldownResultOptions);
   }
 
   export class ExceptionResult extends Result {
     public static fromError(command: Command, error: Error): ExceptionResult;
-    constructor(options: ResultOptions);
+    private constructor(options: ExceptionResultOptions);
   }
 
   export class Group {
@@ -81,24 +80,18 @@ declare module 'patron.js' {
 
   export class Handler {
     public readonly registry: Registry;
-    public readonly parser: Parser;
     constructor(registry: Registry);
-    public run(message: Message, prefix: string): Promise<Result>;
-  }
-
-  export class Parser {
-    public parseArgument(command: Command, message: Message, argument: Argument, input: string): Promise<Result>;
-    public defaultValue(argument: Argument, message: Message): any;
+    public run(message: Message, prefix: string): Promise<Result | CooldownResult | ExceptionResult | PreconditionResult | TypeReaderResult>;
   }
 
   export class Precondition {
-    public run(command: Command, message: Message): Promise<Result>;
+    public run(command: Command, message: Message): Promise<PreconditionResult>;
   }
 
   export class PreconditionResult extends Result {
     public static fromSuccess(): PreconditionResult;
     public static fromError(command: Command, reason: string): PreconditionResult;
-    constructor(options: ResultOptions);
+    private constructor(options: ResultOptions);
   }
 
   export class Registry {
@@ -119,24 +112,20 @@ declare module 'patron.js' {
     public readonly command: Command;
     public readonly commandError: CommandError;
     public readonly errorReason: string;
-    public readonly error: Error;
-    public readonly value: any;
-    public readonly cooldown: number;
-    public readonly remaining: number;
-    constructor(options: ResultOptions);
+    private constructor(options: ResultOptions);
   }
 
   export class TypeReader {
     private static validateTypeReader(typeReader: TypeReader, name: string): void;
     public readonly type: string;
     constructor(options: TypeReaderOptions);
-    public read(command: Command, message: Message, argument: Argument, input: string): Promise<Result>;
+    public read(command: Command, message: Message, argument: Argument, input: string): Promise<TypeReaderResult>;
   }
 
   export class TypeReaderResult extends Result {
     public static fromSuccess(value: any): TypeReaderResult;
     public static fromError(command: Command, reason: string): TypeReaderResult;
-    constructor(options: ResultOptions);
+    private constructor(options: TypeReaderResultOptions);
   }
 
   interface ArgumentOptions {
@@ -163,6 +152,15 @@ declare module 'patron.js' {
     coooldown: number;
   }
 
+  interface CooldownResultOptions extends ResultOptions {
+    cooldown: number;
+    remaining: number;
+  }
+
+  interface ExceptionResultOptions extends ResultOptions {
+    error: Error;
+  }
+
   interface GroupOptions {
     name: string;
     description: string;
@@ -174,13 +172,13 @@ declare module 'patron.js' {
     command: Command;
     commandError: CommandError;
     errorReason: string;
-    error: Error;
-    value: any;
-    cooldown: number;
-    remaining: number;
   }
 
   interface TypeReaderOptions {
     type: string;
+  }
+
+  interface TypeReaderResultOptions extends ResultOptions {
+    value: any;
   }
 }

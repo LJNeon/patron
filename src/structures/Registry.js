@@ -5,6 +5,9 @@ const Command = require('./Command.js');
 const Group = require('./Group.js');
 const TypeReader = require('./TypeReader.js');
 
+/**
+ * A registry containing all commands, groups and type readers.
+ */
 class Registry {
   constructor() {
     this.commands = new discord.Collection();
@@ -12,10 +15,17 @@ class Registry {
     this.typeReaders = new discord.Collection();
   }
 
+  /**
+   * @returns {Registry} The registry being used.
+   */
   registerDefaultTypeReaders() {
     return this.registerTypeReadersIn(path.join(__dirname, '/../readers'));
   }
 
+  /**
+   * @param {string} path The path containing the type readers to be registered.
+   * @returns {Registry} The registry being used.
+   */
   registerTypeReadersIn(path) {
     const obj = requireAll(path);
     const typeReaders = [];
@@ -27,6 +37,10 @@ class Registry {
     return this.registerTypeReaders(typeReaders);
   }
 
+  /**
+   * @param {TypeReader[]} typeReaders An array of type readers to register.
+   * @returns {Registry} The registry being used.
+   */
   registerTypeReaders(typeReaders) {
     if (!Array.isArray(typeReaders)) {
       throw new TypeError('TypeReaders must be an array.');
@@ -47,6 +61,10 @@ class Registry {
     return this;
   }
 
+  /**
+   * @param {string} path The path containing the groups to be registered.
+   * @returns {Registry} The registry being used.
+   */
   registerGroupsIn(path) {
     const obj = requireAll(path);
     const groups = [];
@@ -58,6 +76,10 @@ class Registry {
     return this.registerGroups(groups);
   }
 
+  /**
+   * @param {Group[]} groups An array of groups to be registered.
+   * @returns {Registry} The registry being used.
+   */
   registerGroups(groups) {
     if (!Array.isArray(groups)) {
       throw new TypeError('Groups must be an array.');
@@ -78,6 +100,10 @@ class Registry {
     return this;
   }
 
+  /**
+   * @param {string} path The path containing the commands to be registered.
+   * @returns {Registry} The registry being used.
+   */
   registerCommandsIn(path) {
     const obj = requireAll(path);
     const commands = [];
@@ -91,6 +117,10 @@ class Registry {
     return this.registerCommands(commands);
   }
 
+  /**
+   * @param {Command[]} commands An array of commands to register.
+   * @returns {Registry} The registry being used.
+   */
   registerCommands(commands) {
     if (!Array.isArray(commands)) {
       throw new TypeError('Commands must be an array.');

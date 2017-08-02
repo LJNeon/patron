@@ -8,11 +8,10 @@ const Precondition = require('./Precondition.js');
  * @prop {Group} group The group of the command.
  * @prop {string} description The description of the command.
  * @prop {boolean} guildOnly Whether the command may only be used in guild text channels.
- * @prop {string[]} userPermissions The permissions required by the invoker to use the command.
+ * @prop {string[]} memberPermissions The permissions required by the invoker to use the command.
  * @prop {string[]} botPermissions The permissions required by the bot to execute the command.
  * @prop {Precondition[]} preconditions The preconditions to be ran on the command.
  * @prop {Argument[]} args The arguments of the command.
- * @prop {string?} trigger The alias of the command used to trigger it.
  * @prop {boolean} hasCooldown Whether the command has a cooldown.
  * @prop {number} cooldown The length of the cooldown in milliseconds.
  * @prop {Collection<string, number>} cooldowns The current collection of all user cooldowns on the command.
@@ -25,7 +24,7 @@ class Command {
    * @prop {Group} group The group of the command.
    * @prop {string} description The description of the command.
    * @prop {boolean} [guildOnly=true] Whether the command may only be used in guild text channels.
-   * @prop {string[]} userPermissions The permissions required by the invoker to use the command.
+   * @prop {string[]} memberPermissions The permissions required by the invoker to use the command.
    * @prop {string[]} botPermissions The permissions required by the bot to execute the command.
    * @prop {Precondition[]} preconditions The preconditions to be ran on the command.
    * @prop {Argument[]} args The arguments of the command.
@@ -41,14 +40,13 @@ class Command {
     this.group = options.group;
     this.description = options.description;
     this.guildOnly = options.guildOnly !== undefined ? options.guildOnly : true;
-    this.userPermissions = options.userPermissions !== undefined ? options.userPermissions : [];
+    this.memberPermissions = options.memberPermissions !== undefined ? options.memberPermissions : [];
     this.botPermissions = options.botPermissions !== undefined ? options.botPermissions : [];
     this.preconditions = options.preconditions !== undefined ? options.preconditions : [];
     this.args = options.args !== undefined ? options.args : [];
-    this.trigger = null;
     this.hasCooldown = options.cooldown !== undefined;
-    this.cooldown = this.hasCooldown ? options.cooldown : 0;
-    this.cooldowns = this.hasCooldown ? new discord.Collection() : null;
+    this.cooldown = this.hasCooldown === true ? options.cooldown : 0;
+    this.cooldowns = this.hasCooldown === true ? new discord.Collection() : null;
 
     this.constructor.validateCommand(this, this.constructor.name);
   }
@@ -66,7 +64,7 @@ class Command {
    * @returns {string} The usage of the command.
    */
   getUsage() {
-    let usage = this.trigger || this.name;
+    let usage = this.name;
 
     for (const arg of this.args) {
       let before = '<';
@@ -97,7 +95,7 @@ class Command {
    * @returns {string} An example of usage of the command.
    */
   getExample() {
-    let example = this.trigger || this.name;
+    let example = this.name;
 
     for (const arg of this.args) {
       example += ' ' + arg.example;
@@ -122,7 +120,7 @@ class Command {
       throw new TypeError(name + ': The description must be a string.');
     } else if (typeof command.guildOnly !== 'boolean') {
       throw new TypeError(name + ': The guild only option must be a boolean.');
-    } else if (!Array.isArray(command.userPermissions)) {
+    } else if (!Array.isArray(command.memberPermissions)) {
       throw new TypeError(name + ': The user permissions must be an array.');
     } else if (!Array.isArray(command.botPermissions)) {
       throw new TypeError(name + ': The bot permissions must be an array.');
@@ -134,7 +132,7 @@ class Command {
       throw new TypeError(name + ': The cooldown must be a number.');
     }
 
-    for (const permission of command.userPermissions.concat(command.botPermissions)) {
+    for (const permission of command.memberPermissions.concat(command.botPermissions)) {
       if (typeof permission !== 'string' || permission !== permission.toUpperCase()) {
         throw new TypeError(name + ': All permissions must be uppercase strings.');
       }

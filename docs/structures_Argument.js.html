@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: structures/Argument.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: structures/Argument.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const ArgumentPrecondition = require('./ArgumentPrecondition.js');
+const regexes = require('../constants/regexes.js');
+
+/**
+ * A command argument.
+ * @prop {string} name The name of the argument.
+ * @prop {string} key The key of the argument, acting as the name of the property on the args object.
+ * @prop {TypeReader} type The type reader of the argument.
+ * @prop {string} example An example of the argument.
+ * @prop {*?} defaultValue The default value of the argument.
+ * @prop {boolean} infinite Allow this argument accept an infinite number of values and return them in an array.
+ * @prop {ArgumentPrecondition[]} preconditions The preconditions to be ran on the argument.
+ * @prop {boolean} optional Whether the argument is optional.
+ * @prop {boolean} remainder Whether the argument is the remainder.
+ */
+class Argument {
+  /**
+   * @typedef {object} ArgumentOptions The argument options.
+   * @prop {string} name The name of the argument.
+   * @prop {string} key The key of the argument, acting as the name of the property on the args object.
+   * @prop {TypeReader} type The type reader of the argument.
+   * @prop {string} example An example of the argument.
+   * @prop {*} [defaultValue=undefined] The default value of the argument.
+   * @prop {boolean} [infinite=false] Allow this argument accept an infinite number of values and return them in an array.
+   * @prop {ArgumentPrecondition[]} preconditions The preconditions to be ran on the argument.
+   * @prop {boolean} [remainder=false] Whether the argument is the remainder.
+   */
+
+  /**
+   * @param {ArgumentOptions} options The argument options.
+   */
+  constructor(options) {
+    this.name = options.name;
+    this.key = options.key;
+    this.type = options.type;
+    this.example = options.example;
+    this.defaultValue = options.defaultValue;
+    this.infinite = options.infinite !== undefined ? options.infinite : false;
+    this.preconditions = options.preconditions !== undefined ? options.preconditions : [];
+    this.optional = options.defaultValue !== undefined;
+    this.remainder = options.remainder !== undefined ? options.remainder : false;
+
+    this.constructor.validateArgument(this, this.constructor.name);
+  }
+
+  /**
+   * @param {Argument} argument The argument to validate.
+   * @param {string} name The name of the argument.
+   * @private
+   */
+  static validateArgument(argument, name) {
+    if (typeof argument.name !== 'string') {
+      throw new TypeError(name + ': The name must be a string.');
+    } else if (typeof argument.key !== 'string' || regexes.whiteSpace.test(argument.key)) {
+      throw new TypeError(name + ': The key must be a string that does not contain any whitespace characters.');
+    } else if (typeof argument.type !== 'string' || argument.type !== argument.type.toLowerCase()) {
+      throw new TypeError(name + ': The type must be a lowercase string.');
+    } else if (typeof argument.example !== 'string') {
+      throw new TypeError(name + ': The example must be a string.');
+    } else if (typeof argument.infinite !== 'boolean') {
+      throw new TypeError(name + ': The infinite setting must be a boolean.');
+    } else if (typeof argument.remainder !== 'boolean') {
+      throw new TypeError(name + ': The remainder setting must be a boolean.');
+    } else if (argument.infinite &amp;&amp; argument.remainder) {
+      throw new Error(name + ': An argument may not be infinite and remainder.');
+    } else if (!Array.isArray(argument.preconditions)) {
+      throw new TypeError(name + ': The preconditions must be an array.');
+    }
+
+    for (const precondition of argument.preconditions) {
+      if (typeof precondition !== 'object') {
+        throw new TypeError(name + ': All argument precondition exports must be an instance of the argument precondition.');
+      } else if (!(precondition instanceof ArgumentPrecondition)) {
+        throw new TypeError(name + ': All argument preconditions must inherit the ArgumentPrecondition class.');
+      }
+    }
+  }
+}
+
+module.exports = Argument;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Argument.html">Argument</a></li><li><a href="ArgumentPrecondition.html">ArgumentPrecondition</a></li><li><a href="Command.html">Command</a></li><li><a href="CooldownResult.html">CooldownResult</a></li><li><a href="ExceptionResult.html">ExceptionResult</a></li><li><a href="Group.html">Group</a></li><li><a href="Handler.html">Handler</a></li><li><a href="Precondition.html">Precondition</a></li><li><a href="PreconditionResult.html">PreconditionResult</a></li><li><a href="Registry.html">Registry</a></li><li><a href="Result.html">Result</a></li><li><a href="TypeReader.html">TypeReader</a></li><li><a href="TypeReaderResult.html">TypeReaderResult</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ArgumentDefault">ArgumentDefault</a></li><li><a href="global.html#CommandError">CommandError</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.3</a> on Wed Aug 02 2017 11:42:26 GMT-0500 (Central Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

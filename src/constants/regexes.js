@@ -5,6 +5,7 @@ module.exports = {
   parseId: /\D+/g,
   permission: /[A-Z]+/g,
   quotes: /^"|"$/g,
+  quotesMatch: /^"[\S\s]+"$/g,
   roleMention: /^<@&\d+>/,
   textChannelMention: /^<#\d+>/,
   usernameAndDiscrim: /.+#\d{4}/,
