@@ -100,7 +100,7 @@ class Handler {
               input = input.replace(regexes.quotes, '');
             }
 
-            const typeReaderResult = command.args[i].type.read(command, message, command.args[i], input);
+            const typeReaderResult = await command.args[i].type.read(command, message, command.args[i], input);
 
             if (typeReaderResult.success === false) {
               return typeReaderResult;
