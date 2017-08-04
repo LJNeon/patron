@@ -69,7 +69,7 @@ class Handler {
     }
 
     if (command.hasCooldown === true) {
-      const cooldown = command.cooldown.get(message.author.id + (message.guild !== null ? message.guild.id : ''));
+      const cooldown = command.cooldowns.get(message.author.id + (message.guild !== null ? message.guild.id : ''));
 
       if (cooldown !== undefined) {
         const difference = cooldown - Date.now();
@@ -155,7 +155,7 @@ class Handler {
       await command.run(message, args);
 
       if (command.hasCooldown === true) {
-        command.cooldown.set(message.author.id + (message.guild !== null ? message.guild.id : ''), Date.now() + command.cooldown);
+        command.cooldowns.set(message.author.id + (message.guild !== null ? message.guild.id : ''), Date.now() + command.cooldown);
       }
 
       return new Result({ success: true, command: command });
