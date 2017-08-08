@@ -26,8 +26,7 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>const discord = require('discord.js');
-const path = require('path');
+            <pre class="prettyprint source linenums"><code>const path = require('path');
 const requireAll = require('require-all');
 const Command = require('./Command.js');
 const Group = require('./Group.js');
@@ -35,15 +34,19 @@ const TypeReader = require('./TypeReader.js');
 
 /**
  * A registry containing all commands, groups and type readers.
+ * @prop {Command[]} commands All registered commands.
+ * @prop {Group[]} groups All registered groups.
+ * @prop {TypeReader[]} typeReaders All registered type readers.
  */
 class Registry {
   constructor() {
-    this.commands = new discord.Collection();
-    this.groups = new discord.Collection();
-    this.typeReaders = new discord.Collection();
+    this.commands = [];
+    this.groups = [];
+    this.typeReaders = [];
   }
 
   /**
+   * Registers all default type readers.
    * @returns {Registry} The registry being used.
    */
   registerDefaultTypeReaders() {
@@ -51,6 +54,7 @@ class Registry {
   }
 
   /**
+   * Registers all type readers in a specific directory.
    * @param {string} path The path containing the type readers to be registered.
    * @returns {Registry} The registry being used.
    */
@@ -58,38 +62,42 @@ class Registry {
     const obj = requireAll(path);
     const typeReaders = [];
 
-    for (const typeReader of Object.values(obj)) {
-      typeReaders.push(typeReader);
+    for (const key in obj) {
+      if (obj.hasOwnProperty(key) === true) {
+        typeReaders.push(obj[key]);
+      }
     }
 
     return this.registerTypeReaders(typeReaders);
   }
 
   /**
+   * Registers an array of type readers.
    * @param {TypeReader[]} typeReaders An array of type readers to register.
    * @returns {Registry} The registry being used.
    */
   registerTypeReaders(typeReaders) {
-    if (!Array.isArray(typeReaders)) {
+    if (Array.isArray(typeReaders) === false) {
       throw new TypeError('TypeReaders must be an array.');
     }
 
-    for (const typeReader of typeReaders) {
-      if (typeof typeReader !== 'object') {
+    for (let i = 0; i &lt; typeReaders.length; i++) {
+      if (typeof typeReaders[i] !== 'object') {
         throw new TypeError('All type reader exports must be an instance of the type reader.');
-      } else if (!(typeReader instanceof TypeReader)) {
+      } else if ((typeReaders[i] instanceof TypeReader) === false) {
         throw new Error('All type readers must be inherit the TypeReader class.');
-      } else if (this.typeReaders.has(typeReader.type)) {
-        throw new Error('The ' + typeReader.type + ' type reader already exists.');
+      } else if (this.typeReaders.some((v) => v.type === typeReaders[i].type)) {
+        throw new Error('The ' + typeReaders[i].type + ' type reader already exists.');
       }
 
-      this.typeReaders.set(typeReader.type, typeReader);
+      this.typeReaders.push(typeReaders[i]);
     }
 
     return this;
   }
 
   /**
+   * Registers all groups in a specific directory.
    * @param {string} path The path containing the groups to be registered.
    * @returns {Registry} The registry being used.
    */
@@ -97,38 +105,42 @@ class Registry {
     const obj = requireAll(path);
     const groups = [];
 
-    for (const group of Object.values(obj)) {
-      groups.push(group);
+    for (const key in obj) {
+      if (obj.hasOwnProperty(key) === true) {
+        groups.push(obj[key]);
+      }
     }
 
     return this.registerGroups(groups);
   }
 
   /**
+   * Registers an array of groups.
    * @param {Group[]} groups An array of groups to be registered.
    * @returns {Registry} The registry being used.
    */
   registerGroups(groups) {
-    if (!Array.isArray(groups)) {
+    if (Array.isArray(groups) === false) {
       throw new TypeError('Groups must be an array.');
     }
 
-    for (const group of groups) {
-      if (typeof group !== 'object') {
+    for (let i = 0; i &lt; groups.length; i ++) {
+      if (typeof groups[i] !== 'object') {
         throw new TypeError('All group exports must be an instance of the group.');
-      } else if (!(group instanceof Group)) {
+      } else if ((groups[i] instanceof Group) === false) {
         throw new Error('All groups must inherit the Group class.');
-      } else if (this.groups.has(group.name)) {
-        throw new Error('The ' + group.name + ' group already exists.');
+      } else if (this.groups.some((v) => v.name === groups[i].name) === true) {
+        throw new Error('The ' + groups[i].name + ' group already exists.');
       }
 
-      this.groups.set(group.name, group);
+      this.groups.push(groups[i]);
     }
 
     return this;
   }
 
   /**
+   * Registers all commands in a specific directory.
    * @param {string} path The path containing the commands to be registered.
    * @returns {Registry} The registry being used.
    */
@@ -136,9 +148,13 @@ class Registry {
     const obj = requireAll(path);
     const commands = [];
 
-    for (const group of Object.values(obj)) {
-      for (const command of Object.values(group)) {
-        commands.push(command);
+    for (const groupKey in obj) {
+      if (obj.hasOwnProperty(groupKey) === true) {
+        for (const commandKey in obj[groupKey]) {
+          if (obj[groupKey].hasOwnProperty(commandKey) === true) {
+            commands.push(obj[groupKey][commandKey]);
+          }
+        }
       }
     }
 
@@ -146,42 +162,49 @@ class Registry {
   }
 
   /**
+   * Registers an array of commands.
    * @param {Command[]} commands An array of commands to register.
    * @returns {Registry} The registry being used.
    */
   registerCommands(commands) {
-    if (!Array.isArray(commands)) {
+    if (Array.isArray(commands) === false) {
       throw new TypeError('Commands must be an array.');
     }
 
-    for (const command of commands) {
-      if (typeof command !== 'object') {
+    for (let i = 0; i &lt; commands.length; i ++) {
+      if (typeof commands[i] === 'string') {
+        throw new Error('All commands must be placed inside a respective folder of their group inside the main commands folder.');
+      } else if (typeof commands[i] !== 'object') {
         throw new TypeError('All command exports must be an instance of the command.');
-      } else if (!(command instanceof Command)) {
+      } else if ((commands[i] instanceof Command) === false) {
         throw new Error('All commands must inherit the Command class.');
-      } else if (!this.groups.has(command.group)) {
-        throw new Error('The ' + command.group + ' group is not registered.');
       }
 
-      for (const alias of command.aliases.concat([command.name])) {
-        if (this.commands.has(alias) || this.commands.filterArray((value) => value.aliases.some((v) => v === alias)).length > 0) {
-          throw new Error('A command with the name ' + alias + ' is already registered.');
+      for (let j = 0; j &lt; commands[i].names.length; j++) {
+        if (this.commands.some((x) => x.names.some((y) => y === commands[i].names[j])) === true) {
+          throw new Error('A command with the name ' + commands[i].names[j] + ' is already registered.');
         }
       }
 
-      for (let i = 0; i &lt; command.args.length; i++) {
-        if (!this.typeReaders.has(command.args[i].type)) {
-          throw new Error('The ' + command.args[i].type + ' type reader does not exist.');
+      for (let j = 0; j &lt; commands[i].args.length; j++) {
+        const typeReader = this.typeReaders.find((x) => x.type === commands[i].args[j].type);
+
+        if (typeReader === undefined) {
+          throw new Error('The ' + commands[i].args[j].type + ' type does not exist.');
         }
 
-        command.args[i].type = this.typeReaders.get(command.args[i].type);
+        commands[i].args[j].typeReader = typeReader;
       }
 
-      const group = this.groups.get(command.group);
+      const groupIndex = this.groups.findIndex((v) => v.name === commands[i].groupName);
 
-      command.group = group;
-      group.commands.set(command.name, command);
-      this.commands.set(command.name, command);
+      if (groupIndex === -1) {
+        throw new Error('The ' + commands[i].groupName + ' group is not registered.');
+      }
+
+      commands[i].group = this.groups[groupIndex];
+      this.groups[groupIndex].commands.push(commands[i]);
+      this.commands.push(commands[i]);
     }
 
     return this;
@@ -205,7 +228,7 @@ module.exports = Registry;
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.3</a> on Wed Aug 02 2017 11:42:26 GMT-0500 (Central Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.4</a> on Mon Aug 07 2017 20:49:49 GMT-0500 (Central Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>

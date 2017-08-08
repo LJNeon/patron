@@ -1,3 +1,5 @@
+require('./extensions');
+
 module.exports = {
   Argument: require('./structures/Argument.js'),
   ArgumentDefault: require('./enums/ArgumentDefault.js'),

@@ -4,7 +4,7 @@ const CommandError = require('../enums/CommandError.js');
 /**
  * A type reader result.
  * @prop {*} value The parsed value from the type reader.
- * @extends Result
+ * @extends {Result}
  */
 class TypeReaderResult extends Result {
   /**

@@ -1,10 +1,7 @@
-const Result = require('../results/Result.js');
 const ArgumentDefault = require('../enums/ArgumentDefault.js');
-const CommandError = require('../enums/CommandError.js');
 const CooldownResult = require('../results/CooldownResult.js');
 const ExceptionResult = require('../results/ExceptionResult.js');
-const PermissionUtil = require('../utility/PermissionUtil.js');
-const regexes = require('../constants/regexes.js');
+const constants = require('../utility/Constants.js');
 
 /**
  * The command handler.
@@ -19,46 +16,45 @@ class Handler {
   }
 
   /**
+   * Attempts to execute a command.
    * @param {Message} message The received message.
    * @param {string} prefix The prefix to use when handling the command.
-   * @returns {Promise<Result> | Promise<CooldownResult> | Promise<TypeReaderResult> | Promise<PreconditionResult> | Promise<ExceptionResult>} The result of the command execution.
+   * @returns {Promise<Result>|Promise<CooldownResult>|Promise<TypeReaderResult>|Promise<PreconditionResult>|Promise<ExceptionResult>} The result of the command execution.
    */
   async run(message, prefix) {
-    const split = message.content.match(regexes.argument);
+    const split = message.content.match(constants.regexes.argument);
 
     if (split === null) {
-      return new Result({ success: false, commandError: CommandError.CommandNotFound, errorReason: 'This command does not exist.' });
+      return constants.results.commandNotFound;
     }
 
     const commandName = split.shift().slice(prefix.length).toLowerCase();
 
-    let command = this.registry.commands.get(commandName);
+    const command = this.registry.commands.find((x) => x.names.some((y) => y === commandName));
 
     if (command === undefined) {
-      const matches = this.registry.commands.filterArray((value) => value.aliases.some((v) => v === commandName));
-
-      if (matches.length > 0) {
-        command = matches[0];
-      } else {
-        return new Result({ success: false, commandError: CommandError.CommandNotFound, errorReason: 'This command does not exist.' });
-      }
+      return constants.results.commandNotFound;
     }
 
     if (message.guild !== null) {
-      if (command.memberPermissions.length > 0 && message.guild.member(message.author).hasPermission(command.memberPermissions) === false) {
-        return new Result({ success: false, command: command, commandError: CommandError.MemberPermission, errorReason: 'This command may only be used by members with the ' + PermissionUtil.format(command.memberPermissions) + ' permission' + (command.memberPermissions.length > 1 ? 's' : '') + '.' });
+      message.member = message.guild.member(message.author);
+
+      if (command.memberPermissions.length > 0 && message.member.hasPermission(command.memberPermissions) === false) {
+        return constants.results.memberPermissions(command, command.memberPermissions);
       }
 
       if (command.botPermissions.length > 0 && message.guild.me.hasPermission(command.botPermissions) === false) {
-        return new Result({ success: false, command: command, commandError: CommandError.BotPermission, errorReason: message.client.user.username + ' cannot execute this command without the ' + PermissionUtil.format(command.botPermissions) + ' permission' + (command.botPermissions.length > 1 ? 's' : '') + '.' });
+        return constants.results.botPermissions(message.client, command, command.botPermissions);
       }
     } else if (command.guildOnly === true) {
-      return new Result({ success: false, command: command, commandError: CommandError.GuildOnly, errorReason: 'This command may only be used inside a server.' });
+      return constants.results.guildOnly(command);
     }
 
-    for (const precondition of command.group.preconditions.concat(command.preconditions)) {
+    const preconditions = command.group.preconditions.concat(command.preconditions);
+
+    for (let i = 0; i < preconditions.length; i++) {
       try {
-        const result = await precondition.run(command, message);
+        const result = await preconditions[i].run(command, message);
 
         if (result.success === false) {
           return result;
@@ -69,7 +65,7 @@ class Handler {
     }
 
     if (command.hasCooldown === true) {
-      const cooldown = command.cooldown.get(message.author.id + (message.guild !== null ? message.guild.id : ''));
+      const cooldown = command.cooldowns.get(message.author.id + (message.guild !== null ? message.guild.id : ''));
 
       if (cooldown !== undefined) {
         const difference = cooldown - Date.now();
@@ -92,15 +88,15 @@ class Handler {
             value = this.defaultValue(command.args[i], message);
             defaultValue = true;
           } else {
-            return new Result({ success: false, command: command, commandError: CommandError.InvalidArgCount, errorReason: 'You have provided an invalid number of arguments.' });
+            return constants.results.invalidArgCount(command);
           }
         } else {
-          for (let input of split) {
-            if (regexes.quotesMatch.test(input) === true) {
-              input = input.replace(regexes.quotes, '');
+          for (let j = 0; j < split.length; j++) {
+            if (constants.regexes.quotesMatch.test(split[j]) === true) {
+              split[j] = split[j].replace(constants.regexes.quotes, '');
             }
 
-            const typeReaderResult = command.args[i].type.read(command, message, command.args[i], input);
+            const typeReaderResult = command.args[i].typeReader.read(command, message, command.args[i], split[j]);
 
             if (typeReaderResult.success === false) {
               return typeReaderResult;
@@ -112,19 +108,19 @@ class Handler {
       } else {
         let input = command.args[i].remainder === true ? split.join(' ') : split.shift();
 
-        if (regexes.quotesMatch.test(input) === true) {
-          input = input.replace(regexes.quotes, '');
+        if (constants.regexes.quotesMatch.test(input) === true) {
+          input = input.replace(constants.regexes.quotes, '');
         }
 
         if (input === undefined || input === '') {
           if (command.args[i].optional === false) {
-            return new Result({ success: false, command: command, commandError: CommandError.InvalidArgCount, errorReason: 'You have provided an invalid number of arguments.' });
+            return constants.results.invalidArgCount(command);
           }
 
           value = this.defaultValue(command.args[i], message);
           defaultValue = true;
         } else {
-          const typeReaderResult = await command.args[i].type.read(command, message, command.args[i], input);
+          const typeReaderResult = await command.args[i].typeReader.read(command, message, command.args[i], input);
 
           if (typeReaderResult.success === false) {
             return typeReaderResult;
@@ -135,9 +131,9 @@ class Handler {
       }
 
       if (defaultValue === false) {
-        for (const precondition of command.args[i].preconditions) {
+        for (let j = 0; j < command.args[i].preconditions.length; j++) {
           try {
-            const preconditionResult = await precondition.run(command, message, command.args[i], value);
+            const preconditionResult = await command.args[i].preconditions[j].run(command, message, command.args[i], value);
 
             if (preconditionResult.success === false) {
               return preconditionResult;
@@ -155,33 +151,34 @@ class Handler {
       await command.run(message, args);
 
       if (command.hasCooldown === true) {
-        command.cooldown.set(message.author.id + (message.guild !== null ? message.guild.id : ''), Date.now() + command.cooldown);
+        command.cooldowns.set(message.author.id + (message.guild !== null ? message.guild.id : ''), Date.now() + command.cooldown);
       }
 
-      return new Result({ success: true, command: command });
+      return constants.results.success(command);
     } catch (err) {
       return ExceptionResult.fromError(command, err);
     }
   }
 
   /**
-   * 
+   * The default value of an argument based off a command message.
    * @param {Argument} argument The argument being parsed.
    * @param {Message} message The received message.
    * @returns {*} The default value of the argument.
+   * @private
    */
   defaultValue(argument, message) {
     switch (argument.defaultValue) {
       case ArgumentDefault.Author:
         return message.author;
       case ArgumentDefault.Member:
-        return message.guild.member(message.author);
+        return message.member;
       case ArgumentDefault.Channel:
         return message.channel;
       case ArgumentDefault.Guild:
         return message.guild;
       case ArgumentDefault.HighestRole:
-        return message.guild.member(message.author).highestRole;
+        return message.member;
       default:
         return argument.defaultValue;
     }

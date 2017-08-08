@@ -1,7 +1,16 @@
 /**
  * A type reader.
+ * @prop {string} type The type of the type reader.
  */
 class TypeReader {
+  /**
+   * @typedef {object} TypeReaderOptions The type reader options.
+   * @prop {string} type The type of the type reader.
+   */
+
+  /**
+    * @param {TypeReaderOptions} options The type reader options.
+    */
   constructor(options) {
     this.type = options.type;
 
@@ -9,7 +18,7 @@ class TypeReader {
   }
 
   /**
-   * 
+   * Parses the value of an argument.
    * @param {Command} command The command being executed.
    * @param {Message} message The received message.
    * @param {Argument} argument The argument in question.
@@ -21,9 +30,9 @@ class TypeReader {
   }
 
   /**
-   * 
+   * Validates the argument.
    * @param {TypeReader} typeReader The type reader to validate.
-   * @param {string} name The name of the type reader.
+   * @param {string} name The name of the constructor of the type reader.
    * @private
    */
   static validateTypeReader(typeReader, name) {

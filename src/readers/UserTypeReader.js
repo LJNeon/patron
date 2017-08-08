@@ -1,82 +1,57 @@
 const TypeReader = require('../structures/TypeReader.js');
 const TypeReaderResult = require('../results/TypeReaderResult.js');
 const TypeReaderUtil = require('../utility/TypeReaderUtil.js');
-const regexes = require('../constants/regexes.js');
-const config = require('../constants/config.js');
+const constants = require('../utility/Constants.js');
 
 class UserTypeReader extends TypeReader {
   constructor() {
     super({ type: 'user' });
   }
 
-  async read(command, message, arg, input) {
-    if (message.client.options.fetchAllMembers) {
-      if (regexes.userMention.test(input)) {
-        return this.constructor.getUserResult(command, message, input.replace(regexes.parseId, ''));
-      } else if (regexes.id.test(input)) {
-        return this.constructor.getUserResult(command, message, input);
+  async read(command, message, argument, input) {
+    if (constants.regexes.userMention.test(input) === true || constants.regexes.id.test(input) === true) {
+      try {
+        const user = await message.client.fetchUser(input);
+
+        return TypeReaderResult.fromSuccess(user);
+      } catch (err) {
+        return TypeReaderResult.fromError(command, constants.errors.userNotFound);
       }
-    } else if (regexes.userMention.test(input)) {
-      return this.constructor.fetchUserResult(command, message, input.replace(regexes.parseId, ''));
-    } else if (regexes.id.test(input)) {
-      return this.constructor.fetchUserResult(command, message, input);
     }
 
-    const lowerInput = input.toLowerCase();
+    const userRegex = new RegExp(input.replace(constants.regexes.escapeRegex, '\\$&'), 'i');
 
-    if (regexes.usernameAndDiscrim.test(input)) {
-      const user = message.client.users.find((v) => v.tag.toLowerCase() === lowerInput);
+    if (constants.regexes.usernameAndDiscrim.test(input) === true) {
+      const user = message.client.users.find((v) => userRegex.test(v.tag));
 
       if (user !== null) {
         return TypeReaderResult.fromSuccess(user);
       }
 
-      return TypeReaderResult.fromError(command, 'User not found.');
+      return TypeReaderResult.fromError(command, constants.errors.userNotFound);
     }
 
     let matches = [];
 
     if (message.guild !== null) {
-      const memberMatches = message.guild.members.filterArray((v) => {
-        return v.nickname !== null && v.nickname.toLowerCase().includes(lowerInput);
-      });
+      const memberMatches = message.guild.members.filterValues((v) => v.nickname !== null && userRegex.test(v.nickname));
 
-      for (const member of memberMatches) {
-        matches.push(member.user);
+      for (let i = 0; i < memberMatches.length; i++) {
+        matches.push(memberMatches[i].user);
       }
     }
 
-    matches = matches.concat(message.client.users.filterArray((v) => v.username.toLowerCase().includes(lowerInput)));
+    matches = matches.concat(message.client.users.filterValues((v) => userRegex.test(v.username)));
 
-    if (matches.length > config.maxMatches) {
-      return TypeReaderResult.fromError(command, 'Multiple matches found, please be more specific.');
+    if (matches.length > constants.config.maxMatches) {
+      return TypeReaderResult.fromError(command, constants.errors.tooManyMatches);
     } else if (matches.length > 1) {
-      return TypeReaderResult.fromError(command, 'Multiple matches found: ' + TypeReaderUtil.formatUsers(matches) + '.');
+      return TypeReaderResult.fromError(command, constants.errors.multipleMatches(TypeReaderUtil.formatArray(matches, 'tag')));
     } else if (matches.length === 1) {
       return TypeReaderResult.fromSuccess(matches[0]);
     }
 
-    return TypeReaderResult.fromError(command, 'User not found.');
-  }
-
-  static async fetchUserResult(command, message, input) {
-    try {
-      const user = await message.client.fetchUser(input);
-
-      return TypeReaderResult.fromSuccess(user);
-    } catch (err) {
-      return TypeReaderResult.fromError(command, 'User not found.');
-    }
-  }
-
-  static getUserResult(command, message, input) {
-    const user = message.client.users.get(input);
-
-    if (user !== undefined) {
-      return TypeReaderResult.fromSuccess(user);
-    }
-
-    return TypeReaderResult.fromError(command, 'User not found.');
+    return TypeReaderResult.fromError(command, constants.errors.userNotFound);
   }
 }
 

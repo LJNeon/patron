@@ -3,6 +3,7 @@
  */
 class ArgumentPrecondition {
   /**
+   * Executes the argument precondition.
    * @param {Command} command The command being run.
    * @param {Message} message The received message.
    * @param {Argument} argument The argument in question.

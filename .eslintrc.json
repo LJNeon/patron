@@ -8,13 +8,15 @@
     "ecmaVersion": 2017
   },
   "plugins": [
-	"jsdoc"
+    "jsdoc"
   ],
   "rules": {
     "indent": [
       "error",
       2,
-      { "SwitchCase": 1 }
+      {
+        "SwitchCase": 1
+      }
     ],
     "linebreak-style": "off",
     "quotes": [
@@ -27,22 +29,22 @@
     ],
     "no-unused-vars": [
       "error",
-      { 
-        "args": "none" 
+      {
+        "args": "none"
       }
     ],
     "eqeqeq": [
-      "error", 
+      "error",
       "always"
     ],
     "no-multiple-empty-lines": [
       "error",
-      { 
-        "max": 1 
+      {
+        "max": 1
       }
     ],
     "yoda": [
-      "error", 
+      "error",
       "never"
     ],
     "object-curly-spacing": [
@@ -50,17 +52,17 @@
       "always"
     ],
     "one-var-declaration-per-line": [
-      "error", 
+      "error",
       "always"
     ],
     "space-before-function-paren": [
       "error",
-      { 
-        "named": "never" 
+      {
+        "named": "never"
       }
     ],
     "multiline-ternary": [
-      "error", 
+      "error",
       "never"
     ],
     "array-bracket-spacing": "error",
@@ -77,7 +79,6 @@
     "no-path-concat": "error",
     "no-new-require": "error",
     "no-sync": "error",
-    "no-useless-constructor": "error",
     "block-spacing": "error",
     "brace-style": "error",
     "curly": "error",
@@ -100,9 +101,9 @@
     "switch-colon-spacing": "error",
     "eol-last": "error",
     "no-console": "off",
+    "guard-for-in": "error",
     "jsdoc/check-param-names": 1,
     "jsdoc/check-tag-names": 1,
-    "jsdoc/check-types": 1,
     "jsdoc/require-description-complete-sentence": 1,
     "jsdoc/require-param": 1,
     "jsdoc/require-param-description": 1,

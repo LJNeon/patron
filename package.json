@@ -30,14 +30,13 @@
     "es6-enum": "^1.1.0",
     "require-all": "^2.2.0"
   },
-  "eslintIgnore": [
-    "**/*.json"
-  ],
   "devDependencies": {
     "eslint": "^4.2.0",
     "eslint-plugin-jsdoc": "^3.1.2",
     "jsdoc": "^3.5.3",
-    "tslint": "^5.5.0",
-    "typescript": "^2.4.1"
-  }
+    "typescript": "^2.4.2"
+  },
+  "eslintIgnore": [
+    "**/*.json"
+  ]
 }

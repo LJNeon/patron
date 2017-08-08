@@ -1,16 +1,15 @@
 const TypeReader = require('../structures/TypeReader.js');
 const TypeReaderResult = require('../results/TypeReaderResult.js');
 const TypeReaderUtil = require('../utility/TypeReaderUtil.js');
-const regexes = require('../constants/regexes.js');
-const config = require('../constants/config.js');
+const constants = require('../utility/Constants.js');
 
 class VoiceTypeReader extends TypeReader {
   constructor() {
     super({ type: 'voicechannel' });
   }
 
-  async read(command, message, arg, input) {
-    if (regexes.id.test(input)) {
+  async read(command, message, argument, input) {
+    if (constants.regexes.id.test(input) === true) {
       const channel = message.guild.channels.get(input);
 
       if (channel !== undefined && channel.type === 'voice') {
@@ -20,17 +19,17 @@ class VoiceTypeReader extends TypeReader {
 
     const lowerInput = input.toLowerCase();
 
-    const matches = message.guild.channels.filterArray((v) => v.name.toLowerCase().includes(lowerInput) && v.type === 'voice');
+    const matches = message.guild.channels.filterValues((v) => v.name.toLowerCase().includes(lowerInput) && v.type === 'voice');
 
-    if (matches.length > config.maxMatches) {
-      return TypeReaderResult.fromError(command, 'Multiple matches found, please be more specific.');
+    if (matches.length > constants.config.maxMatches) {
+      return TypeReaderResult.fromError(command, constants.errors.tooManyMatches);
     } else if (matches.length > 1) {
-      return TypeReaderResult.fromError(command, 'Multiple matches found: ' + TypeReaderUtil.formatNameables(matches) + '.');
+      return TypeReaderResult.fromError(command, constants.errors.multipleMatches(TypeReaderUtil.formatArray(matches)));
     } else if (matches.length === 1) {
       return TypeReaderResult.fromSuccess(matches[0]);
     }
 
-    return TypeReaderResult.fromError(command, 'Voice channel not found.');
+    return TypeReaderResult.fromError(command, constants.errors.voiceChannelNotFound);
   }
 }
 

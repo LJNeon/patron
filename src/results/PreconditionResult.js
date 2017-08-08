@@ -3,16 +3,14 @@ const CommandError = require('../enums/CommandError.js');
 
 /**
  * A precondition result.
- * @extends Result
+ * @extends {Result}
  */
 class PreconditionResult extends Result {
   /**
-   * @param {TypeReaderResultOptions} options The type reader result options.
+   * @param {ResultOptions} options The result options.
    */
   constructor(options) {
     super(options);
-
-    this.value = options.value;
   }
 
   /**

@@ -757,7 +757,7 @@
             <td class="type">
             
                 
-<span class="param-type"><a href="TypeReader.html">TypeReader</a></span>
+<span class="param-type">string</span>
 
 
             
@@ -777,7 +777,7 @@
                 </td>
             
 
-            <td class="description last">The type reader of the argument.</td>
+            <td class="description last">The type of the argument.</td>
         </tr>
 
     
@@ -991,7 +991,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="structures_Argument.js.html">structures/Argument.js</a>, <a href="structures_Argument.js.html#line17">line 17</a>
+        <a href="structures_Argument.js.html">structures/Argument.js</a>, <a href="structures_Argument.js.html#line18">line 18</a>
     </li></ul></dd>
     
 
@@ -1064,40 +1064,7 @@
 
         <tr>
             
-                <td class="name"><code>name</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last">The name of the command.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>aliases</code></td>
+                <td class="name"><code>names</code></td>
             
 
             <td class="type">
@@ -1123,20 +1090,20 @@
                 </td>
             
 
-            <td class="description last">The aliases of the command.</td>
+            <td class="description last">The names of the command.</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>group</code></td>
+                <td class="name"><code>groupName</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="Group.html">Group</a></span>
+<span class="param-type">string</span>
 
 
             
@@ -1156,7 +1123,7 @@
                 </td>
             
 
-            <td class="description last">The group of the command.</td>
+            <td class="description last">The name of the group of the command.</td>
         </tr>
 
     
@@ -1616,6 +1583,58 @@
 
 
 
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>error</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Error</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The error in question.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
 <dl class="details">
 
     
@@ -1815,7 +1834,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="structures_Group.js.html">structures/Group.js</a>, <a href="structures_Group.js.html#line12">line 12</a>
+        <a href="structures_Group.js.html">structures/Group.js</a>, <a href="structures_Group.js.html#line11">line 11</a>
     </li></ul></dd>
     
 
@@ -1963,6 +1982,8 @@
                 
 
                 
+                    &lt;nullable><br>
+                
                 </td>
             
 
@@ -2039,6 +2060,130 @@
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
         <a href="results_Result.js.html">results/Result.js</a>, <a href="results_Result.js.html#line9">line 9</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+            
+                
+<h4 class="name" id="TypeReaderOptions">TypeReaderOptions</h4>
+
+
+
+
+<div class="description">
+    The type reader options.
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">object</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>type</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The type of the type reader.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="structures_TypeReader.js.html">structures/TypeReader.js</a>, <a href="structures_TypeReader.js.html#line6">line 6</a>
     </li></ul></dd>
     
 
@@ -2198,7 +2343,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.3</a> on Wed Aug 02 2017 11:42:26 GMT-0500 (Central Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.4</a> on Mon Aug 07 2017 20:49:49 GMT-0500 (Central Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -1,0 +1,1 @@
+require('./discord/Collection.js');

@@ -4,11 +4,12 @@ const CommandError = require('../enums/CommandError.js');
 /**
  * An exception result.
  * @prop {Error} error The error in question.
- * @extends Result
+ * @extends {Result}
  */
 class ExceptionResult extends Result {
   /**
-   * @typedef {ResultOptions} ExceptionResultOptions 
+   * @typedef {ResultOptions} ExceptionResultOptions
+   * @prop {Error} error The error in question.
    */
 
   /**

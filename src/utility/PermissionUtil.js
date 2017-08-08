@@ -1,5 +1,5 @@
 const StringUtil = require('./StringUtil.js');
-const regexes = require('../constants/regexes');
+const constants = require('../utility/Constants.js');
 
 class PermissionUtil {
   static format(permissions) {
@@ -8,20 +8,22 @@ class PermissionUtil {
     for (let i = 0; i < permissions.length; i++) {
       const lastIteration = i === permissions.length - 1;
 
-      if (lastIteration) {
+      if (i !== 0 && lastIteration === true) {
         formattedPermissions += ' and';
       }
 
-      for (const word of permissions[i].match(regexes.permission)) {
-        formattedPermissions += ' ' + StringUtil.upperFirstChar(word);
+      const matches = permissions[i].match(constants.regexes.permission);
+
+      for (let j = 0; j < matches.length; j++) {
+        formattedPermissions += ' ' + StringUtil.upperFirstChar(matches[j]);
       }
 
-      if (!lastIteration) {
+      if (lastIteration === false) {
         formattedPermissions += ', ';
       }
     }
 
-    return formattedPermissions.trim();
+    return formattedPermissions;
   }
 }
 

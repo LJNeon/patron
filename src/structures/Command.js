@@ -1,11 +1,11 @@
-const discord = require('discord.js');
 const Argument = require('./Argument.js');
 const Precondition = require('./Precondition.js');
 
 /**
- * @prop {string} name The name of the command.
- * @prop {string[]} aliases The aliases of the command.
- * @prop {Group} group The group of the command.
+ * A command.
+ * @prop {string[]} names The names of the command.
+ * @prop {Group} group The the group of the command.
+ * @prop {string} groupName The name of the group of the command.
  * @prop {string} description The description of the command.
  * @prop {boolean} guildOnly Whether the command may only be used in guild text channels.
  * @prop {string[]} memberPermissions The permissions required by the invoker to use the command.
@@ -14,14 +14,13 @@ const Precondition = require('./Precondition.js');
  * @prop {Argument[]} args The arguments of the command.
  * @prop {boolean} hasCooldown Whether the command has a cooldown.
  * @prop {number} cooldown The length of the cooldown in milliseconds.
- * @prop {Collection<string, number>} cooldowns The current collection of all user cooldowns on the command.
+ * @prop {Map<string, number>} cooldowns The current map of all user cooldowns on the command.
  */
 class Command {
   /**
    * @typedef {object} CommandOptions The command options.
-   * @prop {string} name The name of the command.
-   * @prop {string[]} aliases The aliases of the command.
-   * @prop {Group} group The group of the command.
+   * @prop {string[]} names The names of the command.
+   * @prop {string} groupName The name of the group of the command.
    * @prop {string} description The description of the command.
    * @prop {boolean} [guildOnly=true] Whether the command may only be used in guild text channels.
    * @prop {string[]} memberPermissions The permissions required by the invoker to use the command.
@@ -32,12 +31,12 @@ class Command {
    */
 
   /**
-   * @param {CommandOptions} options
+   * @param {CommandOptions} options The commands options.
    */
   constructor(options) {
-    this.name = options.name;
+    this.names = options.names;
     this.aliases = options.aliases !== undefined ? options.aliases : [];
-    this.group = options.group;
+    this.groupName = options.groupName;
     this.description = options.description;
     this.guildOnly = options.guildOnly !== undefined ? options.guildOnly : true;
     this.memberPermissions = options.memberPermissions !== undefined ? options.memberPermissions : [];
@@ -46,12 +45,13 @@ class Command {
     this.args = options.args !== undefined ? options.args : [];
     this.hasCooldown = options.cooldown !== undefined;
     this.cooldown = this.hasCooldown === true ? options.cooldown : 0;
-    this.cooldowns = this.hasCooldown === true ? new discord.Collection() : null;
+    this.cooldowns = this.hasCooldown === true ? new Map() : null;
 
     this.constructor.validateCommand(this, this.constructor.name);
   }
 
   /**
+   * Executes the command.
    * @param {Message} message The received message.
    * @param {object} args The arguments of the command.
    * @returns {Promise} Resolves once the execution of the command is complete.
@@ -61,107 +61,108 @@ class Command {
   }
 
   /**
+   * Creates the usage string of the command.
    * @returns {string} The usage of the command.
    */
   getUsage() {
-    let usage = this.name;
+    let usage = this.names[0];
 
-    for (const arg of this.args) {
+    for (let i = 0; i < this.args.length; i ++) {
       let before = '<';
       let after = '>';
 
-      if (arg.optional) {
+      if (this.args[i].optional === true) {
         before = '[';
         after = ']';
       }
 
-      const type = arg.type.type;
+      const type = this.args[i].typeReader.name;
 
       if (type === 'role' || type === 'member' || type === 'user') {
         before += '@';
-      }
-
-      if (type === 'textchannel') {
+      } else if (type === 'textchannel') {
         before += '#';
       }
 
-      usage += ' ' + before + arg.name + after;
+      usage += ' ' + before + this.args[i].name + after;
     }
 
     return usage;
   }
 
   /**
+   * Creates the example string of the command.
    * @returns {string} An example of usage of the command.
    */
   getExample() {
-    let example = this.name;
+    let example = this.names[0];
 
-    for (const arg of this.args) {
-      example += ' ' + arg.example;
+    for (let i = 0; i < this.args.length; i++) {
+      example += ' ' + this.args[i].example;
     }
 
     return example;
   }
 
   /**
+   * Validates a command.
    * @param {Command} command The command to validate.
-   * @param {string} name The name of the command.
+   * @param {string} name The name of the constructor of the command.
    * @private
    */
   static validateCommand(command, name) {
-    if (typeof command.name  !== 'string' || command.name !== command.name.toLowerCase()) {
-      throw new TypeError(name + ': The name must be a lowercase string.');
-    } else if (!Array.isArray(command.aliases)) {
-      throw new TypeError(name + ': The aliases must be an array.');
-    } else if (typeof command.group !== 'string' || command.name !== command.name.toLowerCase()) {
-      throw new TypeError(name + ': The group must be a lowercase string.');
+    if (Array.isArray(command.names) === false) {
+      throw new TypeError(name + ': The names must be an array.');
+    } else if (typeof command.groupName !== 'string' || command.groupName !== command.groupName.toLowerCase()) {
+      throw new TypeError(name + ': The group name must be a lowercase string.');
     } else if (typeof command.description !== 'string') {
       throw new TypeError(name + ': The description must be a string.');
     } else if (typeof command.guildOnly !== 'boolean') {
       throw new TypeError(name + ': The guild only option must be a boolean.');
-    } else if (!Array.isArray(command.memberPermissions)) {
+    } else if (Array.isArray(command.memberPermissions) === false) {
       throw new TypeError(name + ': The user permissions must be an array.');
-    } else if (!Array.isArray(command.botPermissions)) {
+    } else if (Array.isArray(command.botPermissions) === false) {
       throw new TypeError(name + ': The bot permissions must be an array.');
-    } else if (!Array.isArray(command.preconditions)) {
+    } else if (Array.isArray(command.preconditions) === false) {
       throw new TypeError(name + ': The preconditions must be an array.');
-    } else if (!Array.isArray(command.args)) {
+    } else if (Array.isArray(command.args) === false) {
       throw new TypeError(name + ': The arguments must be an array.');
     } else if (typeof command.cooldown !== 'number') {
       throw new TypeError(name + ': The cooldown must be a number.');
     }
 
-    for (const permission of command.memberPermissions.concat(command.botPermissions)) {
-      if (typeof permission !== 'string' || permission !== permission.toUpperCase()) {
+    const allPermissions = command.memberPermissions.concat(command.botPermissions);
+
+    for (let i = 0; i < allPermissions.length; i++) {
+      if (typeof allPermissions[i] !== 'string' || allPermissions[i] !== allPermissions[i].toUpperCase()) {
         throw new TypeError(name + ': All permissions must be uppercase strings.');
       }
     }
 
-    for (const alias of command.aliases) {
-      if (typeof alias !== 'string' || alias !== alias.toLowerCase()) {
-        throw new TypeError(name + ': All command aliases must be lowercase strings.');
+    for (let i = 0; i < command.names.length; i++) {
+      if (typeof command.names[i] !== 'string' || command.names[i] !== command.names[i].toLowerCase()) {
+        throw new TypeError(command.names[i] + ': All command names must be lowercase strings.');
       }
     }
 
-    for (const arg of command.args) {
-      if (!(arg instanceof Argument)) {
+    for (let i = 0; i < command.args.length; i++) {
+      if ((command.args[i] instanceof Argument) === false) {
         throw new TypeError(name + ': All arguments must be instances of the Argument class.');
-      } else if (arg.remainder && arg.name !== command.args[command.args.length - 1].name) {
+      } else if (command.args[i].remainder === true && i !== command.args.length - 1) {
         throw new Error(name + ': Only the last argument of a command may be the remainder.');
-      } else if (arg.infinite && arg.name !== command.args[command.args.length - 1].name) {
+      } else if (command.args[i].infinite === true && i !== command.args.length - 1) {
         throw new Error(name + ': Only the last argument of a command may be infinite.');
-      } else if (command.args.filter((value) => value.name === arg.name).length > 1) {
-        throw new Error(name + ': There is more than one argument by the name of ' + arg.name + '.');
-      } else if (command.args.filter((value) => value.key === arg.key).length > 1) {
-        throw new Error(name + ': There is more than one argument by the key of ' + arg.key + '.');
+      } else if (command.args.filter((value) => value.name === command.args[i].name).length > 1) {
+        throw new Error(name + ': There is more than one argument by the name of ' + command.args[i].name + '.');
+      } else if (command.args.filter((value) => value.key === command.args[i].key).length > 1) {
+        throw new Error(name + ': There is more than one argument by the key of ' + command.args[i].key + '.');
       }
     }
 
-    for (const precondition of command.preconditions) {
-      if (typeof precondition !== 'object') {
+    for (let i = 0; i < command.preconditions.length; i++) {
+      if (typeof command.preconditions[i] !== 'object') {
         throw new TypeError(name + ': All precondition exports must be an instance of the precondition.');
-      } else if (!(precondition instanceof Precondition)) {
+      } else if ((command.preconditions[i] instanceof Precondition) === false) {
         throw new TypeError(name + ': All command preconditions must inherit the Precondition class.');
       }
     }

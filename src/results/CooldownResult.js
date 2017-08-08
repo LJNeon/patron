@@ -5,13 +5,13 @@ const CommandError = require('../enums/CommandError.js');
  * A cooldown result.
  * @prop {number} cooldown The full cooldown of the command.
  * @prop {number} remaining The time remaining on the command cooldown.
- * @extends Result
+ * @extends {Result}
  */
 class CooldownResult extends Result {
   /**
    * @typedef {ResultOptions} CooldownResultOptions The cooldown result options.
    * @prop {number} cooldown The full cooldown of the command.
-   * @prop {number} remaining The time remaining on the command cooldown. 
+   * @prop {number} remaining The time remaining on the command cooldown.
    */
 
   /**

@@ -1,17 +1,18 @@
 declare module 'patron.js' {
-  import { Collection, GuildMember, Message, User } from 'discord.js';
+  import { GuildMember, Message, User } from 'discord.js';
 
   export class Argument {
     private static validateArgument(argument: Argument, name: string): void;
-    public readonly name: string;
-    public readonly key: string;
-    public readonly type: TypeReader;
-    public readonly example: string;
-    public readonly defaultValue: any;
-    public readonly infinite: boolean;
-    public readonly preconditions: ArgumentPrecondition[];
-    public readonly remainder: boolean;
-    public readonly optional: boolean;
+    public name: string;
+    public key: string;
+    public type: string;
+    public typeReader: TypeReader;
+    public example: string;
+    public defaultValue: any;
+    public infinite: boolean;
+    public preconditions: ArgumentPrecondition[];
+    public remainder: boolean;
+    public optional: boolean;
     constructor(options: ArgumentOptions);
   }
 
@@ -29,18 +30,18 @@ declare module 'patron.js' {
 
   export class Command {
     private static validateCommand(command: Command, name: string): void;
-    public readonly name: string;
-    public readonly aliases: string[];
-    public readonly group: Group;
-    public readonly description: string;
-    public readonly guildOnly: boolean;
-    public readonly memberPermissions: string[];
-    public readonly botPermissions: string[];
-    public readonly preconditions: Precondition[];
-    public readonly args: Argument[];
-    public readonly coooldown: number;
-    public readonly hasCooldown: boolean;
-    private readonly cooldowns: Collection<string, number>;
+    public names: string[];
+    public group: Group;
+    public groupName: string;
+    public description: string;
+    public guildOnly: boolean;
+    public memberPermissions: string[];
+    public botPermissions: string[];
+    public preconditions: Precondition[];
+    public args: Argument[];
+    public coooldown: number;
+    public hasCooldown: boolean;
+    private cooldowns: Map<string, number>;
     constructor(options: CommandOptions);
     public run(message: Message, args: object): Promise<any>;
     public getUsage(): string;
@@ -71,15 +72,15 @@ declare module 'patron.js' {
 
   export class Group {
     private static validateGroup(group: Group, name: string): void;
-    public readonly name: string;
-    public readonly description: string;
-    public readonly preconditions: Precondition[];
-    public readonly commands: Collection<string, Command>;
+    public name: string;
+    public description: string;
+    public preconditions: Precondition[];
+    public commands: Command[];
     constructor(options: GroupOptions);
   }
 
   export class Handler {
-    public readonly registry: Registry;
+    public registry: Registry;
     constructor(registry: Registry);
     public run(message: Message, prefix: string): Promise<Result | CooldownResult | ExceptionResult | PreconditionResult | TypeReaderResult>;
   }
@@ -95,9 +96,9 @@ declare module 'patron.js' {
   }
 
   export class Registry {
-    public readonly commands: Collection<string, Command>;
-    public readonly groups: Collection<string, Group>;
-    public readonly typeReaders: Collection<string, TypeReader>;
+    public commands: Command[];
+    public groups: Group[];
+    public typeReaders: TypeReader[];
     public registerDefaultTypeReaders(): Registry;
     public registerTypeReadersIn(path: string): Registry;
     public registerTypeReaders(typeReaders: TypeReader[]): Registry;
@@ -108,16 +109,16 @@ declare module 'patron.js' {
   }
 
   export class Result {
-    public readonly success: boolean;
-    public readonly command: Command;
-    public readonly commandError: CommandError;
-    public readonly errorReason: string;
-    private constructor(options: ResultOptions);
+    public success: boolean;
+    public command: Command;
+    public commandError: CommandError;
+    public errorReason: string;
+    constructor(options: ResultOptions);
   }
 
   export class TypeReader {
     private static validateTypeReader(typeReader: TypeReader, name: string): void;
-    public readonly type: string;
+    public type: string;
     constructor(options: TypeReaderOptions);
     public read(command: Command, message: Message, argument: Argument, input: string): Promise<TypeReaderResult>;
   }
@@ -140,9 +141,8 @@ declare module 'patron.js' {
   }
 
   interface CommandOptions {
-    name: string;
-    aliases: string[];
-    group: string;
+    names: string[];
+    groupName: string;
     description: string;
     guildOnly: boolean;
     userPermissions: string[];

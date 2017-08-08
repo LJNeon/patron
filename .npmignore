@@ -2,9 +2,9 @@
 node_modules/
 
 # Miscellaneous
-.tmp/
-.vscode/
 docs/
+.vscode/
+.tern-project
 .eslintrc.json
 .gitignore
 .travis.yml
