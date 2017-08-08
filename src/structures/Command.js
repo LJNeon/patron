@@ -76,7 +76,7 @@ class Command {
         after = ']';
       }
 
-      const type = this.args[i].typeReader.name;
+      const type = this.args[i].typeReader.type;
 
       if (type === 'role' || type === 'member' || type === 'user') {
         before += '@';
