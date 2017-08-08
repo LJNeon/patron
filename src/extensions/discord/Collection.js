@@ -11,3 +11,11 @@ discord.Collection.prototype.filterValues = function (fn) {
 
   return results;
 };
+
+discord.Collection.prototype.findValue = function (fn) {
+  for (const value of this.values()) {
+    if (fn(value) === true) {
+      return value;
+    }
+  }
+};

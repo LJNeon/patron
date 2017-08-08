@@ -17,17 +17,16 @@ class MemberTypeReader extends TypeReader {
         if (member !== null) {
           return TypeReaderResult.fromSuccess(member);
         }
-
-        return TypeReaderResult.fromError(command, constants.errors.memberNotFound);
-      } catch (err) {
-        return TypeReaderResult.fromError(command, constants.errors.memberNotFound);
+      } catch (err) { /* eslint-disable no-empty */
       }
+
+      return TypeReaderResult.fromError(command, constants.errors.memberNotFound);
     }
 
-    const memberRegex = new RegExp(input.replace(constants.regexes.escapeRegex, '\\$&'), 'i');
+    const lowerInput = input.toLowerCase();
 
     if (constants.regexes.usernameAndDiscrim.test(input) === true) {
-      const member = message.guild.members.find((v) => memberRegex.test(v.user.tag));
+      const member = message.guild.members.findValue((v) => v.user.tag.toLowerCase() === lowerInput);
 
       if (member !== null) {
         return TypeReaderResult.fromSuccess(member);
@@ -36,17 +35,9 @@ class MemberTypeReader extends TypeReader {
       return TypeReaderResult.fromError(command, constants.errors.memberNotFound);
     }
 
-    const matches = message.guild.members.filterValues((v) => memberRegex.test(v.user.username) || (v.nickname !== null && memberRegex.test(v.nickname)));
+    const matches = message.guild.members.filterValues((v) => v.user.username.toLowerCase().includes(lowerInput) || (v.nickname !== null && v.nickname.toLowerCase().includes(lowerInput)));
 
-    if (matches.length > constants.config.maxMatches) {
-      return TypeReaderResult.fromError(command, constants.errors.tooManyMatches);
-    } else if (matches.length > 1) {
-      return TypeReaderResult.fromError(command, constants.errors.multipleMatches(TypeReaderUtil.formatArray(matches, 'user', 'tag')));
-    } else if (matches.length === 1) {
-      return TypeReaderResult.fromSuccess(matches[0]);
-    }
-
-    return TypeReaderResult.fromError(command, constants.errors.memberNotFound);
+    return TypeReaderUtil.handleMatches(command, matches, 'memberNotFound', null, true);
   }
 }
 

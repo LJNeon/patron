@@ -3,26 +3,26 @@ const TypeReaderResult = require('../results/TypeReaderResult.js');
 const TypeReaderUtil = require('../utility/TypeReaderUtil.js');
 const constants = require('../utility/Constants.js');
 
-class VoiceChannelTypeReader extends TypeReader {
+class GuildChannelTypeReader extends TypeReader {
   constructor() {
-    super({ type: 'voicechannel' });
+    super({ type: 'guildchannel' });
   }
 
   async read(command, message, argument, input) {
     if (constants.regexes.id.test(input) === true) {
       const channel = message.guild.channels.get(input.replace(constants.regexes.parseId, ''));
 
-      if (channel !== undefined && channel.type === 'voice') {
+      if (channel !== undefined) {
         return TypeReaderResult.fromSuccess(channel);
       }
     }
 
     const lowerInput = input.toLowerCase();
 
-    const matches = message.guild.channels.filterValues((v) => v.name.toLowerCase().includes(lowerInput) && v.type === 'voice');
+    const matches = message.guild.channels.filterValues((v) => v.name.toLowerCase().includes(lowerInput));
 
-    return TypeReaderUtil.handleMatches(command, matches, 'voiceChannelNotFound');
+    return TypeReaderUtil.handleMatches(command, matches, 'guildChannelNotFound');
   }
 }
 
-module.exports = new VoiceChannelTypeReader();
+module.exports = new GuildChannelTypeReader();

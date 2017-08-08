@@ -11,7 +11,7 @@ class UserTypeReader extends TypeReader {
   async read(command, message, argument, input) {
     if (constants.regexes.userMention.test(input) === true || constants.regexes.id.test(input) === true) {
       try {
-        const user = await message.client.fetchUser(input);
+        const user = await message.client.fetchUser(input.replace(constants.regexes.parseId, ''));
 
         return TypeReaderResult.fromSuccess(user);
       } catch (err) {
@@ -19,10 +19,10 @@ class UserTypeReader extends TypeReader {
       }
     }
 
-    const userRegex = new RegExp(input.replace(constants.regexes.escapeRegex, '\\$&'), 'i');
+    const lowerInput = input.toLowerCase();
 
     if (constants.regexes.usernameAndDiscrim.test(input) === true) {
-      const user = message.client.users.find((v) => userRegex.test(v.tag));
+      const user = message.client.users.findValue((v) => v.tag.toLowerCase() === lowerInput);
 
       if (user !== null) {
         return TypeReaderResult.fromSuccess(user);
@@ -34,24 +34,16 @@ class UserTypeReader extends TypeReader {
     let matches = [];
 
     if (message.guild !== null) {
-      const memberMatches = message.guild.members.filterValues((v) => v.nickname !== null && userRegex.test(v.nickname));
+      const memberMatches = message.guild.members.filterValues((v) => v.nickname !== null && v.nickname.toLowerCase().includes(lowerInput));
 
       for (let i = 0; i < memberMatches.length; i++) {
         matches.push(memberMatches[i].user);
       }
     }
 
-    matches = matches.concat(message.client.users.filterValues((v) => userRegex.test(v.username)));
+    matches = matches.concat(message.client.users.filterValues((v) => v.username.toLowerCase().includes(lowerInput)));
 
-    if (matches.length > constants.config.maxMatches) {
-      return TypeReaderResult.fromError(command, constants.errors.tooManyMatches);
-    } else if (matches.length > 1) {
-      return TypeReaderResult.fromError(command, constants.errors.multipleMatches(TypeReaderUtil.formatArray(matches, 'tag')));
-    } else if (matches.length === 1) {
-      return TypeReaderResult.fromSuccess(matches[0]);
-    }
-
-    return TypeReaderResult.fromError(command, constants.errors.userNotFound);
+    return TypeReaderUtil.handleMatches(command, matches, 'userNotFound', 'tag');
   }
 }
 
