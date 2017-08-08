@@ -41,7 +41,7 @@ class MemberTypeReader extends TypeReader {
     if (matches.length > constants.config.maxMatches) {
       return TypeReaderResult.fromError(command, constants.errors.tooManyMatches);
     } else if (matches.length > 1) {
-      return TypeReaderResult.fromError(command, constants.errors.multipleMatches(TypeReaderUtil.formatArray(matches, 'user.tag')));
+      return TypeReaderResult.fromError(command, constants.errors.multipleMatches(TypeReaderUtil.formatArray(matches, 'user', 'tag')));
     } else if (matches.length === 1) {
       return TypeReaderResult.fromSuccess(matches[0]);
     }

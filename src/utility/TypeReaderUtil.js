@@ -1,5 +1,5 @@
 class TypeReaderUtil {
-  static formatArray(array, prop = 'name') {
+  static formatArray(array, prop = 'name', prop2 = null) {
     let formatted = '';
 
     for (let i = 0; i < array.length; i++) {
@@ -7,7 +7,7 @@ class TypeReaderUtil {
         formatted += 'and ';
       }
 
-      formatted += array[i][prop];
+      formatted += prop2 !== null ? array[i][prop][prop2] : array[i][prop];
 
       if (i !== array.length - 1) {
         formatted += ', ';
