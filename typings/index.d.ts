@@ -18,6 +18,7 @@ declare module 'patron.js' {
 
   export enum ArgumentDefault {
     Author,
+    Message,
     Member,
     Channel,
     Guild,
@@ -25,7 +26,7 @@ declare module 'patron.js' {
   }
 
   export class ArgumentPrecondition {
-    public run(command: Command, message: Message, argument: Argument, value: any): Promise<Result>;
+    public run(command: Command, message: Message, argument: Argument, value: any): Promise<PreconditionResult>;
   }
 
   export class Command {

@@ -171,6 +171,8 @@ class Handler {
     switch (argument.defaultValue) {
       case ArgumentDefault.Author:
         return message.author;
+      case ArgumentDefault.Message:
+        return message;
       case ArgumentDefault.Member:
         return message.member;
       case ArgumentDefault.Channel:
@@ -178,7 +180,7 @@ class Handler {
       case ArgumentDefault.Guild:
         return message.guild;
       case ArgumentDefault.HighestRole:
-        return message.member;
+        return message.member.highestRole;
       default:
         return argument.defaultValue;
     }
