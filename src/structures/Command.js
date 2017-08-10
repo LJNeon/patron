@@ -54,6 +54,7 @@ class Command {
    * Executes the command.
    * @param {Message} message The received message.
    * @param {object} args The arguments of the command.
+   * @abstract
    * @returns {Promise} Resolves once the execution of the command is complete.
    */
   async run(message, args) {

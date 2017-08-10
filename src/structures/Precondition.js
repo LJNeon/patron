@@ -6,6 +6,7 @@ class Precondition {
    * Executs the precondition.
    * @param {Command} command The command being executed.
    * @param {Message} message The received message.
+   * @abstract
    * @returns {Promise<PreconditionResult>} The result of the precondition.
    */
   async run(command, message) {

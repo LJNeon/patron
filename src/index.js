@@ -1,5 +1,6 @@
 require('./extensions');
 
+/* eslint-disable global-require */
 module.exports = {
   Argument: require('./structures/Argument.js'),
   ArgumentDefault: require('./enums/ArgumentDefault.js'),

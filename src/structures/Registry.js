@@ -27,11 +27,11 @@ class Registry {
 
   /**
    * Registers all type readers in a specific directory.
-   * @param {string} path The path containing the type readers to be registered.
+   * @param {string} directory The directory containing the type readers to be registered.
    * @returns {Registry} The registry being used.
    */
-  registerTypeReadersIn(path) {
-    const obj = requireAll(path);
+  registerTypeReadersIn(directory) {
+    const obj = requireAll(directory);
     const typeReaders = [];
 
     for (const key in obj) {
@@ -70,11 +70,11 @@ class Registry {
 
   /**
    * Registers all groups in a specific directory.
-   * @param {string} path The path containing the groups to be registered.
+   * @param {string} directory The directory containing the groups to be registered.
    * @returns {Registry} The registry being used.
    */
-  registerGroupsIn(path) {
-    const obj = requireAll(path);
+  registerGroupsIn(directory) {
+    const obj = requireAll(directory);
     const groups = [];
 
     for (const key in obj) {
@@ -113,11 +113,11 @@ class Registry {
 
   /**
    * Registers all commands in a specific directory.
-   * @param {string} path The path containing the commands to be registered.
+   * @param {string} directory The directory containing the commands to be registered.
    * @returns {Registry} The registry being used.
    */
-  registerCommandsIn(path) {
-    const obj = requireAll(path);
+  registerCommandsIn(directory) {
+    const obj = requireAll(directory);
     const commands = [];
 
     for (const groupKey in obj) {

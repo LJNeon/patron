@@ -12,11 +12,11 @@ class CurrencyTypeReader extends TypeReader {
 
     if (Number.isNaN(value) === false) {
       if (constants.regexes.thousand.test(input) === true) {
-        value *= 1000;
+        value *= constants.numbers.thousand;
       } else if (constants.regexes.million.test(input) === true) {
-        value *= 1000000;
+        value *= constants.numbers.million;
       } else if (constants.regexes.billion.test(input) === true) {
-        value *= 1000000000;
+        value *= constants.numbers.billion;
       }
 
       return TypeReaderResult.fromSuccess(value);

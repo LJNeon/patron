@@ -23,6 +23,7 @@ class TypeReader {
    * @param {Message} message The received message.
    * @param {Argument} argument The argument in question.
    * @param {string} input The user input.
+   * @abstract
    * @returns {Promise<TypeReaderResult>} The result of the type reader.
    */
   async read(command, message, argument, input) {

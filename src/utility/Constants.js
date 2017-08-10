@@ -40,6 +40,12 @@ class Constants {
       voiceChannelNotFound: 'Voice channel not found.'
     };
 
+    this.numbers = {
+      thousand: 1000,
+      million: 1000000,
+      billion: 1000000000
+    };
+
     this.regexes = {
       argument: /"[\S\s]+?"|[\S\n]+/g,
       billion: /^\d+(\.\d+)?\s*b/i,

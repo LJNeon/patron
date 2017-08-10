@@ -8,6 +8,7 @@ class ArgumentPrecondition {
    * @param {Message} message The received message.
    * @param {Argument} argument The argument in question.
    * @param {*} value The value of the argument.
+   * @abstract
    * @returns {Promise<PreconditionResult>} The result of the argument precondition.
    */
   async run(command, message, argument, value) {
