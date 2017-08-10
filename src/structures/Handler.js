@@ -96,7 +96,7 @@ class Handler {
               split[j] = split[j].replace(constants.regexes.quotes, '');
             }
 
-            const typeReaderResult = command.args[i].typeReader.read(command, message, command.args[i], split[j]);
+            const typeReaderResult = await command.args[i].typeReader.read(command, message, command.args[i], split[j]);
 
             if (typeReaderResult.success === false) {
               return typeReaderResult;

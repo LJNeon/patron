@@ -53,7 +53,7 @@ class Constants {
       milliseconds: /^\d+(\.\d+)?\s*(milliseconds?|ms)$/i,
       minutes: /^\d+(\.\d+)?\s*(min(ute)?s?|m)$/i,
       months: /^\d+(\.\d+)?\s*months?$/i,
-      parseId: /\D+/g,
+      findId: /\d{17,19}/,
       permission: /[A-Z]+/g,
       quotes: /^"|"$/g,
       quotesMatch: /^"[\S\s]+"$/,

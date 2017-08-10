@@ -10,7 +10,7 @@ class EmojiTypeReader extends TypeReader {
 
   async read(command, message, argument, input) {
     if (constants.regexes.emoji.test(input) === true || constants.regexes.id.test(input) === true) {
-      const emoji = message.client.emojis.get(input.replace(constants.regexes.parseId, ''));
+      const emoji = message.client.emojis.get(constants.regexes.findId.exec(input)[0]);
 
       if (emoji !== undefined) {
         return TypeReaderResult.fromSuccess(emoji);

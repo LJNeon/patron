@@ -11,7 +11,7 @@ class UserTypeReader extends TypeReader {
   async read(command, message, argument, input) {
     if (constants.regexes.userMention.test(input) === true || constants.regexes.id.test(input) === true) {
       try {
-        const user = await message.client.fetchUser(input.replace(constants.regexes.parseId, ''));
+        const user = await message.client.fetchUser(constants.regexes.findId.exec(input)[0]);
 
         return TypeReaderResult.fromSuccess(user);
       } catch (err) {

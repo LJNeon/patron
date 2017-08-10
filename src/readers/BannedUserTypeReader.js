@@ -12,7 +12,7 @@ class BannedUserTypeReader extends TypeReader {
     const bans = await message.guild.fetchBans();
 
     if (constants.regexes.userMention.test(input) === true || constants.regexes.id.test(input) === true) {
-      const user = bans.get(input.replace(constants.regexes.parseId, ''));
+      const user = bans.get(constants.regexes.findId.exec(input)[0]);
 
       if (user !== undefined) {
         return TypeReaderResult.fromSuccess(user);

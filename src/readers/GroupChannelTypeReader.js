@@ -10,7 +10,7 @@ class GroupChannelTypeReader extends TypeReader {
 
   async read(command, message, argument, input) {
     if (constants.regexes.id.test(input) === true) {
-      const channel = message.client.channels.get(input.replace(constants.regexes.parseId, ''));
+      const channel = message.client.channels.get(constants.regexes.findId.exec(input)[0]);
 
       if (channel !== undefined && channel.type === 'group') {
         return TypeReaderResult.fromSuccess(channel);
