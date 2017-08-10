@@ -54,7 +54,6 @@ class Constants {
       minutes: /^\d+(\.\d+)?\s*(min(ute)?s?|m)$/i,
       months: /^\d+(\.\d+)?\s*months?$/i,
       findId: /\d{17,19}/,
-      permission: /[A-Z]+/g,
       quotes: /^"|"$/g,
       quotesMatch: /^"[\S\s]+"$/,
       roleMention: /^<@&\d+>/,
