@@ -9,7 +9,7 @@ class ChannelTypeReader extends TypeReader {
 
   async read(command, message, argument, input) {
     if (constants.regexes.id.test(input) === true) {
-      const channel = message.client.channels.get(constants.regexes.findId.exec(input)[0]);
+      const channel = message.client.channels.get(input.match(constants.regexes.findId)[0]);
 
       if (channel !== undefined) {
         return TypeReaderResult.fromSuccess(channel);

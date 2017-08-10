@@ -10,7 +10,7 @@ class GuildTypeReader extends TypeReader {
 
   async read(command, message, argument, input) {
     if (constants.regexes.id.test(input) === true) {
-      const guild = message.client.guilds.get(constants.regexes.findId.exec(input)[0]);
+      const guild = message.client.guilds.get(input.match(constants.regexes.findId)[0]);
 
       if (guild !== undefined) {
         return TypeReaderResult.fromSuccess(guild);

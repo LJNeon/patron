@@ -11,7 +11,7 @@ class MemberTypeReader extends TypeReader {
   async read(command, message, argument, input) {
     if (constants.regexes.userMention.test(input) === true || constants.regexes.id.test(input) === true) {
       try {
-        const user = await message.client.fetchUser(constants.regexes.findId.exec(input)[0]);
+        const user = await message.client.fetchUser(input.match(constants.regexes.findId)[0]);
         const member = message.guild.member(user);
 
         if (member !== null) {

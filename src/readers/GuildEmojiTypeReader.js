@@ -10,7 +10,7 @@ class GuildEmojiTypeReader extends TypeReader {
 
   async read(command, message, argument, input) {
     if (constants.regexes.emoji.test(input) === true || constants.regexes.id.test(input) === true) {
-      const emoji = message.guild.emojis.get(constants.regexes.findId.exec(input)[0]);
+      const emoji = message.guild.emojis.get(input.match(constants.regexes.findId)[0]);
 
       if (emoji !== undefined) {
         return TypeReaderResult.fromSuccess(emoji);

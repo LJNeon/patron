@@ -10,7 +10,7 @@ class RoleTypeReader extends TypeReader {
 
   async read(command, message, argument, input) {
     if (constants.regexes.roleMention.test(input) === true || constants.regexes.id.test(input) === true) {
-      const role = message.guild.roles.get(constants.regexes.findId.exec(input)[0]);
+      const role = message.guild.roles.get(input.match(constants.regexes.findId)[0]);
 
       if (role !== undefined) {
         return TypeReaderResult.fromSuccess(role);

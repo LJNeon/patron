@@ -10,7 +10,7 @@ class MessageTypeReader extends TypeReader {
 
   async read(command, message, argument, input) {
     if (constants.regexes.id.test(input) === true) {
-      const parsedId = constants.regexes.findId.exec(input)[0];
+      const parsedId = input.match(constants.regexes.findId)[0];
 
       let msg = message.channel.messages.get(parsedId);
 
