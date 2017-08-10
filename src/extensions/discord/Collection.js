@@ -18,4 +18,6 @@ discord.Collection.prototype.findValue = function (fn) {
       return value;
     }
   }
+
+  return undefined;
 };

@@ -24,7 +24,7 @@ class UserTypeReader extends TypeReader {
     if (constants.regexes.usernameAndDiscrim.test(input) === true) {
       const user = message.client.users.findValue((v) => v.tag.toLowerCase() === lowerInput);
 
-      if (user !== null) {
+      if (user !== undefined) {
         return TypeReaderResult.fromSuccess(user);
       }
 

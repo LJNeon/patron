@@ -28,7 +28,7 @@ class MemberTypeReader extends TypeReader {
     if (constants.regexes.usernameAndDiscrim.test(input) === true) {
       const member = message.guild.members.findValue((v) => v.user.tag.toLowerCase() === lowerInput);
 
-      if (member !== null) {
+      if (member !== undefined) {
         return TypeReaderResult.fromSuccess(member);
       }
 
