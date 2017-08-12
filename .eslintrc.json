@@ -110,9 +110,13 @@
           "Number": "number",
           "Boolean": "boolean",
           "Object": "object",
-          "Function": "Function"
+          "Function": "function"
         }
       }
+    ],
+	"dot-location": [
+      "error",
+      "property"
     ],
     "array-bracket-spacing": "error",
     "no-var": "error",
@@ -170,8 +174,8 @@
     "global-require": "error",
     "no-loop-func": "error",
     "no-label-var": "error",
+	"no-extra-label": "error",
     "dot-notation": "error",
-    "dot-location": "error",
     "prefer-promise-reject-errors": "error"
   }
 }
