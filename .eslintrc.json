@@ -100,7 +100,18 @@
     "valid-jsdoc": [
       "error",
       {
-        "requireReturn": false
+        "requireReturn": false,
+        "prefer": {
+          "return": "returns",
+          "arg": "param"
+        },
+        "preferType": {
+          "String": "string",
+          "Number": "number",
+          "Boolean": "boolean",
+          "Object": "object",
+          "Function": "Function"
+        }
       }
     ],
     "array-bracket-spacing": "error",
