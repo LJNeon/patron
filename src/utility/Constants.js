@@ -48,29 +48,29 @@ class Constants {
 
     this.regexes = {
       argument: /"[\S\s]+?"|[\S\n]+/g,
-      billion: /^\d+(\.\d+)?\s*b/i,
-      centuries: /^\d+(\.\d+)?\s*(cen(tur(y|ies))?)$/i,
-      days: /^\d+(\.\d+)?\s*(days?|d)$/i,
-      decades: /^\d+(\.\d+)?\s*(dec(ade)?s?)$/i,
+      billion: /^(\d+(\.\d+)?|\.\d+)\s*b/i,
+      centuries: /^(\d+(\.\d+)?|\.\d+)\s*(cen(tur(y|ies))?)$/i,
+      days: /^(\d+(\.\d+)?|\.\d+)\s*(days?|d)$/i,
+      decades: /^(\d+(\.\d+)?|\.\d+)\s*(dec(ade)?s?)$/i,
       emoji: /^<:.+:\d+>/,
-      hours: /^\d+(\.\d+)?\s*(hours?|h)$/i,
+      hours: /^(\d+(\.\d+)?|\.\d+)\s*(hours?|h)$/i,
       id: /^\d{17,19}/,
-      million: /^\d+(\.\d+)?\s*m/i,
-      milliseconds: /^\d+(\.\d+)?\s*(milliseconds?|ms)$/i,
-      minutes: /^\d+(\.\d+)?\s*(min(ute)?s?|m)$/i,
-      months: /^\d+(\.\d+)?\s*months?$/i,
+      million: /^(\d+(\.\d+)?|\.\d+)\s*m/i,
+      milliseconds: /^(\d+(\.\d+)?|\.\d+)\s*(milliseconds?|ms)$/i,
+      minutes: /^(\d+(\.\d+)?|\.\d+)\s*(min(ute)?s?|m)$/i,
+      months: /^(\d+(\.\d+)?|\.\d+)\s*months?$/i,
       findId: /\d{17,19}/,
       quotes: /^"|"$/g,
       quotesMatch: /^"[\S\s]+"$/,
       roleMention: /^<@&\d+>/,
-      seconds: /^\d+(\.\d+)?\s*(sec(onds)?s?|s)$/i,
+      seconds: /^(\d+(\.\d+)?|\.\d+)\s*(sec(onds)?s?|s)$/i,
       textChannelMention: /^<#\d+>/,
-      thousand: /^\d+(\.\d+)?\s*k/i,
+      thousand: /^(\d+(\.\d+)?|\.\d+)\s*k/i,
       usernameAndDiscrim: /.+#\d{4}/,
       userMention: /^<@!?\d+>/,
-      weeks: /^\d+(\.\d+)?\s*(weeks?|w)$/i,
+      weeks: /^(\d+(\.\d+)?|\.\d+)\s*(weeks?|w)$/i,
       whiteSpace: /\s/,
-      years: /^\d+(\.\d+)?\s*(years?|y)$/i
+      years: /^(\d+(\.\d+)?|\.\d+)\s*(years?|y)$/i
     };
 
     this.results = {
