@@ -37,7 +37,7 @@ class Handler {
     }
 
     if (message.guild !== null) {
-      message.member = message.guild.member(message.author);
+      message.member = message.guild.members.has(message.author.id) === true ? message.guild.member(message.author) : await message.guild.fetchMember(message.author);
 
       if (command.memberPermissions.length > 0 && message.member.hasPermission(command.memberPermissions) === false) {
         return constants.results.memberPermissions(command, command.memberPermissions);
