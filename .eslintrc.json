@@ -40,10 +40,6 @@
         "max": 1
       }
     ],
-    "yoda": [
-      "error",
-      "never"
-    ],
     "object-curly-spacing": [
       "error",
       "always"
@@ -118,6 +114,7 @@
       "error",
       "property"
     ],
+    "yoda": "error",
     "array-bracket-spacing": "error",
     "no-var": "error",
     "no-else-return": "error",
