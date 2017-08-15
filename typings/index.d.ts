@@ -135,7 +135,7 @@ declare module 'patron.js' {
     key: string;
     type: string;
     example: string;
-    argumentDefault: any;
+    defaultValue: any;
     infinite: boolean;
     remainder: boolean;
     preconditions: ArgumentPrecondition[];
