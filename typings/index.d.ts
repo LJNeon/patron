@@ -150,7 +150,7 @@ declare module 'patron.js' {
     botPermissions: string[];
     preconditions: Precondition[];
     args: Argument[];
-    coooldown: number;
+    cooldown: number;
   }
 
   interface CooldownResultOptions extends ResultOptions {
