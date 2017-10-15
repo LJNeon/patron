@@ -81,6 +81,24 @@ class Constants {
       memberPermissions: (command, permissions) => new Result({ success: false, command: command, commandError: CommandError.memberPermission, errorReason: 'This command may only be used by members with the ' + permissions + ' permission' + (permissions.length > 1 ? 's' : '') + '.' }),
       success: (command) => new Result({ success: true, command: command })
     };
+
+    this.trueValues = [
+      'y',
+      'yes',
+      'yup',
+      'yea',
+      'yeah',
+      'true'
+    ];
+
+    this.falseValues = [
+      'n',
+      'no',
+      'nope',
+      'na',
+      'nah',
+      'false'
+    ];
   }
 }
 
