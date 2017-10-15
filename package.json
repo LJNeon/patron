@@ -1,6 +1,6 @@
 {
   "name": "patron.js",
-  "version": "2.2.9",
+  "version": "2.3.0",
   "description": "The cleanest discord.js command framework.",
   "main": "src/index.js",
   "types": "typings/index.d.ts",
