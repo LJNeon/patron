@@ -30,7 +30,7 @@ class TimeTypeReader extends TypeReader {
       } else if (Constants.regexes.centuries.test(input) === true) {
         value *= Constants.conversions.centuryInMs;
       } else if (Constants.regexes.milliseconds.test(input) === false) {
-        value *= Constants.conversions.hourInMs;
+        return TypeReaderResult.fromError(command, Constants.errors.invalidArg(argument));
       }
 
       return TypeReaderResult.fromSuccess(value);

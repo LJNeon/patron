@@ -1,11 +1,16 @@
-declare module 'patron.js' {
-  import { GuildMember, Message, User } from 'discord.js';
+import { GuildMember, Message, User } from 'discord.js';
 
+import Between from '../src/preconditions/Between.js';
+import CharacterLimit from '../src/preconditions/CharacterLimit.js'
+import Maximum from '../src/preconditions/Maximum.js'
+import Minimum from '../src/preconditions/Minimum.js'
+
+declare module 'patron.js' {
   export class Argument {
     private static validateArgument(argument: Argument, name: string): void;
     public name: string;
     public key: string;
-    public type: string;
+    public 
     public typeReader: TypeReader;
     public example: string;
     public defaultValue: any;
@@ -96,6 +101,8 @@ declare module 'patron.js' {
     private constructor(options: ResultOptions);
   }
 
+  export const preconditions: preconditions;
+
   export class Registry {
     public commands: Command[];
     public groups: Group[];
@@ -167,7 +174,19 @@ declare module 'patron.js' {
     description: string;
     preconditions: Precondition[];
   }
-
+  
+  interface preconditions {
+    Administrator: Precondition;
+    Between: typeof Between;
+    CharacterLimit: typeof CharacterLimit;
+    Maximum: typeof Maximum;
+    Minimum: typeof Minimum;
+    Moderator: Precondition;
+    NoSelf: ArgumentPrecondition;
+    NSFW: Precondition;
+    Owner: Precondition;
+  }
+  
   interface ResultOptions {
     success: boolean;
     command: Command;

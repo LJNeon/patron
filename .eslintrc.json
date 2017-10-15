@@ -173,6 +173,7 @@
     "no-label-var": "error",
     "no-extra-label": "error",
     "dot-notation": "error",
-    "prefer-promise-reject-errors": "error"
+    "prefer-promise-reject-errors": "error",
+    "arrow-parens": "error"
   }
 }
