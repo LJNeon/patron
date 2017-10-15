@@ -1,16 +1,16 @@
 const TypeReader = require('../structures/TypeReader.js');
 const TypeReaderResult = require('../results/TypeReaderResult.js');
 const TypeReaderUtil = require('../utility/TypeReaderUtil.js');
-const constants = require('../utility/Constants.js');
+const Constants = require('../utility/Constants.js');
 
 class MessageTypeReader extends TypeReader {
   constructor() {
     super({ type: 'message' });
   }
 
-  async read(command, message, argument, input) {
-    if (constants.regexes.id.test(input) === true) {
-      const parsedId = input.match(constants.regexes.findId)[0];
+  async read(command, message, argument, args, input) {
+    if (Constants.regexes.id.test(input) === true) {
+      const parsedId = input.match(Constants.regexes.findId)[0];
 
       let msg = message.channel.messages.get(parsedId);
 
@@ -20,7 +20,7 @@ class MessageTypeReader extends TypeReader {
 
           return TypeReaderResult.fromSuccess(msg);
         } catch (err) {
-          return TypeReaderResult.fromError(command, constants.errors.messageNotFound);
+          return TypeReaderResult.fromError(command, Constants.errors.messageNotFound);
         }
       } else {
         return TypeReaderResult.fromSuccess(msg);

@@ -22,11 +22,12 @@ class TypeReader {
    * @param {Command} command The command being executed.
    * @param {Message} message The received message.
    * @param {Argument} argument The argument in question.
+   * @param {object} args The currently resolved arguments.
    * @param {string} input The user input.
    * @abstract
    * @returns {Promise<TypeReaderResult>} The result of the type reader.
    */
-  async read(command, message, argument, input) {
+  async read(command, message, argument, args, input) {
     throw new Error(this.constructor.name + ' has no read method.');
   }
 

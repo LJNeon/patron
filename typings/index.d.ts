@@ -26,7 +26,7 @@ declare module 'patron.js' {
   }
 
   export class ArgumentPrecondition {
-    public run(command: Command, message: Message, argument: Argument, value: any): Promise<PreconditionResult>;
+    public run(command: Command, message: Message, argument: Argument, args: object, value: any): Promise<PreconditionResult>;
   }
 
   export class Command {
@@ -121,7 +121,7 @@ declare module 'patron.js' {
     private static validateTypeReader(typeReader: TypeReader, name: string): void;
     public type: string;
     constructor(options: TypeReaderOptions);
-    public read(command: Command, message: Message, argument: Argument, input: string): Promise<TypeReaderResult>;
+    public read(command: Command, message: Message, argument: Argument, args: object, input: string): Promise<TypeReaderResult>;
   }
 
   export class TypeReaderResult extends Result {

@@ -1,5 +1,5 @@
 const ArgumentPrecondition = require('./ArgumentPrecondition.js');
-const constants = require('../utility/Constants.js');
+const Constants = require('../utility/Constants.js');
 
 /**
  * A command argument.
@@ -53,7 +53,7 @@ class Argument {
   static validateArgument(argument, name) {
     if (typeof argument.name !== 'string') {
       throw new TypeError(name + ': The name must be a string.');
-    } else if (typeof argument.key !== 'string' || constants.regexes.whiteSpace.test(argument.key)) {
+    } else if (typeof argument.key !== 'string' || Constants.regexes.whiteSpace.test(argument.key)) {
       throw new TypeError(name + ': The key must be a string that does not contain any whitespace characters.');
     } else if (typeof argument.type !== 'string' || argument.type !== argument.type.toLowerCase()) {
       throw new TypeError(name + ': The type must be a lowercase string.');

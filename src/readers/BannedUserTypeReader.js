@@ -1,36 +1,36 @@
 const TypeReader = require('../structures/TypeReader.js');
 const TypeReaderResult = require('../results/TypeReaderResult.js');
 const TypeReaderUtil = require('../utility/TypeReaderUtil.js');
-const constants = require('../utility/Constants.js');
+const Constants = require('../utility/Constants.js');
 
 class BannedUserTypeReader extends TypeReader {
   constructor() {
     super({ type: 'banneduser' });
   }
 
-  async read(command, message, argument, input) {
+  async read(command, message, argument, args, input) {
     const bans = await message.guild.fetchBans();
 
-    if (constants.regexes.userMention.test(input) === true || constants.regexes.id.test(input) === true) {
-      const user = bans.get(input.match(constants.regexes.findId)[0]);
+    if (Constants.regexes.userMention.test(input) === true || Constants.regexes.id.test(input) === true) {
+      const user = bans.get(input.match(Constants.regexes.findId)[0]);
 
       if (user !== undefined) {
         return TypeReaderResult.fromSuccess(user);
       }
 
-      return TypeReaderResult.fromError(command, constants.errors.bannedUserNotFound);
+      return TypeReaderResult.fromError(command, Constants.errors.bannedUserNotFound);
     }
 
     const lowerInput = input.toLowerCase();
 
-    if (constants.regexes.usernameAndDiscrim.test(input) === true) {
+    if (Constants.regexes.usernameAndDiscrim.test(input) === true) {
       const user = bans.findValue((v) => v.tag.toLowerCase() === lowerInput);
 
       if (user !== undefined) {
         return TypeReaderResult.fromSuccess(user);
       }
 
-      return TypeReaderResult.fromError(command, constants.errors.bannedUserNotFound);
+      return TypeReaderResult.fromError(command, Constants.errors.bannedUserNotFound);
     }
 
     const matches = bans.filterValues((v) => v.username.toLowerCase().includes(lowerInput));

@@ -1,34 +1,34 @@
 const TypeReader = require('../structures/TypeReader.js');
 const TypeReaderResult = require('../results/TypeReaderResult.js');
 const TypeReaderUtil = require('../utility/TypeReaderUtil.js');
-const constants = require('../utility/Constants.js');
+const Constants = require('../utility/Constants.js');
 
 class UserTypeReader extends TypeReader {
   constructor() {
     super({ type: 'user' });
   }
 
-  async read(command, message, argument, input) {
-    if (constants.regexes.userMention.test(input) === true || constants.regexes.id.test(input) === true) {
+  async read(command, message, argument, args, input) {
+    if (Constants.regexes.userMention.test(input) === true || Constants.regexes.id.test(input) === true) {
       try {
-        const user = await message.client.fetchUser(input.match(constants.regexes.findId)[0]);
+        const user = await message.client.fetchUser(input.match(Constants.regexes.findId)[0]);
 
         return TypeReaderResult.fromSuccess(user);
       } catch (err) {
-        return TypeReaderResult.fromError(command, constants.errors.userNotFound);
+        return TypeReaderResult.fromError(command, Constants.errors.userNotFound);
       }
     }
 
     const lowerInput = input.toLowerCase();
 
-    if (constants.regexes.usernameAndDiscrim.test(input) === true) {
+    if (Constants.regexes.usernameAndDiscrim.test(input) === true) {
       const user = message.client.users.findValue((v) => v.tag.toLowerCase() === lowerInput);
 
       if (user !== undefined) {
         return TypeReaderResult.fromSuccess(user);
       }
 
-      return TypeReaderResult.fromError(command, constants.errors.userNotFound);
+      return TypeReaderResult.fromError(command, Constants.errors.userNotFound);
     }
 
     let matches = [];

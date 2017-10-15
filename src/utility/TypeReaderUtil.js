@@ -1,5 +1,5 @@
 const TypeReaderResult = require('../results/TypeReaderResult.js');
-const constants = require('./Constants.js');
+const Constants = require('./Constants.js');
 
 class TypeReaderUtil {
   static formatMatches(array, prop = 'name', member = false) {
@@ -21,15 +21,15 @@ class TypeReaderUtil {
   }
 
   static handleMatches(command, matches, type, prop = 'name', member = false) {
-    if (matches.length > constants.config.maxMatches) {
-      return TypeReaderResult.fromError(command, constants.errors.tooManyMatches);
+    if (matches.length > Constants.config.maxMatches) {
+      return TypeReaderResult.fromError(command, Constants.errors.tooManyMatches);
     } else if (matches.length > 1) {
-      return TypeReaderResult.fromError(command, constants.errors.multipleMatches(this.formatMatches(matches, prop, member)));
+      return TypeReaderResult.fromError(command, Constants.errors.multipleMatches(this.formatMatches(matches, prop, member)));
     } else if (matches.length === 1) {
       return TypeReaderResult.fromSuccess(matches[0]);
     }
 
-    return TypeReaderResult.fromError(command, constants.errors[type]);
+    return TypeReaderResult.fromError(command, Constants.errors[type]);
   }
 }
 

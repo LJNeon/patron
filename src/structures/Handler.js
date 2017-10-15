@@ -1,7 +1,7 @@
 const ArgumentDefault = require('../enums/ArgumentDefault.js');
 const CooldownResult = require('../results/CooldownResult.js');
 const ExceptionResult = require('../results/ExceptionResult.js');
-const constants = require('../utility/Constants.js');
+const Constants = require('../utility/Constants.js');
 
 /**
  * The command handler.
@@ -22,10 +22,10 @@ class Handler {
    * @returns {Promise<Result>|Promise<CooldownResult>|Promise<TypeReaderResult>|Promise<PreconditionResult>|Promise<ExceptionResult>} The result of the command execution.
    */
   async run(message, prefix) {
-    const split = message.content.match(constants.regexes.argument);
+    const split = message.content.match(Constants.regexes.argument);
 
     if (split === null) {
-      return constants.results.commandNotFound;
+      return Constants.results.commandNotFound;
     }
 
     const commandName = split.shift().slice(prefix.length).toLowerCase();
@@ -33,21 +33,21 @@ class Handler {
     const command = this.registry.commands.find((x) => x.names.some((y) => y === commandName));
 
     if (command === undefined) {
-      return constants.results.commandNotFound;
+      return Constants.results.commandNotFound;
     }
 
     if (message.guild !== null) {
       message.member = message.guild.members.has(message.author.id) === true ? message.guild.member(message.author) : await message.guild.fetchMember(message.author);
 
       if (command.memberPermissions.length > 0 && message.member.hasPermission(command.memberPermissions) === false) {
-        return constants.results.memberPermissions(command, command.memberPermissions);
+        return Constants.results.memberPermissions(command, command.memberPermissions);
       }
 
       if (command.botPermissions.length > 0 && message.guild.me.hasPermission(command.botPermissions) === false) {
-        return constants.results.botPermissions(message.client, command, command.botPermissions);
+        return Constants.results.botPermissions(message.client, command, command.botPermissions);
       }
     } else if (command.guildOnly === true) {
-      return constants.results.guildOnly(command);
+      return Constants.results.guildOnly(command);
     }
 
     const preconditions = command.group.preconditions.concat(command.preconditions);
@@ -88,15 +88,15 @@ class Handler {
             value = this.defaultValue(command.args[i], message);
             defaultValue = true;
           } else {
-            return constants.results.invalidArgCount(command);
+            return Constants.results.invalidArgCount(command);
           }
         } else {
           for (let j = 0; j < split.length; j++) {
-            if (constants.regexes.quotesMatch.test(split[j]) === true) {
-              split[j] = split[j].replace(constants.regexes.quotes, '');
+            if (Constants.regexes.quotesMatch.test(split[j]) === true) {
+              split[j] = split[j].replace(Constants.regexes.quotes, '');
             }
 
-            const typeReaderResult = await command.args[i].typeReader.read(command, message, command.args[i], split[j]);
+            const typeReaderResult = await command.args[i].typeReader.read(command, message, command.args[i], args, split[j]);
 
             if (typeReaderResult.success === false) {
               return typeReaderResult;
@@ -108,19 +108,19 @@ class Handler {
       } else {
         let input = command.args[i].remainder === true ? split.join(' ') : split.shift();
 
-        if (constants.regexes.quotesMatch.test(input) === true) {
-          input = input.replace(constants.regexes.quotes, '');
+        if (Constants.regexes.quotesMatch.test(input) === true) {
+          input = input.replace(Constants.regexes.quotes, '');
         }
 
         if (input === undefined || input === '') {
           if (command.args[i].optional === false) {
-            return constants.results.invalidArgCount(command);
+            return Constants.results.invalidArgCount(command);
           }
 
           value = this.defaultValue(command.args[i], message);
           defaultValue = true;
         } else {
-          const typeReaderResult = await command.args[i].typeReader.read(command, message, command.args[i], input);
+          const typeReaderResult = await command.args[i].typeReader.read(command, message, command.args[i], args, input);
 
           if (typeReaderResult.success === false) {
             return typeReaderResult;
@@ -133,7 +133,7 @@ class Handler {
       if (defaultValue === false) {
         for (let j = 0; j < command.args[i].preconditions.length; j++) {
           try {
-            const preconditionResult = await command.args[i].preconditions[j].run(command, message, command.args[i], value);
+            const preconditionResult = await command.args[i].preconditions[j].run(command, message, command.args[i], args, value);
 
             if (preconditionResult.success === false) {
               return preconditionResult;
@@ -154,7 +154,7 @@ class Handler {
         command.cooldowns.set(message.author.id + (message.guild !== null ? message.guild.id : ''), Date.now() + command.cooldown);
       }
 
-      return constants.results.success(command);
+      return Constants.results.success(command);
     } catch (err) {
       return ExceptionResult.fromError(command, err);
     }

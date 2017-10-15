@@ -3,7 +3,7 @@
  */
 class Precondition {
   /**
-   * Executs the precondition.
+   * Executes the precondition.
    * @param {Command} command The command being executed.
    * @param {Message} message The received message.
    * @abstract

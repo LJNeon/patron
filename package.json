@@ -3,7 +3,7 @@
   "version": "2.2.9",
   "description": "The cleanest discord.js command framework.",
   "main": "src/index.js",
-  "types": "./typings/index.d.ts",
+  "types": "typings/index.d.ts",
   "scripts": {
     "test": "node src/index.js",
     "lint": "eslint src/** --fix",
@@ -11,31 +11,28 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/RealBlazeIt/patron.js.git"
+    "url": "git+https://github.com/vim2meta/patron.js.git"
   },
   "keywords": [
-    "patron",
-    "commands",
-    "discord.js",
-    "nodejs"
+    "discord",
+    "discordjs",
+    "nodejs",
+    "bot"
   ],
-  "author": "John#0969",
-  "license": "AGPL-3.0",
+  "author": "vim#3630",
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/RealBlazeIt/patron.js/issues"
+    "url": "https://github.com/vim2meta/patron.js/issues"
   },
-  "homepage": "https://github.com/RealBlazeIt/patron.js#readme",
+  "homepage": "https://github.com/vim2meta/patron.js#readme",
   "dependencies": {
     "discord.js": "^11.2.1",
     "es6-enum": "^1.1.0",
     "require-all": "^2.2.0"
   },
   "devDependencies": {
-    "eslint": "^4.4.1",
+    "eslint": "^4.9.0",
     "jsdoc": "^3.5.3",
     "typescript": "^2.4.2"
-  },
-  "eslintIgnore": [
-    "**/*.json"
-  ]
+  }
 }

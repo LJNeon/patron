@@ -6,4 +6,4 @@ cache:
     - node_modules
 install: npm install
 sudo: enabled
-dist: trusty
+dist: xenial
