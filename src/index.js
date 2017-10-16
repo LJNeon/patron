@@ -19,5 +19,6 @@ module.exports = {
   Registry: require('./structures/Registry.js'),
   Result: require('./results/Result.js'),
   TypeReader: require('./structures/TypeReader.js'),
-  TypeReaderResult: require('./results/TypeReaderResult.js')
+  TypeReaderResult: require('./results/TypeReaderResult.js'),
+  version: require('../package.json').version
 };
