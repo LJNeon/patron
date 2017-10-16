@@ -12,6 +12,9 @@
 ## About
 [Patron.js](https://vim2meta.github.io/patron.js/) is an efficient, stable and reliable [discord.js](https://github.com/hydrabolt/discord.js) command framework, that aims for true flexibility. This framework does not have it's own client, it does not manage the message event for you, it does not clutter discord.js's classes with extensions and it most certainly does not send messages on your behalf.
 
+## Official example
+Patron.js has an [official example](https://github,com/vim2meta/patron.js-example) filled with useful comments, allowing you to build your code on a solid base while learning at the same time. This example will be maintained and updated to ensure it will always be a useful reference for beginners. The example may be viewed here: https://github,com/vim2meta/patron.js-example.
+
 ## Command Results
 Every single command execution returns a result object. This [result](https://vim2meta.github.io/patron.js/Result.html) object will always have the `success` property. If the command execution was unsuccessful, this property will be set to false. If this is the case, the result will also have the [commandError](https://vim2meta.github.io/patron.js/global.html#CommandError) property, allowing you to handle the error and respond (or not) accordingly. These are the current command errors:
 - `Precondition`
