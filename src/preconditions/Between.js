@@ -18,4 +18,3 @@ class Between extends ArgumentPrecondition {
 }
 
 module.exports = Between;
-

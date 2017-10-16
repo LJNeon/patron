@@ -37,6 +37,10 @@ class Handler {
     }
 
     if (message.guild !== null) {
+      if (command.dmOnly === true) {
+        return Constants.results.dmOnly(command);
+      }
+
       if (command.memberPermissions.length > 0 && message.member.hasPermission(command.memberPermissions) === false) {
         return Constants.results.memberPermissions(command, command.memberPermissions);
       }

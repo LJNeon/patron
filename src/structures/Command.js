@@ -8,6 +8,7 @@ const Precondition = require('./Precondition.js');
  * @prop {string} groupName The name of the group of the command.
  * @prop {string} description The description of the command.
  * @prop {boolean} guildOnly Whether the command may only be used in guild text channels.
+ * @prop {boolean} dmOnly Whether the command may only be used in direct messages.
  * @prop {string[]} memberPermissions The permissions required by the invoker to use the command.
  * @prop {string[]} botPermissions The permissions required by the bot to execute the command.
  * @prop {Precondition[]} preconditions The preconditions to be ran on the command.
@@ -23,6 +24,7 @@ class Command {
    * @prop {string} groupName The name of the group of the command.
    * @prop {string} description The description of the command.
    * @prop {boolean} [guildOnly=true] Whether the command may only be used in guild text channels.
+   * @prop {boolean} [dmOnly=false] Whether the command may only be used in direct messages.
    * @prop {string[]} memberPermissions The permissions required by the invoker to use the command.
    * @prop {string[]} botPermissions The permissions required by the bot to execute the command.
    * @prop {Precondition[]} preconditions The preconditions to be ran on the command.
@@ -39,6 +41,7 @@ class Command {
     this.groupName = options.groupName;
     this.description = options.description;
     this.guildOnly = options.guildOnly !== undefined ? options.guildOnly : true;
+    this.dmOnly = options.dmOnly !== undefined ? options.dmOnly : true;
     this.memberPermissions = options.memberPermissions !== undefined ? options.memberPermissions : [];
     this.botPermissions = options.botPermissions !== undefined ? options.botPermissions : [];
     this.preconditions = options.preconditions !== undefined ? options.preconditions : [];
@@ -120,6 +123,10 @@ class Command {
       throw new TypeError(name + ': The description must be a string.');
     } else if (typeof command.guildOnly !== 'boolean') {
       throw new TypeError(name + ': The guild only option must be a boolean.');
+    } else if (typeof command.dmOnly !== 'boolean') {
+      throw new TypeError(name + ': The DM only option must be a boolean.');
+    } else if (command.dmOnly === true && command.guildOnly === true) {
+      throw new Error(name + ': A command may not be DM only and guild only.');
     } else if (Array.isArray(command.memberPermissions) === false) {
       throw new TypeError(name + ': The user permissions must be an array.');
     } else if (Array.isArray(command.botPermissions) === false) {

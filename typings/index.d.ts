@@ -41,6 +41,7 @@ declare module 'patron.js' {
     public groupName: string;
     public description: string;
     public guildOnly: boolean;
+    public dmOnly: boolean;
     public memberPermissions: string[];
     public botPermissions: string[];
     public preconditions: Precondition[];
@@ -153,6 +154,7 @@ declare module 'patron.js' {
     groupName: string;
     description: string;
     guildOnly: boolean;
+    dmOnly: boolean;
     userPermissions: string[];
     botPermissions: string[];
     preconditions: Precondition[];
