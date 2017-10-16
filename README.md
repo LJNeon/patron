@@ -1,5 +1,5 @@
 <div align="center">
-    <a href="https://vim2meta.github.io/patron.js/"><img src="https://i.imgur.com/6j61q1V.png" width="600" alt="patron.js" /></a>
+    <a href="https://github.com/vim2meta/patron.js/"><img src="https://i.imgur.com/6j61q1V.png" width="600" alt="patron.js" /></a>
     <br/>
     <br/>
     <a href="https://discord.gg/83UsdkR"><img src="https://discordapp.com/api/guilds/290759415362224139/embed.png" alt="Discord Server" /></a>
