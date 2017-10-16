@@ -2,7 +2,7 @@
     <a href="https://vim2meta.github.io/patron.js/"><img src="https://i.imgur.com/6j61q1V.png" width="600" alt="patron.js" /></a>
     <br/>
     <br/>
-    <a href="https://discord.gg/gvyma7H"><img src="https://discordapp.com/api/guilds/290759415362224139/embed.png" alt="Discord Server" /></a>
+    <a href="https://discord.gg/83UsdkR"><img src="https://discordapp.com/api/guilds/290759415362224139/embed.png" alt="Discord Server" /></a>
     <a href="https://www.npmjs.com/package/patron.js"><img src="https://img.shields.io/npm/v/patron.js.svg?maxAge=3600" alt="NPM version" /></a>
     <a href="https://www.npmjs.com/package/patron.js"><img src="https://img.shields.io/npm/dt/patron.js.svg?maxAge=3600" alt="NPM downloads" /></a>
     <a href="https://travis-ci.org/vim2meta/patron.js"><img src="https://travis-ci.org/vim2meta/patron.js.svg?branch=master" alt="Build Status" /></a>
@@ -40,4 +40,4 @@ Furthermore, this framework has featured, efficient and reliable type readers. F
 There are currently two types of preconditions: [Preconditions](https://vim2meta.github.io/patron.js/Precondition.html) and [Argument Preconditions](https://vim2meta.github.io/patron.js/ArgumentPrecondition.html). Normal preconditions can be added on any on [Command](https://vim2meta.github.io/patron.js/Command.html) or [Group](https://vim2meta.github.io/patron.js/Group.html), while argument preconditions may only be added to arguments. All preconditions must return a [PreconditionResult](https://vim2meta.github.io/patron.js/PreconditionResult.html). If the result in question is unsuccessful, it will be the returned result in the command handler.
 
 ## Support
-First and foremost, [docs](https://vim2meta.github.io/patron.js/index.html) are your best friend. There are multiple features in patron.js that I simply did not cover to prevent this from becoming a 28 page essay. All the information about these features are available in the documentation. Keep in mind this framework is not meant for inexperienced coders, it is meant for people that want a genuinely reliable command framework and more maintainable code overall. If you do run into road blocks, or simply want a nudge in the right direction, you may join our [Discord Server](https://discord.gg/gvyma7H) and ask me in the #help channel. 
+The best place to get support for paton.js is in our [official support server](https://discord.gg/83UsdkR). We try to keep things spicy, so you can joke around while getting good, pretty slamming combo. Keep in mind this framework is not meant for new coders, it is meant for people that want a genuinely reliable command framework and more maintainable code overall.
