@@ -41,7 +41,7 @@ class Command {
     this.groupName = options.groupName;
     this.description = options.description;
     this.guildOnly = options.guildOnly !== undefined ? options.guildOnly : true;
-    this.dmOnly = options.dmOnly !== undefined ? options.dmOnly : true;
+    this.dmOnly = options.dmOnly !== undefined ? options.dmOnly : false;
     this.memberPermissions = options.memberPermissions !== undefined ? options.memberPermissions : [];
     this.botPermissions = options.botPermissions !== undefined ? options.botPermissions : [];
     this.preconditions = options.preconditions !== undefined ? options.preconditions : [];
