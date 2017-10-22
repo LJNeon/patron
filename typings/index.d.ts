@@ -103,7 +103,7 @@ declare module 'patron.js' {
   export const preconditions: preconditions;
 
   export class Registry {
-  	public library: string?;
+    public library: string?;
     public commands: Command[];
     public groups: Group[];
     public typeReaders: TypeReader[];
@@ -115,6 +115,7 @@ declare module 'patron.js' {
     public registerGroups(groups: Group[]): Registry;
     public registerCommandsIn(path: string): Registry;
     public registerCommands(commands: Command[]): Registry;
+    private static validateRegistry(registry: Registry): void;
   }
 
   export class Result {
