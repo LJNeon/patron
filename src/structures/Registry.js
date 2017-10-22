@@ -27,7 +27,7 @@ class Registry {
     this.groups = [];
     this.typeReaders = [];
     this.library = options !== undefined && options.library !== undefined ? options.library : 'discord.js';
-    this.libraryHandler = new LibraryHandler(this.library);
+    this.libraryHandler = new LibraryHandler({ library: this.library });
 
     this.constructor.validateRegistry(this);
     requireAll(path.join(__dirname, '/extensions/' + this.library));
