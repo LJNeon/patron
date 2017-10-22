@@ -1,4 +1,4 @@
-const eris = require('tag');
+const eris = require('eris');
 
 Object.defineProperty(eris.User.prototype, 'tag', {
   get: function () {
