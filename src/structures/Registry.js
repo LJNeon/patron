@@ -1,10 +1,10 @@
 const path = require('path');
-const requireAll = require('require-all');
 const Command = require('./Command.js');
 const Group = require('./Group.js');
 const TypeReader = require('./TypeReader.js');
 const Constants = require('../utility/Constants.js');
 const LibraryHandler = require('../utility/LibraryHandler.js');
+const requireAll = require('../utility/RequireAll.js');
 
 /**
  * A registry containing all commands, groups and type readers.
