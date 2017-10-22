@@ -90,12 +90,6 @@ declare module 'patron.js' {
     public run(message: Message, prefix: string): Promise<Result | CooldownResult | ExceptionResult | PreconditionResult | TypeReaderResult>;
   }
 
-  export class LibraryHandler {
-    public library: string;
-    constructor(options: LibraryHandlerOptions);
-    public validatePermissions(message: Message, command: Command);
-  }
-
   export class Precondition {
     public run(command: Command, message: Message): Promise<PreconditionResult>;
   }
@@ -110,7 +104,6 @@ declare module 'patron.js' {
 
   export class Registry {
     public library: string;
-    public libraryHandler: LibraryHandler;
     public commands: Command[];
     public groups: Group[];
     public typeReaders: TypeReader[];
@@ -210,10 +203,6 @@ declare module 'patron.js' {
 
   interface RegistryOptions {
     library: string?;
-  }
-
-  interface LibraryHandlerOptions {
-    library: string;
   }
 
   interface TypeReaderResultOptions extends ResultOptions {

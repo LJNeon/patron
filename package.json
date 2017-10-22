@@ -34,9 +34,5 @@
 		"eslint": "^4.9.0",
 		"jsdoc": "^3.5.3",
 		"typescript": "^2.4.2"
-	},
-	"optionalDependencies": {
-		"discord.js": "^11.2.1",
-		"eris": "^0.8.0"
 	}
 }

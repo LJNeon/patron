@@ -1,7 +1,4 @@
 const path = require('path');
-const requireAll = require('require-all');
-
-requireAll(path.join(__dirname, '/extensions'));
 
 /* eslint-disable global-require */
 module.exports = {
@@ -15,7 +12,7 @@ module.exports = {
   Group: require('./structures/Group.js'),
   Handler: require('./structures/Handler.js'),
   Precondition: require('./structures/Precondition.js'),
-  preconditions: requireAll(path.join(__dirname, 'preconditions')),
+  preconditions: require('require-all')(path.join(__dirname, 'preconditions')),
   PreconditionResult: require('./results/PreconditionResult.js'),
   Registry: require('./structures/Registry.js'),
   Result: require('./results/Result.js'),
