@@ -11,12 +11,12 @@
  */
 
 const ArgumentDefault = {
-  Author: new Symbol(),
-  Message: new Symbol(),
-  Member: new Symbol(),
-  Channel: new Symbol(),
-  Guild: new Symbol(),
-  HighestRole: new Symbol()
+  Author: Symbol(),
+  Message: Symbol(),
+  Member: Symbol(),
+  Channel: Symbol(),
+  Guild: Symbol(),
+  HighestRole: Symbol()
 };
 
 module.exports = ArgumentDefault;
