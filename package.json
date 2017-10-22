@@ -1,38 +1,37 @@
 {
-	"name": "patron.js",
-	"version": "2.5.5",
-	"description": "The cleanest discord.js command framework.",
-	"main": "src/index.js",
-	"types": "typings/index.d.ts",
-	"scripts": {
-		"test": "node src/index.js",
-		"lint": "eslint src/** --fix",
-		"docs": "node_modules/.bin/jsdoc src -r -R README.md -d docs"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/vim2meta/patron.js.git"
-	},
-	"keywords": [
-		"discord",
-		"discordjs",
-		"eris",
-		"nodejs",
-		"bot"
-	],
-	"author": "vim#3630",
-	"license": "MIT",
-	"bugs": {
-		"url": "https://github.com/vim2meta/patron.js/issues"
-	},
-	"homepage": "https://github.com/vim2meta/patron.js#readme",
-	"dependencies": {
-		"es6-enum": "^1.1.0",
-		"require-all": "^2.2.0"
-	},
-	"devDependencies": {
-		"eslint": "^4.9.0",
-		"jsdoc": "^3.5.3",
-		"typescript": "^2.4.2"
-	}
+  "name": "patron.js",
+  "version": "2.5.5",
+  "description": "The cleanest discord.js command framework.",
+  "main": "src/index.js",
+  "types": "typings/index.d.ts",
+  "scripts": {
+    "test": "node src/index.js",
+    "lint": "eslint src/** --fix",
+    "docs": "node_modules/.bin/jsdoc src -r -R README.md -d docs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vim2meta/patron.js.git"
+  },
+  "keywords": [
+    "discord",
+    "discordjs",
+    "eris",
+    "nodejs",
+    "bot"
+  ],
+  "author": "vim#3630",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vim2meta/patron.js/issues"
+  },
+  "homepage": "https://github.com/vim2meta/patron.js#readme",
+  "dependencies": {
+    "es6-enum": "^1.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^4.9.0",
+    "jsdoc": "^3.5.3",
+    "typescript": "^2.4.2"
+  }
 }
