@@ -2,7 +2,7 @@ const eris = require('eris');
 
 Object.defineProperty(eris.Client.prototype, 'channels', {
   get: function () {
-    return [...this.privateChannels.values(), [...this.guilds.values()].reduce((a, b) => [...a, ...b.channels.values()], [])];
+    return [...this.privateChannels.values(), ...([...this.guilds.values()].reduce((a, b) => [...a, ...b.channels.values()], []))];
   }
 });
 

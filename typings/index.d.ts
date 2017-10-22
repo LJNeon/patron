@@ -8,7 +8,6 @@ declare module 'patron.js' {
     private static validateArgument(argument: Argument, name: string): void;
     public name: string;
     public key: string;
-    public
     public typeReader: TypeReader;
     public example: string;
     public defaultValue: any;
