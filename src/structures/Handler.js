@@ -41,12 +41,10 @@ class Handler {
         return Constants.results.dmOnly(command);
       }
 
-      if (command.memberPermissions.length > 0 && message.member.hasPermission(command.memberPermissions) === false) {
-        return Constants.results.memberPermissions(command, command.memberPermissions);
-      }
+      const result = this.registry.libraryHandler.validatePermissions(message, command);
 
-      if (command.botPermissions.length > 0 && message.guild.me.hasPermission(command.botPermissions) === false) {
-        return Constants.results.botPermissions(message.client, command, command.botPermissions);
+      if (result !== undefined) {
+        return result;
       }
     } else if (command.guildOnly === true) {
       return Constants.results.guildOnly(command);

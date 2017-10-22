@@ -100,6 +100,11 @@ class Constants {
       'nah',
       'false'
     ];
+
+    this.libraries = [
+      'discord.js',
+      'eris'
+    ];
   }
 }
 

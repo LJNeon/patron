@@ -1,6 +1,7 @@
 const path = require('path');
+const requireAll = require('require-all');
 
-require('./extensions');
+requireAll('./extensions');
 
 /* eslint-disable global-require */
 module.exports = {

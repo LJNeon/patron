@@ -1,5 +1,3 @@
-import { GuildMember, Message, User } from 'discord.js';
-
 import Between from '../src/preconditions/Between.js';
 import CharacterLimit from '../src/preconditions/CharacterLimit.js'
 import Maximum from '../src/preconditions/Maximum.js'
@@ -10,7 +8,7 @@ declare module 'patron.js' {
     private static validateArgument(argument: Argument, name: string): void;
     public name: string;
     public key: string;
-    public 
+    public
     public typeReader: TypeReader;
     public example: string;
     public defaultValue: any;
@@ -105,9 +103,11 @@ declare module 'patron.js' {
   export const preconditions: preconditions;
 
   export class Registry {
+  	public library: string?;
     public commands: Command[];
     public groups: Group[];
     public typeReaders: TypeReader[];
+    constructor(options: RegistryOptions);
     public registerDefaultTypeReaders(): Registry;
     public registerTypeReadersIn(path: string): Registry;
     public registerTypeReaders(typeReaders: TypeReader[]): Registry;
@@ -176,7 +176,7 @@ declare module 'patron.js' {
     description: string;
     preconditions: Precondition[];
   }
-  
+
   interface preconditions {
     Administrator: Precondition;
     Between: typeof Between;
@@ -188,7 +188,7 @@ declare module 'patron.js' {
     NSFW: Precondition;
     Owner: Precondition;
   }
-  
+
   interface ResultOptions {
     success: boolean;
     command: Command;
@@ -198,6 +198,10 @@ declare module 'patron.js' {
 
   interface TypeReaderOptions {
     type: string;
+  }
+
+  interface RegistryOptions {
+    library: string?;
   }
 
   interface TypeReaderResultOptions extends ResultOptions {
