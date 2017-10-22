@@ -26,9 +26,7 @@
     "url": "https://github.com/vim2meta/patron.js/issues"
   },
   "homepage": "https://github.com/vim2meta/patron.js#readme",
-  "dependencies": {
-    "es6-enum": "^1.1.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "eslint": "^4.9.0",
     "jsdoc": "^3.5.3",

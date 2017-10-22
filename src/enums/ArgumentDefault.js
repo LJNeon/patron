@@ -1,5 +1,3 @@
-const Enum = require('es6-enum');
-
 /**
  * The argument defaults.
  * @prop {Symbol} Author The author of the command message.
@@ -11,6 +9,14 @@ const Enum = require('es6-enum');
  * @enum {Symbol}
  * @readonly
  */
-const ArgumentDefault = new Enum('Author', 'Message', 'Member', 'Channel', 'Guild', 'HighestRole');
+
+const ArgumentDefault = {
+  Author: new Symbol(),
+  Message: new Symbol(),
+  Member: new Symbol(),
+  Channel: new Symbol(),
+  Guild: new Symbol(),
+  HighestRole: new Symbol()
+};
 
 module.exports = ArgumentDefault;

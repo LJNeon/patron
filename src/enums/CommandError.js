@@ -1,5 +1,3 @@
-const Enum = require('es6-enum');
-
 /**
  * The command errors.
  * @prop {Symbol} Precondition A precondition failure.
@@ -10,9 +8,19 @@ const Enum = require('es6-enum');
  * @prop {Symbol} Cooldown A command used while on cooldown.
  * @prop {Symbol} InvalidArgCount An invalid amount of arguments provided.
  * @prop {Symbol} Exception An exception during command execution.
- * @enum {Symbol} 
- * @readonly 
+ * @enum {Symbol}
+ * @readonly
  */
-const CommandError = new Enum('Precondition', 'MemberPermission', 'BotPermission', 'TypeReader', 'CommandNotFound', 'Cooldown', 'InvalidArgCount', 'Exception');
+
+const CommandError = {
+  Precondition: Symbol(),
+  MemberPermission: Symbol(),
+  BotPermission: Symbol(),
+  TypeReader: Symbol(),
+  CommandNotFound: Symbol(),
+  Cooldown: Symbol(),
+  InvalidArgCount: Symbol(),
+  Exception: Symbol()
+};
 
 module.exports = CommandError;
