@@ -41,7 +41,7 @@ class Handler {
         return Constants.results.dmOnly(command);
       }
 
-      const result = this.registry.libraryHandler.validatePermissions(message, command);
+      const result = this.registry.libraryHandler.validatePermissions(command, message);
 
       if (result !== undefined) {
         return result;
