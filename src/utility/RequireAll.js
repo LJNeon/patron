@@ -1,23 +1,21 @@
 const fs = require('fs');
 const regexes = {
-  /* eslint-disable no-useless-escape */
   excludeDir: /^\./,
-  filter: /^([^\.].*)\.js(on)?$/
+  filter: /^([^.].*)\.js(on)?$/
 };
 
-function r(o) {
+module.exports = function r(o) {
   const modules = {};
-  const files = fs.readdirSync(o); // eslint-disable-line no-sync
+  const files = fs.readdirSync(o);
   files.forEach((i) => {
-    const filepath = o + '/' + i;
+    const path = o + '/' + i;
     const name = i.match(regexes.filter);
-    if (fs.statSync(filepath).isDirectory() && !regexes.excludeDir.test(i)) { // eslint-disable-line no-sync
-      modules[i] = r(filepath);
+
+    if (fs.statSync(path).isDirectory() && !regexes.excludeDir.test(i)) {
+      modules[i] = r(path);
     } else if (name) {
-      modules[name[1] || name[0]] = require(filepath); // eslint-disable-line global-require
+      modules[name[1] || name[0]] = require(path);
     }
   });
   return modules;
-}
-
-module.exports = r;
+};

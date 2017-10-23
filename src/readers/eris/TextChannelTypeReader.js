@@ -12,7 +12,7 @@ class TextChannelTypeReader extends TypeReader {
     if (Constants.regexes.textChannelMention.test(input) === true || Constants.regexes.id.test(input) === true) {
       const channel = message.channel.guild.channels.get(input.match(Constants.regexes.findId)[0]);
 
-      if (channel !== undefined && channel.type === 0) { // eslint-disable-line no-magic-numbers
+      if (channel !== undefined && channel.type === 0) {
         return TypeReaderResult.fromSuccess(channel);
       }
 
@@ -21,7 +21,7 @@ class TextChannelTypeReader extends TypeReader {
 
     const lowerInput = input.toLowerCase();
 
-    const matches = message.channel.guild.channels.filter((v) => v.name.toLowerCase().includes(lowerInput) && v.type === 0); // eslint-disable-line no-magic-numbers
+    const matches = message.channel.guild.channels.filter((v) => v.name.toLowerCase().includes(lowerInput) && v.type === 0);
 
     return TypeReaderUtil.handleMatches(command, matches, 'textChannelNotFound');
   }

@@ -12,14 +12,14 @@ class GroupChannelTypeReader extends TypeReader {
     if (Constants.regexes.id.test(input) === true) {
       const channel = message._client.channels.find((c) => c.id === input.match(Constants.regexes.findId)[0]);
 
-      if (channel !== undefined && channel.type === 3) { // eslint-disable-line no-magic-numbers
+      if (channel !== undefined && channel.type === 3) {
         return TypeReaderResult.fromSuccess(channel);
       }
     }
 
     const lowerInput = input.toLowerCase();
 
-    const matches = message._client.channels.filter((v) => v.name !== undefined && v.name.toLowerCase().includes(lowerInput) && v.type === 3); // eslint-disable-line no-magic-numbers
+    const matches = message._client.channels.filter((v) => v.name !== undefined && v.name.toLowerCase().includes(lowerInput) && v.type === 3);
 
     return TypeReaderUtil.handleMatches(command, matches, 'groupChannelNotFound');
   }

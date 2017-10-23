@@ -17,7 +17,7 @@ class MemberTypeReader extends TypeReader {
         if (member !== null) {
           return TypeReaderResult.fromSuccess(member);
         }
-      } catch (err) { /* eslint-disable no-empty */
+      } catch (err) {
       }
 
       return TypeReaderResult.fromError(command, Constants.errors.memberNotFound);

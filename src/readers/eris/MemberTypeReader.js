@@ -14,14 +14,14 @@ class MemberTypeReader extends TypeReader {
       process.emitWarning('The member type reader is unreliable when getAllUsers is set to false.');
       warningEmitted = true;
     }
-    
+
     if (Constants.regexes.userMention.test(input) === true || Constants.regexes.id.test(input) === true) {
       let member;
 
       if (message._client.options.restMode === true) {
         try {
           member = await message.channel.guild.getRESTMember(input.match(Constants.regexes.findId)[0]);
-        } catch (err) { /* eslint-disable no-empty */
+        } catch (err) {
         }
       } else {
         member = message.channel.guild.members.get(input.match(Constants.regexes.findId)[0]);

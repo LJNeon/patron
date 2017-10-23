@@ -14,14 +14,14 @@ class UserTypeReader extends TypeReader {
       process.emitWarning('The user type reader is unreliable when getAllUsers is set to false.');
       warningEmitted = true;
     }
-    
+
     if (Constants.regexes.userMention.test(input) === true || Constants.regexes.id.test(input) === true) {
       let user;
 
       if (message._client.options.restMode === true) {
         try {
           user = await message._client.getRESTUser(input.match(Constants.regexes.findId)[0]);
-        } catch (err) { /* eslint-disable no-empty */
+        } catch (err) {
         }
       } else {
         user = message._client.users.get(input.match(Constants.regexes.findId)[0]);

@@ -1,6 +1,5 @@
 const path = require('path');
 
-/* eslint-disable global-require */
 module.exports = {
   Argument: require('./structures/Argument.js'),
   ArgumentDefault: require('./enums/ArgumentDefault.js'),
