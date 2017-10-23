@@ -200,13 +200,13 @@ class Registry {
   }
 
   /**
-   * Validates a command.
+   * Validates the registry.
    * @param {Registry} registry The registry to validate.
    * @private
    */
   static validateRegistry(registry) {
-    if (typeof registry.library !== 'string') {
-      throw new TypeError('Registry: The library must be a string.');
+    if (typeof registry.library !== 'string' || registry.library !== registry.library.toLowerCase()) {
+      throw new TypeError('Registry: The library must be a lowercase string.');
     } else if (Constants.libraries.indexOf(registry.library) === -1) {
       throw new TypeError('Registry: ' + registry.library + ' isn\'t a supported library.');
     }
