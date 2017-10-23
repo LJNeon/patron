@@ -14,6 +14,7 @@ class MemberTypeReader extends TypeReader {
       process.emitWarning('The member type reader is unreliable when getAllUsers is set to false.');
       warningEmitted = true;
     }
+    
     if (Constants.regexes.userMention.test(input) === true || Constants.regexes.id.test(input) === true) {
       let member;
 
