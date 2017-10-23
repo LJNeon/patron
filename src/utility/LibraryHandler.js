@@ -5,7 +5,7 @@ class LibraryHandler {
     this.library = options.library;
   }
 
-  validatePermissions(message, command) {
+  validatePermissions(command, message) {
     switch (this.library) {
       case 'discord.js':
         if (command.memberPermissions.length > 0 && message.member.hasPermission(command.memberPermissions) === false) {
