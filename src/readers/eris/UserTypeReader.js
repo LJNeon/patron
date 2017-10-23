@@ -14,6 +14,7 @@ class UserTypeReader extends TypeReader {
       process.emitWarning('The user type reader is unreliable when getAllUsers is set to false.');
       warningEmitted = true;
     }
+    
     if (Constants.regexes.userMention.test(input) === true || Constants.regexes.id.test(input) === true) {
       let user;
 
