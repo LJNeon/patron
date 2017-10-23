@@ -1,20 +1,36 @@
 const path = require('path');
-const requireAll = require('require-all');
 const Command = require('./Command.js');
 const Group = require('./Group.js');
 const TypeReader = require('./TypeReader.js');
+const Constants = require('../utility/Constants.js');
+const LibraryHandler = require('../utility/LibraryHandler.js');
+const requireAll = require('../utility/RequireAll.js');
 
 /**
  * A registry containing all commands, groups and type readers.
  * @prop {Command[]} commands All registered commands.
  * @prop {Group[]} groups All registered groups.
  * @prop {TypeReader[]} typeReaders All registered type readers.
+ * @prop {string} library The library being used.
  */
 class Registry {
-  constructor() {
+  /**
+   * @typedef {object} RegistryOptions The registry options.
+   * @prop {string} library The library of the registry.
+   */
+
+  /**
+   * @param {RegistryOptions?} options The registry options.
+   */
+  constructor(options) {
     this.commands = [];
     this.groups = [];
     this.typeReaders = [];
+    this.library = options !== undefined && options.library !== undefined ? options.library : 'discord.js';
+    this.libraryHandler = new LibraryHandler({ library: this.library });
+
+    this.constructor.validateRegistry(this);
+    requireAll(path.join(__dirname, '/extensions/' + this.library));
   }
 
   /**
@@ -22,7 +38,8 @@ class Registry {
    * @returns {Registry} The registry being used.
    */
   registerDefaultTypeReaders() {
-    return this.registerTypeReadersIn(path.join(__dirname, '/../readers'));
+    this.registerTypeReadersIn(path.join(__dirname, '/../readers/' + this.library));
+    return this.registerTypeReadersIn(path.join(__dirname, '/../readers/global'));
   }
 
   /**
@@ -180,6 +197,19 @@ class Registry {
     }
 
     return this;
+  }
+
+  /**
+   * Validates the registry.
+   * @param {Registry} registry The registry to validate.
+   * @private
+   */
+  static validateRegistry(registry) {
+    if (typeof registry.library !== 'string' || registry.library !== registry.library.toLowerCase()) {
+      throw new TypeError('Registry: The library must be a lowercase string.');
+    } else if (Constants.libraries.indexOf(registry.library) === -1) {
+      throw new TypeError('Registry: ' + registry.library + ' isn\'t a supported library.');
+    }
   }
 }
 
