@@ -30,7 +30,7 @@ class Registry {
     this.libraryHandler = new LibraryHandler({ library: this.library });
 
     this.constructor.validateRegistry(this);
-    requireAll(path.join(__dirname, '/extensions/' + this.library));
+    requireAll(path.join(__dirname, '/../extensions/' + this.library));
   }
 
   /**
