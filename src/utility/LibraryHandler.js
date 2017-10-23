@@ -16,7 +16,6 @@ class LibraryHandler {
           return Constants.results.botPermissions(message.client, command, command.botPermissions);
         }
         break;
-
       case 'eris':
         if (command.memberPermissions.length > 0 && command.memberPermissions.every((permission) => message.member.permission.has(permission) === true) === false) {
           return Constants.results.memberPermissions(command, command.memberPermissions);
