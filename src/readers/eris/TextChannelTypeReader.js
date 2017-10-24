@@ -1,7 +1,7 @@
-const TypeReader = require('../structures/TypeReader.js');
-const TypeReaderResult = require('../results/TypeReaderResult.js');
-const TypeReaderUtil = require('../utility/TypeReaderUtil.js');
-const Constants = require('../utility/Constants.js');
+const TypeReader = require('../../structures/TypeReader.js');
+const TypeReaderResult = require('../../results/TypeReaderResult.js');
+const TypeReaderUtil = require('../../utility/TypeReaderUtil.js');
+const Constants = require('../../utility/Constants.js');
 
 class TextChannelTypeReader extends TypeReader {
   constructor() {
