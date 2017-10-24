@@ -3,14 +3,14 @@ const CommandError = require('../enums/CommandError.js');
 
 /**
  * A type reader result.
- * @prop {*} value The parsed value from the type reader.
+ * @prop {?*} value The parsed value from the type reader.
  * @prop {?Array<object>} matches The type reader matches.
  * @extends {Result}
  */
 class TypeReaderResult extends Result {
   /**
    * @typedef {ResultOptions} TypeReaderResultOptions The type reader result options.
-   * @prop {*} value The parsed value from the type reader.
+   * @prop {?*} value The parsed value from the type reader.
    * @prop {?Array<object>} matches The type reader matches.
    */
 

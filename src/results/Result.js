@@ -1,7 +1,7 @@
 /**
  * A result.
  * @prop {boolean} success Whether the command execution was successful.
- * @prop {Command} command The executed command.
+ * @prop {?Command} command The executed command.
  * @prop {?CommandError} commandError The command error.
  * @prop {?string} errorReason The reason for the failed execution.
  */
