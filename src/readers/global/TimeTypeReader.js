@@ -1,6 +1,6 @@
-const TypeReader = require('../structures/TypeReader.js');
-const TypeReaderResult = require('../results/TypeReaderResult.js');
-const Constants = require('../utility/Constants.js');
+const TypeReader = require('../../structures/TypeReader.js');
+const TypeReaderResult = require('../../results/TypeReaderResult.js');
+const Constants = require('../../utility/Constants.js');
 
 class TimeTypeReader extends TypeReader {
   constructor() {

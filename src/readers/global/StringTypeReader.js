@@ -1,5 +1,5 @@
-const TypeReader = require('../structures/TypeReader.js');
-const TypeReaderResult = require('../results/TypeReaderResult.js');
+const TypeReader = require('../../structures/TypeReader.js');
+const TypeReaderResult = require('../../results/TypeReaderResult.js');
 
 class StringTypeReader extends TypeReader {
   constructor() {
