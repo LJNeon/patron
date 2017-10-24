@@ -22,13 +22,13 @@ class Handler {
    * @returns {Promise<Result>|Promise<CooldownResult>|Promise<TypeReaderResult>|Promise<PreconditionResult>|Promise<ExceptionResult>} The result of the command execution.
    */
   async run(message, prefix) {
-    const split = message.content.match(Constants.regexes.argument);
+    const split = message.content.slice(prefix.length).match(Constants.regexes.argument);
 
     if (split === null) {
       return Constants.results.commandNotFound;
     }
 
-    const commandName = split.shift().slice(prefix.length).toLowerCase();
+    const commandName = split.shift().toLowerCase();
 
     const command = this.registry.commands.find((x) => x.names.some((y) => y === commandName));
 
