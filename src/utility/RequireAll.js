@@ -21,4 +21,4 @@ function requireAll(path) {
   return modules;
 }
 
-module.exports - requireAll;
+module.exports = requireAll;
