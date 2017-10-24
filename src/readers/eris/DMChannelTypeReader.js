@@ -1,3 +1,4 @@
+const DiscordChannelTypes = require('../../enums/DiscordChannelTypes.js');
 const TypeReader = require('../../structures/TypeReader.js');
 const TypeReaderResult = require('../../results/TypeReaderResult.js');
 const Constants = require('../../utility/Constants.js');
@@ -11,7 +12,7 @@ class DMChannelTypeReader extends TypeReader {
     if (Constants.regexes.id.test(input) === true) {
       const channel = message._client.channels.find((c) => c.id === input.match(Constants.regexes.findId)[0]);
 
-      if (channel !== undefined && channel.type === 'dm') {
+      if (channel !== undefined && channel.type === DiscordChannelTypes.DM) {
         return TypeReaderResult.fromSuccess(channel);
       }
     }

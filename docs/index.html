@@ -44,10 +44,11 @@
 
     <section>
         <article><div align="center">
-    <a href="https://vim2meta.github.io/patron.js/"><img src="https://i.imgur.com/6j61q1V.png" width="600" alt="patron.js" /></a>
+    <br/>
+    <a href="https://github.com/vim2meta/patron.js/"><img src="https://i.imgur.com/6j61q1V.png" width="600" alt="patron.js" /></a>
     <br/>
     <br/>
-    <a href="https://discord.gg/gvyma7H"><img src="https://discordapp.com/api/guilds/290759415362224139/embed.png" alt="Discord Server" /></a>
+    <a href="https://discord.gg/83UsdkR"><img src="https://discordapp.com/api/guilds/369214145964539924/embed.png" alt="Discord Server" /></a>
     <a href="https://www.npmjs.com/package/patron.js"><img src="https://img.shields.io/npm/v/patron.js.svg?maxAge=3600" alt="NPM version" /></a>
     <a href="https://www.npmjs.com/package/patron.js"><img src="https://img.shields.io/npm/dt/patron.js.svg?maxAge=3600" alt="NPM downloads" /></a>
     <a href="https://travis-ci.org/vim2meta/patron.js"><img src="https://travis-ci.org/vim2meta/patron.js.svg?branch=master" alt="Build Status" /></a>
@@ -55,6 +56,7 @@
 </div>
 
 <h2>About</h2><p><a href="https://vim2meta.github.io/patron.js/">Patron.js</a> is an efficient, stable and reliable <a href="https://github.com/hydrabolt/discord.js">discord.js</a> command framework, that aims for true flexibility. This framework does not have it's own client, it does not manage the message event for you, it does not clutter discord.js's classes with extensions and it most certainly does not send messages on your behalf.</p>
+<h2>Official example</h2><p>Patron.js has an <a href="https://github.com/vim2meta/patron.js-example">official example</a> filled with useful comments, allowing you to build your code on a solid base while learning at the same time. This example will be maintained and updated to ensure it will always be a useful reference for beginners. The example may be viewed here: https://github.com/vim2meta/patron.js-example.</p>
 <h2>Command Results</h2><p>Every single command execution returns a result object. This <a href="https://vim2meta.github.io/patron.js/Result.html">result</a> object will always have the <code>success</code> property. If the command execution was unsuccessful, this property will be set to false. If this is the case, the result will also have the <a href="https://vim2meta.github.io/patron.js/global.html#CommandError">commandError</a> property, allowing you to handle the error and respond (or not) accordingly. These are the current command errors:</p>
 <ul>
 <li><code>Precondition</code></li>
@@ -72,7 +74,7 @@
 <p>Furthermore, this framework has featured, efficient and reliable type readers. For example, the user type reader can parse a user object based off of an id, mention, username, or nickname (if they are in a guild). If there are multiple matches found, it will return an unsuccessful <a href="https://vim2meta.github.io/patron.js/TypeReaderResult.html">TypeReaderResult</a> with the matches in question in the error reason. If there are too many matches to list, it will simply ask the user to be more specific. All available type readers are <a href="https://github.com/vim2meta/patron.js/tree/master/src/readers">here</a>.</p>
 <p><a href="https://github.com/realblazeit/dea/blob/master/src/commands/moderation/Kick.js">This is an example</a> of DEA making use of this argument system. As you can see, all examples are argument specific, which is the best approach for maintainability. Most command frameworks will allow you to provide an example string for each command, however, these examples are often forgetten and not updated while the arguments themselves change, leaving inconsistencies throughout the commands. Not to mention this system allows you to create a single commonly used argument object, such as a user, and share this accross all files, to prevent redudancy and code repetition, while still allowing for the command usage example to always be up to date.</p>
 <h2>Preconditions</h2><p>There are currently two types of preconditions: <a href="https://vim2meta.github.io/patron.js/Precondition.html">Preconditions</a> and <a href="https://vim2meta.github.io/patron.js/ArgumentPrecondition.html">Argument Preconditions</a>. Normal preconditions can be added on any on <a href="https://vim2meta.github.io/patron.js/Command.html">Command</a> or <a href="https://vim2meta.github.io/patron.js/Group.html">Group</a>, while argument preconditions may only be added to arguments. All preconditions must return a <a href="https://vim2meta.github.io/patron.js/PreconditionResult.html">PreconditionResult</a>. If the result in question is unsuccessful, it will be the returned result in the command handler.</p>
-<h2>Support</h2><p>First and foremost, <a href="https://vim2meta.github.io/patron.js/index.html">docs</a> are your best friend. There are multiple features in patron.js that I simply did not cover to prevent this from becoming a 28 page essay. All the information about these features are available in the documentation. Keep in mind this framework is not meant for inexperienced coders, it is meant for people that want a genuinely reliable command framework and more maintainable code overall. If you do run into road blocks, or simply want a nudge in the right direction, you may join our <a href="https://discord.gg/gvyma7H">Discord Server</a> and ask me in the #help channel. </p></article>
+<h2>Support</h2><p>The best place to get support for paton.js is in our <a href="https://discord.gg/83UsdkR">official support server</a>. We try to keep things spicy, so you can joke around while getting good, pretty slamming combo. Keep in mind this framework is not meant for new coders, it is meant for people that want a genuinely reliable command framework and more maintainable code overall.</p></article>
     </section>
 
 
@@ -89,7 +91,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Oct 15 2017 20:51:41 GMT-0400 (EDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Oct 23 2017 23:56:20 GMT-0400 (Eastern Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>

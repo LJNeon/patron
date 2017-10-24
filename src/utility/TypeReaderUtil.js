@@ -22,9 +22,9 @@ class TypeReaderUtil {
 
   static handleMatches(command, matches, type, prop = 'name', member = false) {
     if (matches.length > Constants.config.maxMatches) {
-      return TypeReaderResult.fromError(command, Constants.errors.tooManyMatches);
+      return TypeReaderResult.fromError(command, Constants.errors.tooManyMatches, matches);
     } else if (matches.length > 1) {
-      return TypeReaderResult.fromError(command, Constants.errors.multipleMatches(this.formatMatches(matches, prop, member)));
+      return TypeReaderResult.fromError(command, Constants.errors.multipleMatches(this.formatMatches(matches, prop, member)), matches);
     } else if (matches.length === 1) {
       return TypeReaderResult.fromSuccess(matches[0]);
     }

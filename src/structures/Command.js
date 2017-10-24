@@ -5,7 +5,6 @@ const Precondition = require('./Precondition.js');
  * A command.
  * @prop {string[]} names The names of the command.
  * @prop {Group} group The the group of the command.
- * @prop {string} groupName The name of the group of the command.
  * @prop {string} description The description of the command.
  * @prop {boolean} guildOnly Whether the command may only be used in guild text channels.
  * @prop {boolean} dmOnly Whether the command may only be used in direct messages.
@@ -21,7 +20,6 @@ class Command {
   /**
    * @typedef {object} CommandOptions The command options.
    * @prop {string[]} names The names of the command.
-   * @prop {string} groupName The name of the group of the command.
    * @prop {string} description The description of the command.
    * @prop {boolean} [guildOnly=true] Whether the command may only be used in guild text channels.
    * @prop {boolean} [dmOnly=false] Whether the command may only be used in direct messages.
@@ -38,7 +36,6 @@ class Command {
   constructor(options) {
     this.names = options.names;
     this.aliases = options.aliases !== undefined ? options.aliases : [];
-    this.groupName = options.groupName;
     this.description = options.description;
     this.guildOnly = options.guildOnly !== undefined ? options.guildOnly : true;
     this.dmOnly = options.dmOnly !== undefined ? options.dmOnly : false;

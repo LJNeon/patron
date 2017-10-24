@@ -4,18 +4,21 @@ const regexes = {
   filter: /^([^.].*)\.js(on)?$/
 };
 
-module.exports = function r(o) {
+function requireAll(path) {
   const modules = {};
-  const files = fs.readdirSync(o);
-  files.forEach((i) => {
-    const path = o + '/' + i;
-    const name = i.match(regexes.filter);
+  const files = fs.readdirSync(path);
 
-    if (fs.statSync(path).isDirectory() && !regexes.excludeDir.test(i)) {
-      modules[i] = r(path);
+  files.forEach((file) => {
+    const parsedPath = path + '/' + file;
+    const name = file.match(regexes.filter);
+
+    if (fs.statSync(parsedPath).isDirectory() === true && regexes.excludeDir.test(file) === false) {
+      modules[file] = requireAll(parsedPath);
     } else if (name) {
-      modules[name[1] || name[0]] = require(path);
+      modules[name[1] || name[0]] = require(parsedPath);
     }
   });
   return modules;
-};
+}
+
+module.exports - requireAll;

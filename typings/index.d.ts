@@ -35,7 +35,6 @@ declare module 'patron.js' {
     private static validateCommand(command: Command, name: string): void;
     public names: string[];
     public group: Group;
-    public groupName: string;
     public description: string;
     public guildOnly: boolean;
     public dmOnly: boolean;
@@ -65,11 +64,14 @@ declare module 'patron.js' {
   }
 
   export class CooldownResult extends Result {
+    public cooldown: number;
+    public remaining: number;
     public static fromError(command: Command, cooldown: number, remaining: number): CooldownResult;
     private constructor(options: CooldownResultOptions);
   }
 
   export class ExceptionResult extends Result {
+    public error: Error;
     public static fromError(command: Command, error: Error): ExceptionResult;
     private constructor(options: ExceptionResultOptions);
   }
@@ -119,9 +121,9 @@ declare module 'patron.js' {
 
   export class Result {
     public success: boolean;
-    public command: Command;
-    public commandError: CommandError;
-    public errorReason: string;
+    public command?: Command;
+    public commandError?: CommandError;
+    public errorReason?: string;
     constructor(options: ResultOptions);
   }
 
@@ -133,8 +135,10 @@ declare module 'patron.js' {
   }
 
   export class TypeReaderResult extends Result {
+    public value: any;
+    public matches?: object[];
     public static fromSuccess(value: any): TypeReaderResult;
-    public static fromError(command: Command, reason: string): TypeReaderResult;
+    public static fromError(command: Command, reason: string, matches?: object[]): TypeReaderResult;
     private constructor(options: TypeReaderResultOptions);
   }
 
@@ -151,7 +155,6 @@ declare module 'patron.js' {
 
   interface CommandOptions {
     names: string[];
-    groupName: string;
     description: string;
     guildOnly: boolean;
     dmOnly: boolean;
@@ -191,9 +194,9 @@ declare module 'patron.js' {
 
   interface ResultOptions {
     success: boolean;
-    command: Command;
-    commandError: CommandError;
-    errorReason: string;
+    command?: Command;
+    commandError?: CommandError;
+    errorReason?: string;
   }
 
   interface TypeReaderOptions {
@@ -205,6 +208,7 @@ declare module 'patron.js' {
   }
 
   interface TypeReaderResultOptions extends ResultOptions {
-    value: any;
+    value?: any;
+    matches?: object[];
   }
 }

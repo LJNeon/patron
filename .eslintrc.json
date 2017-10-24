@@ -167,7 +167,6 @@
     "no-use-before-define": "error",
     "no-param-reassign": "error",
     "keyword-spacing": "error",
-    "no-loop-func": "error",
     "no-label-var": "error",
     "no-extra-label": "error",
     "dot-notation": "error",

@@ -16,7 +16,7 @@ class BooleanTypeReader extends TypeReader {
       return TypeReaderResult.fromSuccess(false);
     }
 
-    return TypeReaderResult.fromError(value);
+    return TypeReaderResult.fromError(command, Constants.errors.invalidArg(argument));
   }
 }
 

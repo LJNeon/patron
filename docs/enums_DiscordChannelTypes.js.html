@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: structures/Precondition.js</title>
+    <title>JSDoc: Source: enums/DiscordChannelTypes.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: structures/Precondition.js</h1>
+    <h1 class="page-title">Source: enums/DiscordChannelTypes.js</h1>
 
     
 
@@ -27,22 +27,25 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * A command precondition.
+ * The discord channel types.
+ * @prop {number} TextChannel A guild text channel.
+ * @prop {number} DM A DM channel.
+ * @prop {number} VoiceChannel A guild voice channel.
+ * @prop {number} GroupChannel A group channel.
+ * @prop {number} GuildCategory A guild category.
+ * @enum {number}
+ * @readonly
  */
-class Precondition {
-  /**
-   * Executes the precondition.
-   * @param {Command} command The command being executed.
-   * @param {Message} message The received message.
-   * @abstract
-   * @returns {Promise&lt;PreconditionResult>} The result of the precondition.
-   */
-  async run(command, message) {
-    throw new Error(this.constructor.name + ' has no run method.');
-  }
-}
 
-module.exports = Precondition;
+const CommandError = {
+  TextChannel: 0,
+  DM: 1,
+  VoiceChannel: 2,
+  GroupChannel: 3,
+  GuildCategory: 4
+};
+
+module.exports = CommandError;
 </code></pre>
         </article>
     </section>

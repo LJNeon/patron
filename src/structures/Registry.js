@@ -139,9 +139,21 @@ class Registry {
 
     for (const groupKey in obj) {
       if (obj.hasOwnProperty(groupKey) === true) {
+        if (typeof obj[groupKey] !== 'string') {
+          throw new TypeError('The commands folder may only contain group folders.');
+        }
+
+        const groupIndex = this.groups.findIndex((v) => v.name === obj[groupKey]);
+
+        if (groupIndex === -1) {
+          throw new Error('The ' + obj[groupKey] + ' group is not registered.');
+        }
+
         for (const commandKey in obj[groupKey]) {
           if (obj[groupKey].hasOwnProperty(commandKey) === true) {
             commands.push(obj[groupKey][commandKey]);
+            obj[groupKey][commandKey].group = this.groups[groupIndex];
+            this.groups[groupIndex].commands.push(obj[groupKey][commandKey]);
           }
         }
       }
@@ -185,14 +197,6 @@ class Registry {
         commands[i].args[j].typeReader = typeReader;
       }
 
-      const groupIndex = this.groups.findIndex((v) => v.name === commands[i].groupName);
-
-      if (groupIndex === -1) {
-        throw new Error('The ' + commands[i].groupName + ' group is not registered.');
-      }
-
-      commands[i].group = this.groups[groupIndex];
-      this.groups[groupIndex].commands.push(commands[i]);
       this.commands.push(commands[i]);
     }
 
@@ -206,9 +210,9 @@ class Registry {
    */
   static validateRegistry(registry) {
     if (typeof registry.library !== 'string' || registry.library !== registry.library.toLowerCase()) {
-      throw new TypeError('Registry: The library must be a lowercase string.');
+      throw new TypeError('The library must be a lowercase string.');
     } else if (Constants.libraries.indexOf(registry.library) === -1) {
-      throw new TypeError('Registry: ' + registry.library + ' isn\'t a supported library.');
+      throw new TypeError(registry.library + ' isn\'t a supported library.');
     }
   }
 }
