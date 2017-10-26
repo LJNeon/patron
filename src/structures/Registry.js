@@ -139,11 +139,7 @@ class Registry {
 
     for (const groupKey in obj) {
       if (obj.hasOwnProperty(groupKey) === true) {
-        if (typeof obj[groupKey] !== 'string') {
-          throw new TypeError('The commands folder may only contain group folders.');
-        }
-
-        const groupIndex = this.groups.findIndex((v) => v.name === obj[groupKey]);
+        const groupIndex = this.groups.findIndex((v) => v.name === groupKey);
 
         if (groupIndex === -1) {
           throw new Error('The ' + obj[groupKey] + ' group is not registered.');

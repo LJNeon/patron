@@ -114,8 +114,6 @@ class Command {
   static validateCommand(command, name) {
     if (Array.isArray(command.names) === false) {
       throw new TypeError(name + ': The names must be an array.');
-    } else if (typeof command.groupName !== 'string' || command.groupName !== command.groupName.toLowerCase()) {
-      throw new TypeError(name + ': The group name must be a lowercase string.');
     } else if (typeof command.description !== 'string') {
       throw new TypeError(name + ': The description must be a string.');
     } else if (typeof command.guildOnly !== 'boolean') {
