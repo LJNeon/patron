@@ -155,7 +155,7 @@ declare module 'patron.js' {
 
   interface CommandOptions {
     names: string[];
-    description: string;
+    description?: string;
     guildOnly?: boolean;
     dmOnly?: boolean;
     userPermissions?: string[];

@@ -20,7 +20,7 @@ class Command {
   /**
    * @typedef {object} CommandOptions The command options.
    * @prop {string[]} names The names of the command.
-   * @prop {string} description The description of the command.
+   * @prop {string} [description=''] The description of the command.
    * @prop {boolean} [guildOnly=true] Whether the command may only be used in guild text channels.
    * @prop {boolean} [dmOnly=false] Whether the command may only be used in direct messages.
    * @prop {string[]} [memberPermissions=undefined] The permissions required by the invoker to use the command.
@@ -35,8 +35,7 @@ class Command {
    */
   constructor(options) {
     this.names = options.names;
-    this.aliases = options.aliases !== undefined ? options.aliases : [];
-    this.description = options.description;
+    this.description = options.description !== undefined ? options.description : '';
     this.guildOnly = options.guildOnly !== undefined ? options.guildOnly : true;
     this.dmOnly = options.dmOnly !== undefined ? options.dmOnly : false;
     this.memberPermissions = options.memberPermissions !== undefined ? options.memberPermissions : [];
