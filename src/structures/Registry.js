@@ -16,11 +16,11 @@ const requireAll = require('../utility/RequireAll.js');
 class Registry {
   /**
    * @typedef {object} RegistryOptions The registry options.
-   * @prop {string} library The library of the registry.
+   * @prop {string?} library The library of the registry.
    */
 
   /**
-   * @param {RegistryOptions?} options The registry options.
+   * @param {RegistryOptions} options The registry options.
    */
   constructor(options) {
     this.commands = [];
@@ -142,7 +142,7 @@ class Registry {
         const groupIndex = this.groups.findIndex((v) => v.name === groupKey);
 
         if (groupIndex === -1) {
-          throw new Error('The ' + obj[groupKey] + ' group is not registered.');
+          throw new Error('The ' + groupKey + ' group is not registered. All commands must be placed inside a respective folder of their group inside the main commands folder.');
         }
 
         for (const commandKey in obj[groupKey]) {
@@ -169,9 +169,7 @@ class Registry {
     }
 
     for (let i = 0; i < commands.length; i ++) {
-      if (typeof commands[i] === 'string') {
-        throw new Error('All commands must be placed inside a respective folder of their group inside the main commands folder.');
-      } else if (typeof commands[i] !== 'object') {
+      if (typeof commands[i] !== 'object') {
         throw new TypeError('All command exports must be an instance of the command.');
       } else if ((commands[i] instanceof Command) === false) {
         throw new Error('All commands must inherit the Command class.');
