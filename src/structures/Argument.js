@@ -23,7 +23,7 @@ class Argument {
    * @prop {string} example An example of the argument.
    * @prop {*} [defaultValue=undefined] The default value of the argument.
    * @prop {boolean} [infinite=false] Allow this argument accept an infinite number of values and return them in an array.
-   * @prop {ArgumentPrecondition[]} preconditions The preconditions to be ran on the argument.
+   * @prop {ArgumentPrecondition[]} [preconditions=undefined] The preconditions to be ran on the argument.
    * @prop {boolean} [remainder=false] Whether the argument is the remainder.
    */
 

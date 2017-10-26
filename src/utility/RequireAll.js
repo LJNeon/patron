@@ -14,7 +14,7 @@ function requireAll(path) {
 
     if (fs.statSync(parsedPath).isDirectory() === true && regexes.excludeDir.test(file) === false) {
       modules[file] = requireAll(parsedPath);
-    } else if (name) {
+    } else if (name !== null) {
       modules[name[1] || name[0]] = require(parsedPath);
     }
   });

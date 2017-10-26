@@ -23,11 +23,11 @@ class Command {
    * @prop {string} description The description of the command.
    * @prop {boolean} [guildOnly=true] Whether the command may only be used in guild text channels.
    * @prop {boolean} [dmOnly=false] Whether the command may only be used in direct messages.
-   * @prop {string[]} memberPermissions The permissions required by the invoker to use the command.
-   * @prop {string[]} botPermissions The permissions required by the bot to execute the command.
-   * @prop {Precondition[]} preconditions The preconditions to be ran on the command.
-   * @prop {Argument[]} args The arguments of the command.
-   * @prop {number} cooldown The length of the cooldown in milliseconds.
+   * @prop {string[]} [memberPermissions=undefined] The permissions required by the invoker to use the command.
+   * @prop {string[]} [botPermissions=undefined] The permissions required by the bot to execute the command.
+   * @prop {Precondition[]} [preconditions=undefined] The preconditions to be ran on the command.
+   * @prop {Argument[]} [args=undefined] The arguments of the command.
+   * @prop {number} [cooldown=0] The length of the cooldown in milliseconds.
    */
 
   /**

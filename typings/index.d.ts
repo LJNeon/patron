@@ -147,22 +147,22 @@ declare module 'patron.js' {
     key: string;
     type: string;
     example: string;
-    defaultValue: any;
-    infinite: boolean;
-    remainder: boolean;
-    preconditions: ArgumentPrecondition[];
+    defaultValue?: any;
+    infinite?: boolean;
+    remainder?: boolean;
+    preconditions?: ArgumentPrecondition[];
   }
 
   interface CommandOptions {
     names: string[];
     description: string;
-    guildOnly: boolean;
-    dmOnly: boolean;
-    userPermissions: string[];
-    botPermissions: string[];
-    preconditions: Precondition[];
-    args: Argument[];
-    cooldown: number;
+    guildOnly?: boolean;
+    dmOnly?: boolean;
+    userPermissions?: string[];
+    botPermissions?: string[];
+    preconditions?: Precondition[];
+    args?: Argument[];
+    cooldown?: number;
   }
 
   interface CooldownResultOptions extends ResultOptions {
@@ -177,7 +177,7 @@ declare module 'patron.js' {
   interface GroupOptions {
     name: string;
     description: string;
-    preconditions: Precondition[];
+    preconditions?: Precondition[];
   }
 
   interface preconditions {
@@ -204,7 +204,7 @@ declare module 'patron.js' {
   }
 
   interface RegistryOptions {
-    library: string;
+    library?: string;
   }
 
   interface TypeReaderResultOptions extends ResultOptions {
