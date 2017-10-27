@@ -4,7 +4,7 @@ const Precondition = require('./Precondition.js');
 /**
  * A command.
  * @prop {string[]} names The names of the command.
- * @prop {Group} group The the group of the command.
+ * @prop {Group} group The group of the command.
  * @prop {string} description The description of the command.
  * @prop {boolean} guildOnly Whether the command may only be used in guild text channels.
  * @prop {boolean} dmOnly Whether the command may only be used in direct messages.

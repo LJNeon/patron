@@ -117,6 +117,7 @@ declare module 'patron.js' {
     public registerCommandsIn(path: string): Registry;
     public registerCommands(commands: Command[]): Registry;
     private static validateRegistry(registry: Registry): void;
+    private constructor(options: RegistryOptions);
   }
 
   export class Result {
