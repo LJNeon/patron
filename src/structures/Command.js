@@ -136,8 +136,8 @@ class Command {
     const allPermissions = command.memberPermissions.concat(command.botPermissions);
 
     for (let i = 0; i < allPermissions.length; i++) {
-      if (typeof allPermissions[i] !== 'string' || allPermissions[i] !== allPermissions[i].toUpperCase()) {
-        throw new TypeError(name + ': All permissions must be uppercase strings.');
+      if (typeof allPermissions[i] !== 'string') {
+        throw new TypeError(name + ': All permissions must be strings.');
       }
     }
 
