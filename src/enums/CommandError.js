@@ -1,26 +1,30 @@
 /**
  * The command errors.
- * @prop {Symbol} Precondition A precondition failure.
- * @prop {Symbol} MemberPermission A member lacking permissions.
- * @prop {Symbol} BotPermission The client lacking permissions.
- * @prop {Symbol} TypeReader A type reader failure.
- * @prop {Symbol} CommandNotFound An unknown command.
- * @prop {Symbol} Cooldown A command used while on cooldown.
- * @prop {Symbol} InvalidArgCount An invalid amount of arguments provided.
- * @prop {Symbol} Exception An exception during command execution.
  * @enum {Symbol}
  * @readonly
  */
 
 const CommandError = {
+  /** A precondition failure. */
   Precondition: Symbol(),
+  /** A member lacking permissions. */
   MemberPermission: Symbol(),
+  /** The client lacking permissions. */
   BotPermission: Symbol(),
+  /** A type reader failure. */
   TypeReader: Symbol(),
+  /** An unknown command. */
   CommandNotFound: Symbol(),
+  /** A command used while on cooldown. */
   Cooldown: Symbol(),
+  /** An invalid amount of arguments provided. */
   InvalidArgCount: Symbol(),
-  Exception: Symbol()
+  /** An exception during command execution. */
+  Exception: Symbol(),
+  /** A guild only command used elsewhere than a guild channel. */
+  GuildOnly: Symbol(),
+  /** A DM only command used elsewhere than a DM channel. */
+  DmOnly: Symbol()
 };
 
 module.exports = CommandError;

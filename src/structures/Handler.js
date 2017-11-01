@@ -19,9 +19,10 @@ class Handler {
    * Attempts to execute a command.
    * @param {Message} message The received message.
    * @param {string} prefix The prefix to use when handling the command.
+   * @param {*} custom Any custom parameters to be passed into all preconditions, commands, and type readers.
    * @returns {Promise<Result>|Promise<CooldownResult>|Promise<TypeReaderResult>|Promise<PreconditionResult>|Promise<ExceptionResult>} The result of the command execution.
    */
-  async run(message, prefix) {
+  async run(message, prefix, ...custom) {
     const split = message.content.slice(prefix.length).match(Constants.regexes.argument);
 
     if (split === null) {
@@ -54,7 +55,7 @@ class Handler {
 
     for (let i = 0; i < preconditions.length; i++) {
       try {
-        const result = await preconditions[i].run(command, message);
+        const result = await preconditions[i].run(command, message, ...custom);
 
         if (result.success === false) {
           return result;
@@ -65,7 +66,7 @@ class Handler {
     }
 
     if (command.hasCooldown === true) {
-      const cooldown = command.cooldowns.get(message.author.id + (message.guild !== null ? message.guild.id : ''));
+      const cooldown = command.cooldowns[message.author.id + (message.guild !== null ? '-' + message.guild.id : '')];
 
       if (cooldown !== undefined) {
         const difference = cooldown - Date.now();
@@ -96,7 +97,7 @@ class Handler {
               split[j] = split[j].replace(Constants.regexes.quotes, '');
             }
 
-            const typeReaderResult = await command.args[i].typeReader.read(command, message, command.args[i], args, split[j]);
+            const typeReaderResult = await command.args[i].typeReader.read(command, message, command.args[i], args, split[j], ...custom);
 
             if (typeReaderResult.success === false) {
               return typeReaderResult;
@@ -120,7 +121,7 @@ class Handler {
           value = this.defaultValue(command.args[i], message);
           defaultValue = true;
         } else {
-          const typeReaderResult = await command.args[i].typeReader.read(command, message, command.args[i], args, input);
+          const typeReaderResult = await command.args[i].typeReader.read(command, message, command.args[i], args, input, ...custom);
 
           if (typeReaderResult.success === false) {
             return typeReaderResult;
@@ -133,7 +134,7 @@ class Handler {
       if (defaultValue === false) {
         for (let j = 0; j < command.args[i].preconditions.length; j++) {
           try {
-            const preconditionResult = await command.args[i].preconditions[j].run(command, message, command.args[i], args, value);
+            const preconditionResult = await command.args[i].preconditions[j].run(command, message, command.args[i], args, value, ...custom);
 
             if (preconditionResult.success === false) {
               return preconditionResult;
@@ -148,10 +149,10 @@ class Handler {
     }
 
     try {
-      await command.run(message, args);
+      await command.run(message, args, ...custom);
 
       if (command.hasCooldown === true) {
-        command.cooldowns.set(message.author.id + (message.guild !== null ? message.guild.id : ''), Date.now() + command.cooldown);
+        command.cooldowns[message.author.id + (message.guild !== null ? '-' + message.guild.id : '')] = Date.now() + command.cooldown;
       }
 
       return Constants.results.success(command);

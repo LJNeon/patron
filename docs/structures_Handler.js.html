@@ -47,9 +47,10 @@ class Handler {
    * Attempts to execute a command.
    * @param {Message} message The received message.
    * @param {string} prefix The prefix to use when handling the command.
+   * @param {*} custom Any custom parameters to be passed into all preconditions, commands, and type readers.
    * @returns {Promise&lt;Result>|Promise&lt;CooldownResult>|Promise&lt;TypeReaderResult>|Promise&lt;PreconditionResult>|Promise&lt;ExceptionResult>} The result of the command execution.
    */
-  async run(message, prefix) {
+  async run(message, prefix, ...custom) {
     const split = message.content.slice(prefix.length).match(Constants.regexes.argument);
 
     if (split === null) {
@@ -82,7 +83,7 @@ class Handler {
 
     for (let i = 0; i &lt; preconditions.length; i++) {
       try {
-        const result = await preconditions[i].run(command, message);
+        const result = await preconditions[i].run(command, message, ...custom);
 
         if (result.success === false) {
           return result;
@@ -93,7 +94,7 @@ class Handler {
     }
 
     if (command.hasCooldown === true) {
-      const cooldown = command.cooldowns.get(message.author.id + (message.guild !== null ? message.guild.id : ''));
+      const cooldown = command.cooldowns[message.author.id + (message.guild !== null ? '-' + message.guild.id : '')];
 
       if (cooldown !== undefined) {
         const difference = cooldown - Date.now();
@@ -124,7 +125,7 @@ class Handler {
               split[j] = split[j].replace(Constants.regexes.quotes, '');
             }
 
-            const typeReaderResult = await command.args[i].typeReader.read(command, message, command.args[i], args, split[j]);
+            const typeReaderResult = await command.args[i].typeReader.read(command, message, command.args[i], args, split[j], ...custom);
 
             if (typeReaderResult.success === false) {
               return typeReaderResult;
@@ -148,7 +149,7 @@ class Handler {
           value = this.defaultValue(command.args[i], message);
           defaultValue = true;
         } else {
-          const typeReaderResult = await command.args[i].typeReader.read(command, message, command.args[i], args, input);
+          const typeReaderResult = await command.args[i].typeReader.read(command, message, command.args[i], args, input, ...custom);
 
           if (typeReaderResult.success === false) {
             return typeReaderResult;
@@ -161,7 +162,7 @@ class Handler {
       if (defaultValue === false) {
         for (let j = 0; j &lt; command.args[i].preconditions.length; j++) {
           try {
-            const preconditionResult = await command.args[i].preconditions[j].run(command, message, command.args[i], args, value);
+            const preconditionResult = await command.args[i].preconditions[j].run(command, message, command.args[i], args, value, ...custom);
 
             if (preconditionResult.success === false) {
               return preconditionResult;
@@ -176,10 +177,10 @@ class Handler {
     }
 
     try {
-      await command.run(message, args);
+      await command.run(message, args, ...custom);
 
       if (command.hasCooldown === true) {
-        command.cooldowns.set(message.author.id + (message.guild !== null ? message.guild.id : ''), Date.now() + command.cooldown);
+        command.cooldowns[message.author.id + (message.guild !== null ? '-' + message.guild.id : '')] = Date.now() + command.cooldown;
       }
 
       return Constants.results.success(command);
@@ -226,13 +227,13 @@ module.exports = Handler;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Argument.html">Argument</a></li><li><a href="ArgumentPrecondition.html">ArgumentPrecondition</a></li><li><a href="Command.html">Command</a></li><li><a href="CooldownResult.html">CooldownResult</a></li><li><a href="ExceptionResult.html">ExceptionResult</a></li><li><a href="Group.html">Group</a></li><li><a href="Handler.html">Handler</a></li><li><a href="Precondition.html">Precondition</a></li><li><a href="PreconditionResult.html">PreconditionResult</a></li><li><a href="Registry.html">Registry</a></li><li><a href="Result.html">Result</a></li><li><a href="TypeReader.html">TypeReader</a></li><li><a href="TypeReaderResult.html">TypeReaderResult</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ArgumentDefault">ArgumentDefault</a></li><li><a href="global.html#CommandError">CommandError</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Argument.html">Argument</a></li><li><a href="ArgumentPrecondition.html">ArgumentPrecondition</a></li><li><a href="Command.html">Command</a></li><li><a href="CooldownResult.html">CooldownResult</a></li><li><a href="ExceptionResult.html">ExceptionResult</a></li><li><a href="Group.html">Group</a></li><li><a href="Handler.html">Handler</a></li><li><a href="Precondition.html">Precondition</a></li><li><a href="PreconditionResult.html">PreconditionResult</a></li><li><a href="Registry.html">Registry</a></li><li><a href="Result.html">Result</a></li><li><a href="TypeReader.html">TypeReader</a></li><li><a href="TypeReaderResult.html">TypeReaderResult</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ArgumentDefault">ArgumentDefault</a></li><li><a href="global.html#CommandError">CommandError</a></li><li><a href="global.html#DiscordChannelTypes">DiscordChannelTypes</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Oct 26 2017 22:37:07 GMT-0400 (EDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Oct 31 2017 20:10:31 GMT-0400 (EDT)
 </footer>
 
 <script> prettyPrint(); </script>

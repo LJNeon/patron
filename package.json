@@ -28,8 +28,8 @@
   "homepage": "https://github.com/vim2meta/patron.js#readme",
   "dependencies": {},
   "devDependencies": {
-    "eslint": "^4.9.0",
+    "eslint": "^4.10.0",
     "jsdoc": "^3.5.3",
-    "typescript": "^2.4.2"
+    "typescript": "^2.6.1"
   }
 }

@@ -28,7 +28,7 @@ declare module 'patron.js' {
   }
 
   export class ArgumentPrecondition {
-    public run(command: Command, message: object, argument: Argument, args: object, value: any): Promise<PreconditionResult>;
+    public run(command: Command, message: object, argument: Argument, args: object, value: any, custom: any): Promise<PreconditionResult>;
   }
 
   export class Command {
@@ -44,9 +44,9 @@ declare module 'patron.js' {
     public args: Argument[];
     public coooldown: number;
     public hasCooldown: boolean;
-    private cooldowns: Map<string, number>;
+    private cooldowns: object;
     constructor(options: CommandOptions);
-    public run(message: object, args: object): Promise<any>;
+    public run(message: object, args: object, custom: any): Promise<any>;
     public getUsage(): string;
     public getExample(): string;
   }
@@ -60,7 +60,8 @@ declare module 'patron.js' {
     CommandNotFound,
     Cooldown,
     InvalidArgCount,
-    Exception
+    Exception,
+    DmOnly
   }
 
   export class CooldownResult extends Result {
@@ -88,11 +89,11 @@ declare module 'patron.js' {
   export class Handler {
     public registry: Registry;
     constructor(registry: Registry);
-    public run(message: object, prefix: string): Promise<Result | CooldownResult | ExceptionResult | PreconditionResult | TypeReaderResult>;
+    public run(message: object, prefix: string, custom: any): Promise<Result | CooldownResult | ExceptionResult | PreconditionResult | TypeReaderResult>;
   }
 
   export class Precondition {
-    public run(command: Command, message: object): Promise<PreconditionResult>;
+    public run(command: Command, message: object, custom: any): Promise<PreconditionResult>;
   }
 
   export class PreconditionResult extends Result {
@@ -132,7 +133,7 @@ declare module 'patron.js' {
     private static validateTypeReader(typeReader: TypeReader, name: string): void;
     public type: string;
     constructor(options: TypeReaderOptions);
-    public read(command: Command, message: object, argument: Argument, args: object, input: string): Promise<TypeReaderResult>;
+    public read(command: Command, message: object, argument: Argument, args: object, input: string, custom: any): Promise<TypeReaderResult>;
   }
 
   export class TypeReaderResult extends Result {

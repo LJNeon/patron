@@ -14,7 +14,7 @@ const Precondition = require('./Precondition.js');
  * @prop {Argument[]} args The arguments of the command.
  * @prop {boolean} hasCooldown Whether the command has a cooldown.
  * @prop {number} cooldown The length of the cooldown in milliseconds.
- * @prop {Map<string, number>} cooldowns The current map of all user cooldowns on the command.
+ * @prop {object} cooldowns An object of all user cooldowns on the command.
  */
 class Command {
   /**
@@ -44,7 +44,7 @@ class Command {
     this.args = options.args !== undefined ? options.args : [];
     this.hasCooldown = options.cooldown !== undefined;
     this.cooldown = this.hasCooldown === true ? options.cooldown : 0;
-    this.cooldowns = this.hasCooldown === true ? new Map() : null;
+    this.cooldowns = this.hasCooldown === true ? {} : null;
 
     this.constructor.validateCommand(this, this.constructor.name);
   }
@@ -53,10 +53,11 @@ class Command {
    * Executes the command.
    * @param {Message} message The received message.
    * @param {object} args The arguments of the command.
+   * @param {*} custom The custom parameters passed into the handler.
    * @abstract
    * @returns {Promise} Resolves once the execution of the command is complete.
    */
-  async run(message, args) {
+  async run(message, args, custom) {
     throw new Error(this.constructor.name + ' does not have a run method.');
   }
 

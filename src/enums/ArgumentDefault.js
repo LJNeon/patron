@@ -1,21 +1,21 @@
 /**
  * The argument defaults.
- * @prop {Symbol} Author The author of the command message.
- * @prop {Symbol} Message The command message.
- * @prop {Symbol} Member The guild member of the author of the command message.
- * @prop {Symbol} Channel The channel of the command message.
- * @prop {Symbol} Guild The guild of the command message.
- * @prop {Symbol} HighestRole The highest role of the author of the command message.
  * @enum {Symbol}
  * @readonly
  */
 
 const ArgumentDefault = {
+  /** The author of the command message. */
   Author: Symbol(),
+  /** The command message. */
   Message: Symbol(),
+  /** The guild member of the author of the command message. */
   Member: Symbol(),
+  /** The channel of the command message. */
   Channel: Symbol(),
+  /** The guild of the command message. */
   Guild: Symbol(),
+  /** The highest role of the author of the command message. */
   HighestRole: Symbol()
 };
 

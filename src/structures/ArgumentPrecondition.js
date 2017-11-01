@@ -9,10 +9,11 @@ class ArgumentPrecondition {
    * @param {Argument} argument The argument in question.
    * @param {object} args The currently resolved arguments.
    * @param {*} value The value of the argument.
+   * @param {*} custom The custom parameters passed into the handler.
    * @abstract
    * @returns {Promise<PreconditionResult>} The result of the argument precondition.
    */
-  async run(command, message, argument, args, value) {
+  async run(command, message, argument, args, value, custom) {
     throw new Error(this.constructor.name + ' has no run method.');
   }
 }
