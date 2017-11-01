@@ -13,7 +13,7 @@ function requireAll(path) {
     const name = file.match(regexes.filter);
 
     if (fs.statSync(parsedPath).isDirectory() === true && regexes.excludeDir.test(file) === false) {
-      modules.push(requireAll(parsedPath));
+      modules.push(...requireAll(parsedPath));
     } else if (name !== null) {
       modules.push(require(parsedPath));
     }
