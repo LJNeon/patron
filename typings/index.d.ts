@@ -206,7 +206,7 @@ declare module 'patron.js' {
   }
 
   interface RegistryOptions {
-    library?: string;
+    library: string;
   }
 
   interface TypeReaderResultOptions extends ResultOptions {

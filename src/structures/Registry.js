@@ -16,7 +16,7 @@ const requireAll = require('../utility/RequireAll.js');
 class Registry {
   /**
    * @typedef {object} RegistryOptions The registry options.
-   * @prop {string?} library The library of the registry.
+   * @prop {string} library The library of the registry.
    */
 
   /**
@@ -26,7 +26,7 @@ class Registry {
     this.commands = [];
     this.groups = [];
     this.typeReaders = [];
-    this.library = options !== undefined && options.library !== undefined ? options.library : 'discord.js';
+    this.library = options.library;
     this.libraryHandler = new LibraryHandler({ library: this.library });
 
     this.constructor.validateRegistry(this);
