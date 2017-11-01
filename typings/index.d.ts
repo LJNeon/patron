@@ -28,7 +28,11 @@ declare module 'patron.js' {
   }
 
   export class ArgumentPrecondition {
+    private static validateArgumentPrecondition(registry: ArgumentPrecondition, name: string): void;
+    public name: string;
+    public description: string;
     public run(command: Command, message: object, argument: Argument, args: object, value: any, custom: any): Promise<PreconditionResult>;
+    constructor(options: ArgumentPreconditionOptions);
   }
 
   export class Command {
@@ -88,12 +92,16 @@ declare module 'patron.js' {
 
   export class Handler {
     public registry: Registry;
+    public run(message: object, prefix: string, ...custom): Promise<Result | CooldownResult | ExceptionResult | PreconditionResult | TypeReaderResult>;
     constructor(registry: Registry);
-    public run(message: object, prefix: string, custom: any): Promise<Result | CooldownResult | ExceptionResult | PreconditionResult | TypeReaderResult>;
   }
 
   export class Precondition {
+    private static validatePrecondition(registry: Precondition, name: string): void;
+    public name: string;
+    public description: string;
     public run(command: Command, message: object, custom: any): Promise<PreconditionResult>;
+    constructor(options: PreconditionOptions);
   }
 
   export class PreconditionResult extends Result {
@@ -102,23 +110,22 @@ declare module 'patron.js' {
     private constructor(options: ResultOptions);
   }
 
-  export const preconditions: preconditions;
-
   export class Registry {
+    private static validateRegistry(registry: Registry, name: string): void;
     public library: string;
     public commands: Command[];
     public groups: Group[];
     public typeReaders: TypeReader[];
+    public preconditions: Precondition[];
+    public argumentPreconditions: ArgumentPrecondition[];
     constructor(options: RegistryOptions);
     public registerDefaultTypeReaders(): Registry;
-    public registerTypeReadersIn(path: string): Registry;
     public registerTypeReaders(typeReaders: TypeReader[]): Registry;
-    public registerGroupsIn(path: string): Registry;
     public registerGroups(groups: Group[]): Registry;
-    public registerCommandsIn(path: string): Registry;
     public registerCommands(commands: Command[]): Registry;
-    private static validateRegistry(registry: Registry): void;
-    private constructor(options: RegistryOptions);
+    public registerPreconditions(preconditions: Precondition[]): Registry;
+    public registerArgumentPreconditions(argumentPreconditions: ArgumentPrecondition[]): Registry;
+    constructor(options: RegistryOptions);
   }
 
   export class Result {
@@ -132,16 +139,17 @@ declare module 'patron.js' {
   export class TypeReader {
     private static validateTypeReader(typeReader: TypeReader, name: string): void;
     public type: string;
-    constructor(options: TypeReaderOptions);
+    public description: string;
     public read(command: Command, message: object, argument: Argument, args: object, input: string, custom: any): Promise<TypeReaderResult>;
+    constructor(options: TypeReaderOptions);
   }
 
   export class TypeReaderResult extends Result {
-    public value: any;
-    public matches?: object[];
     public static fromSuccess(value: any): TypeReaderResult;
     public static fromError(command: Command, reason: string, matches?: object[]): TypeReaderResult;
-    private constructor(options: TypeReaderResultOptions);
+    public value: any;
+    public matches?: object[];
+    constructor(options: TypeReaderResultOptions);
   }
 
   interface ArgumentOptions {
@@ -155,8 +163,14 @@ declare module 'patron.js' {
     preconditions?: ArgumentPrecondition[];
   }
 
+  interface ArgumentPreconditionOptions {
+    name: string;
+    description?: string;
+  }
+
   interface CommandOptions {
     names: string[];
+    groupName: string;
     description?: string;
     guildOnly?: boolean;
     dmOnly?: boolean;
@@ -178,20 +192,13 @@ declare module 'patron.js' {
 
   interface GroupOptions {
     name: string;
-    description: string;
+    description?: string;
     preconditions?: Precondition[];
   }
 
-  interface preconditions {
-    Administrator: Precondition;
-    Between: typeof Between;
-    CharacterLimit: typeof CharacterLimit;
-    Maximum: typeof Maximum;
-    Minimum: typeof Minimum;
-    Moderator: Precondition;
-    NoSelf: ArgumentPrecondition;
-    NSFW: Precondition;
-    Owner: Precondition;
+  interface PreconditionOptions {
+    name: string;
+    description?: string;
   }
 
   interface ResultOptions {
@@ -203,6 +210,7 @@ declare module 'patron.js' {
 
   interface TypeReaderOptions {
     type: string;
+    description?: string;
   }
 
   interface RegistryOptions {

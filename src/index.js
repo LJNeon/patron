@@ -1,5 +1,3 @@
-const path = require('path');
-
 module.exports = {
   Argument: require('./structures/Argument.js'),
   ArgumentDefault: require('./enums/ArgumentDefault.js'),
@@ -11,7 +9,6 @@ module.exports = {
   Group: require('./structures/Group.js'),
   Handler: require('./structures/Handler.js'),
   Precondition: require('./structures/Precondition.js'),
-  preconditions: require('./utility/RequireAll.js')(path.join(__dirname, 'preconditions')),
   PreconditionResult: require('./results/PreconditionResult.js'),
   Registry: require('./structures/Registry.js'),
   Result: require('./results/Result.js'),

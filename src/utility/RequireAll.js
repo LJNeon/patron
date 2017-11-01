@@ -5,7 +5,7 @@ const regexes = {
 };
 
 function requireAll(path) {
-  const modules = {};
+  const modules = [];
   const files = fs.readdirSync(path);
 
   files.forEach((file) => {
@@ -13,9 +13,9 @@ function requireAll(path) {
     const name = file.match(regexes.filter);
 
     if (fs.statSync(parsedPath).isDirectory() === true && regexes.excludeDir.test(file) === false) {
-      modules[file] = requireAll(parsedPath);
+      modules.push(requireAll(parsedPath));
     } else if (name !== null) {
-      modules[name[1] || name[0]] = require(parsedPath);
+      modules.push(require(parsedPath));
     }
   });
   return modules;

@@ -11,8 +11,8 @@ class Group {
   /**
    * @typedef {object} GroupOptions The group options.
    * @prop {string} name The name of the group.
-   * @prop {string} description The description of the group.
-   * @prop {Precondition[]} [preconditions=undefined] The preconditions to be run on all commands inside the group.
+   * @prop {string} [description=''] The description of the group.
+   * @prop {Precondition[]} [preconditions=[]] The preconditions to be run on all commands inside the group.
    */
 
   /**

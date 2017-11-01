@@ -20,13 +20,14 @@ class Command {
   /**
    * @typedef {object} CommandOptions The command options.
    * @prop {string[]} names The names of the command.
+   * @prop {string} groupName The name of the group of the command.
    * @prop {string} [description=''] The description of the command.
    * @prop {boolean} [guildOnly=true] Whether the command may only be used in guild text channels.
    * @prop {boolean} [dmOnly=false] Whether the command may only be used in direct messages.
-   * @prop {string[]} [memberPermissions=undefined] The permissions required by the invoker to use the command.
-   * @prop {string[]} [botPermissions=undefined] The permissions required by the bot to execute the command.
-   * @prop {Precondition[]} [preconditions=undefined] The preconditions to be ran on the command.
-   * @prop {Argument[]} [args=undefined] The arguments of the command.
+   * @prop {string[]} [memberPermissions=[]] The permissions required by the invoker to use the command.
+   * @prop {string[]} [botPermissions=[]] The permissions required by the bot to execute the command.
+   * @prop {Precondition[]} [preconditions=[]] The preconditions to be ran on the command.
+   * @prop {Argument[]} [args=[]] The arguments of the command.
    * @prop {number} [cooldown=0] The length of the cooldown in milliseconds.
    */
 
@@ -35,6 +36,7 @@ class Command {
    */
   constructor(options) {
     this.names = options.names;
+    this.groupName = options.groupName;
     this.description = options.description !== undefined ? options.description : '';
     this.guildOnly = options.guildOnly !== undefined ? options.guildOnly : true;
     this.dmOnly = options.dmOnly !== undefined ? options.dmOnly : false;
@@ -114,6 +116,8 @@ class Command {
   static validateCommand(command, name) {
     if (Array.isArray(command.names) === false) {
       throw new TypeError(name + ': The names must be an array.');
+    } else if (typeof command.groupName !== 'string' || command.groupName !== command.groupName.toLowerCase()) {
+      throw new TypeError(name + ': The group name must be a lowercase string.');
     } else if (typeof command.description !== 'string') {
       throw new TypeError(name + ': The description must be a string.');
     } else if (typeof command.guildOnly !== 'boolean') {

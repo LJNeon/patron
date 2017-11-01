@@ -1,7 +1,25 @@
 /**
  * A command precondition.
+ * @prop {string} name The name of the precondition.
+ * @prop {string} description The description of the precondition.
  */
 class Precondition {
+  /**
+   * @typedef {object} PreconditionOptions The preconditions options.
+   * @prop {string} name The name of the precondition.
+   * @prop {string} [description=''] The description of the precondition.
+   */
+
+  /**
+   * @param {PreconditionOptions} options The preconditions options.
+   */
+  constructor(options) {
+    this.name = options.name;
+    this.description = options.description !== undefined ? options.description : '';
+
+    this.constructor.validatePrecondition(this, this.constructor.name);
+  }
+
   /**
    * Executes the precondition.
    * @param {Command} command The command being executed.
@@ -12,6 +30,20 @@ class Precondition {
    */
   async run(command, message, custom) {
     throw new Error(this.constructor.name + ' has no run method.');
+  }
+
+  /**
+   * Validates a precondition.
+   * @param {Precondition} precondition The precondition to validate.
+   * @param {string} name The name of the constructor of the precondition.
+   * @private
+   */
+  static validatePrecondition(precondition, name) {
+    if (typeof precondition.name !== 'string' || precondition.name !== precondition.name.toLowerCase()) {
+      throw new TypeError(name + ': The name must be a lowercase string.');
+    } else if (typeof precondition.description !== 'string') {
+      throw new TypeError(name + ': All precondition descriptions must be a string.');
+    }
   }
 }
 
