@@ -27,7 +27,7 @@ class ArgumentPrecondition {
    * @param {Argument} argument The argument in question.
    * @param {object} args The currently resolved arguments.
    * @param {*} value The value of the argument.
-   * @param {object} options The options of the argument precondition.
+   * @param {*} options The options of the argument precondition.
    * @param {*} custom The custom parameters passed into the handler.
    * @abstract
    * @returns {Promise<PreconditionResult>} The result of the argument precondition.
