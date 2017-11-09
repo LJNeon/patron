@@ -1,8 +1,3 @@
-import Between from '../src/preconditions/Between.js';
-import CharacterLimit from '../src/preconditions/CharacterLimit.js'
-import Maximum from '../src/preconditions/Maximum.js'
-import Minimum from '../src/preconditions/Minimum.js'
-
 declare module 'patron.js' {
   export class Argument {
     private static validateArgument(argument: Argument, name: string): void;
@@ -31,7 +26,7 @@ declare module 'patron.js' {
     private static validateArgumentPrecondition(registry: ArgumentPrecondition, name: string): void;
     public name: string;
     public description: string;
-    public run(command: Command, message: object, argument: Argument, args: object, value: any, custom: any): Promise<PreconditionResult>;
+    public run(command: Command, message: object, argument: Argument, args: object, value: any, options: any, custom: any): Promise<PreconditionResult>;
     constructor(options: ArgumentPreconditionOptions);
   }
 
@@ -100,7 +95,7 @@ declare module 'patron.js' {
     private static validatePrecondition(registry: Precondition, name: string): void;
     public name: string;
     public description: string;
-    public run(command: Command, message: object, custom: any): Promise<PreconditionResult>;
+    public run(command: Command, message: object, options: any, custom: any): Promise<PreconditionResult>;
     constructor(options: PreconditionOptions);
   }
 
@@ -119,11 +114,11 @@ declare module 'patron.js' {
     public preconditions: Precondition[];
     public argumentPreconditions: ArgumentPrecondition[];
     constructor(options: RegistryOptions);
-    public registerDefaultTypeReaders(): Registry;
+    public registerGlobalTypeReaders(): Registry;
+    public registerLibraryTypeReaders(): Registry;
     public registerTypeReaders(typeReaders: TypeReader[]): Registry;
     public registerGroups(groups: Group[]): Registry;
     public registerCommands(commands: Command[]): Registry;
-    public registerPreconditions(preconditions: Precondition[]): Registry;
     public registerArgumentPreconditions(argumentPreconditions: ArgumentPrecondition[]): Registry;
     constructor(options: RegistryOptions);
   }
@@ -160,7 +155,7 @@ declare module 'patron.js' {
     defaultValue?: any;
     infinite?: boolean;
     remainder?: boolean;
-    preconditions?: ArgumentPrecondition[];
+    preconditions?: string[] | object[];
   }
 
   interface ArgumentPreconditionOptions {

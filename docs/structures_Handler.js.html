@@ -51,132 +51,130 @@ class Handler {
    * @returns {Promise&lt;Result>|Promise&lt;CooldownResult>|Promise&lt;TypeReaderResult>|Promise&lt;PreconditionResult>|Promise&lt;ExceptionResult>} The result of the command execution.
    */
   async run(message, prefix, ...custom) {
-    const split = message.content.slice(prefix.length).match(Constants.regexes.argument);
+    try {
+      const split = message.content.slice(prefix.length).match(Constants.regexes.argument);
 
-    if (split === null) {
-      return Constants.results.commandNotFound;
-    }
-
-    const commandName = split.shift().toLowerCase();
-
-    const command = this.registry.commands.find((x) => x.names.some((y) => y === commandName));
-
-    if (command === undefined) {
-      return Constants.results.commandNotFound;
-    }
-
-    if (message.guild !== null) {
-      if (command.dmOnly === true) {
-        return Constants.results.dmOnly(command);
+      if (split === null) {
+        return Constants.results.commandNotFound;
       }
 
-      const result = this.registry.libraryHandler.validatePermissions(command, message);
+      const commandName = split.shift().toLowerCase();
 
-      if (result !== undefined) {
-        return result;
+      var command = this.registry.commands.find((x) => x.names.some((y) => y === commandName));
+
+      if (command === undefined) {
+        return Constants.results.commandNotFound;
       }
-    } else if (command.guildOnly === true) {
-      return Constants.results.guildOnly(command);
-    }
 
-    const preconditions = command.group.preconditions.concat(command.preconditions);
+      if (message.guild !== null) {
+        if (command.dmOnly === true) {
+          return Constants.results.dmOnly(command);
+        }
 
-    for (let i = 0; i &lt; preconditions.length; i++) {
-      try {
-        const result = await preconditions[i].run(command, message, ...custom);
+        const result = this.registry.libraryHandler.validatePermissions(command, message);
+
+        if (result !== undefined) {
+          return result;
+        }
+      } else if (command.guildOnly === true) {
+        return Constants.results.guildOnly(command);
+      }
+
+      for (let i = 0; i &lt; command.preconditions.length; i++) {
+        const result = await command.preconditions[i].run(command, message, command.preconditionOptions[i], ...custom);
 
         if (result.success === false) {
           return result;
         }
-      } catch (err) {
-        return ExceptionResult.fromError(command, err);
       }
-    }
 
-    if (command.hasCooldown === true) {
-      const cooldown = command.cooldowns[message.author.id + (message.guild !== null ? '-' + message.guild.id : '')];
+      for (let i = 0; i &lt; command.group.preconditions.length; i++) {
+        const result = await command.group.preconditions[i].run(command, message, command.group.preconditionOptions[i], ...custom);
 
-      if (cooldown !== undefined) {
-        const difference = cooldown - Date.now();
-
-        if (difference > 0) {
-          return CooldownResult.fromError(command, command.cooldown, difference);
+        if (result.success === false) {
+          return result;
         }
       }
-    }
 
-    const args = {};
+      if (command.hasCooldown === true) {
+        const cooldown = command.cooldowns[message.author.id + (message.guild !== null ? '-' + message.guild.id : '')];
 
-    for (let i = 0; i &lt; command.args.length; i++) {
-      let value = [];
-      let defaultValue = false;
+        if (cooldown !== undefined) {
+          const difference = cooldown - Date.now();
 
-      if (command.args[i].infinite === true) {
-        if (split.length === 0) {
-          if (command.args[i].optional === true) {
+          if (difference > 0) {
+            return CooldownResult.fromError(command, command.cooldown, difference);
+          }
+        }
+      }
+
+      const args = {};
+
+      for (let i = 0; i &lt; command.args.length; i++) {
+        let value = [];
+        let defaultValue = false;
+
+        if (command.args[i].infinite === true) {
+          if (split.length === 0) {
+            if (command.args[i].optional === true) {
+              value = this.defaultValue(command.args[i], message);
+              defaultValue = true;
+            } else {
+              return Constants.results.invalidArgCount(command);
+            }
+          } else {
+            for (let j = 0; j &lt; split.length; j++) {
+              if (Constants.regexes.quotesMatch.test(split[j]) === true) {
+                split[j] = split[j].replace(Constants.regexes.quotes, '');
+              }
+
+              const typeReaderResult = await command.args[i].typeReader.read(command, message, command.args[i], args, split[j], ...custom);
+
+              if (typeReaderResult.success === false) {
+                return typeReaderResult;
+              }
+
+              value.push(typeReaderResult.value);
+            }
+          }
+        } else {
+          let input = command.args[i].remainder === true ? split.join(' ') : split.shift();
+
+          if (Constants.regexes.quotesMatch.test(input) === true) {
+            input = input.replace(Constants.regexes.quotes, '');
+          }
+
+          if (input === undefined || input === '') {
+            if (command.args[i].optional === false) {
+              return Constants.results.invalidArgCount(command);
+            }
+
             value = this.defaultValue(command.args[i], message);
             defaultValue = true;
           } else {
-            return Constants.results.invalidArgCount(command);
-          }
-        } else {
-          for (let j = 0; j &lt; split.length; j++) {
-            if (Constants.regexes.quotesMatch.test(split[j]) === true) {
-              split[j] = split[j].replace(Constants.regexes.quotes, '');
-            }
-
-            const typeReaderResult = await command.args[i].typeReader.read(command, message, command.args[i], args, split[j], ...custom);
+            const typeReaderResult = await command.args[i].typeReader.read(command, message, command.args[i], args, input, ...custom);
 
             if (typeReaderResult.success === false) {
               return typeReaderResult;
             }
 
-            value.push(typeReaderResult.value);
+            value = typeReaderResult.value;
           }
         }
-      } else {
-        let input = command.args[i].remainder === true ? split.join(' ') : split.shift();
 
-        if (Constants.regexes.quotesMatch.test(input) === true) {
-          input = input.replace(Constants.regexes.quotes, '');
-        }
-
-        if (input === undefined || input === '') {
-          if (command.args[i].optional === false) {
-            return Constants.results.invalidArgCount(command);
-          }
-
-          value = this.defaultValue(command.args[i], message);
-          defaultValue = true;
-        } else {
-          const typeReaderResult = await command.args[i].typeReader.read(command, message, command.args[i], args, input, ...custom);
-
-          if (typeReaderResult.success === false) {
-            return typeReaderResult;
-          }
-
-          value = typeReaderResult.value;
-        }
-      }
-
-      if (defaultValue === false) {
-        for (let j = 0; j &lt; command.args[i].preconditions.length; j++) {
-          try {
-            const preconditionResult = await command.args[i].preconditions[j].run(command, message, command.args[i], args, value, ...custom);
+        if (defaultValue === false) {
+          for (let j = 0; j &lt; command.args[i].preconditions.length; j++) {
+            const preconditionResult = await command.args[i].preconditions[j].run(command, message, command.args[i], args, value, command.args[i].preconditionOptions[j], ...custom);
 
             if (preconditionResult.success === false) {
               return preconditionResult;
             }
-          } catch (err) {
-            return ExceptionResult.fromError(command, err);
           }
         }
+
+        args[command.args[i].key] = value;
       }
 
-      args[command.args[i].key] = value;
-    }
-
-    try {
       await command.run(message, args, ...custom);
 
       if (command.hasCooldown === true) {
@@ -233,7 +231,7 @@ module.exports = Handler;
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Nov 01 2017 13:53:24 GMT-0400 (Est (heure d’été))
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Nov 09 2017 10:48:32 GMT-0500 (EST)
 </footer>
 
 <script> prettyPrint(); </script>
