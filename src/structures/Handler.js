@@ -27,7 +27,7 @@ class Handler {
       const split = message.content.slice(prefix.length).match(Constants.regexes.argument);
 
       if (split === null) {
-        return Constants.results.commandNotFound;
+        return Constants.results.commandNotFound();
       }
 
       const commandName = split.shift().toLowerCase();
@@ -35,7 +35,7 @@ class Handler {
       var command = this.registry.commands.find((x) => x.names.some((y) => y === commandName));
 
       if (command === undefined) {
-        return Constants.results.commandNotFound;
+        return Constants.results.commandNotFound(commandName);
       }
 
       if (message.guild !== null) {

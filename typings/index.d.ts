@@ -126,6 +126,7 @@ declare module 'patron.js' {
   export class Result {
     public success: boolean;
     public command?: Command;
+    public commandName?: string;
     public commandError?: CommandError;
     public errorReason?: string;
     constructor(options: ResultOptions);
@@ -201,6 +202,7 @@ declare module 'patron.js' {
   interface ResultOptions {
     success: boolean;
     command?: Command;
+    commandName?: string;
     commandError?: CommandError;
     errorReason?: string;
   }
