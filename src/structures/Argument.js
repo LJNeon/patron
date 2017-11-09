@@ -23,7 +23,7 @@ class Argument {
    * @prop {string} example An example of the argument.
    * @prop {*} [defaultValue=undefined] The default value of the argument.
    * @prop {boolean} [infinite=false] Allow this argument accept an infinite number of values and return them in an array.
-   * @prop {ArgumentPrecondition[]} [preconditions=undefined] The preconditions to be ran on the argument.
+   * @prop {Array<string|object>} [preconditions=[]] The preconditions to be ran on the argument.
    * @prop {boolean} [remainder=false] Whether the argument is the remainder.
    */
 
@@ -40,6 +40,7 @@ class Argument {
     this.preconditions = options.preconditions !== undefined ? options.preconditions : [];
     this.optional = options.defaultValue !== undefined;
     this.remainder = options.remainder !== undefined ? options.remainder : false;
+    this.preconditionOptions = [];
 
     this.constructor.validateArgument(this, this.constructor.name);
   }

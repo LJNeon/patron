@@ -1,5 +1,4 @@
 const Argument = require('./Argument.js');
-const Precondition = require('./Precondition.js');
 
 /**
  * A command.
@@ -26,7 +25,7 @@ class Command {
    * @prop {boolean} [dmOnly=false] Whether the command may only be used in direct messages.
    * @prop {string[]} [memberPermissions=[]] The permissions required by the invoker to use the command.
    * @prop {string[]} [botPermissions=[]] The permissions required by the bot to execute the command.
-   * @prop {Precondition[]} [preconditions=[]] The preconditions to be ran on the command.
+   * @prop {Array<string|object>} [preconditions=[]] The preconditions to be ran on the command.
    * @prop {Argument[]} [args=[]] The arguments of the command.
    * @prop {number} [cooldown=0] The length of the cooldown in milliseconds.
    */
@@ -47,6 +46,7 @@ class Command {
     this.hasCooldown = options.cooldown !== undefined;
     this.cooldown = this.hasCooldown === true ? options.cooldown : 0;
     this.cooldowns = this.hasCooldown === true ? {} : null;
+    this.preconditionOptions = [];
 
     this.constructor.validateCommand(this, this.constructor.name);
   }
@@ -167,10 +167,12 @@ class Command {
     }
 
     for (let i = 0; i < command.preconditions.length; i++) {
-      if (typeof command.preconditions[i] !== 'object') {
-        throw new TypeError(name + ': All precondition exports must be an instance of the precondition.');
-      } else if ((command.preconditions[i] instanceof Precondition) === false) {
-        throw new TypeError(name + ': All command preconditions must inherit the Precondition class.');
+      const type = typeof command.preconditions[i];
+
+      if (type !== 'string' && type !== 'object') {
+        throw new TypeError(name + ': All preconditions must either be a name of the precondition or an object containing the name and the precondition options.');
+      } else if (type === 'object' && (command.preconditions[i].name === undefined || command.preconditions[i].options === undefined)) {
+        throw new TypeError(name + ': All precondition objects must contain the name of the precondition and the options.');
       }
     }
   }

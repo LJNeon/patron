@@ -1,23 +1,21 @@
 const fs = require('fs');
-const regexes = {
-  excludeDir: /^\./,
-  filter: /^([^.].*)\.js(on)?$/
-};
+const Constants = require('./Constants.js');
 
 function requireAll(path) {
-  const modules = [];
   const files = fs.readdirSync(path);
+  const modules = [];
 
-  files.forEach((file) => {
-    const parsedPath = path + '/' + file;
-    const name = file.match(regexes.filter);
+  for (let i = 0; i < files.length; i++) {
+    const parsedPath = path + '/' + files[i];
+    const name = files[i].match(Constants.regexes.filter);
 
-    if (fs.statSync(parsedPath).isDirectory() === true && regexes.excludeDir.test(file) === false) {
+    if (fs.statSync(parsedPath).isDirectory() === true && Constants.regexes.excludeDir.test(files[i]) === false) {
       modules.push(...requireAll(parsedPath));
     } else if (name !== null) {
       modules.push(require(parsedPath));
     }
-  });
+  }
+
   return modules;
 }
 

@@ -6,7 +6,7 @@ const Precondition = require('./Precondition.js');
 const ArgumentPrecondition = require('./ArgumentPrecondition.js');
 const Constants = require('../utility/Constants.js');
 const LibraryHandler = require('../utility/LibraryHandler.js');
-const requireAll = require('../utility/RequireAll.js');
+const RequireAll = require('../utility/RequireAll.js');
 
 /**
  * A registry containing all commands, groups and type readers.
@@ -36,7 +36,7 @@ class Registry {
     this.libraryHandler = new LibraryHandler({ library: this.library });
 
     this.constructor.validateRegistry(this);
-    requireAll(path.join(__dirname, '/../extensions/' + this.library));
+    RequireAll(path.join(__dirname, '/../extensions/' + this.library));
   }
 
   /**
@@ -90,12 +90,19 @@ class Registry {
   }
 
   /**
-   * Registers all default type readers.
+   * Registers all global type readers.
    * @returns {Registry} The registry being used.
    */
-  registerDefaultTypeReaders() {
-    this.registerTypeReadersIn(path.join(__dirname, '/../readers/' + this.library));
-    return this.registerTypeReadersIn(path.join(__dirname, '/../readers/global'));
+  registerGlobalTypeReaders() {
+    return this.registerTypeReaders(RequireAll(path.join(__dirname, '/../readers/global')));
+  }
+
+  /**
+   * Registers all library type readers.
+   * @returns {Registry} The registry being used.
+   */
+  registerLibraryTypeReaders() {
+    return this.registerTypeReaders(RequireAll(path.join(__dirname, '/../readers/' + this.library)));
   }
 
   /**
@@ -142,6 +149,19 @@ class Registry {
         throw new Error('The ' + groups[i].name + ' group already exists.');
       }
 
+      for (let j = 0; groups[i].preconditions.length; j++) {
+        const name = typeof groups[i].preconditions[j] === 'string' ? groups[i].preconditions[j] : groups[i].preconditions[j].name;
+        const options = groups[i].preconditions[j].options;
+        const precondition = this.preconditions.find((x) => x.name === name);
+
+        if (precondition === undefined) {
+          throw new Error('The ' + name + ' precondition is not registered.');
+        }
+
+        groups[i].preconditions[j] = precondition;
+        groups[i].preconditionOptions[j] = options;
+      }
+
       this.groups.push(groups[i]);
     }
 
@@ -179,6 +199,32 @@ class Registry {
         }
 
         commands[i].args[j].typeReader = typeReader;
+
+        for (let h = 0; h < commands[i].args[j].preconditions.length; h++) {
+          const name = typeof commands[i].args[j].preconditions[h] === 'string' ? commands[i].args[j].preconditions[h] : commands[i].args[j].preconditions[h].name;
+          const options = commands[i].args[j].preconditions[h].options;
+          const precondition = this.argumentPreconditions.find((x) => x.name === name);
+
+          if (precondition === undefined) {
+            throw new Error('The ' + name + ' argument precondition is not registered.');
+          }
+
+          commands[i].args[j].preconditions[h] = precondition;
+          commands[i].args[j].preconditionOptions[h] = options;
+        }
+      }
+
+      for (let j = 0; commands[i].preconditions.length; j++) {
+        const name = typeof commands[i].preconditions[j] === 'string' ? commands[i].preconditions[j] : commands[i].preconditions[j].name;
+        const options = commands[i].preconditions[j].options;
+        const precondition = this.preconditions.find((x) => x.name === name);
+
+        if (precondition === undefined) {
+          throw new Error('The ' + name + ' precondition is not registered.');
+        }
+
+        commands[i].preconditions[j] = precondition;
+        commands[i].preconditionOptions[j] = options;
       }
 
       const groupIndex = this.groups.findIndex((v) => v.name === commands[i].groupName);

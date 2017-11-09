@@ -12,6 +12,7 @@ module.exports = {
   PreconditionResult: require('./results/PreconditionResult.js'),
   Registry: require('./structures/Registry.js'),
   Result: require('./results/Result.js'),
+  RequireAll: require('./utility/RequireAll.js'),
   TypeReader: require('./structures/TypeReader.js'),
   TypeReaderResult: require('./results/TypeReaderResult.js'),
   version: require('../package.json').version

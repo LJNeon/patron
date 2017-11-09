@@ -53,6 +53,8 @@ class Constants {
       days: /^(\d+(\.\d+)?|\.\d+)\s*(days?|d)$/i,
       decades: /^(\d+(\.\d+)?|\.\d+)\s*(dec(ade)?s?)$/i,
       emoji: /^<:.+:\d+>/,
+      excludeDir: /^\./,
+      filter: /^([^.].*)\.js(on)?$/,
       hours: /^(\d+(\.\d+)?|\.\d+)\s*(hours?|h)$/i,
       id: /^\d{17,19}/,
       million: /m\$?$/i,

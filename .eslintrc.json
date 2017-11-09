@@ -116,7 +116,6 @@
     ],
     "yoda": "error",
     "array-bracket-spacing": "error",
-    "no-var": "error",
     "no-else-return": "error",
     "no-extend-native": "error",
     "no-empty-function": "error",

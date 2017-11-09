@@ -23,6 +23,7 @@ class Group {
     this.description = options.description !== undefined ? options.description : '';
     this.preconditions = options.preconditions !== undefined ? options.preconditions : [];
     this.commands = [];
+    this.preconditionOptions = [];
 
     this.constructor.validateGroup(this, this.constructor.name);
   }
