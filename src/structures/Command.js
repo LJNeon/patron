@@ -165,16 +165,6 @@ class Command {
         throw new Error(name + ': There is more than one argument by the key of ' + command.args[i].key + '.');
       }
     }
-
-    for (let i = 0; i < command.preconditions.length; i++) {
-      const type = typeof command.preconditions[i];
-
-      if (type !== 'string' && type !== 'object') {
-        throw new TypeError(name + ': All preconditions must either be a name of the precondition or an object containing the name and the precondition options.');
-      } else if (type === 'object' && (command.preconditions[i].name === undefined || command.preconditions[i].options === undefined)) {
-        throw new TypeError(name + ': All precondition objects must contain the name of the precondition and the options.');
-      }
-    }
   }
 }
 

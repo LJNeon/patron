@@ -173,7 +173,7 @@ declare module 'patron.js' {
     dmOnly?: boolean;
     userPermissions?: string[];
     botPermissions?: string[];
-    preconditions?: Precondition[];
+    preconditions?: string[] | object[];
     args?: Argument[];
     cooldown?: number;
   }
@@ -190,7 +190,7 @@ declare module 'patron.js' {
   interface GroupOptions {
     name: string;
     description?: string;
-    preconditions?: Precondition[];
+    preconditions?: string[] | object[];
   }
 
   interface PreconditionOptions {

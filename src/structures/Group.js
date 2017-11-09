@@ -1,5 +1,3 @@
-const Precondition = require('./Precondition.js');
-
 /**
  * A command group.
  * @prop {string} name The name of the group.
@@ -12,7 +10,7 @@ class Group {
    * @typedef {object} GroupOptions The group options.
    * @prop {string} name The name of the group.
    * @prop {string} [description=''] The description of the group.
-   * @prop {Precondition[]} [preconditions=[]] The preconditions to be run on all commands inside the group.
+   * @prop {Array<string|object>} [preconditions=[]] The preconditions to be run on all commands inside the group.
    */
 
   /**
@@ -39,14 +37,6 @@ class Group {
       throw new TypeError(name + ': The name must be a lowercase string.');
     } else if (typeof group.description !== 'string') {
       throw new TypeError(name + ': All group descriptions must be a string.');
-    }
-
-    for (let i = 0; i < group.preconditions.length; i++) {
-      if (typeof group.preconditions[i] !== 'object') {
-        throw new TypeError(name + ': All precondition exports must be an instance of the precondition.');
-      } else if ((group.preconditions[i] instanceof Precondition) === false) {
-        throw new TypeError(name + ': All group preconditions must inherit the Precondition class.');
-      }
     }
   }
 }

@@ -1,4 +1,3 @@
-const ArgumentPrecondition = require('./ArgumentPrecondition.js');
 const Constants = require('../utility/Constants.js');
 
 /**
@@ -68,14 +67,6 @@ class Argument {
       throw new Error(name + ': An argument may not be infinite and remainder.');
     } else if (Array.isArray(argument.preconditions) === false) {
       throw new TypeError(name + ': The preconditions must be an array.');
-    }
-
-    for (let i = 0; i < argument.preconditions.length; i++) {
-      if (typeof argument.preconditions[i] !== 'object') {
-        throw new TypeError(name + ': All argument precondition exports must be an instance of the argument precondition.');
-      } else if ((argument.preconditions[i] instanceof ArgumentPrecondition) === false) {
-        throw new TypeError(name + ': All argument preconditions must inherit the ArgumentPrecondition class.');
-      }
     }
   }
 }
