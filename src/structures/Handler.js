@@ -75,7 +75,7 @@ class Handler {
           const difference = cooldown - Date.now();
 
           if (difference > 0) {
-            return CooldownResult.fromError(command, command.cooldown, difference);
+            return CooldownResult.fromError(command, difference);
           }
         }
       }

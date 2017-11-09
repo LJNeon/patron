@@ -1,7 +1,12 @@
 const fs = require('fs');
 const Constants = require('./Constants.js');
 
-function requireAll(path) {
+/**
+ * A function which returns all module exports of a folder.
+ * @param {string} path The path in question.
+ * @returns {object[]} An array of all the module exports.
+ */
+function RequireAll(path) {
   const files = fs.readdirSync(path);
   const modules = [];
 
@@ -10,7 +15,7 @@ function requireAll(path) {
     const name = files[i].match(Constants.regexes.filter);
 
     if (fs.statSync(parsedPath).isDirectory() === true && Constants.regexes.excludeDir.test(files[i]) === false) {
-      modules.push(...requireAll(parsedPath));
+      modules.push(...RequireAll(parsedPath));
     } else if (name !== null) {
       modules.push(require(parsedPath));
     }
@@ -19,4 +24,4 @@ function requireAll(path) {
   return modules;
 }
 
-module.exports = requireAll;
+module.exports = RequireAll;

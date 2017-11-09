@@ -64,9 +64,8 @@ declare module 'patron.js' {
   }
 
   export class CooldownResult extends Result {
-    public cooldown: number;
     public remaining: number;
-    public static fromError(command: Command, cooldown: number, remaining: number): CooldownResult;
+    public static fromError(command: Command, remaining: number): CooldownResult;
     private constructor(options: CooldownResultOptions);
   }
 
@@ -130,6 +129,8 @@ declare module 'patron.js' {
     public errorReason?: string;
     constructor(options: ResultOptions);
   }
+
+  export function RequireAll(path: string): object[];
 
   export class TypeReader {
     private static validateTypeReader(typeReader: TypeReader, name: string): void;

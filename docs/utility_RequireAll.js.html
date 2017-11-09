@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: enums/DiscordChannelTypes.js</title>
+    <title>JSDoc: Source: utility/RequireAll.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: enums/DiscordChannelTypes.js</h1>
+    <h1 class="page-title">Source: utility/RequireAll.js</h1>
 
     
 
@@ -26,26 +26,33 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/**
- * The discord channel types.
- * @enum {number}
- * @readonly
+            <pre class="prettyprint source linenums"><code>const fs = require('fs');
+const Constants = require('./Constants.js');
+
+/**
+ * A function which returns all module exports of a folder.
+ * @param {string} path The path in question.
+ * @returns {object[]} An array of all the module exports.
  */
+function RequireAll(path) {
+  const files = fs.readdirSync(path);
+  const modules = [];
 
-const DiscordChannelTypes = {
-  /** A guild text channel. */
-  TextChannel: 0,
-  /** A DM channel. */
-  DM: 1,
-  /** A guild voice channel. */
-  VoiceChannel: 2,
-  /** A group channel. */
-  GroupChannel: 3,
-  /** A guild category. */
-  GuildCategory: 4
-};
+  for (let i = 0; i &lt; files.length; i++) {
+    const parsedPath = path + '/' + files[i];
+    const name = files[i].match(Constants.regexes.filter);
 
-module.exports = DiscordChannelTypes;
+    if (fs.statSync(parsedPath).isDirectory() === true &amp;&amp; Constants.regexes.excludeDir.test(files[i]) === false) {
+      modules.push(...RequireAll(parsedPath));
+    } else if (name !== null) {
+      modules.push(require(parsedPath));
+    }
+  }
+
+  return modules;
+}
+
+module.exports = RequireAll;
 </code></pre>
         </article>
     </section>
