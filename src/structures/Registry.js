@@ -149,7 +149,7 @@ class Registry {
         throw new Error('The ' + groups[i].name + ' group already exists.');
       }
 
-      for (let j = 0; groups[i].preconditions.length; j++) {
+      for (let j = 0; j < groups[i].preconditions.length; j++) {
         const name = typeof groups[i].preconditions[j] === 'string' ? groups[i].preconditions[j] : groups[i].preconditions[j].name;
         const options = groups[i].preconditions[j].options;
         const precondition = this.preconditions.find((x) => x.name === name);
@@ -214,7 +214,7 @@ class Registry {
         }
       }
 
-      for (let j = 0; commands[i].preconditions.length; j++) {
+      for (let j = 0; j < commands[i].preconditions.length; j++) {
         const name = typeof commands[i].preconditions[j] === 'string' ? commands[i].preconditions[j] : commands[i].preconditions[j].name;
         const options = commands[i].preconditions[j].options;
         const precondition = this.preconditions.find((x) => x.name === name);
