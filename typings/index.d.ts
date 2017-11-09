@@ -119,6 +119,7 @@ declare module 'patron.js' {
     public registerGroups(groups: Group[]): Registry;
     public registerCommands(commands: Command[]): Registry;
     public registerArgumentPreconditions(argumentPreconditions: ArgumentPrecondition[]): Registry;
+    public registerPreconditions(preconditions: Precondition[]): Registry;
     constructor(options: RegistryOptions);
   }
 

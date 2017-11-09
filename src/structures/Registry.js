@@ -36,7 +36,7 @@ class Registry {
     this.libraryHandler = new LibraryHandler({ library: this.library });
 
     this.constructor.validateRegistry(this);
-    RequireAll(path.join(__dirname, '/../extensions/' + this.library));
+    RequireAll(path.join(__dirname, '/../extensions', this.library));
   }
 
   /**
@@ -94,7 +94,7 @@ class Registry {
    * @returns {Registry} The registry being used.
    */
   registerGlobalTypeReaders() {
-    return this.registerTypeReaders(RequireAll(path.join(__dirname, '/../readers/global')));
+    return this.registerTypeReaders(RequireAll(path.join(__dirname, '/../readers', 'global')));
   }
 
   /**
@@ -102,7 +102,7 @@ class Registry {
    * @returns {Registry} The registry being used.
    */
   registerLibraryTypeReaders() {
-    return this.registerTypeReaders(RequireAll(path.join(__dirname, '/../readers/' + this.library)));
+    return this.registerTypeReaders(RequireAll(path.join(__dirname, '/../readers', this.library)));
   }
 
   /**
