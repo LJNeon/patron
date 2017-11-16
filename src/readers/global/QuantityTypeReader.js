@@ -2,9 +2,9 @@ const TypeReader = require('../../structures/TypeReader.js');
 const TypeReaderResult = require('../../results/TypeReaderResult.js');
 const Constants = require('../../utility/Constants.js');
 
-class CurrencyTypeReader extends TypeReader {
+class QuantityTypeReader extends TypeReader {
   constructor() {
-    super({ type: 'currency' });
+    super({ type: 'quantity' });
   }
 
   async read(command, message, argument, args, input) {
@@ -26,4 +26,4 @@ class CurrencyTypeReader extends TypeReader {
   }
 }
 
-module.exports = new CurrencyTypeReader();
+module.exports = new QuantityTypeReader();
