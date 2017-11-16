@@ -80,13 +80,11 @@ class Handler {
 
       for (let i = 0; i < command.args.length; i++) {
         let value = [];
-        let defaultValue = false;
 
         if (command.args[i].infinite === true) {
           if (split.length === 0) {
             if (command.args[i].optional === true) {
               value = this.defaultValue(command.args[i], message);
-              defaultValue = true;
             } else {
               return Constants.results.invalidArgCount(command);
             }
@@ -118,7 +116,6 @@ class Handler {
             }
 
             value = this.defaultValue(command.args[i], message);
-            defaultValue = true;
           } else {
             const typeReaderResult = await command.args[i].typeReader.read(command, message, command.args[i], args, input, ...custom);
 
@@ -130,13 +127,11 @@ class Handler {
           }
         }
 
-        if (defaultValue === false) {
-          for (let j = 0; j < command.args[i].preconditions.length; j++) {
-            const preconditionResult = await command.args[i].preconditions[j].run(command, message, command.args[i], args, value, command.args[i].preconditionOptions[j], ...custom);
+        for (let j = 0; j < command.args[i].preconditions.length; j++) {
+          const preconditionResult = await command.args[i].preconditions[j].run(command, message, command.args[i], args, value, command.args[i].preconditionOptions[j], ...custom);
 
-            if (preconditionResult.success === false) {
-              return preconditionResult;
-            }
+          if (preconditionResult.success === false) {
+            return preconditionResult;
           }
         }
 
