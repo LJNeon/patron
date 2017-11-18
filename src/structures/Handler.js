@@ -26,6 +26,10 @@ class Handler {
     try {
       const split = message.content.slice(prefix.length).match(Constants.regexes.argument);
 
+      if (split === null) {
+        return Constants.results.commandNotFound('');
+      }
+
       const commandName = split.shift().toLowerCase();
 
       var command = this.registry.commands.find((x) => x.names.some((y) => y === commandName));
