@@ -2,6 +2,7 @@ const path = require('path');
 const Command = require('./Command.js');
 const Group = require('./Group.js');
 const TypeReader = require('./TypeReader.js');
+const TypeReaderCategories = require('../enums/TypeReaderCategories.js');
 const Precondition = require('./Precondition.js');
 const ArgumentPrecondition = require('./ArgumentPrecondition.js');
 const Constants = require('../utility/Constants.js');
@@ -20,7 +21,8 @@ const RequireAll = require('../utility/RequireAll.js');
 class Registry {
   /**
    * @typedef {object} RegistryOptions The registry options.
-   * @prop {string} library The library of the registry.
+   * @prop {RegExp} [argumentRegex=/"[\S\s]+?"|[\S\n]+/g] The regex used to parse arguments from messages.
+   * @prop {Symbol} library The library of the registry.
    */
 
   /**
@@ -32,6 +34,7 @@ class Registry {
     this.typeReaders = [];
     this.preconditions = [];
     this.argumentPreconditions = [];
+    this.argumentRegex = options.argumentRegex !== undefined ? options.argumentRegex : Constants.regexes.argument;
     this.library = options.library;
     this.libraryHandler = new LibraryHandler({ library: this.library });
 
@@ -178,7 +181,7 @@ class Registry {
       throw new TypeError('Commands must be an array.');
     }
 
-    for (let i = 0; i < commands.length; i ++) {
+    for (let i = 0; i < commands.length; i++) {
       if (typeof commands[i] !== 'object') {
         throw new TypeError('All command exports must be an instance of the command.');
       } else if ((commands[i] instanceof Command) === false) {
@@ -243,14 +246,164 @@ class Registry {
   }
 
   /**
+   * Unregisters an array of preconditions.
+   * @param {Precondition[]} preconditions An array of preconditions to be unregistered.
+   * @returns {Registry} The registry being used.
+   */
+  unregisterPreconditions(preconditions) {
+    if (Array.isArray(preconditions) === false) {
+      throw new TypeError('Preconditions must be an array.');
+    }
+
+    for (let i = 0; i < preconditions.length; i ++) {
+      if (typeof preconditions[i] !== 'object') {
+        throw new TypeError('All precondition exports must be an instance of the precondition.');
+      } else if ((preconditions[i] instanceof Precondition) === false) {
+        throw new Error('All preconditions must inherit the Precondition class.');
+      } else if (this.preconditions.every((p) => p.name !== preconditions[i].name) === true) {
+        throw new Error('The ' + preconditions[i].name + ' precondition is already not registered.');
+      } else if (this.commands.some((c) => c.preconditions.some((p) => p.name === preconditions[i].name)) === true) {
+        throw new Error('The ' + preconditions[i].name + ' precondition is registered to a command.');
+      } else if (this.groups.some((g) => g.preconditions.some((p) => p.name === preconditions[i].name)) === true) {
+        throw new Error('The ' + preconditions[i].name + ' precondition is registered to a group.');
+      }
+
+      this.preconditions.splice(this.preconditions.findIndex((p) => p.name === preconditions[i].name), 1);
+    }
+
+    return this;
+  }
+
+  /**
+   * Unregisters an array of argument preconditions.
+   * @param {Precondition[]} argumentPreconditions An array of argument preconditions to be unregistered.
+   * @returns {Registry} The registry being used.
+   */
+  unregisterArgumentPreconditions(argumentPreconditions) {
+    if (Array.isArray(argumentPreconditions) === false) {
+      throw new TypeError('ArgumentPreconditions must be an array.');
+    }
+
+    for (let i = 0; i < argumentPreconditions.length; i ++) {
+      if (typeof argumentPreconditions[i] !== 'object') {
+        throw new TypeError('All argument precondition exports must be an instance of the precondition.');
+      } else if ((argumentPreconditions[i] instanceof ArgumentPrecondition) === false) {
+        throw new Error('All argument preconditions must inherit the ArgumentPrecondition class.');
+      } else if (this.argumentPreconditions.every((p) => p.name !== argumentPreconditions[i].name) === true) {
+        throw new Error('The ' + argumentPreconditions[i].name + ' argument precondition is already not registered.');
+      } else if (this.commands.some((c) => c.args.some((a) => a.preconditions.some((p) => p.name === argumentPreconditions[i].name))) === true) {
+        throw new Error('The ' + argumentPreconditions[i].name + ' argument precondition is registered to a argument.');
+      }
+
+      this.argumentPreconditions.splice(this.argumentPreconditions.findIndex((p) => p.name === argumentPreconditions[i].name), 1);
+    }
+
+    return this;
+  }
+
+  /**
+   * Unregisters all global type readers.
+   * @returns {Registry} The registry being used.
+   */
+  unregisterGlobalTypeReaders() {
+    return this.unregisterTypeReaders(this.typeReaders.filter((t) => t.category === TypeReaderCategories.Global));
+  }
+
+  /**
+   * Unregisters all library type readers.
+   * @returns {Registry} The registry being used.
+   */
+  unregisterLibraryTypeReaders() {
+    return this.unregisterTypeReaders(this.typeReaders.filter((t) => t.category === TypeReaderCategories.Library));
+  }
+
+  /**
+   * Unregisters an array of type readers.
+   * @param {TypeReader[]} typeReaders An array of type readers to unregister.
+   * @returns {Registry} The registry being used.
+   */
+  unregisterTypeReaders(typeReaders) {
+    if (Array.isArray(typeReaders) === false) {
+      throw new TypeError('TypeReaders must be an array.');
+    }
+
+    for (let i = 0; i < typeReaders.length; i++) {
+      if (typeof typeReaders[i] !== 'object') {
+        throw new TypeError('All type reader exports must be an instance of the type reader.');
+      } else if ((typeReaders[i] instanceof TypeReader) === false) {
+        throw new Error('All type readers must be inherit the TypeReader class.');
+      } else if (this.typeReaders.every((t) => t.type !== typeReaders[i].type) === true) {
+        throw new Error('The ' + typeReaders[i].type + ' type reader is already not registered.');
+      } else if (this.commands.some((c) => c.args.some((a) => a.typeReader.type === typeReaders[i].type)) === true) {
+        throw new Error('The ' + typeReaders[i].type + ' type reader is registered to an argument.');
+      }
+
+      this.typeReaders.splice(this.typeReaders.findIndex((t) => t.type === typeReaders[i].type), 1);
+    }
+
+    return this;
+  }
+
+  /**
+   * Unregisters an array of groups.
+   * @param {Group[]} groups An array of groups to be unregistered.
+   * @returns {Registry} The registry being used.
+   */
+  unregisterGroups(groups) {
+    if (Array.isArray(groups) === false) {
+      throw new TypeError('Groups must be an array.');
+    }
+
+    for (let i = 0; i < groups.length; i ++) {
+      if (typeof groups[i] !== 'object') {
+        throw new TypeError('All group exports must be an instance of the group.');
+      } else if ((groups[i] instanceof Group) === false) {
+        throw new Error('All groups must inherit the Group class.');
+      } else if (this.groups.every((g) => g.name !== groups[i].name) === true) {
+        throw new Error('The ' + groups[i].name + ' group is already not registered.');
+      } else if (groups[i].commands.length > 0) {
+        throw new Error('The ' + groups[i].name + ' group has commands registered to it.');
+      }
+
+      this.groups.splice(this.groups.findIndex((g) => g.name === groups[i].name), 1);
+    }
+
+    return this;
+  }
+
+  /**
+   * Unregisters an array of commands.
+   * @param {Command[]} commands An array of commands to unregister.
+   * @returns {Registry} The registry being used.
+   */
+  unregisterCommands(commands) {
+    if (Array.isArray(commands) === false) {
+      throw new TypeError('Commands must be an array.');
+    }
+
+    for (let i = 0; i < commands.length; i ++) {
+      if (typeof commands[i] !== 'object') {
+        throw new TypeError('All command exports must be an instance of the command.');
+      } else if ((commands[i] instanceof Command) === false) {
+        throw new Error('All commands must inherit the Command class.');
+      } else if (this.commands.every((c) => c.names[0] !== commands[i].names[0]) === true) {
+        throw new Error('The ' + commands[i].names[0] + ' command is already not registered.');
+      }
+
+      this.commands.splice(this.commands.findIndex((c) => c.names[0] === commands[i].names[0]), 1);
+      commands[i].group.commands.splice(commands[i].group.commands.findIndex((c) => c.names[0] === commands[i].names[0]), 1);
+    }
+
+    return this;
+  }
+
+  /**
    * Validates the registry.
    * @param {Registry} registry The registry to validate.
    * @private
    */
   static validateRegistry(registry) {
-    if (typeof registry.library !== 'string' || registry.library !== registry.library.toLowerCase()) {
-      throw new TypeError('The library must be a lowercase string.');
-    } else if (Constants.libraries.indexOf(registry.library) === -1) {
+    if (Constants.libraries.indexOf(registry.library) === -1) {
       throw new TypeError(registry.library + ' isn\'t a supported library.');
     }
   }

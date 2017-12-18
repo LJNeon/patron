@@ -1,6 +1,7 @@
 const Result = require('../results/Result.js');
 const PermissionUtil = require('../utility/PermissionUtil.js');
 const CommandError = require('../enums/CommandError.js');
+const PatronOptions = require('../enums/PatronOptions.js');
 
 class Constants {
   constructor() {
@@ -104,8 +105,8 @@ class Constants {
     ];
 
     this.libraries = [
-      'discord.js',
-      'eris'
+      PatronOptions.DiscordJSLibrary,
+      PatronOptions.ErisLibrary
     ];
   }
 }

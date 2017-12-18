@@ -24,7 +24,7 @@ class Handler {
    */
   async run(message, prefix, ...custom) {
     try {
-      const split = message.content.slice(prefix.length).match(Constants.regexes.argument);
+      const split = message.content.slice(prefix.length).match(this.registry.argumentRegex);
 
       if (split === null) {
         return Constants.results.commandNotFound('');

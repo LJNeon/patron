@@ -14,6 +14,7 @@ module.exports = {
   Result: require('./results/Result.js'),
   RequireAll: require('./utility/RequireAll.js'),
   TypeReader: require('./structures/TypeReader.js'),
+  TypeReaderCategories: require('./enums/TypeReaderCategories.js'),
   TypeReaderResult: require('./results/TypeReaderResult.js'),
   version: require('../package.json').version
 };

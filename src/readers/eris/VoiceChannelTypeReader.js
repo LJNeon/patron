@@ -1,5 +1,6 @@
 const DiscordChannelTypes = require('../../enums/DiscordChannelTypes.js');
 const TypeReader = require('../../structures/TypeReader.js');
+const TypeReaderCategories = require('../../enums/TypeReaderCategories.js');
 const TypeReaderResult = require('../../results/TypeReaderResult.js');
 const TypeReaderUtil = require('../../utility/TypeReaderUtil.js');
 const Constants = require('../../utility/Constants.js');
@@ -7,6 +8,8 @@ const Constants = require('../../utility/Constants.js');
 class VoiceChannelTypeReader extends TypeReader {
   constructor() {
     super({ type: 'voicechannel' });
+
+    this.category = TypeReaderCategories.Library;
   }
 
   async read(command, message, argument, args, input) {
