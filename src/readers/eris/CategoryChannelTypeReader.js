@@ -15,7 +15,7 @@ class CategoryChannelTypeReader extends TypeReader {
     if (Constants.regexes.id.test(input) === true) {
       const channel = message._client.channels.find((c) => c.id === input.match(Constants.regexes.findId)[0]);
 
-      if (channel !== undefined && channel.type === DiscordChannelTypes.GuildCategory) {
+      if (channel !== undefined && channel.type === DiscordChannelTypes.Category) {
         return TypeReaderResult.fromSuccess(channel);
       }
     }
