@@ -8,13 +8,13 @@ module.exports = {
   ExceptionResult: require('./results/ExceptionResult.js'),
   Group: require('./structures/Group.js'),
   Handler: require('./structures/Handler.js'),
+  Options: require('./enums/PatronOptions.js'),
   Precondition: require('./structures/Precondition.js'),
   PreconditionResult: require('./results/PreconditionResult.js'),
   Registry: require('./structures/Registry.js'),
   Result: require('./results/Result.js'),
   RequireAll: require('./utility/RequireAll.js'),
   TypeReader: require('./structures/TypeReader.js'),
-  TypeReaderCategories: require('./enums/TypeReaderCategories.js'),
   TypeReaderResult: require('./results/TypeReaderResult.js'),
   version: require('../package.json').version
 };
