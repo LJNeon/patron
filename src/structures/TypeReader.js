@@ -1,6 +1,9 @@
+const TypeReaderCategories = require('../enums/TypeReaderCategories.js');
+
 /**
  * A type reader.
  * @prop {string} type The type of the type reader.
+ * @prop {string} category Which category the type reader belongs to.
  * @prop {string} description The description of the type reader.
  */
 class TypeReader {
@@ -14,6 +17,7 @@ class TypeReader {
     * @param {TypeReaderOptions} options The type reader options.
     */
   constructor(options) {
+    this.category = TypeReaderCategories.User;
     this.type = options.type;
     this.description = options.description !== undefined ? options.description : '';
 

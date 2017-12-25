@@ -1,4 +1,5 @@
 const TypeReader = require('../../structures/TypeReader.js');
+const TypeReaderCategories = require('../../enums/TypeReaderCategories.js');
 const TypeReaderResult = require('../../results/TypeReaderResult.js');
 const TypeReaderUtil = require('../../utility/TypeReaderUtil.js');
 const Constants = require('../../utility/Constants.js');
@@ -7,6 +8,8 @@ let warningEmitted = false;
 class UserTypeReader extends TypeReader {
   constructor() {
     super({ type: 'user' });
+
+    this.category = TypeReaderCategories.Library;
   }
 
   async read(command, message, argument, args, input) {

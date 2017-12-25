@@ -1,10 +1,13 @@
 const TypeReader = require('../../structures/TypeReader.js');
+const TypeReaderCategories = require('../../enums/TypeReaderCategories.js');
 const TypeReaderResult = require('../../results/TypeReaderResult.js');
 const Constants = require('../../utility/Constants.js');
 
 class QuantityTypeReader extends TypeReader {
   constructor() {
     super({ type: 'quantity' });
+
+    this.category = TypeReaderCategories.Global;
   }
 
   async read(command, message, argument, args, input) {

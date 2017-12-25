@@ -1,10 +1,13 @@
 const TypeReader = require('../../structures/TypeReader.js');
+const TypeReaderCategories = require('../../enums/TypeReaderCategories.js');
 const TypeReaderResult = require('../../results/TypeReaderResult.js');
 const Constants = require('../../utility/Constants.js');
 
 class ChannelTypeReader extends TypeReader {
   constructor() {
     super({ type: 'channel' });
+
+    this.category = TypeReaderCategories.Library;
   }
 
   async read(command, message, argument, args, input) {
