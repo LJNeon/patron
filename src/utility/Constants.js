@@ -103,11 +103,6 @@ class Constants {
       'nah',
       'false'
     ];
-
-    this.libraries = [
-      PatronOptions.DiscordJSLibrary,
-      PatronOptions.ErisLibrary
-    ];
   }
 }
 
