@@ -8,7 +8,7 @@ module.exports = {
   ExceptionResult: require('./results/ExceptionResult.js'),
   Group: require('./structures/Group.js'),
   Handler: require('./structures/Handler.js'),
-  Options: require('./enums/PatronOptions.js'),
+  Libraries: require('./enums/Libraries.js'),
   Precondition: require('./structures/Precondition.js'),
   PreconditionResult: require('./results/PreconditionResult.js'),
   Registry: require('./structures/Registry.js'),
