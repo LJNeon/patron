@@ -23,7 +23,7 @@ class Registry {
   /**
    * @typedef {object} RegistryOptions The registry options.
    * @prop {RegExp} [argumentRegex=/"[\S\s]+?"|[\S\n]+/g] The regex used to parse arguments from messages.
-   * @prop {Symbol} library The library of the registry.
+   * @prop {string} library The library of the registry.
    */
 
   /**
