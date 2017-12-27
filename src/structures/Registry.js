@@ -6,7 +6,7 @@ const TypeReaderCategories = require('../enums/TypeReaderCategories.js');
 const Precondition = require('./Precondition.js');
 const ArgumentPrecondition = require('./ArgumentPrecondition.js');
 const Constants = require('../utility/Constants.js');
-const Libraries = require('../enum/Libraries.js');
+const Libraries = require('../enums/Libraries.js');
 const LibraryHandler = require('../utility/LibraryHandler.js');
 const RequireAll = require('../utility/RequireAll.js');
 
