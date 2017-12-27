@@ -1,14 +1,14 @@
 /**
  * The supported libraries in patron.
- * @enum {Symbol}
+ * @enum {string}
  * @readonly
  */
 
 const Libraries = {
   /** The eris library */
-  Eris: Symbol(),
+  Eris: 'eris',
   /** The discord.js library */
-  DiscordJS: Symbol()
+  DiscordJS: 'discord.js'
 };
 
 module.exports = Libraries;
