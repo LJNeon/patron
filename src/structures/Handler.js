@@ -110,11 +110,9 @@ class Handler {
             }
           }
         } else {
-          let input;
+          let input = content;
 
-          if (command.args[i].remainder === true) {
-            input = content;
-          } else {
+          if (command.args[i].remainder === false) {
             input = split.shift();
             content = content.slice(0, input.length).trim();
           }
