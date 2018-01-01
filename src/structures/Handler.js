@@ -32,6 +32,7 @@ class Handler {
       }
 
       const commandName = split.shift().toLowerCase();
+      content = content.slice((split.length > 0) ? content.indexOf(split[0]) : content.length);
 
       var command = this.registry.commands.find((x) => x.names.some((y) => y === commandName));
 
@@ -95,7 +96,7 @@ class Handler {
             }
           } else {
             for (let j = 0; j < split.length; j++) {
-              content = content.slice(split[j].length).trim();
+              content = content.slice(content.indexOf(split[j]));
               if (Constants.regexes.quotesMatch.test(split[j]) === true) {
                 split[j] = split[j].replace(Constants.regexes.quotes, '');
               }
@@ -114,7 +115,7 @@ class Handler {
 
           if (command.args[i].remainder === false) {
             input = split.shift();
-            content = content.slice(0, input.length).trim();
+            content = content.slice((split.length > 0) ? content.indexOf(split[0]) : input.length);
           }
 
           if (Constants.regexes.quotesMatch.test(input) === true) {
