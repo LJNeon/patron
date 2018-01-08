@@ -24,13 +24,15 @@ class Handler {
    */
   async run(message, prefix, ...custom) {
     try {
-      const split = message.content.slice(prefix.length).match(this.registry.argumentRegex);
+      const content = message.content.slice(prefix.length);
+      const split = content.match(this.registry.argumentRegex);
 
       if (split === null) {
         return Constants.results.commandNotFound('');
       }
 
       const commandName = split.shift().toLowerCase();
+      content = content.slice((split.length > 0) ? content.indexOf(split[0]) : content.length);
 
       var command = this.registry.commands.find((x) => x.names.some((y) => y === commandName));
 
@@ -94,6 +96,7 @@ class Handler {
             }
           } else {
             for (let j = 0; j < split.length; j++) {
+              content = content.slice(content.indexOf(split[j]));
               if (Constants.regexes.quotesMatch.test(split[j]) === true) {
                 split[j] = split[j].replace(Constants.regexes.quotes, '');
               }
@@ -108,7 +111,12 @@ class Handler {
             }
           }
         } else {
-          let input = command.args[i].remainder === true ? split.join(' ') : split.shift();
+          let input = content;
+
+          if (command.args[i].remainder === false) {
+            input = split.shift();
+            content = content.slice((split.length > 0) ? content.indexOf(split[0]) : input.length);
+          }
 
           if (Constants.regexes.quotesMatch.test(input) === true) {
             input = input.replace(Constants.regexes.quotes, '');
