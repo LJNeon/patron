@@ -115,7 +115,10 @@ class Handler {
 
           if (command.args[i].remainder === false) {
             input = split.shift();
-            content = content.slice((split.length > 0) ? content.indexOf(split[0]) : input.length);
+            
+            if (input !== undefined) {
+              content = content.slice((split.length > 0) ? content.indexOf(split[0]) : input.length);
+            }
           }
 
           if (Constants.regexes.quotesMatch.test(input) === true) {
