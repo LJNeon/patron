@@ -24,7 +24,7 @@ class Handler {
    */
   async run(message, prefix, ...custom) {
     try {
-      const content = message.content.slice(prefix.length);
+      let content = message.content.slice(prefix.length);
       const split = content.match(this.registry.argumentRegex);
 
       if (split === null) {
