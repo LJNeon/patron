@@ -38,8 +38,6 @@ class Command {
     this.groupName = options.groupName;
     this.description = options.description !== undefined ? options.description : '';
     this.usableContexts = options.usableContexts !== undefined ? options.usableContexts : [Context.Guild];
-    this.guildOnly = options.guildOnly !== undefined ? options.guildOnly : true;
-    this.dmOnly = options.dmOnly !== undefined ? options.dmOnly : false;
     this.memberPermissions = options.memberPermissions !== undefined ? options.memberPermissions : [];
     this.botPermissions = options.botPermissions !== undefined ? options.botPermissions : [];
     this.preconditions = options.preconditions !== undefined ? options.preconditions : [];
