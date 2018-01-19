@@ -63,6 +63,12 @@ declare module 'patron.js' {
     DmOnly
   }
 
+  export enum Context {
+    DM,
+    Guild
+    Group
+  }
+
   export class CooldownResult extends Result {
     public remaining: number;
     public static fromError(command: Command, remaining: number): CooldownResult;
@@ -90,6 +96,11 @@ declare module 'patron.js' {
     constructor(registry: Registry);
   }
 
+  export enum Library {
+    DiscordJS,
+    Eris
+  }
+
   export class Precondition {
     private static validatePrecondition(registry: Precondition, name: string): void;
     public name: string;
@@ -112,7 +123,6 @@ declare module 'patron.js' {
     public typeReaders: TypeReader[];
     public preconditions: Precondition[];
     public argumentPreconditions: ArgumentPrecondition[];
-    constructor(options: RegistryOptions);
     public registerGlobalTypeReaders(): Registry;
     public registerLibraryTypeReaders(): Registry;
     public registerTypeReaders(typeReaders: TypeReader[]): Registry;
@@ -120,6 +130,13 @@ declare module 'patron.js' {
     public registerCommands(commands: Command[]): Registry;
     public registerArgumentPreconditions(argumentPreconditions: ArgumentPrecondition[]): Registry;
     public registerPreconditions(preconditions: Precondition[]): Registry;
+    public unregisterGlobalTypeReaders(): Registry;
+    public unregisterLibraryTypeReaders(): Registry;
+    public unregisterTypeReaders(typeReaders: TypeReader[]): Registry;
+    public unregisterGroups(groups: Group[]): Registry;
+    public unregisterCommands(commands: Command[]): Registry;
+    public unregisterArgumentPreconditions(argumentPreconditions: ArgumentPrecondition[]): Registry;
+    public unregisterPreconditions(preconditions: Precondition[]): Registry;
     constructor(options: RegistryOptions);
   }
 
@@ -170,8 +187,7 @@ declare module 'patron.js' {
     names: string[];
     groupName: string;
     description?: string;
-    guildOnly?: boolean;
-    dmOnly?: boolean;
+    usableContexts?: symbol[];
     userPermissions?: string[];
     botPermissions?: string[];
     preconditions?: string[] | object[];

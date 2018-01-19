@@ -1,5 +1,5 @@
 const TypeReader = require('../../structures/TypeReader.js');
-const TypeReaderCategories = require('../../enums/TypeReaderCategories.js');
+const TypeReaderCategory = require('../../enums/TypeReaderCategory.js');
 const TypeReaderResult = require('../../results/TypeReaderResult.js');
 const Constants = require('../../utility/Constants.js');
 
@@ -7,7 +7,7 @@ class BooleanTypeReader extends TypeReader {
   constructor() {
     super({ type: 'bool' });
 
-    this.category = TypeReaderCategories.Global;
+    this.category = TypeReaderCategory.Global;
   }
 
   async read(command, message, argument, args, value) {

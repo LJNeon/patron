@@ -1,12 +1,13 @@
 const Argument = require('./Argument.js');
+const Context = require('../enums/Context.js');
+const ContextKeys = Object.keys(Context);
 
 /**
  * A command.
  * @prop {string[]} names The names of the command.
  * @prop {Group} group The group of the command.
  * @prop {string} description The description of the command.
- * @prop {boolean} guildOnly Whether the command may only be used in guild text channels.
- * @prop {boolean} dmOnly Whether the command may only be used in direct messages.
+ * @prop {Symbol[]} usableContexts An array of contexts the command can be used.
  * @prop {string[]} memberPermissions The permissions required by the invoker to use the command.
  * @prop {string[]} botPermissions The permissions required by the bot to execute the command.
  * @prop {Precondition[]} preconditions The preconditions to be ran on the command.
@@ -21,8 +22,7 @@ class Command {
    * @prop {string[]} names The names of the command.
    * @prop {string} groupName The name of the group of the command.
    * @prop {string} [description=''] The description of the command.
-   * @prop {boolean} [guildOnly=true] Whether the command may only be used in guild text channels.
-   * @prop {boolean} [dmOnly=false] Whether the command may only be used in direct messages.
+   * @prop {Symbol[]} [usableContexts=[Context.Guild]] An array of contexts the command can be used.
    * @prop {string[]} [memberPermissions=[]] The permissions required by the invoker to use the command.
    * @prop {string[]} [botPermissions=[]] The permissions required by the bot to execute the command.
    * @prop {Array<string|object>} [preconditions=[]] The preconditions to be ran on the command.
@@ -37,6 +37,7 @@ class Command {
     this.names = options.names;
     this.groupName = options.groupName;
     this.description = options.description !== undefined ? options.description : '';
+    this.usableContexts = options.usableContexts !== undefined ? options.usableContexts : [Context.Guild];
     this.guildOnly = options.guildOnly !== undefined ? options.guildOnly : true;
     this.dmOnly = options.dmOnly !== undefined ? options.dmOnly : false;
     this.memberPermissions = options.memberPermissions !== undefined ? options.memberPermissions : [];
@@ -120,12 +121,6 @@ class Command {
       throw new TypeError(name + ': The group name must be a lowercase string.');
     } else if (typeof command.description !== 'string') {
       throw new TypeError(name + ': The description must be a string.');
-    } else if (typeof command.guildOnly !== 'boolean') {
-      throw new TypeError(name + ': The guild only option must be a boolean.');
-    } else if (typeof command.dmOnly !== 'boolean') {
-      throw new TypeError(name + ': The DM only option must be a boolean.');
-    } else if (command.dmOnly === true && command.guildOnly === true) {
-      throw new Error(name + ': A command may not be DM only and guild only.');
     } else if (Array.isArray(command.memberPermissions) === false) {
       throw new TypeError(name + ': The user permissions must be an array.');
     } else if (Array.isArray(command.botPermissions) === false) {
@@ -136,6 +131,8 @@ class Command {
       throw new TypeError(name + ': The arguments must be an array.');
     } else if (typeof command.cooldown !== 'number') {
       throw new TypeError(name + ': The cooldown must be a number.');
+    } else if (Array.isArray(command.usableContexts) === false) {
+      throw new TypeError(name + ': The usableContexts must be an array.');
     }
 
     const allPermissions = command.memberPermissions.concat(command.botPermissions);
@@ -149,6 +146,19 @@ class Command {
     for (let i = 0; i < command.names.length; i++) {
       if (typeof command.names[i] !== 'string' || command.names[i] !== command.names[i].toLowerCase()) {
         throw new TypeError(command.names[i] + ': All command names must be lowercase strings.');
+      }
+    }
+
+    for (let i = 0; i < command.usableContexts.length; i++) {
+      let valid = false;
+      for (let j = 0; j < ContextKeys.length; j++) {
+        if (Context[ContextKeys[j]] === command.usableContexts[i]) {
+          valid = true;
+          break;
+        }
+      }
+      if (valid === false) {
+        throw new TypeError(command.names[i] + ': Invalid Context.');
       }
     }
 
