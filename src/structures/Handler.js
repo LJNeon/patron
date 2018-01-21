@@ -2,6 +2,8 @@ const ArgumentDefault = require('../enums/ArgumentDefault.js');
 const CooldownResult = require('../results/CooldownResult.js');
 const ExceptionResult = require('../results/ExceptionResult.js');
 const Constants = require('../utility/Constants.js');
+const Context = require("../enums/Context.js");
+const InvalidContextResult = require('../enums/InvalidContextResult.js');
 
 /**
  * The command handler.
@@ -41,8 +43,8 @@ class Handler {
       }
 
       if (message.guild !== null) {
-        if (command.dmOnly === true) {
-          return Constants.results.dmOnly(command);
+        if (command.usableContexts.indexOf(Context.Guild) === -1) {
+          return InvalidContextResult.from(command, Context.Guild);
         }
 
         const result = this.registry.libraryHandler.validatePermissions(command, message);
@@ -50,8 +52,12 @@ class Handler {
         if (result !== undefined) {
           return result;
         }
-      } else if (command.guildOnly === true) {
-        return Constants.results.guildOnly(command);
+      } else {
+        const result = this.registry.libraryHandler.validateContext(command, message);
+
+        if (result !== undefined) {
+          return result;
+        }
       }
 
       for (let i = 0; i < command.preconditions.length; i++) {
@@ -115,7 +121,7 @@ class Handler {
 
           if (command.args[i].remainder === false) {
             input = split.shift();
-            
+
             if (input !== undefined) {
               content = content.slice((split.length > 0) ? content.indexOf(split[0]) : input.length);
             }
