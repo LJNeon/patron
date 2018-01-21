@@ -19,7 +19,7 @@ class InvalidContextResult extends Result {
    * @param {Symbol} context The context that was invalid.
    * @returns {InvalidContextResult} The result in question.
    */
-  static from(command, context) {
+  static fromError(command, context) {
     return new InvalidContextResult({ success: false, command: command, commandError: CommandError.Precondition, context: context, errorReason: 'This command may not be used in that context.' });
   }
 }
