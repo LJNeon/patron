@@ -572,7 +572,7 @@
 
         <tr>
             
-                <td class="name"><code>GuildOnly</code></td>
+                <td class="name"><code>InvalidContext</code></td>
             
 
             <td class="type">
@@ -588,30 +588,7 @@
 
             
 
-            <td class="description last">A guild only command used elsewhere than a guild channel.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>DmOnly</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Symbol</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">A DM only command used elsewhere than a DM channel.</td>
+            <td class="description last">An invalid context for a command.</td>
         </tr>
 
     
@@ -668,13 +645,13 @@
 
         
             
-<h4 class="name" id="DiscordChannelTypes"><span class="type-signature">(constant) </span>DiscordChannelTypes<span class="type-signature"> :number</span></h4>
+<h4 class="name" id="Context"><span class="type-signature">(constant) </span>Context<span class="type-signature"> :Symbol</span></h4>
 
 
 
 
 <div class="description">
-    The discord channel types.
+    The Command contexts.
 </div>
 
 
@@ -683,7 +660,7 @@
     <ul>
         <li>
             
-<span class="param-type">number</span>
+<span class="param-type">Symbol</span>
 
 
         </li>
@@ -719,36 +696,13 @@
 
         <tr>
             
-                <td class="name"><code>TextChannel</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">A guild text channel.</td>
-        </tr>
-
-    
-
-        <tr>
-            
                 <td class="name"><code>DM</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">Symbol</span>
 
 
             
@@ -758,20 +712,20 @@
 
             
 
-            <td class="description last">A DM channel.</td>
+            <td class="description last">Usable in DMs.</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>VoiceChannel</code></td>
+                <td class="name"><code>Guild</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">Symbol</span>
 
 
             
@@ -781,20 +735,20 @@
 
             
 
-            <td class="description last">A guild voice channel.</td>
+            <td class="description last">Usable in guilds.</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>GroupChannel</code></td>
+                <td class="name"><code>Group</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">Symbol</span>
 
 
             
@@ -804,30 +758,7 @@
 
             
 
-            <td class="description last">A group channel.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>GuildCategory</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">A guild category.</td>
+            <td class="description last">Usable in groups.</td>
         </tr>
 
     
@@ -866,7 +797,324 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="enums_DiscordChannelTypes.js.html">enums/DiscordChannelTypes.js</a>, <a href="enums_DiscordChannelTypes.js.html#line7">line 7</a>
+        <a href="enums_Context.js.html">enums/Context.js</a>, <a href="enums_Context.js.html#line7">line 7</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="Library"><span class="type-signature">(constant) </span>Library<span class="type-signature"> :string</span></h4>
+
+
+
+
+<div class="description">
+    The supported libraries.
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">string</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>DiscordJS</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The discord.js library</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>Eris</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The eris library</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="enums_Library.js.html">enums/Library.js</a>, <a href="enums_Library.js.html#line7">line 7</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="TypeReaderCategory"><span class="type-signature">(constant) </span>TypeReaderCategory<span class="type-signature"> :Symbol</span></h4>
+
+
+
+
+<div class="description">
+    The type reader categories.
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Symbol</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>Global</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Symbol</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Global type readers.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>Library</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Symbol</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Library-specific type readers.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>User</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Symbol</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">User-made type readers.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="enums_TypeReaderCategory.js.html">enums/TypeReaderCategory.js</a>, <a href="enums_TypeReaderCategory.js.html#line7">line 7</a>
     </li></ul></dd>
     
 
@@ -1769,13 +2017,13 @@
 
         <tr>
             
-                <td class="name"><code>guildOnly</code></td>
+                <td class="name"><code>usableContexts</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">boolean</span>
+<span class="param-type">Array.&lt;Symbol></span>
 
 
             
@@ -1794,49 +2042,12 @@
             
                 <td class="default">
                 
-                    true
+                    [Context.Guild]
                 
                 </td>
             
 
-            <td class="description last">Whether the command may only be used in guild text channels.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>dmOnly</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    false
-                
-                </td>
-            
-
-            <td class="description last">Whether the command may only be used in direct messages.</td>
+            <td class="description last">An array of contexts the command can be used.</td>
         </tr>
 
     
@@ -2060,7 +2271,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="structures_Command.js.html">structures/Command.js</a>, <a href="structures_Command.js.html#line19">line 19</a>
+        <a href="structures_Command.js.html">structures/Command.js</a>, <a href="structures_Command.js.html#line20">line 20</a>
     </li></ul></dd>
     
 
@@ -2748,7 +2959,11 @@
         <th>Type</th>
 
         
+        <th>Attributes</th>
+        
 
+        
+        <th>Default</th>
         
 
         <th class="last">Description</th>
@@ -2756,6 +2971,43 @@
     </thead>
 
     <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>argumentRegex</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">RegExp</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    /"[\S\s]+?"|[\S\n]+/g
+                
+                </td>
+            
+
+            <td class="description last">The regex used to parse arguments from messages.</td>
+        </tr>
+
     
 
         <tr>
@@ -2773,7 +3025,17 @@
             </td>
 
             
+                <td class="attributes">
+                
 
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
             
 
             <td class="description last">The library of the registry.</td>
@@ -2815,7 +3077,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="structures_Registry.js.html">structures/Registry.js</a>, <a href="structures_Registry.js.html#line21">line 21</a>
+        <a href="structures_Registry.js.html">structures/Registry.js</a>, <a href="structures_Registry.js.html#line23">line 23</a>
     </li></ul></dd>
     
 
@@ -3246,7 +3508,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="structures_TypeReader.js.html">structures/TypeReader.js</a>, <a href="structures_TypeReader.js.html#line7">line 7</a>
+        <a href="structures_TypeReader.js.html">structures/TypeReader.js</a>, <a href="structures_TypeReader.js.html#line10">line 10</a>
     </li></ul></dd>
     
 
@@ -3441,13 +3703,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Argument.html">Argument</a></li><li><a href="ArgumentPrecondition.html">ArgumentPrecondition</a></li><li><a href="Command.html">Command</a></li><li><a href="CooldownResult.html">CooldownResult</a></li><li><a href="ExceptionResult.html">ExceptionResult</a></li><li><a href="Group.html">Group</a></li><li><a href="Handler.html">Handler</a></li><li><a href="Precondition.html">Precondition</a></li><li><a href="PreconditionResult.html">PreconditionResult</a></li><li><a href="Registry.html">Registry</a></li><li><a href="Result.html">Result</a></li><li><a href="TypeReader.html">TypeReader</a></li><li><a href="TypeReaderResult.html">TypeReaderResult</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ArgumentDefault">ArgumentDefault</a></li><li><a href="global.html#CommandError">CommandError</a></li><li><a href="global.html#DiscordChannelTypes">DiscordChannelTypes</a></li><li><a href="global.html#RequireAll">RequireAll</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Argument.html">Argument</a></li><li><a href="ArgumentPrecondition.html">ArgumentPrecondition</a></li><li><a href="Command.html">Command</a></li><li><a href="CooldownResult.html">CooldownResult</a></li><li><a href="ExceptionResult.html">ExceptionResult</a></li><li><a href="Group.html">Group</a></li><li><a href="Handler.html">Handler</a></li><li><a href="InvalidContextResult.html">InvalidContextResult</a></li><li><a href="Precondition.html">Precondition</a></li><li><a href="PreconditionResult.html">PreconditionResult</a></li><li><a href="Registry.html">Registry</a></li><li><a href="Result.html">Result</a></li><li><a href="TypeReader.html">TypeReader</a></li><li><a href="TypeReaderResult.html">TypeReaderResult</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ArgumentDefault">ArgumentDefault</a></li><li><a href="global.html#CommandError">CommandError</a></li><li><a href="global.html#Context">Context</a></li><li><a href="global.html#Library">Library</a></li><li><a href="global.html#RequireAll">RequireAll</a></li><li><a href="global.html#TypeReaderCategory">TypeReaderCategory</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Nov 09 2017 15:26:28 GMT-0500 (EST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Jan 21 2018 05:13:32 GMT+0000 (UTC)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -30,6 +30,8 @@
 const CooldownResult = require('../results/CooldownResult.js');
 const ExceptionResult = require('../results/ExceptionResult.js');
 const Constants = require('../utility/Constants.js');
+const Context = require('../enums/Context.js');
+const InvalidContextResult = require('../enums/InvalidContextResult.js');
 
 /**
  * The command handler.
@@ -52,13 +54,15 @@ class Handler {
    */
   async run(message, prefix, ...custom) {
     try {
-      const split = message.content.slice(prefix.length).match(Constants.regexes.argument);
+      let content = message.content.slice(prefix.length);
+      const split = content.match(this.registry.argumentRegex);
 
       if (split === null) {
-        return Constants.results.commandNotFound();
+        return Constants.results.commandNotFound('');
       }
 
       const commandName = split.shift().toLowerCase();
+      content = content.slice((split.length > 0) ? content.indexOf(split[0]) : content.length);
 
       var command = this.registry.commands.find((x) => x.names.some((y) => y === commandName));
 
@@ -67,8 +71,8 @@ class Handler {
       }
 
       if (message.guild !== null) {
-        if (command.dmOnly === true) {
-          return Constants.results.dmOnly(command);
+        if (command.usableContexts.indexOf(Context.Guild) === -1) {
+          return InvalidContextResult.from(command, Context.Guild);
         }
 
         const result = this.registry.libraryHandler.validatePermissions(command, message);
@@ -76,8 +80,12 @@ class Handler {
         if (result !== undefined) {
           return result;
         }
-      } else if (command.guildOnly === true) {
-        return Constants.results.guildOnly(command);
+      } else {
+        const result = this.registry.libraryHandler.validateContext(command, message);
+
+        if (result !== undefined) {
+          return result;
+        }
       }
 
       for (let i = 0; i &lt; command.preconditions.length; i++) {
@@ -112,18 +120,17 @@ class Handler {
 
       for (let i = 0; i &lt; command.args.length; i++) {
         let value = [];
-        let defaultValue = false;
 
         if (command.args[i].infinite === true) {
           if (split.length === 0) {
             if (command.args[i].optional === true) {
               value = this.defaultValue(command.args[i], message);
-              defaultValue = true;
             } else {
               return Constants.results.invalidArgCount(command);
             }
           } else {
             for (let j = 0; j &lt; split.length; j++) {
+              content = content.slice(content.indexOf(split[j]));
               if (Constants.regexes.quotesMatch.test(split[j]) === true) {
                 split[j] = split[j].replace(Constants.regexes.quotes, '');
               }
@@ -138,7 +145,15 @@ class Handler {
             }
           }
         } else {
-          let input = command.args[i].remainder === true ? split.join(' ') : split.shift();
+          let input = content;
+
+          if (command.args[i].remainder === false) {
+            input = split.shift();
+
+            if (input !== undefined) {
+              content = content.slice((split.length > 0) ? content.indexOf(split[0]) : input.length);
+            }
+          }
 
           if (Constants.regexes.quotesMatch.test(input) === true) {
             input = input.replace(Constants.regexes.quotes, '');
@@ -150,7 +165,6 @@ class Handler {
             }
 
             value = this.defaultValue(command.args[i], message);
-            defaultValue = true;
           } else {
             const typeReaderResult = await command.args[i].typeReader.read(command, message, command.args[i], args, input, ...custom);
 
@@ -162,13 +176,11 @@ class Handler {
           }
         }
 
-        if (defaultValue === false) {
-          for (let j = 0; j &lt; command.args[i].preconditions.length; j++) {
-            const preconditionResult = await command.args[i].preconditions[j].run(command, message, command.args[i], args, value, command.args[i].preconditionOptions[j], ...custom);
+        for (let j = 0; j &lt; command.args[i].preconditions.length; j++) {
+          const preconditionResult = await command.args[i].preconditions[j].run(command, message, command.args[i], args, value, command.args[i].preconditionOptions[j], ...custom);
 
-            if (preconditionResult.success === false) {
-              return preconditionResult;
-            }
+          if (preconditionResult.success === false) {
+            return preconditionResult;
           }
         }
 
@@ -225,13 +237,13 @@ module.exports = Handler;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Argument.html">Argument</a></li><li><a href="ArgumentPrecondition.html">ArgumentPrecondition</a></li><li><a href="Command.html">Command</a></li><li><a href="CooldownResult.html">CooldownResult</a></li><li><a href="ExceptionResult.html">ExceptionResult</a></li><li><a href="Group.html">Group</a></li><li><a href="Handler.html">Handler</a></li><li><a href="Precondition.html">Precondition</a></li><li><a href="PreconditionResult.html">PreconditionResult</a></li><li><a href="Registry.html">Registry</a></li><li><a href="Result.html">Result</a></li><li><a href="TypeReader.html">TypeReader</a></li><li><a href="TypeReaderResult.html">TypeReaderResult</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ArgumentDefault">ArgumentDefault</a></li><li><a href="global.html#CommandError">CommandError</a></li><li><a href="global.html#DiscordChannelTypes">DiscordChannelTypes</a></li><li><a href="global.html#RequireAll">RequireAll</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Argument.html">Argument</a></li><li><a href="ArgumentPrecondition.html">ArgumentPrecondition</a></li><li><a href="Command.html">Command</a></li><li><a href="CooldownResult.html">CooldownResult</a></li><li><a href="ExceptionResult.html">ExceptionResult</a></li><li><a href="Group.html">Group</a></li><li><a href="Handler.html">Handler</a></li><li><a href="InvalidContextResult.html">InvalidContextResult</a></li><li><a href="Precondition.html">Precondition</a></li><li><a href="PreconditionResult.html">PreconditionResult</a></li><li><a href="Registry.html">Registry</a></li><li><a href="Result.html">Result</a></li><li><a href="TypeReader.html">TypeReader</a></li><li><a href="TypeReaderResult.html">TypeReaderResult</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ArgumentDefault">ArgumentDefault</a></li><li><a href="global.html#CommandError">CommandError</a></li><li><a href="global.html#Context">Context</a></li><li><a href="global.html#Library">Library</a></li><li><a href="global.html#RequireAll">RequireAll</a></li><li><a href="global.html#TypeReaderCategory">TypeReaderCategory</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Nov 09 2017 15:26:28 GMT-0500 (EST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Jan 21 2018 05:13:32 GMT+0000 (UTC)
 </footer>
 
 <script> prettyPrint(); </script>
