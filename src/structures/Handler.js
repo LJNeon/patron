@@ -3,7 +3,7 @@ const CooldownResult = require('../results/CooldownResult.js');
 const ExceptionResult = require('../results/ExceptionResult.js');
 const Constants = require('../utility/Constants.js');
 const Context = require('../enums/Context.js');
-const InvalidContextResult = require('../enums/InvalidContextResult.js');
+const InvalidContextResult = require('../resul/InvalidContextResult.js');
 
 /**
  * The command handler.
