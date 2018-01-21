@@ -25,7 +25,7 @@ class TextChannelTypeReader extends TypeReader {
 
     const lowerInput = input.toLowerCase();
 
-    const matches = message.channel.guild.channels.filter((v) => v.name.toLowerCase().includes(lowerInput) && v.type === DiscordChannelTypes.TextChannel);
+    const matches = message.channel.guild.channels.filter((v) => v.name.toLowerCase().includes(lowerInput) && v.type === DiscordChannelType.TextChannel);
 
     return TypeReaderUtil.handleMatches(command, matches, 'textChannelNotFound');
   }

@@ -23,7 +23,7 @@ class GroupChannelTypeReader extends TypeReader {
 
     const lowerInput = input.toLowerCase();
 
-    const matches = message._client.channels.filter((v) => v.name !== undefined && v.name.toLowerCase().includes(lowerInput) && v.type === DiscordChannelTypes.GroupChannel);
+    const matches = message._client.channels.filter((v) => v.name !== undefined && v.name.toLowerCase().includes(lowerInput) && v.type === DiscordChannelType.GroupChannel);
 
     return TypeReaderUtil.handleMatches(command, matches, 'groupChannelNotFound');
   }

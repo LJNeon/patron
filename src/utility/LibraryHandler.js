@@ -9,7 +9,7 @@ class LibraryHandler {
   }
 
   validateContext(command, message) {
-    switch(this.library) {
+    switch (this.library) {
       case 'discord.js':
         if (message.channel.type === 'dm' && command.usableContexts.indexOf(Context.DM) === -1) {
           return InvalidContextResult.from(command, Context.DM);

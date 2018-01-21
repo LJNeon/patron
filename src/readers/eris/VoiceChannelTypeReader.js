@@ -23,7 +23,7 @@ class VoiceChannelTypeReader extends TypeReader {
 
     const lowerInput = input.toLowerCase();
 
-    const matches = message.channel.guild.channels.filter((v) => v.name.toLowerCase().includes(lowerInput) && v.type === DiscordChannelTypes.VoiceChannel);
+    const matches = message.channel.guild.channels.filter((v) => v.name.toLowerCase().includes(lowerInput) && v.type === DiscordChannelType.VoiceChannel);
 
     return TypeReaderUtil.handleMatches(command, matches, 'voiceChannelNotFound');
   }
