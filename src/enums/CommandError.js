@@ -21,10 +21,8 @@ const CommandError = {
   InvalidArgCount: Symbol(),
   /** An exception during command execution. */
   Exception: Symbol(),
-  /** A guild only command used elsewhere than a guild channel. */
-  GuildOnly: Symbol(),
-  /** A DM only command used elsewhere than a DM channel. */
-  DmOnly: Symbol()
+  /** An invalid context for a command. */
+  InvalidContext: Symbol()
 };
 
 module.exports = CommandError;

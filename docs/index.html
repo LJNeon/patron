@@ -45,14 +45,14 @@
     <section>
         <article><div align="center">
     <br/>
-    <a href="https://github.com/vim2meta/patron.js/"><img src="https://i.imgur.com/6j61q1V.png" width="600" alt="patron.js" /></a>
+    <a href="https://github.com/vim2meta/patron.js/"><img src="https://i.imgur.com/6j61q1V.png" width="600" alt="patron.js" />
     <br/>
     <br/>
-    <a href="https://discord.gg/83UsdkR"><img src="https://discordapp.com/api/guilds/369214145964539924/embed.png" alt="Discord Server" /></a>
-    <a href="https://www.npmjs.com/package/patron.js"><img src="https://img.shields.io/npm/v/patron.js.svg?maxAge=3600" alt="NPM version" /></a>
-    <a href="https://www.npmjs.com/package/patron.js"><img src="https://img.shields.io/npm/dt/patron.js.svg?maxAge=3600" alt="NPM downloads" /></a>
-    <a href="https://travis-ci.org/vim2meta/patron.js"><img src="https://travis-ci.org/vim2meta/patron.js.svg?branch=master" alt="Build Status" /></a>
-    <a href="https://david-dm.org/vim2meta/patron.js"><img src="https://david-dm.org/vim2meta/patron.js.svg" alt="Dependencies" /></a>
+    <a href="https://discord.gg/83UsdkR"><img src="https://discordapp.com/api/guilds/369214145964539924/embed.png" alt="Discord Server" />
+    <a href="https://www.npmjs.com/package/patron.js"><img src="https://img.shields.io/npm/v/patron.js.svg?maxAge=3600" alt="NPM version" />
+    <a href="https://www.npmjs.com/package/patron.js"><img src="https://img.shields.io/npm/dt/patron.js.svg?maxAge=3600" alt="NPM downloads" />
+    <a href="https://travis-ci.org/vim2meta/patron.js"><img src="https://travis-ci.org/vim2meta/patron.js.svg?branch=master" alt="Build Status" />
+    <a href="https://david-dm.org/vim2meta/patron.js"><img src="https://david-dm.org/vim2meta/patron.js.svg" alt="Dependencies" />
 </div>
 
 <h2>About</h2><p><a href="https://vim2meta.github.io/patron.js/">Patron.js</a> is an efficient, stable and reliable <a href="https://github.com/hydrabolt/discord.js">discord.js</a> command framework, that aims for true flexibility. This framework does not have it's own client, it does not manage the message event for you, it does not clutter discord.js's classes with extensions and it most certainly does not send messages on your behalf.</p>
@@ -63,18 +63,18 @@
 <li><code>MemberPermission</code></li>
 <li><code>BotPermission</code></li>
 <li><code>TypeReader</code></li>
-<li><code>GuildOnly</code></li>
+<li><code>InvalidContext</code></li>
 <li><code>CommandNotFound</code></li>
 <li><code>Cooldown</code></li>
 <li><code>InvalidArgCount</code></li>
 <li><code>Exception</code></li>
 </ul>
 <p>Depending on which error occurred, the result object will have different properties. <a href="https://github.com/VapidSlay/selfbot/blob/master/src/services/CommandService.js">This is an example</a> of how these errors may be handled.</p>
-<h2>Arguments</h2><p>Patron.js's arguments allow for contextual default values. For example, if you have a user argument in your command, you can set the default of this argument to <code>ArgumentDefault.Author</code>. <a href="https://vim2meta.github.io/patron.js/global.html#ArgumentDefault">This enum</a> allows you to set defaults of arguments based off the context in which the command was used. </p>
+<h2>Arguments</h2><p>Patron.js's arguments allow for contextual default values. For example, if you have a user argument in your command, you can set the default of this argument to <code>ArgumentDefault.Author</code>. <a href="https://vim2meta.github.io/patron.js/global.html#ArgumentDefault">This enum</a> allows you to set defaults of arguments based off the context in which the command was used.</p>
 <p>Furthermore, this framework has featured, efficient and reliable type readers. For example, the user type reader can parse a user object based off of an id, mention, username, or nickname (if they are in a guild). If there are multiple matches found, it will return an unsuccessful <a href="https://vim2meta.github.io/patron.js/TypeReaderResult.html">TypeReaderResult</a> with the matches in question in the error reason. If there are too many matches to list, it will simply ask the user to be more specific. All available type readers are <a href="https://github.com/vim2meta/patron.js/tree/master/src/readers">here</a>.</p>
 <p><a href="https://github.com/realblazeit/dea/blob/master/src/commands/moderation/Kick.js">This is an example</a> of DEA making use of this argument system. As you can see, all examples are argument specific, which is the best approach for maintainability. Most command frameworks will allow you to provide an example string for each command, however, these examples are often forgetten and not updated while the arguments themselves change, leaving inconsistencies throughout the commands. Not to mention this system allows you to create a single commonly used argument object, such as a user, and share this accross all files, to prevent redudancy and code repetition, while still allowing for the command usage example to always be up to date.</p>
 <h2>Preconditions</h2><p>There are currently two types of preconditions: <a href="https://vim2meta.github.io/patron.js/Precondition.html">Preconditions</a> and <a href="https://vim2meta.github.io/patron.js/ArgumentPrecondition.html">Argument Preconditions</a>. Normal preconditions can be added on any on <a href="https://vim2meta.github.io/patron.js/Command.html">Command</a> or <a href="https://vim2meta.github.io/patron.js/Group.html">Group</a>, while argument preconditions may only be added to arguments. All preconditions must return a <a href="https://vim2meta.github.io/patron.js/PreconditionResult.html">PreconditionResult</a>. If the result in question is unsuccessful, it will be the returned result in the command handler.</p>
-<h2>Support</h2><p>The best place to get support for patron.js is in our <a href="https://discord.gg/83UsdkR">official support server</a>. We try to keep things spicy, so you can joke around while getting good, pretty slamming combo. Keep in mind this framework is not meant for new coders, it is meant for people that want a genuinely reliable command framework and more maintainable code overall.</p></article>
+<h2>Support</h2><p>The best place to get support for paton.js is in our <a href="https://discord.gg/83UsdkR">official support server</a>. We try to keep things spicy, so you can joke around while getting good, pretty slamming combo. Keep in mind this framework is not meant for new coders, it is meant for people that want a genuinely reliable command framework and more maintainable code overall.</p></article>
     </section>
 
 
@@ -85,13 +85,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Argument.html">Argument</a></li><li><a href="ArgumentPrecondition.html">ArgumentPrecondition</a></li><li><a href="Command.html">Command</a></li><li><a href="CooldownResult.html">CooldownResult</a></li><li><a href="ExceptionResult.html">ExceptionResult</a></li><li><a href="Group.html">Group</a></li><li><a href="Handler.html">Handler</a></li><li><a href="Precondition.html">Precondition</a></li><li><a href="PreconditionResult.html">PreconditionResult</a></li><li><a href="Registry.html">Registry</a></li><li><a href="Result.html">Result</a></li><li><a href="TypeReader.html">TypeReader</a></li><li><a href="TypeReaderResult.html">TypeReaderResult</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ArgumentDefault">ArgumentDefault</a></li><li><a href="global.html#CommandError">CommandError</a></li><li><a href="global.html#DiscordChannelTypes">DiscordChannelTypes</a></li><li><a href="global.html#RequireAll">RequireAll</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Argument.html">Argument</a></li><li><a href="ArgumentPrecondition.html">ArgumentPrecondition</a></li><li><a href="Command.html">Command</a></li><li><a href="CooldownResult.html">CooldownResult</a></li><li><a href="ExceptionResult.html">ExceptionResult</a></li><li><a href="Group.html">Group</a></li><li><a href="Handler.html">Handler</a></li><li><a href="InvalidContextResult.html">InvalidContextResult</a></li><li><a href="Precondition.html">Precondition</a></li><li><a href="PreconditionResult.html">PreconditionResult</a></li><li><a href="Registry.html">Registry</a></li><li><a href="Result.html">Result</a></li><li><a href="TypeReader.html">TypeReader</a></li><li><a href="TypeReaderResult.html">TypeReaderResult</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ArgumentDefault">ArgumentDefault</a></li><li><a href="global.html#CommandError">CommandError</a></li><li><a href="global.html#Context">Context</a></li><li><a href="global.html#Library">Library</a></li><li><a href="global.html#RequireAll">RequireAll</a></li><li><a href="global.html#TypeReaderCategory">TypeReaderCategory</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Nov 09 2017 15:26:28 GMT-0500 (EST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Jan 21 2018 18:05:52 GMT+0000 (UTC)
 </footer>
 
 <script> prettyPrint(); </script>

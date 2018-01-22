@@ -1,10 +1,10 @@
 /**
  * The type reader categories.
- * @enum {number}
+ * @enum {Symbol}
  * @readonly
  */
 
-const TypeReaderCategories = {
+const TypeReaderCategory = {
   /** Global type readers. */
   Global: Symbol(),
   /** Library-specific type readers. */
@@ -13,4 +13,4 @@ const TypeReaderCategories = {
   User: Symbol()
 };
 
-module.exports = TypeReaderCategories;
+module.exports = TypeReaderCategory;

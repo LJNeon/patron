@@ -2,11 +2,11 @@ const path = require('path');
 const Command = require('./Command.js');
 const Group = require('./Group.js');
 const TypeReader = require('./TypeReader.js');
-const TypeReaderCategories = require('../enums/TypeReaderCategories.js');
+const TypeReaderCategory = require('../enums/TypeReaderCategory.js');
 const Precondition = require('./Precondition.js');
 const ArgumentPrecondition = require('./ArgumentPrecondition.js');
 const Constants = require('../utility/Constants.js');
-const Libraries = require('../enums/Libraries.js');
+const Library = require('../enums/Library.js');
 const LibraryHandler = require('../utility/LibraryHandler.js');
 const RequireAll = require('../utility/RequireAll.js');
 
@@ -307,7 +307,7 @@ class Registry {
    * @returns {Registry} The registry being used.
    */
   unregisterGlobalTypeReaders() {
-    return this.unregisterTypeReaders(this.typeReaders.filter((t) => t.category === TypeReaderCategories.Global));
+    return this.unregisterTypeReaders(this.typeReaders.filter((t) => t.category === TypeReaderCategory.Global));
   }
 
   /**
@@ -315,7 +315,7 @@ class Registry {
    * @returns {Registry} The registry being used.
    */
   unregisterLibraryTypeReaders() {
-    return this.unregisterTypeReaders(this.typeReaders.filter((t) => t.category === TypeReaderCategories.Library));
+    return this.unregisterTypeReaders(this.typeReaders.filter((t) => t.category === TypeReaderCategory.Library));
   }
 
   /**
@@ -404,7 +404,7 @@ class Registry {
    * @private
    */
   static validateRegistry(registry) {
-    if (Object.values(Libraries).indexOf(registry.library) === -1) {
+    if (Object.values(Library).indexOf(registry.library) === -1) {
       throw new TypeError(registry.library + ' isn\'t a supported library.');
     }
   }

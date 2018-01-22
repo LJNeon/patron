@@ -8,8 +8,8 @@ declare module 'patron.js' {
     public defaultValue: any;
     public infinite: boolean;
     public preconditions: ArgumentPrecondition[];
-    public remainder: boolean;
     public optional: boolean;
+    public remainder: boolean;
     constructor(options: ArgumentOptions);
   }
 
@@ -35,14 +35,13 @@ declare module 'patron.js' {
     public names: string[];
     public group: Group;
     public description: string;
-    public guildOnly: boolean;
-    public dmOnly: boolean;
+    public usableContexts: Symbol[];
     public memberPermissions: string[];
     public botPermissions: string[];
     public preconditions: Precondition[];
     public args: Argument[];
-    public coooldown: number;
     public hasCooldown: boolean;
+    public cooldown: number;
     private cooldowns: object;
     constructor(options: CommandOptions);
     public run(message: object, args: object, custom: any): Promise<any>;
@@ -55,23 +54,28 @@ declare module 'patron.js' {
     MemberPermission,
     BotPermission,
     TypeReader,
-    GuildOnly,
     CommandNotFound,
     Cooldown,
     InvalidArgCount,
     Exception,
-    DmOnly
+    InvalidContext
+  }
+
+  export enum Context {
+    DM,
+    Guild
+    Group
   }
 
   export class CooldownResult extends Result {
-    public remaining: number;
     public static fromError(command: Command, remaining: number): CooldownResult;
+    public remaining: number;
     private constructor(options: CooldownResultOptions);
   }
 
   export class ExceptionResult extends Result {
-    public error: Error;
     public static fromError(command: Command, error: Error): ExceptionResult;
+    public error: Error;
     private constructor(options: ExceptionResultOptions);
   }
 
@@ -90,6 +94,17 @@ declare module 'patron.js' {
     constructor(registry: Registry);
   }
 
+  export class InvalidContextResult {
+    public static fromError(command: Command, context: Context): InvalidContextResult;
+    public context: Symbol;
+    private constructor(options: ResultOptions);
+  }
+
+  export enum Library {
+    DiscordJS,
+    Eris
+  }
+
   export class Precondition {
     private static validatePrecondition(registry: Precondition, name: string): void;
     public name: string;
@@ -106,20 +121,26 @@ declare module 'patron.js' {
 
   export class Registry {
     private static validateRegistry(registry: Registry, name: string): void;
-    public library: string;
     public commands: Command[];
     public groups: Group[];
     public typeReaders: TypeReader[];
     public preconditions: Precondition[];
     public argumentPreconditions: ArgumentPrecondition[];
-    constructor(options: RegistryOptions);
-    public registerGlobalTypeReaders(): Registry;
-    public registerLibraryTypeReaders(): Registry;
-    public registerTypeReaders(typeReaders: TypeReader[]): Registry;
-    public registerGroups(groups: Group[]): Registry;
-    public registerCommands(commands: Command[]): Registry;
+    public library: string;
     public registerArgumentPreconditions(argumentPreconditions: ArgumentPrecondition[]): Registry;
+    public registerCommands(commands: Command[]): Registry;
+    public registerGlobalTypeReaders(): Registry;
+    public registerGroups(groups: Group[]): Registry;
+    public registerLibraryTypeReaders(): Registry;
     public registerPreconditions(preconditions: Precondition[]): Registry;
+    public registerTypeReaders(typeReaders: TypeReader[]): Registry;
+    public unregisterArgumentPreconditions(argumentPreconditions: ArgumentPrecondition[]): Registry;
+    public unregisterCommands(commands: Command[]): Registry;
+    public unregisterGlobalTypeReaders(): Registry;
+    public unregisterGroups(groups: Group[]): Registry;
+    public unregisterLibraryTypeReaders(): Registry;
+    public unregisterPreconditions(preconditions: Precondition[]): Registry;
+    public unregisterTypeReaders(typeReaders: TypeReader[]): Registry;
     constructor(options: RegistryOptions);
   }
 
@@ -157,8 +178,8 @@ declare module 'patron.js' {
     example: string;
     defaultValue?: any;
     infinite?: boolean;
-    remainder?: boolean;
     preconditions?: string[] | object[];
+    remainder?: boolean;
   }
 
   interface ArgumentPreconditionOptions {
@@ -170,9 +191,8 @@ declare module 'patron.js' {
     names: string[];
     groupName: string;
     description?: string;
-    guildOnly?: boolean;
-    dmOnly?: boolean;
-    userPermissions?: string[];
+    usableContexts?: symbol[];
+    memberPermissions?: string[];
     botPermissions?: string[];
     preconditions?: string[] | object[];
     args?: Argument[];
@@ -180,7 +200,6 @@ declare module 'patron.js' {
   }
 
   interface CooldownResultOptions extends ResultOptions {
-    cooldown: number;
     remaining: number;
   }
 
@@ -199,6 +218,10 @@ declare module 'patron.js' {
     description?: string;
   }
 
+  interface RegistryOptions {
+    library: string;
+  }
+
   interface ResultOptions {
     success: boolean;
     command?: Command;
@@ -210,10 +233,6 @@ declare module 'patron.js' {
   interface TypeReaderOptions {
     type: string;
     description?: string;
-  }
-
-  interface RegistryOptions {
-    library: string;
   }
 
   interface TypeReaderResultOptions extends ResultOptions {

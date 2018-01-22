@@ -27,14 +27,15 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>const Argument = require('./Argument.js');
+const Context = require('../enums/Context.js');
+const ContextKeys = Object.keys(Context);
 
 /**
  * A command.
  * @prop {string[]} names The names of the command.
  * @prop {Group} group The group of the command.
  * @prop {string} description The description of the command.
- * @prop {boolean} guildOnly Whether the command may only be used in guild text channels.
- * @prop {boolean} dmOnly Whether the command may only be used in direct messages.
+ * @prop {Symbol[]} usableContexts An array of contexts the command can be used.
  * @prop {string[]} memberPermissions The permissions required by the invoker to use the command.
  * @prop {string[]} botPermissions The permissions required by the bot to execute the command.
  * @prop {Precondition[]} preconditions The preconditions to be ran on the command.
@@ -49,8 +50,7 @@ class Command {
    * @prop {string[]} names The names of the command.
    * @prop {string} groupName The name of the group of the command.
    * @prop {string} [description=''] The description of the command.
-   * @prop {boolean} [guildOnly=true] Whether the command may only be used in guild text channels.
-   * @prop {boolean} [dmOnly=false] Whether the command may only be used in direct messages.
+   * @prop {Symbol[]} [usableContexts=[Context.Guild]] An array of contexts the command can be used.
    * @prop {string[]} [memberPermissions=[]] The permissions required by the invoker to use the command.
    * @prop {string[]} [botPermissions=[]] The permissions required by the bot to execute the command.
    * @prop {Array&lt;string|object>} [preconditions=[]] The preconditions to be ran on the command.
@@ -65,8 +65,7 @@ class Command {
     this.names = options.names;
     this.groupName = options.groupName;
     this.description = options.description !== undefined ? options.description : '';
-    this.guildOnly = options.guildOnly !== undefined ? options.guildOnly : true;
-    this.dmOnly = options.dmOnly !== undefined ? options.dmOnly : false;
+    this.usableContexts = options.usableContexts !== undefined ? options.usableContexts : [Context.Guild];
     this.memberPermissions = options.memberPermissions !== undefined ? options.memberPermissions : [];
     this.botPermissions = options.botPermissions !== undefined ? options.botPermissions : [];
     this.preconditions = options.preconditions !== undefined ? options.preconditions : [];
@@ -148,12 +147,6 @@ class Command {
       throw new TypeError(name + ': The group name must be a lowercase string.');
     } else if (typeof command.description !== 'string') {
       throw new TypeError(name + ': The description must be a string.');
-    } else if (typeof command.guildOnly !== 'boolean') {
-      throw new TypeError(name + ': The guild only option must be a boolean.');
-    } else if (typeof command.dmOnly !== 'boolean') {
-      throw new TypeError(name + ': The DM only option must be a boolean.');
-    } else if (command.dmOnly === true &amp;&amp; command.guildOnly === true) {
-      throw new Error(name + ': A command may not be DM only and guild only.');
     } else if (Array.isArray(command.memberPermissions) === false) {
       throw new TypeError(name + ': The user permissions must be an array.');
     } else if (Array.isArray(command.botPermissions) === false) {
@@ -164,6 +157,8 @@ class Command {
       throw new TypeError(name + ': The arguments must be an array.');
     } else if (typeof command.cooldown !== 'number') {
       throw new TypeError(name + ': The cooldown must be a number.');
+    } else if (Array.isArray(command.usableContexts) === false) {
+      throw new TypeError(name + ': The usableContexts must be an array.');
     }
 
     const allPermissions = command.memberPermissions.concat(command.botPermissions);
@@ -177,6 +172,19 @@ class Command {
     for (let i = 0; i &lt; command.names.length; i++) {
       if (typeof command.names[i] !== 'string' || command.names[i] !== command.names[i].toLowerCase()) {
         throw new TypeError(command.names[i] + ': All command names must be lowercase strings.');
+      }
+    }
+
+    for (let i = 0; i &lt; command.usableContexts.length; i++) {
+      let valid = false;
+      for (let j = 0; j &lt; ContextKeys.length; j++) {
+        if (Context[ContextKeys[j]] === command.usableContexts[i]) {
+          valid = true;
+          break;
+        }
+      }
+      if (valid === false) {
+        throw new TypeError(command.names[i] + ': Invalid Context.');
       }
     }
 
@@ -207,13 +215,13 @@ module.exports = Command;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Argument.html">Argument</a></li><li><a href="ArgumentPrecondition.html">ArgumentPrecondition</a></li><li><a href="Command.html">Command</a></li><li><a href="CooldownResult.html">CooldownResult</a></li><li><a href="ExceptionResult.html">ExceptionResult</a></li><li><a href="Group.html">Group</a></li><li><a href="Handler.html">Handler</a></li><li><a href="Precondition.html">Precondition</a></li><li><a href="PreconditionResult.html">PreconditionResult</a></li><li><a href="Registry.html">Registry</a></li><li><a href="Result.html">Result</a></li><li><a href="TypeReader.html">TypeReader</a></li><li><a href="TypeReaderResult.html">TypeReaderResult</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ArgumentDefault">ArgumentDefault</a></li><li><a href="global.html#CommandError">CommandError</a></li><li><a href="global.html#DiscordChannelTypes">DiscordChannelTypes</a></li><li><a href="global.html#RequireAll">RequireAll</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Argument.html">Argument</a></li><li><a href="ArgumentPrecondition.html">ArgumentPrecondition</a></li><li><a href="Command.html">Command</a></li><li><a href="CooldownResult.html">CooldownResult</a></li><li><a href="ExceptionResult.html">ExceptionResult</a></li><li><a href="Group.html">Group</a></li><li><a href="Handler.html">Handler</a></li><li><a href="InvalidContextResult.html">InvalidContextResult</a></li><li><a href="Precondition.html">Precondition</a></li><li><a href="PreconditionResult.html">PreconditionResult</a></li><li><a href="Registry.html">Registry</a></li><li><a href="Result.html">Result</a></li><li><a href="TypeReader.html">TypeReader</a></li><li><a href="TypeReaderResult.html">TypeReaderResult</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ArgumentDefault">ArgumentDefault</a></li><li><a href="global.html#CommandError">CommandError</a></li><li><a href="global.html#Context">Context</a></li><li><a href="global.html#Library">Library</a></li><li><a href="global.html#RequireAll">RequireAll</a></li><li><a href="global.html#TypeReaderCategory">TypeReaderCategory</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Nov 09 2017 15:26:28 GMT-0500 (EST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Jan 21 2018 18:05:52 GMT+0000 (UTC)
 </footer>
 
 <script> prettyPrint(); </script>

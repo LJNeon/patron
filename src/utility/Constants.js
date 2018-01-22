@@ -78,8 +78,6 @@ class Constants {
     this.results = {
       botPermissions: (client, command, permissions) => new Result({ success: false, command: command, commandError: CommandError.BotPermission, errorReason: client.user.username + ' cannot execute this command without the ' + PermissionUtil.format(permissions) + ' permission' + (permissions.length > 1 ? 's' : '') + '.' }),
       commandNotFound: (commandName) => new Result({ success: false, commandName: commandName, commandError: CommandError.CommandNotFound, errorReason: 'This command does not exist.' }),
-      dmOnly: (command) => new Result({ success: false, command: command, commandError: CommandError.DmOnly, errorReason: 'This command may only be used in direct messages.' }),
-      guildOnly: (command) => new Result({ success: false, command: command, commandError: CommandError.GuildOnly, errorReason: 'This command may only be used inside a server.' }),
       invalidArgCount: (command) => new Result({ success: false, command: command, commandError: CommandError.InvalidArgCount, errorReason: 'You have provided an invalid number of arguments.' }),
       memberPermissions: (command, permissions) => new Result({ success: false, command: command, commandError: CommandError.MemberPermission, errorReason: 'This command may only be used by members with the ' + permissions + ' permission' + (permissions.length > 1 ? 's' : '') + '.' }),
       success: (command) => new Result({ success: true, command: command })
