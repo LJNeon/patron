@@ -36,12 +36,12 @@ class Command {
   constructor(options) {
     this.names = options.names;
     this.groupName = options.groupName;
-    this.description = options.description !== undefined ? options.description : '';
-    this.usableContexts = options.usableContexts !== undefined ? options.usableContexts : [Context.Guild];
-    this.memberPermissions = options.memberPermissions !== undefined ? options.memberPermissions : [];
-    this.botPermissions = options.botPermissions !== undefined ? options.botPermissions : [];
-    this.preconditions = options.preconditions !== undefined ? options.preconditions : [];
-    this.args = options.args !== undefined ? options.args : [];
+    this.description = options.description === undefined ? '' : options.description;
+    this.usableContexts = options.usableContexts === undefined ? [Context.Guild] : options.usableContexts;
+    this.memberPermissions = options.memberPermissions === undefined ? [] : options.memberPermissions;
+    this.botPermissions = options.botPermissions === undefined ? [] : options.botPermissions;
+    this.preconditions = options.preconditions === undefined ? [] : options.preconditions;
+    this.args = options.args === undefined ? [] : options.args;
     this.hasCooldown = options.cooldown !== undefined;
     this.cooldown = this.hasCooldown === true ? options.cooldown : 0;
     this.cooldowns = this.hasCooldown === true ? {} : null;
@@ -115,8 +115,8 @@ class Command {
   static validateCommand(command, name) {
     if (Array.isArray(command.names) === false) {
       throw new TypeError(name + ': The names must be an array.');
-    } else if (typeof command.groupName !== 'string' || command.groupName !== command.groupName.toLowerCase()) {
-      throw new TypeError(name + ': The group name must be a lowercase string.');
+    } else if (typeof command.groupName !== 'string') {
+      throw new TypeError(name + ': The group name must be a string.');
     } else if (typeof command.description !== 'string') {
       throw new TypeError(name + ': The description must be a string.');
     } else if (Array.isArray(command.memberPermissions) === false) {
@@ -142,8 +142,8 @@ class Command {
     }
 
     for (let i = 0; i < command.names.length; i++) {
-      if (typeof command.names[i] !== 'string' || command.names[i] !== command.names[i].toLowerCase()) {
-        throw new TypeError(command.names[i] + ': All command names must be lowercase strings.');
+      if (typeof command.names[i] !== 'string') {
+        throw new TypeError(command.names[i] + ': All command names must be strings.');
       }
     }
 

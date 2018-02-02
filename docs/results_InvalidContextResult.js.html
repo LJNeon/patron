@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: results/ExceptionResult.js</title>
+    <title>JSDoc: Source: results/InvalidContextResult.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: results/ExceptionResult.js</h1>
+    <h1 class="page-title">Source: results/InvalidContextResult.js</h1>
 
     
 
@@ -29,27 +29,19 @@
             <pre class="prettyprint source linenums"><code>const Result = require('./Result.js');
 
 /**
- * An exception result.
- * @prop {Error} error The error in question.
+ * An invalid context result.
  * @extends {Result}
  */
-class ExceptionResult extends Result {
+class InvalidContextResult extends Result {
   /**
-   * @typedef {ExceptionResultOptions} ExceptionResultOptions
-   * @prop {Error} error The error in question.
-   */
-
-  /**
-   * @param {ExceptionResultOptions} options The exception result options.
+   * @param {ResultOptions} options The result options.
    */
   constructor(options) {
     super(options);
-
-    this.error = options.error;
   }
 }
 
-module.exports = ExceptionResult;
+module.exports = InvalidContextResult;
 </code></pre>
         </article>
     </section>

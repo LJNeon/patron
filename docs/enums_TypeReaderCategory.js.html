@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: results/ExceptionResult.js</title>
+    <title>JSDoc: Source: enums/TypeReaderCategory.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: results/ExceptionResult.js</h1>
+    <h1 class="page-title">Source: enums/TypeReaderCategory.js</h1>
 
     
 
@@ -26,30 +26,22 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>const Result = require('./Result.js');
-
-/**
- * An exception result.
- * @prop {Error} error The error in question.
- * @extends {Result}
+            <pre class="prettyprint source linenums"><code>/**
+ * The type reader categories.
+ * @enum {Symbol}
+ * @readonly
  */
-class ExceptionResult extends Result {
-  /**
-   * @typedef {ExceptionResultOptions} ExceptionResultOptions
-   * @prop {Error} error The error in question.
-   */
 
-  /**
-   * @param {ExceptionResultOptions} options The exception result options.
-   */
-  constructor(options) {
-    super(options);
+const TypeReaderCategory = {
+  /** Global type readers. */
+  Global: Symbol(),
+  /** Library-specific type readers. */
+  Library: Symbol(),
+  /** User-made type readers. */
+  User: Symbol()
+};
 
-    this.error = options.error;
-  }
-}
-
-module.exports = ExceptionResult;
+module.exports = TypeReaderCategory;
 </code></pre>
         </article>
     </section>

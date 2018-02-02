@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: results/ExceptionResult.js</title>
+    <title>JSDoc: Source: results/ArgumentResult.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: results/ExceptionResult.js</h1>
+    <h1 class="page-title">Source: results/ArgumentResult.js</h1>
 
     
 
@@ -29,27 +29,27 @@
             <pre class="prettyprint source linenums"><code>const Result = require('./Result.js');
 
 /**
- * An exception result.
- * @prop {Error} error The error in question.
+ * An argument result.
+ * @prop {object} args The parsed arguments.
  * @extends {Result}
  */
-class ExceptionResult extends Result {
+class ArgumentResult extends Result {
   /**
-   * @typedef {ExceptionResultOptions} ExceptionResultOptions
-   * @prop {Error} error The error in question.
+   * @typedef {ArgumentResultOptions} ArgumentResultOptions The argument result options.
+   * @prop {object} args The parsed arguments.
    */
 
   /**
-   * @param {ExceptionResultOptions} options The exception result options.
+   * @param {ArgumentResultOptions} options The argument result options.
    */
   constructor(options) {
     super(options);
 
-    this.error = options.error;
+    this.args = options.args;
   }
 }
 
-module.exports = ExceptionResult;
+module.exports = ArgumentResult;
 </code></pre>
         </article>
     </section>

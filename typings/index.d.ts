@@ -30,6 +30,11 @@ declare module 'patron.js' {
     constructor(options: ArgumentPreconditionOptions);
   }
 
+  export class ArgumentResult {
+    public args: object;
+    private constructor(options: ArgumentResultOptions);
+  }
+
   export class Command {
     private static validateCommand(command: Command, name: string): void;
     public names: string[];
@@ -68,13 +73,11 @@ declare module 'patron.js' {
   }
 
   export class CooldownResult extends Result {
-    public static fromError(command: Command, remaining: number): CooldownResult;
     public remaining: number;
     private constructor(options: CooldownResultOptions);
   }
 
   export class ExceptionResult extends Result {
-    public static fromError(command: Command, error: Error): ExceptionResult;
     public error: Error;
     private constructor(options: ExceptionResultOptions);
   }
@@ -90,12 +93,17 @@ declare module 'patron.js' {
 
   export class Handler {
     public registry: Registry;
-    public run(message: object, prefix: string, ...custom): Promise<Result | CooldownResult | ExceptionResult | PreconditionResult | TypeReaderResult>;
+    public parseCommand(message: object, prefixLength: number): Promise<Result>;
+    public validateCommand(message: object, command: Command): Promise<Result | InvalidContextResult>;
+    public runCommandPreconditions(message: object, command: Command, ...custom): Promise<Result | PreconditionResult>;
+    public checkCooldown(message: object, command: Command): Promise<Result | CooldownResult>;
+    public parseArguments(message: object, command: Command, prefixLength: number, ...custom): Promise<ArgumentResult | TypeReaderResult | PreconditionResult>;
+    public updateCooldown(message: object, command: Command): Promise<Result>;
+    public run(message: object, prefixLength: number, ...custom): Promise<Result | CooldownResult | ExceptionResult | PreconditionResult | TypeReaderResult>;
     constructor(registry: Registry);
   }
 
   export class InvalidContextResult {
-    public static fromError(command: Command, context: Context): InvalidContextResult;
     public context: Symbol;
     private constructor(options: ResultOptions);
   }
@@ -185,6 +193,10 @@ declare module 'patron.js' {
   interface ArgumentPreconditionOptions {
     name: string;
     description?: string;
+  }
+
+  interface ArgumentResultOptions extends ResultOptions {
+    args: object;
   }
 
   interface CommandOptions {

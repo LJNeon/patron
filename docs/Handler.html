@@ -28,7 +28,7 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>Handler<span class="signature">(registry)</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>Handler<span class="signature">(options)</span><span class="type-signature"></span></h2>
         
             <div class="class-description">The command handler.</div>
         
@@ -45,7 +45,7 @@
     
 
     
-    <h4 class="name" id="Handler"><span class="type-signature"></span>new Handler<span class="signature">(registry)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="Handler"><span class="type-signature"></span>new Handler<span class="signature">(options)</span><span class="type-signature"></span></h4>
     
 
     
@@ -85,13 +85,13 @@
 
         <tr>
             
-                <td class="name"><code>registry</code></td>
+                <td class="name"><code>options</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="Registry.html">Registry</a></span>
+<span class="param-type"><a href="global.html#HandlerOptions">HandlerOptions</a></span>
 
 
             
@@ -101,7 +101,7 @@
 
             
 
-            <td class="description last">The registry used to handle the commands.</td>
+            <td class="description last">The handler options.</td>
         </tr>
 
     
@@ -135,6 +135,29 @@
     </thead>
 
     <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>argumentRegex</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">RegExp</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The regex used to parse arguments from messages.</td>
+        </tr>
+
     
 
         <tr>
@@ -194,7 +217,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="structures_Handler.js.html">structures/Handler.js</a>, <a href="structures_Handler.js.html#line12">line 12</a>
+        <a href="structures_Handler.js.html">structures/Handler.js</a>, <a href="structures_Handler.js.html#line11">line 11</a>
     </li></ul></dd>
     
 
@@ -248,7 +271,638 @@
     
 
     
-    <h4 class="name" id="run"><span class="type-signature">(async) </span>run<span class="signature">(message, prefix, &hellip;custom)</span><span class="type-signature"> &rarr; {Promise.&lt;<a href="Result.html">Result</a>>|Promise.&lt;<a href="CooldownResult.html">CooldownResult</a>>|Promise.&lt;<a href="TypeReaderResult.html">TypeReaderResult</a>>|Promise.&lt;<a href="PreconditionResult.html">PreconditionResult</a>>|Promise.&lt;<a href="ExceptionResult.html">ExceptionResult</a>>}</span></h4>
+    <h4 class="name" id="checkCooldown"><span class="type-signature">(async) </span>checkCooldown<span class="signature">(message, command)</span><span class="type-signature"> &rarr; {Promise.&lt;<a href="Result.html">Result</a>>|Promise.&lt;<a href="CooldownResult.html">CooldownResult</a>>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Attempts to check if a Command is on cooldown.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>message</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Message</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The received message.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>command</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Command.html">Command</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The parsed command.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="structures_Handler.js.html">structures/Handler.js</a>, <a href="structures_Handler.js.html#line113">line 113</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    The result of checking the cooldowns.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;<a href="Result.html">Result</a>></span>
+|
+
+<span class="param-type">Promise.&lt;<a href="CooldownResult.html">CooldownResult</a>></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="parseArguments"><span class="type-signature">(async) </span>parseArguments<span class="signature">(message, command, prefixLength, &hellip;custom)</span><span class="type-signature"> &rarr; {Promise.&lt;<a href="ArgumentResult.html">ArgumentResult</a>>|Promise.&lt;<a href="TypeReaderResult.html">TypeReaderResult</a>>|Promise.&lt;<a href="PreconditionResult.html">PreconditionResult</a>>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Attempts to parse Arguments.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>message</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Message</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The received message.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>command</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Command.html">Command</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The parsed command.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>prefixLength</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The length of the prefix to use when handling the command.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>custom</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                    &lt;repeatable><br>
+                
+                </td>
+            
+
+            
+
+            <td class="description last">Any custom parameters to be passed into all preconditions and typereaders.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="structures_Handler.js.html">structures/Handler.js</a>, <a href="structures_Handler.js.html#line137">line 137</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    The result of the argument parsing.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;<a href="ArgumentResult.html">ArgumentResult</a>></span>
+|
+
+<span class="param-type">Promise.&lt;<a href="TypeReaderResult.html">TypeReaderResult</a>></span>
+|
+
+<span class="param-type">Promise.&lt;<a href="PreconditionResult.html">PreconditionResult</a>></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="parseCommand"><span class="type-signature">(async) </span>parseCommand<span class="signature">(message, prefixLength)</span><span class="type-signature"> &rarr; {Promise.&lt;<a href="Result.html">Result</a>>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Attempts to parse a Command.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>message</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Message</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The received message.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>prefixLength</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The length of the prefix to use when handling the command.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="structures_Handler.js.html">structures/Handler.js</a>, <a href="structures_Handler.js.html#line34">line 34</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    The result of the command parsing.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;<a href="Result.html">Result</a>></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="run"><span class="type-signature">(async) </span>run<span class="signature">(message, prefixLength, &hellip;custom)</span><span class="type-signature"> &rarr; {Promise.&lt;<a href="Result.html">Result</a>>|Promise.&lt;<a href="ArgumentResult.html">ArgumentResult</a>>|Promise.&lt;<a href="CooldownResult.html">CooldownResult</a>>|Promise.&lt;<a href="TypeReaderResult.html">TypeReaderResult</a>>|Promise.&lt;<a href="PreconditionResult.html">PreconditionResult</a>>|Promise.&lt;<a href="ExceptionResult.html">ExceptionResult</a>>}</span></h4>
     
 
     
@@ -325,13 +979,13 @@
 
         <tr>
             
-                <td class="name"><code>prefix</code></td>
+                <td class="name"><code>prefixLength</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">number</span>
 
 
             
@@ -349,7 +1003,7 @@
 
             
 
-            <td class="description last">The prefix to use when handling the command.</td>
+            <td class="description last">The length of the prefix to use when handling the command.</td>
         </tr>
 
     
@@ -423,7 +1077,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="structures_Handler.js.html">structures/Handler.js</a>, <a href="structures_Handler.js.html#line27">line 27</a>
+        <a href="structures_Handler.js.html">structures/Handler.js</a>, <a href="structures_Handler.js.html#line242">line 242</a>
     </li></ul></dd>
     
 
@@ -464,6 +1118,9 @@
 <span class="param-type">Promise.&lt;<a href="Result.html">Result</a>></span>
 |
 
+<span class="param-type">Promise.&lt;<a href="ArgumentResult.html">ArgumentResult</a>></span>
+|
+
 <span class="param-type">Promise.&lt;<a href="CooldownResult.html">CooldownResult</a>></span>
 |
 
@@ -474,6 +1131,603 @@
 |
 
 <span class="param-type">Promise.&lt;<a href="ExceptionResult.html">ExceptionResult</a>></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="runCommandPreconditions"><span class="type-signature">(async) </span>runCommandPreconditions<span class="signature">(message, command, &hellip;custom)</span><span class="type-signature"> &rarr; {Promise.&lt;<a href="Result.html">Result</a>>|Promise.&lt;<a href="PreconditionResult.html">PreconditionResult</a>>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Attempts to run the Preconditions registered to a Command.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>message</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Message</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The received message.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>command</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Command.html">Command</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The parsed command.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>custom</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                    &lt;repeatable><br>
+                
+                </td>
+            
+
+            
+
+            <td class="description last">Any custom parameters to be passed into all preconditions.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="structures_Handler.js.html">structures/Handler.js</a>, <a href="structures_Handler.js.html#line87">line 87</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    The result of running the preconditions.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;<a href="Result.html">Result</a>></span>
+|
+
+<span class="param-type">Promise.&lt;<a href="PreconditionResult.html">PreconditionResult</a>></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="updateCooldown"><span class="type-signature">(async) </span>updateCooldown<span class="signature">(message, command)</span><span class="type-signature"> &rarr; {Promise.&lt;<a href="Result.html">Result</a>>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Attempts to update a Command's cooldown.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>message</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Message</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The received message.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>command</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Command.html">Command</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The parsed command.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="structures_Handler.js.html">structures/Handler.js</a>, <a href="structures_Handler.js.html#line228">line 228</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    The result of the cooldown's update.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;<a href="Result.html">Result</a>></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="validateCommand"><span class="type-signature">(async) </span>validateCommand<span class="signature">(message, command)</span><span class="type-signature"> &rarr; {Promise.&lt;<a href="Result.html">Result</a>>|Promise.&lt;<a href="InvalidContextResult.html">InvalidContextResult</a>>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Attempts to validate a Command.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>message</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Message</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The received message.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>command</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Command.html">Command</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The parsed command.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="structures_Handler.js.html">structures/Handler.js</a>, <a href="structures_Handler.js.html#line56">line 56</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    The result of the command validation.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;<a href="Result.html">Result</a>></span>
+|
+
+<span class="param-type">Promise.&lt;<a href="InvalidContextResult.html">InvalidContextResult</a>></span>
 
 
     </dd>
@@ -501,13 +1755,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Argument.html">Argument</a></li><li><a href="ArgumentPrecondition.html">ArgumentPrecondition</a></li><li><a href="Command.html">Command</a></li><li><a href="CooldownResult.html">CooldownResult</a></li><li><a href="ExceptionResult.html">ExceptionResult</a></li><li><a href="Group.html">Group</a></li><li><a href="Handler.html">Handler</a></li><li><a href="InvalidContextResult.html">InvalidContextResult</a></li><li><a href="Precondition.html">Precondition</a></li><li><a href="PreconditionResult.html">PreconditionResult</a></li><li><a href="Registry.html">Registry</a></li><li><a href="Result.html">Result</a></li><li><a href="TypeReader.html">TypeReader</a></li><li><a href="TypeReaderResult.html">TypeReaderResult</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ArgumentDefault">ArgumentDefault</a></li><li><a href="global.html#CommandError">CommandError</a></li><li><a href="global.html#Context">Context</a></li><li><a href="global.html#Library">Library</a></li><li><a href="global.html#RequireAll">RequireAll</a></li><li><a href="global.html#TypeReaderCategory">TypeReaderCategory</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Argument.html">Argument</a></li><li><a href="ArgumentPrecondition.html">ArgumentPrecondition</a></li><li><a href="ArgumentResult.html">ArgumentResult</a></li><li><a href="Command.html">Command</a></li><li><a href="CooldownResult.html">CooldownResult</a></li><li><a href="ExceptionResult.html">ExceptionResult</a></li><li><a href="Group.html">Group</a></li><li><a href="Handler.html">Handler</a></li><li><a href="InvalidContextResult.html">InvalidContextResult</a></li><li><a href="Precondition.html">Precondition</a></li><li><a href="PreconditionResult.html">PreconditionResult</a></li><li><a href="Registry.html">Registry</a></li><li><a href="Result.html">Result</a></li><li><a href="TypeReader.html">TypeReader</a></li><li><a href="TypeReaderResult.html">TypeReaderResult</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ArgumentDefault">ArgumentDefault</a></li><li><a href="global.html#CommandError">CommandError</a></li><li><a href="global.html#Context">Context</a></li><li><a href="global.html#Library">Library</a></li><li><a href="global.html#RequireAll">RequireAll</a></li><li><a href="global.html#TypeReaderCategory">TypeReaderCategory</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Jan 21 2018 18:05:52 GMT+0000 (UTC)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Fri Feb 02 2018 23:49:35 GMT+0000 (UTC)
 </footer>
 
 <script> prettyPrint(); </script>

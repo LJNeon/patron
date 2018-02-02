@@ -147,6 +147,7 @@
     "no-array-constructor": "error",
     "no-multi-assign": "error",
     "no-new-object": "error",
+    "no-negated-condition": "error",
     "no-trailing-spaces": "error",
     "no-unneeded-ternary": "error",
     "no-invalid-this": "error",

@@ -1,5 +1,4 @@
 const Result = require('./Result.js');
-const CommandError = require('../enums/CommandError.js');
 
 /**
  * An exception result.
@@ -8,7 +7,7 @@ const CommandError = require('../enums/CommandError.js');
  */
 class ExceptionResult extends Result {
   /**
-   * @typedef {ResultOptions} ExceptionResultOptions
+   * @typedef {ExceptionResultOptions} ExceptionResultOptions
    * @prop {Error} error The error in question.
    */
 
@@ -19,16 +18,6 @@ class ExceptionResult extends Result {
     super(options);
 
     this.error = options.error;
-  }
-
-  /**
-   * Returns an exception result.
-   * @param {Command} command The command being executed.
-   * @param {Error} error The error in question.
-   * @returns {ExceptionResult} The result in question.
-   */
-  static fromError(command, error) {
-    return new ExceptionResult({ success: false, command: command, commandError: CommandError.Exception, errorReason: error.message, error: error });
   }
 }
 

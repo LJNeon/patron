@@ -35,10 +35,10 @@ class Argument {
     this.type = options.type;
     this.example = options.example;
     this.defaultValue = options.defaultValue;
-    this.infinite = options.infinite !== undefined ? options.infinite : false;
-    this.preconditions = options.preconditions !== undefined ? options.preconditions : [];
+    this.infinite = options.infinite === undefined ? false : options.infinite;
+    this.preconditions = options.preconditions === undefined ? [] : options.preconditions;
     this.optional = options.defaultValue !== undefined;
-    this.remainder = options.remainder !== undefined ? options.remainder : false;
+    this.remainder = options.remainder === undefined ? false : options.remainder;
     this.preconditionOptions = [];
 
     this.constructor.validateArgument(this, this.constructor.name);
@@ -55,8 +55,8 @@ class Argument {
       throw new TypeError(name + ': The name must be a string.');
     } else if (typeof argument.key !== 'string' || Constants.regexes.whiteSpace.test(argument.key)) {
       throw new TypeError(name + ': The key must be a string that does not contain any whitespace characters.');
-    } else if (typeof argument.type !== 'string' || argument.type !== argument.type.toLowerCase()) {
-      throw new TypeError(name + ': The type must be a lowercase string.');
+    } else if (typeof argument.type !== 'string') {
+      throw new TypeError(name + ': The type must be a string.');
     } else if (typeof argument.example !== 'string') {
       throw new TypeError(name + ': The example must be a string.');
     } else if (typeof argument.infinite !== 'boolean') {

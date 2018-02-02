@@ -64,12 +64,12 @@ class Command {
   constructor(options) {
     this.names = options.names;
     this.groupName = options.groupName;
-    this.description = options.description !== undefined ? options.description : '';
-    this.usableContexts = options.usableContexts !== undefined ? options.usableContexts : [Context.Guild];
-    this.memberPermissions = options.memberPermissions !== undefined ? options.memberPermissions : [];
-    this.botPermissions = options.botPermissions !== undefined ? options.botPermissions : [];
-    this.preconditions = options.preconditions !== undefined ? options.preconditions : [];
-    this.args = options.args !== undefined ? options.args : [];
+    this.description = options.description === undefined ? '' : options.description;
+    this.usableContexts = options.usableContexts === undefined ? [Context.Guild] : options.usableContexts;
+    this.memberPermissions = options.memberPermissions === undefined ? [] : options.memberPermissions;
+    this.botPermissions = options.botPermissions === undefined ? [] : options.botPermissions;
+    this.preconditions = options.preconditions === undefined ? [] : options.preconditions;
+    this.args = options.args === undefined ? [] : options.args;
     this.hasCooldown = options.cooldown !== undefined;
     this.cooldown = this.hasCooldown === true ? options.cooldown : 0;
     this.cooldowns = this.hasCooldown === true ? {} : null;
@@ -143,8 +143,8 @@ class Command {
   static validateCommand(command, name) {
     if (Array.isArray(command.names) === false) {
       throw new TypeError(name + ': The names must be an array.');
-    } else if (typeof command.groupName !== 'string' || command.groupName !== command.groupName.toLowerCase()) {
-      throw new TypeError(name + ': The group name must be a lowercase string.');
+    } else if (typeof command.groupName !== 'string') {
+      throw new TypeError(name + ': The group name must be a string.');
     } else if (typeof command.description !== 'string') {
       throw new TypeError(name + ': The description must be a string.');
     } else if (Array.isArray(command.memberPermissions) === false) {
@@ -170,8 +170,8 @@ class Command {
     }
 
     for (let i = 0; i &lt; command.names.length; i++) {
-      if (typeof command.names[i] !== 'string' || command.names[i] !== command.names[i].toLowerCase()) {
-        throw new TypeError(command.names[i] + ': All command names must be lowercase strings.');
+      if (typeof command.names[i] !== 'string') {
+        throw new TypeError(command.names[i] + ': All command names must be strings.');
       }
     }
 
@@ -215,13 +215,13 @@ module.exports = Command;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Argument.html">Argument</a></li><li><a href="ArgumentPrecondition.html">ArgumentPrecondition</a></li><li><a href="Command.html">Command</a></li><li><a href="CooldownResult.html">CooldownResult</a></li><li><a href="ExceptionResult.html">ExceptionResult</a></li><li><a href="Group.html">Group</a></li><li><a href="Handler.html">Handler</a></li><li><a href="InvalidContextResult.html">InvalidContextResult</a></li><li><a href="Precondition.html">Precondition</a></li><li><a href="PreconditionResult.html">PreconditionResult</a></li><li><a href="Registry.html">Registry</a></li><li><a href="Result.html">Result</a></li><li><a href="TypeReader.html">TypeReader</a></li><li><a href="TypeReaderResult.html">TypeReaderResult</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ArgumentDefault">ArgumentDefault</a></li><li><a href="global.html#CommandError">CommandError</a></li><li><a href="global.html#Context">Context</a></li><li><a href="global.html#Library">Library</a></li><li><a href="global.html#RequireAll">RequireAll</a></li><li><a href="global.html#TypeReaderCategory">TypeReaderCategory</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Argument.html">Argument</a></li><li><a href="ArgumentPrecondition.html">ArgumentPrecondition</a></li><li><a href="ArgumentResult.html">ArgumentResult</a></li><li><a href="Command.html">Command</a></li><li><a href="CooldownResult.html">CooldownResult</a></li><li><a href="ExceptionResult.html">ExceptionResult</a></li><li><a href="Group.html">Group</a></li><li><a href="Handler.html">Handler</a></li><li><a href="InvalidContextResult.html">InvalidContextResult</a></li><li><a href="Precondition.html">Precondition</a></li><li><a href="PreconditionResult.html">PreconditionResult</a></li><li><a href="Registry.html">Registry</a></li><li><a href="Result.html">Result</a></li><li><a href="TypeReader.html">TypeReader</a></li><li><a href="TypeReaderResult.html">TypeReaderResult</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ArgumentDefault">ArgumentDefault</a></li><li><a href="global.html#CommandError">CommandError</a></li><li><a href="global.html#Context">Context</a></li><li><a href="global.html#Library">Library</a></li><li><a href="global.html#RequireAll">RequireAll</a></li><li><a href="global.html#TypeReaderCategory">TypeReaderCategory</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Jan 21 2018 18:05:52 GMT+0000 (UTC)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Fri Feb 02 2018 23:49:35 GMT+0000 (UTC)
 </footer>
 
 <script> prettyPrint(); </script>

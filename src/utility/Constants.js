@@ -1,6 +1,10 @@
+const CommandError = require('../enums/CommandError.js');
+const ArgumentResult = require('../results/ArgumentResult.js');
+const CooldownResult = require('../results/CooldownResult.js');
+const ExceptionResult = require('../results/ExceptionResult.js');
+const InvalidContextResult = require('../results/InvalidContextResult.js');
 const Result = require('../results/Result.js');
 const PermissionUtil = require('../utility/PermissionUtil.js');
-const CommandError = require('../enums/CommandError.js');
 
 class Constants {
   constructor() {
@@ -76,9 +80,14 @@ class Constants {
     };
 
     this.results = {
+      args: (command, args) => new ArgumentResult({ success: true, command: command, args: args }),
+      cooldown: (command, remaining) => new CooldownResult({ success: false, command: command, commandError: CommandError.Cooldown, errorReason: 'This command is on a cooldown.', remaining: remaining }),
       botPermissions: (client, command, permissions) => new Result({ success: false, command: command, commandError: CommandError.BotPermission, errorReason: client.user.username + ' cannot execute this command without the ' + PermissionUtil.format(permissions) + ' permission' + (permissions.length > 1 ? 's' : '') + '.' }),
       commandNotFound: (commandName) => new Result({ success: false, commandName: commandName, commandError: CommandError.CommandNotFound, errorReason: 'This command does not exist.' }),
+      exception: (command, error) => new ExceptionResult({ success: false, command: command, commandError: CommandError.Exception, errorReason: error.message, error: error }),
+      invalidArgs: (command, reason) => new ArgumentResult({ success: false, command: command, commandError: CommandError.InvalidArg, errorReason: reason }),
       invalidArgCount: (command) => new Result({ success: false, command: command, commandError: CommandError.InvalidArgCount, errorReason: 'You have provided an invalid number of arguments.' }),
+      invalidContext: (command, context) => new InvalidContextResult({ success: false, command: command, commandError: CommandError.Precondition, context: context, errorReason: 'This command may not be used in that context.' }),
       memberPermissions: (command, permissions) => new Result({ success: false, command: command, commandError: CommandError.MemberPermission, errorReason: 'This command may only be used by members with the ' + permissions + ' permission' + (permissions.length > 1 ? 's' : '') + '.' }),
       success: (command) => new Result({ success: true, command: command })
     };

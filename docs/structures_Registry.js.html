@@ -27,13 +27,12 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>const path = require('path');
+const ArgumentPrecondition = require('./ArgumentPrecondition.js');
 const Command = require('./Command.js');
 const Group = require('./Group.js');
+const Precondition = require('./Precondition.js');
 const TypeReader = require('./TypeReader.js');
 const TypeReaderCategory = require('../enums/TypeReaderCategory.js');
-const Precondition = require('./Precondition.js');
-const ArgumentPrecondition = require('./ArgumentPrecondition.js');
-const Constants = require('../utility/Constants.js');
 const Library = require('../enums/Library.js');
 const LibraryHandler = require('../utility/LibraryHandler.js');
 const RequireAll = require('../utility/RequireAll.js');
@@ -50,7 +49,7 @@ const RequireAll = require('../utility/RequireAll.js');
 class Registry {
   /**
    * @typedef {object} RegistryOptions The registry options.
-   * @prop {RegExp} [argumentRegex=/"[\S\s]+?"|[\S\n]+/g] The regex used to parse arguments from messages.
+   * @prop {boolean} [caseSensitive=true] Whether or not patron treats strings as case-sensitive.
    * @prop {string} library The library of the registry.
    */
 
@@ -63,7 +62,7 @@ class Registry {
     this.typeReaders = [];
     this.preconditions = [];
     this.argumentPreconditions = [];
-    this.argumentRegex = options.argumentRegex !== undefined ? options.argumentRegex : Constants.regexes.argument;
+    this.caseSensitive = options.caseSensitive === undefined ? true : options.caseSensitive;
     this.library = options.library;
     this.libraryHandler = new LibraryHandler({ library: this.library });
 
@@ -86,7 +85,7 @@ class Registry {
         throw new TypeError('All precondition exports must be an instance of the precondition.');
       } else if ((preconditions[i] instanceof Precondition) === false) {
         throw new Error('All preconditions must inherit the Precondition class.');
-      } else if (this.preconditions.some((v) => v.name === preconditions[i].name) === true) {
+      } else if (this.preconditions.some((v) => this.equals(v.name, preconditions[i].name)) === true) {
         throw new Error('The ' + preconditions[i].name + ' preconditon already exists.');
       }
 
@@ -111,7 +110,7 @@ class Registry {
         throw new TypeError('All argument precondition exports must be an instance of the precondition.');
       } else if ((argumentPreconditions[i] instanceof ArgumentPrecondition) === false) {
         throw new Error('All argument preconditions must inherit the ArgumentPrecondition class.');
-      } else if (this.argumentPreconditions.some((v) => v.name === argumentPreconditions[i].name) === true) {
+      } else if (this.argumentPreconditions.some((v) => this.equals(v.name, argumentPreconditions[i].name)) === true) {
         throw new Error('The ' + argumentPreconditions[i].name + ' argument precondition already exists.');
       }
 
@@ -152,7 +151,7 @@ class Registry {
         throw new TypeError('All type reader exports must be an instance of the type reader.');
       } else if ((typeReaders[i] instanceof TypeReader) === false) {
         throw new Error('All type readers must be inherit the TypeReader class.');
-      } else if (this.typeReaders.some((v) => v.type === typeReaders[i].type)) {
+      } else if (this.typeReaders.some((v) => this.equals(v.type, typeReaders[i].type))) {
         throw new Error('The ' + typeReaders[i].type + ' type reader already exists.');
       }
 
@@ -177,14 +176,14 @@ class Registry {
         throw new TypeError('All group exports must be an instance of the group.');
       } else if ((groups[i] instanceof Group) === false) {
         throw new Error('All groups must inherit the Group class.');
-      } else if (this.groups.some((v) => v.name === groups[i].name) === true) {
+      } else if (this.groups.some((v) => this.equals(v.name === groups[i].name)) === true) {
         throw new Error('The ' + groups[i].name + ' group already exists.');
       }
 
       for (let j = 0; j &lt; groups[i].preconditions.length; j++) {
         const name = typeof groups[i].preconditions[j] === 'string' ? groups[i].preconditions[j] : groups[i].preconditions[j].name;
         const options = groups[i].preconditions[j].options;
-        const precondition = this.preconditions.find((x) => x.name === name);
+        const precondition = this.preconditions.find((x) => this.equals(x.name, name));
 
         if (precondition === undefined) {
           throw new Error('The ' + name + ' precondition is not registered.');
@@ -218,13 +217,13 @@ class Registry {
       }
 
       for (let j = 0; j &lt; commands[i].names.length; j++) {
-        if (this.commands.some((x) => x.names.includes(commands[i].names[j])) === true) {
+        if (this.commands.some((x) => x.names.some((n) => this.equals(n, commands[i].names[j]))) === true) {
           throw new Error('A command with the name ' + commands[i].names[j] + ' is already registered.');
         }
       }
 
       for (let j = 0; j &lt; commands[i].args.length; j++) {
-        const typeReader = this.typeReaders.find((x) => x.type === commands[i].args[j].type);
+        const typeReader = this.typeReaders.find((x) => this.equals(x.type, commands[i].args[j].type));
 
         if (typeReader === undefined) {
           throw new Error('The ' + commands[i].args[j].type + ' type does not exist.');
@@ -235,7 +234,7 @@ class Registry {
         for (let h = 0; h &lt; commands[i].args[j].preconditions.length; h++) {
           const name = typeof commands[i].args[j].preconditions[h] === 'string' ? commands[i].args[j].preconditions[h] : commands[i].args[j].preconditions[h].name;
           const options = commands[i].args[j].preconditions[h].options;
-          const precondition = this.argumentPreconditions.find((x) => x.name === name);
+          const precondition = this.argumentPreconditions.find((x) => this.equals(x.name, name));
 
           if (precondition === undefined) {
             throw new Error('The ' + name + ' argument precondition is not registered.');
@@ -249,7 +248,7 @@ class Registry {
       for (let j = 0; j &lt; commands[i].preconditions.length; j++) {
         const name = typeof commands[i].preconditions[j] === 'string' ? commands[i].preconditions[j] : commands[i].preconditions[j].name;
         const options = commands[i].preconditions[j].options;
-        const precondition = this.preconditions.find((x) => x.name === name);
+        const precondition = this.preconditions.find((x) => this.equals(x.name, name));
 
         if (precondition === undefined) {
           throw new Error('The ' + name + ' precondition is not registered.');
@@ -259,7 +258,7 @@ class Registry {
         commands[i].preconditionOptions[j] = options;
       }
 
-      const groupIndex = this.groups.findIndex((v) => v.name === commands[i].groupName);
+      const groupIndex = this.groups.findIndex((v) => this.equals(v.name, commands[i].groupName));
 
       if (groupIndex === -1) {
         throw new Error('The ' + commands[i].groupName + ' group is not registered.');
@@ -289,15 +288,15 @@ class Registry {
         throw new TypeError('All precondition exports must be an instance of the precondition.');
       } else if ((preconditions[i] instanceof Precondition) === false) {
         throw new Error('All preconditions must inherit the Precondition class.');
-      } else if (this.preconditions.every((p) => p.name !== preconditions[i].name) === true) {
+      } else if (this.preconditions.every((p) => this.equals(p.name, preconditions[i].name) === false) === true) {
         throw new Error('The ' + preconditions[i].name + ' precondition is already not registered.');
-      } else if (this.commands.some((c) => c.preconditions.some((p) => p.name === preconditions[i].name)) === true) {
+      } else if (this.commands.some((c) => c.preconditions.some((p) => this.equals(p.name, preconditions[i].name))) === true) {
         throw new Error('The ' + preconditions[i].name + ' precondition is registered to a command.');
-      } else if (this.groups.some((g) => g.preconditions.some((p) => p.name === preconditions[i].name)) === true) {
+      } else if (this.groups.some((g) => g.preconditions.some((p) => this.equals(p.name, preconditions[i].name))) === true) {
         throw new Error('The ' + preconditions[i].name + ' precondition is registered to a group.');
       }
 
-      this.preconditions.splice(this.preconditions.findIndex((p) => p.name === preconditions[i].name), 1);
+      this.preconditions.splice(this.preconditions.findIndex((p) => this.equals(p.name, preconditions[i].name)), 1);
     }
 
     return this;
@@ -318,13 +317,13 @@ class Registry {
         throw new TypeError('All argument precondition exports must be an instance of the precondition.');
       } else if ((argumentPreconditions[i] instanceof ArgumentPrecondition) === false) {
         throw new Error('All argument preconditions must inherit the ArgumentPrecondition class.');
-      } else if (this.argumentPreconditions.every((p) => p.name !== argumentPreconditions[i].name) === true) {
+      } else if (this.argumentPreconditions.every((p) => this.equals(p.name, argumentPreconditions[i].name) === false) === true) {
         throw new Error('The ' + argumentPreconditions[i].name + ' argument precondition is already not registered.');
-      } else if (this.commands.some((c) => c.args.some((a) => a.preconditions.some((p) => p.name === argumentPreconditions[i].name))) === true) {
+      } else if (this.commands.some((c) => c.args.some((a) => a.preconditions.some((p) => this.equals(p.name, argumentPreconditions[i].name)))) === true) {
         throw new Error('The ' + argumentPreconditions[i].name + ' argument precondition is registered to a argument.');
       }
 
-      this.argumentPreconditions.splice(this.argumentPreconditions.findIndex((p) => p.name === argumentPreconditions[i].name), 1);
+      this.argumentPreconditions.splice(this.argumentPreconditions.findIndex((p) => this.equals(p.name, argumentPreconditions[i].name)), 1);
     }
 
     return this;
@@ -361,13 +360,13 @@ class Registry {
         throw new TypeError('All type reader exports must be an instance of the type reader.');
       } else if ((typeReaders[i] instanceof TypeReader) === false) {
         throw new Error('All type readers must be inherit the TypeReader class.');
-      } else if (this.typeReaders.every((t) => t.type !== typeReaders[i].type) === true) {
+      } else if (this.typeReaders.every((t) => this.equals(t.type, typeReaders[i].type) === false) === true) {
         throw new Error('The ' + typeReaders[i].type + ' type reader is already not registered.');
-      } else if (this.commands.some((c) => c.args.some((a) => a.typeReader.type === typeReaders[i].type)) === true) {
+      } else if (this.commands.some((c) => c.args.some((a) => this.equals(a.typeReader.type, typeReaders[i].type))) === true) {
         throw new Error('The ' + typeReaders[i].type + ' type reader is registered to an argument.');
       }
 
-      this.typeReaders.splice(this.typeReaders.findIndex((t) => t.type === typeReaders[i].type), 1);
+      this.typeReaders.splice(this.typeReaders.findIndex((t) => this.equals(t.type, typeReaders[i].type)), 1);
     }
 
     return this;
@@ -388,13 +387,13 @@ class Registry {
         throw new TypeError('All group exports must be an instance of the group.');
       } else if ((groups[i] instanceof Group) === false) {
         throw new Error('All groups must inherit the Group class.');
-      } else if (this.groups.every((g) => g.name !== groups[i].name) === true) {
+      } else if (this.groups.every((g) => this.equals(g.name, groups[i].name) === false) === true) {
         throw new Error('The ' + groups[i].name + ' group is already not registered.');
       } else if (groups[i].commands.length > 0) {
         throw new Error('The ' + groups[i].name + ' group has commands registered to it.');
       }
 
-      this.groups.splice(this.groups.findIndex((g) => g.name === groups[i].name), 1);
+      this.groups.splice(this.groups.findIndex((g) => this.equals(g.name, groups[i].name)), 1);
     }
 
     return this;
@@ -415,15 +414,22 @@ class Registry {
         throw new TypeError('All command exports must be an instance of the command.');
       } else if ((commands[i] instanceof Command) === false) {
         throw new Error('All commands must inherit the Command class.');
-      } else if (this.commands.every((c) => c.names[0] !== commands[i].names[0]) === true) {
+      } else if (this.commands.every((c) => c.names.every((n) => commands[i].names.every((m) => this.equals(n, m) === false))) === true) {
         throw new Error('The ' + commands[i].names[0] + ' command is already not registered.');
       }
 
-      this.commands.splice(this.commands.findIndex((c) => c.names[0] === commands[i].names[0]), 1);
-      commands[i].group.commands.splice(commands[i].group.commands.findIndex((c) => c.names[0] === commands[i].names[0]), 1);
+      this.commands.splice(this.commands.findIndex((c) => c.names.some((n) => commands[i].names.some((m) => this.equals(n, m)))), 1);
+      commands[i].group.commands.splice(commands[i].group.commands.findIndex((c) => c.names.some((n) => commands[i].names.some((m) => this.equals(n, m)))), 1);
     }
 
     return this;
+  }
+
+  equals(zero, one) {
+    if (this.caseSensitive) {
+      return zero === one;
+    }
+    return zero.toLowerCase() === one.toLowerCase();
   }
 
   /**
@@ -449,13 +455,13 @@ module.exports = Registry;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Argument.html">Argument</a></li><li><a href="ArgumentPrecondition.html">ArgumentPrecondition</a></li><li><a href="Command.html">Command</a></li><li><a href="CooldownResult.html">CooldownResult</a></li><li><a href="ExceptionResult.html">ExceptionResult</a></li><li><a href="Group.html">Group</a></li><li><a href="Handler.html">Handler</a></li><li><a href="InvalidContextResult.html">InvalidContextResult</a></li><li><a href="Precondition.html">Precondition</a></li><li><a href="PreconditionResult.html">PreconditionResult</a></li><li><a href="Registry.html">Registry</a></li><li><a href="Result.html">Result</a></li><li><a href="TypeReader.html">TypeReader</a></li><li><a href="TypeReaderResult.html">TypeReaderResult</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ArgumentDefault">ArgumentDefault</a></li><li><a href="global.html#CommandError">CommandError</a></li><li><a href="global.html#Context">Context</a></li><li><a href="global.html#Library">Library</a></li><li><a href="global.html#RequireAll">RequireAll</a></li><li><a href="global.html#TypeReaderCategory">TypeReaderCategory</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Argument.html">Argument</a></li><li><a href="ArgumentPrecondition.html">ArgumentPrecondition</a></li><li><a href="ArgumentResult.html">ArgumentResult</a></li><li><a href="Command.html">Command</a></li><li><a href="CooldownResult.html">CooldownResult</a></li><li><a href="ExceptionResult.html">ExceptionResult</a></li><li><a href="Group.html">Group</a></li><li><a href="Handler.html">Handler</a></li><li><a href="InvalidContextResult.html">InvalidContextResult</a></li><li><a href="Precondition.html">Precondition</a></li><li><a href="PreconditionResult.html">PreconditionResult</a></li><li><a href="Registry.html">Registry</a></li><li><a href="Result.html">Result</a></li><li><a href="TypeReader.html">TypeReader</a></li><li><a href="TypeReaderResult.html">TypeReaderResult</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ArgumentDefault">ArgumentDefault</a></li><li><a href="global.html#CommandError">CommandError</a></li><li><a href="global.html#Context">Context</a></li><li><a href="global.html#Library">Library</a></li><li><a href="global.html#RequireAll">RequireAll</a></li><li><a href="global.html#TypeReaderCategory">TypeReaderCategory</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Jan 21 2018 18:05:52 GMT+0000 (UTC)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Fri Feb 02 2018 23:49:35 GMT+0000 (UTC)
 </footer>
 
 <script> prettyPrint(); </script>

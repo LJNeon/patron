@@ -15,7 +15,7 @@ class Precondition {
    */
   constructor(options) {
     this.name = options.name;
-    this.description = options.description !== undefined ? options.description : '';
+    this.description = options.description === undefined ? '' : options.description;
 
     this.constructor.validatePrecondition(this, this.constructor.name);
   }
@@ -40,8 +40,8 @@ class Precondition {
    * @private
    */
   static validatePrecondition(precondition, name) {
-    if (typeof precondition.name !== 'string' || precondition.name !== precondition.name.toLowerCase()) {
-      throw new TypeError(name + ': The name must be a lowercase string.');
+    if (typeof precondition.name !== 'string') {
+      throw new TypeError(name + ': The name must be a string.');
     } else if (typeof precondition.description !== 'string') {
       throw new TypeError(name + ': All precondition descriptions must be a string.');
     }

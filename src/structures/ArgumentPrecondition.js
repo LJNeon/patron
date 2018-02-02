@@ -15,7 +15,7 @@ class ArgumentPrecondition {
    */
   constructor(options) {
     this.name = options.name;
-    this.description = options.description !== undefined ? options.description : '';
+    this.description = options.description === undefined ? '' : options.description;
 
     this.constructor.validateArgumentPrecondition(this, this.constructor.name);
   }
@@ -43,8 +43,8 @@ class ArgumentPrecondition {
    * @private
    */
   static validateArgumentPrecondition(argumentPrecondition, name) {
-    if (typeof argumentPrecondition.name !== 'string' || argumentPrecondition.name !== argumentPrecondition.name.toLowerCase()) {
-      throw new TypeError(name + ': The name must be a lowercase string.');
+    if (typeof argumentPrecondition.name !== 'string') {
+      throw new TypeError(name + ': The name must be a string.');
     } else if (typeof argumentPrecondition.description !== 'string') {
       throw new TypeError(name + ': All argument precondition descriptions must be a string.');
     }

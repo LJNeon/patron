@@ -18,8 +18,8 @@ class Group {
    */
   constructor(options) {
     this.name = options.name;
-    this.description = options.description !== undefined ? options.description : '';
-    this.preconditions = options.preconditions !== undefined ? options.preconditions : [];
+    this.description = options.description === undefined ? '' : options.description;
+    this.preconditions = options.preconditions === undefined ? [] : options.preconditions;
     this.commands = [];
     this.preconditionOptions = [];
 
@@ -33,8 +33,8 @@ class Group {
    * @private
    */
   static validateGroup(group, name) {
-    if (typeof group.name !== 'string' || group.name !== group.name.toLowerCase()) {
-      throw new TypeError(name + ': The name must be a lowercase string.');
+    if (typeof group.name !== 'string') {
+      throw new TypeError(name + ': The name must be a string.');
     } else if (typeof group.description !== 'string') {
       throw new TypeError(name + ': All group descriptions must be a string.');
     }

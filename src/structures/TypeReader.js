@@ -19,7 +19,7 @@ class TypeReader {
   constructor(options) {
     this.category = TypeReaderCategory.User;
     this.type = options.type;
-    this.description = options.description !== undefined ? options.description : '';
+    this.description = options.description === undefined ? '' : options.description;
 
     this.constructor.validateTypeReader(this, this.constructor.name);
   }
@@ -46,8 +46,8 @@ class TypeReader {
    * @private
    */
   static validateTypeReader(typeReader, name) {
-    if (typeof typeReader.type !== 'string' || typeReader.type !== typeReader.type.toLowerCase()) {
-      throw new TypeError(name + ': The type must be a lowercase string.');
+    if (typeof typeReader.type !== 'string') {
+      throw new TypeError(name + ': The type must be a string.');
     } else if (typeof typeReader.description !== 'string') {
       throw new TypeError(name + ': All type reader descriptions must be a string.');
     }

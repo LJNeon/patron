@@ -9,7 +9,7 @@ const CommandError = require('../enums/CommandError.js');
  */
 class TypeReaderResult extends Result {
   /**
-   * @typedef {ResultOptions} TypeReaderResultOptions The type reader result options.
+   * @typedef {TypeReaderResultOptions} TypeReaderResultOptions The type reader result options.
    * @prop {?*} value The parsed value from the type reader.
    * @prop {?Array<object>} matches The type reader matches.
    */
