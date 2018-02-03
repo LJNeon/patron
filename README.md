@@ -3,7 +3,7 @@
     <a href="https://github.com/vim2meta/patron.js/"><img src="https://i.imgur.com/6j61q1V.png" width="600" alt="patron.js" />
     <br/>
     <br/>
-    <a href="https://discord.gg/83UsdkR"><img src="https://discordapp.com/api/guilds/369214145964539924/embed.png" alt="Discord Server" />
+    <a href="https://discord.gg/Dn6k7bm"><img src="https://discordapp.com/api/guilds/409140755391578142/embed.png" alt="Discord Server" />
     <a href="https://www.npmjs.com/package/patron.js"><img src="https://img.shields.io/npm/v/patron.js.svg?maxAge=3600" alt="NPM version" />
     <a href="https://www.npmjs.com/package/patron.js"><img src="https://img.shields.io/npm/dt/patron.js.svg?maxAge=3600" alt="NPM downloads" />
     <a href="https://travis-ci.org/vim2meta/patron.js"><img src="https://travis-ci.org/vim2meta/patron.js.svg?branch=master" alt="Build Status" />
@@ -25,6 +25,7 @@ Every single command execution returns a result object. This [result](https://vi
 - `InvalidContext`
 - `CommandNotFound`
 - `Cooldown`
+- `InvalidArg`
 - `InvalidArgCount`
 - `Exception`
 
@@ -41,4 +42,4 @@ Furthermore, this framework has featured, efficient and reliable type readers. F
 There are currently two types of preconditions: [Preconditions](https://vim2meta.github.io/patron.js/Precondition.html) and [Argument Preconditions](https://vim2meta.github.io/patron.js/ArgumentPrecondition.html). Normal preconditions can be added on any on [Command](https://vim2meta.github.io/patron.js/Command.html) or [Group](https://vim2meta.github.io/patron.js/Group.html), while argument preconditions may only be added to arguments. All preconditions must return a [PreconditionResult](https://vim2meta.github.io/patron.js/PreconditionResult.html). If the result in question is unsuccessful, it will be the returned result in the command handler.
 
 ## Support
-The best place to get support for patron.js is in our [official support server](https://discord.gg/83UsdkR). We try to keep things spicy, so you can joke around while getting good, pretty slamming combo. Keep in mind this framework is not meant for new coders, it is meant for people that want a genuinely reliable command framework and more maintainable code overall.
+The best place to get support for patron.js is in our [official support server](https://discord.gg/Dn6k7bm). We try to keep things spicy, so you can joke around while getting good, pretty slamming combo. Keep in mind this framework is not meant for new coders, it is meant for people that want a genuinely reliable command framework and more maintainable code overall.
