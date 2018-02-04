@@ -21,7 +21,9 @@ class Constants {
       monthInMs: 2592000000,
       yearInMs: 31536000000,
       decadeInMs: 315360000000,
-      centuryInMs: 3153600000000
+      centuryInMs: 3153600000000,
+      rToHex: 16,
+      gToHex: 8
     };
 
     this.errors = {
@@ -47,7 +49,8 @@ class Constants {
     this.numbers = {
       thousand: 1000,
       million: 1000000,
-      billion: 1000000000
+      billion: 1000000000,
+      maxRGB: 255
     };
 
     this.regexes = {
@@ -59,6 +62,7 @@ class Constants {
       emoji: /^<:.+:\d+>/,
       excludeDir: /^\./,
       filter: /^([^.].*)\.js(on)?$/,
+      hex: /^(0x|#)?[\da-f]{6}$/i,
       hours: /^(\d+(\.\d+)?|\.\d+)\s*(hours?|h)$/i,
       id: /^\d{17,19}/,
       million: /m\$?$/i,
@@ -68,8 +72,10 @@ class Constants {
       findId: /\d{17,19}/,
       quotes: /^"|"$/g,
       quotesMatch: /^"[\S\s]+"$/,
+      rgb: /^rgb\(\d{1,3},\s*\d{1,3},\s*\d{1,3}\)$/i,
       roleMention: /^<@&\d+>/,
       seconds: /^(\d+(\.\d+)?|\.\d+)\s*(sec(onds)?s?|s)$/i,
+      smallHex: /^(0x|#)?[\da-f]{3}$/i,
       textChannelMention: /^<#\d+>/,
       thousand: /k\$?$/i,
       usernameAndDiscrim: /.+#\d{4}/,
