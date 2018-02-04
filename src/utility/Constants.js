@@ -21,9 +21,7 @@ class Constants {
       monthInMs: 2592000000,
       yearInMs: 31536000000,
       decadeInMs: 315360000000,
-      centuryInMs: 3153600000000,
-      rToHex: 16,
-      gToHex: 8
+      centuryInMs: 3153600000000
     };
 
     this.errors = {
@@ -49,8 +47,7 @@ class Constants {
     this.numbers = {
       thousand: 1000,
       million: 1000000,
-      billion: 1000000000,
-      maxRGB: 255
+      billion: 1000000000
     };
 
     this.regexes = {
@@ -62,7 +59,6 @@ class Constants {
       emoji: /^<:.+:\d+>/,
       excludeDir: /^\./,
       filter: /^([^.].*)\.js(on)?$/,
-      hex: /^(0x|#)?[\da-f]{6}$/i,
       hours: /^(\d+(\.\d+)?|\.\d+)\s*(hours?|h)$/i,
       id: /^\d{17,19}/,
       million: /m\$?$/i,
@@ -72,10 +68,8 @@ class Constants {
       findId: /\d{17,19}/,
       quotes: /^"|"$/g,
       quotesMatch: /^"[\S\s]+"$/,
-      rgb: /^rgb\(\d{1,3},\s*\d{1,3},\s*\d{1,3}\)$/i,
       roleMention: /^<@&\d+>/,
       seconds: /^(\d+(\.\d+)?|\.\d+)\s*(sec(onds)?s?|s)$/i,
-      smallHex: /^(0x|#)?[\da-f]{3}$/i,
       textChannelMention: /^<#\d+>/,
       thousand: /k\$?$/i,
       usernameAndDiscrim: /.+#\d{4}/,
@@ -93,7 +87,7 @@ class Constants {
       exception: (command, error) => new ExceptionResult({ success: false, command: command, commandError: CommandError.Exception, errorReason: error.message, error: error }),
       invalidArgs: (command, reason) => new ArgumentResult({ success: false, command: command, commandError: CommandError.InvalidArg, errorReason: reason }),
       invalidArgCount: (command) => new Result({ success: false, command: command, commandError: CommandError.InvalidArgCount, errorReason: 'You have provided an invalid number of arguments.' }),
-      invalidContext: (command, context) => new InvalidContextResult({ success: false, command: command, commandError: CommandError.Precondition, context: context, errorReason: 'This command may not be used in that context.' }),
+      invalidContext: (command, context) => new InvalidContextResult({ success: false, command: command, commandError: CommandError.InvalidContext, context: context, errorReason: 'This command may not be used in that context.' }),
       memberPermissions: (command, permissions) => new Result({ success: false, command: command, commandError: CommandError.MemberPermission, errorReason: 'This command may only be used by members with the ' + permissions + ' permission' + (permissions.length > 1 ? 's' : '') + '.' }),
       success: (command) => new Result({ success: true, command: command })
     };

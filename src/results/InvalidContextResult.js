@@ -10,6 +10,8 @@ class InvalidContextResult extends Result {
    */
   constructor(options) {
     super(options);
+
+    this.context = options.context;
   }
 }
 
