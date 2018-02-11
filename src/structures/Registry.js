@@ -148,7 +148,7 @@ class Registry {
         throw new TypeError('All group exports must be an instance of the group.');
       } else if ((groups[i] instanceof Group) === false) {
         throw new Error('All groups must inherit the Group class.');
-      } else if (this.groups.some((v) => this.equals(v.name === groups[i].name)) === true) {
+      } else if (this.groups.some((v) => this.equals(v.name, groups[i].name)) === true) {
         throw new Error('The ' + groups[i].name + ' group already exists.');
       }
 
