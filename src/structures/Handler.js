@@ -55,30 +55,13 @@ class Handler {
    * @returns {Promise<Result>|Promise<InvalidContextResult>} The result of the command validation.
    */
   async validateCommand(message, command) {
-    if (message.guild === null) {
-
-      if (message.channel.type === DiscordChannelType.DM && command.usableContexts.indexOf(Context.DM) === -1) {
-        return Constants.results.invalidContext(command, Context.DM);
-      } else if (message.channel.type === DiscordChannelType.GroupDM && command.usableContexts.indexOf(Context.GroupDM) === -1) {
-        return Constants.results.invalidContext(command, Context.GroupDM);
-      }
-
-      const result = this.registry.libraryHandler.validatePermissions(command, message);
-
-      if (result === undefined) {
-        return Constants.results.success(command);
-      }
-
-      return result;
-    }
-
     const result = this.registry.libraryHandler.validateContext(command, message);
 
     if (result === undefined) {
       return Constants.results.success(command);
     }
 
-    return Constants.results.invalidContext(command, Context.Guild);
+    return result;
   }
 
   /**

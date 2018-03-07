@@ -1,7 +1,6 @@
 const Constants = require('../utility/Constants.js');
 const Context = require('../enums/Context.js');
 const DiscordChannelType = require('../enums/DiscordChannelType.js');
-const InvalidContextResult = require('../results/InvalidContextResult.js');
 
 class LibraryHandler {
   constructor(options) {
@@ -12,16 +11,20 @@ class LibraryHandler {
     switch (this.library) {
       case 'discord.js':
         if (message.channel.type === 'dm' && command.usableContexts.indexOf(Context.DM) === -1) {
-          return InvalidContextResult.from(command, Context.DM);
+          return Constants.results.invalidContext(command, Context.DM);
         } else if (message.channel.type === 'group' && command.usableContexts.indexOf(Context.GroupDM) === -1) {
-          return InvalidContextResult.from(command, Context.GroupDM);
+          return Constants.results.invalidContext(command, Context.GroupDM);
+        } else if (message.channel.type === 'guild' && command.usableContexts.indexOf(Context.Guild) === -1) {
+          return Constants.results.invalidContext(command, Context.Guild);
         }
         break;
       case 'eris':
         if (message.channel.type === DiscordChannelType.DM && command.usableContexts.indexOf(Context.DM) === -1) {
-          return InvalidContextResult.from(command, Context.DM);
+          return Constants.results.invalidContext(command, Context.DM);
         } else if (message.channel.type === DiscordChannelType.GroupDM && command.usableContexts.indexOf(Context.GroupDM) === -1) {
-          return InvalidContextResult.from(command, Context.GroupDM);
+          return Constants.results.invalidContext(command, Context.GroupDM);
+        } else if (message.channel.type === DiscordChannelType.Guild && command.usableContexts.indexOf(Context.Guild) === -1) {
+          return Constants.results.invalidContext(command, Context.Guild);
         }
         break;
     }
