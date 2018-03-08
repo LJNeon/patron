@@ -14,7 +14,7 @@ class LibraryHandler {
           return Constants.results.invalidContext(command, Context.DM);
         } else if (message.channel.type === 'group' && command.usableContexts.indexOf(Context.GroupDM) === -1) {
           return Constants.results.invalidContext(command, Context.GroupDM);
-        } else if (message.channel.type === 'guild' && command.usableContexts.indexOf(Context.Guild) === -1) {
+        } else if (message.channel.type === 'text' && command.usableContexts.indexOf(Context.Guild) === -1) {
           return Constants.results.invalidContext(command, Context.Guild);
         }
         break;
@@ -23,7 +23,7 @@ class LibraryHandler {
           return Constants.results.invalidContext(command, Context.DM);
         } else if (message.channel.type === DiscordChannelType.GroupDM && command.usableContexts.indexOf(Context.GroupDM) === -1) {
           return Constants.results.invalidContext(command, Context.GroupDM);
-        } else if (message.channel.type === DiscordChannelType.Guild && command.usableContexts.indexOf(Context.Guild) === -1) {
+        } else if (message.channel.type === DiscordChannelType.TextChannel && command.usableContexts.indexOf(Context.Guild) === -1) {
           return Constants.results.invalidContext(command, Context.Guild);
         }
         break;

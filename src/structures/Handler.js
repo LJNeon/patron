@@ -1,7 +1,5 @@
 const Registry = require('./Registry.js');
 const ArgumentDefault = require('../enums/ArgumentDefault.js');
-const Context = require('../enums/Context.js');
-const DiscordChannelType = require('../enums/DiscordChannelType.js');
 const Constants = require('../utility/Constants.js');
 
 /**
