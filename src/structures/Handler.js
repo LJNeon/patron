@@ -122,10 +122,10 @@ class Handler {
   async parseArguments(message, command, prefixLength, ...custom) {
     let content = message.content.slice(prefixLength);
     const args = {};
-    const split = content.match(this.argumentRegex).slice(1);
+    const split = content.match(this.argumentRegex);
 
-    if (split.length > 0) {
-      content = content.slice(content.indexOf(split[0]));
+    if (split.length > 1) {
+      content = content.slice(content.indexOf(split[1], split[0].length));
     } else {
       content = '';
     }
@@ -164,7 +164,7 @@ class Handler {
 
           if (input !== undefined) {
             if (split.length > 0) {
-              content = content.slice(content.indexOf(split[0]));
+              content = content.slice(content.indexOf(split[0], input.length));
             } else {
               content = '';
             }
