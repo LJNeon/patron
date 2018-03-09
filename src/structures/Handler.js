@@ -122,13 +122,15 @@ class Handler {
   async parseArguments(message, command, prefixLength, ...custom) {
     let content = message.content.slice(prefixLength);
     const args = {};
-    const split = content.match(this.argumentRegex);
+    let split = content.match(this.argumentRegex);
 
     if (split.length > 1) {
       content = content.slice(content.indexOf(split[1], split[0].length));
     } else {
       content = '';
     }
+
+    split = split.slice(1);
 
     for (let i = 0; i < command.args.length; i++) {
       let value = [];
