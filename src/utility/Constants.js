@@ -60,8 +60,6 @@ class Constants {
       days: /^(\d+(\.\d+)?|\.\d+)\s*(days?|d)$/i,
       decades: /^(\d+(\.\d+)?|\.\d+)\s*(dec(ade)?s?)$/i,
       emoji: /^<:.+:\d+>/,
-      excludeDir: /^\./,
-      filter: /^([^.].*)\.js(on)?$/,
       hex: /^(0x|#)?[\da-f]{6}$/i,
       hours: /^(\d+(\.\d+)?|\.\d+)\s*(hours?|h)$/i,
       id: /^\d{17,19}/,
