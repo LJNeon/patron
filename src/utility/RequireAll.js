@@ -16,7 +16,7 @@ async function RequireAll(path) {
     const parsedPath = path + '/' + files[i];
 
     if ((await lstat(parsedPath)).isDirectory() === true && files[i].charAt(0) !== '.') {
-      modules.push(...RequireAll(parsedPath));
+      modules.push(...(await RequireAll(parsedPath)));
     /* eslint-disable no-magic-numbers */
     } else if (files[i].lastIndexOf('.js') === files[i].length - 3 || files[i].lastIndexOf('.json') === files[i].length - 5) {
     /* eslint-enable no-magic-numbers */
