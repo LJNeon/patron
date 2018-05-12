@@ -18,6 +18,8 @@ class VoiceChannelTypeReader extends TypeReader {
       if (channel !== undefined && channel.type === 'voice') {
         return TypeReaderResult.fromSuccess(channel);
       }
+
+      return TypeReaderResult.fromError(command, Constants.errors.voiceChannelNotFound);
     }
 
     const lowerInput = input.toLowerCase();

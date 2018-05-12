@@ -3,7 +3,7 @@ const TypeReaderCategory = require('../../enums/TypeReaderCategory.js');
 const TypeReaderResult = require('../../results/TypeReaderResult.js');
 const TypeReaderUtil = require('../../utility/TypeReaderUtil.js');
 const Constants = require('../../utility/Constants.js');
-let warningEmitted = false;
+const warningEmitted = [false, false];
 
 class UserTypeReader extends TypeReader {
   constructor() {
@@ -13,9 +13,14 @@ class UserTypeReader extends TypeReader {
   }
 
   async read(command, message, argument, args, input) {
-    if (message._client.options.getAllUsers === false && warningEmitted === false) {
+    if (message._client.options.getAllUsers === false && warningEmitted[0] === false) {
       process.emitWarning('The user type reader is unreliable when getAllUsers is set to false.');
-      warningEmitted = true;
+      warningEmitted[0] = true;
+    }
+
+    if (warningEmitted[1] === false && (message._client.options.firstShardID !== 0 || message._client.options.lastShardID !== message._client.options.maxShards - 1)) {
+      process.emitWarning('The user type reader is unreliable when shards are split between multiple clients.');
+      warningEmitted[1] = true;
     }
 
     if (Constants.regexes.userMention.test(input) === true || Constants.regexes.id.test(input) === true) {

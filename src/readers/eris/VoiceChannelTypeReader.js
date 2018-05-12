@@ -13,12 +13,14 @@ class VoiceChannelTypeReader extends TypeReader {
   }
 
   async read(command, message, argument, args, input) {
-    if (Constants.regexes.id.test(input) === true) {
+    if (Constants.regexes.textChannelMention.test(input) === true || Constants.regexes.id.test(input) === true) {
       const channel = message.channel.guild.channels.get(input.match(Constants.regexes.findId)[0]);
 
       if (channel !== undefined && channel.type === DiscordChannelType.VoiceChannel) {
         return TypeReaderResult.fromSuccess(channel);
       }
+
+      return TypeReaderResult.fromError(command, Constants.errors.voiceChannelNotFound);
     }
 
     const lowerInput = input.toLowerCase();

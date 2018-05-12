@@ -4,6 +4,7 @@ const TypeReaderCategory = require('../../enums/TypeReaderCategory.js');
 const TypeReaderResult = require('../../results/TypeReaderResult.js');
 const TypeReaderUtil = require('../../utility/TypeReaderUtil.js');
 const Constants = require('../../utility/Constants.js');
+let warningEmitted = false;
 
 class GroupChannelTypeReader extends TypeReader {
   constructor() {
@@ -13,6 +14,11 @@ class GroupChannelTypeReader extends TypeReader {
   }
 
   async read(command, message, argument, args, input) {
+    if (warningEmitted === false && (message._client.options.firstShardID !== 0 || message._client.options.lastShardID !== message._client.options.maxShards - 1)) {
+      process.emitWarning('The group channel type reader is unreliable when shards are split between multiple clients.');
+      warningEmitted = true;
+    }
+
     if (Constants.regexes.id.test(input) === true) {
       const channel = message._client.channels.find((c) => c.id === input.match(Constants.regexes.findId)[0]);
 

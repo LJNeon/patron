@@ -28,6 +28,7 @@ class Constants {
 
     this.errors = {
       bannedUserNotFound: 'Banned user not found.',
+      categoryChannelNotFound: 'Category channel not found.',
       channelNotFound: 'Channel not found.',
       emojiNotFound: 'Emoji not found.',
       dmChannelNotFound: 'DM channel not found.',
