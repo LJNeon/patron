@@ -161,7 +161,7 @@ declare module 'patron.js' {
     constructor(options: ResultOptions);
   }
 
-  export function RequireAll(path: string): object[];
+  export function RequireAll(path: string): Promise<object[]>;
 
   export class TypeReader {
     private static validateTypeReader(typeReader: TypeReader, name: string): void;

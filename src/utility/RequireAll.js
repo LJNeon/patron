@@ -6,7 +6,7 @@ const readDir = util.promisify(fs.readdir);
 /**
  * A function which returns all module exports of a folder.
  * @param {string} path The path in question.
- * @returns {object[]} An array of all the module exports.
+ * @returns {Promise<object[]>} An array of all the module exports.
  */
 async function RequireAll(path) {
   const files = await readDir(path);
