@@ -8,9 +8,7 @@ const Context = {
   /** Usable in DMs. */
   DM: Symbol(),
   /** Usable in guilds. */
-  Guild: Symbol(),
-  /** Usable in groups. */
-  GroupDM: Symbol()
+  Guild: Symbol()
 };
 
 module.exports = Context;
