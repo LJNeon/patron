@@ -19,7 +19,15 @@ class EmojiTypeReader extends TypeReader {
     }
 
     if (Constants.regexes.emoji.test(input) === true || Constants.regexes.id.test(input) === true) {
-      const emoji = message._client.emojis.find((e) => e.id === input.match(Constants.regexes.findId)[0]);
+      let emoji;
+      message._client.guilds.forEach((guild) => {
+        if (emoji === undefined) {
+          const match = guild.emojis.find((e) => e.id === input.match(Constants.regexes.findId)[0]);
+          if (match !== undefined) {
+            emoji = match;
+          }
+        }
+      });
 
       if (emoji !== undefined) {
         return TypeReaderResult.fromSuccess(emoji);
@@ -29,7 +37,10 @@ class EmojiTypeReader extends TypeReader {
     }
 
     const lowerInput = input.toLowerCase();
-    const matches = message._client.emojis.filter((v) => v.name.toLowerCase().includes(lowerInput));
+    const matches = [];
+    message._client.guilds.forEach((guild) => {
+      matches.push(guild.emojis.filter((v) => v.name.toLowerCase().indexOf(lowerInput) !== -1));
+    });
 
     return TypeReaderUtil.handleMatches(command, matches, 'emojiNotFound');
   }

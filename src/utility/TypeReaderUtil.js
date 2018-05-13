@@ -10,7 +10,7 @@ class TypeReaderUtil {
         formatted += 'and ';
       }
 
-      formatted += member === true ? array[i].user.tag : array[i][prop];
+      formatted += member === true ? array[i].user.username + '#' + array[i].user.discriminator : array[i][prop];
 
       if (i !== array.length - 1) {
         formatted += ', ';

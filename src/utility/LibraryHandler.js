@@ -7,6 +7,34 @@ class LibraryHandler {
     this.library = options.library;
   }
 
+  guild(message) {
+    switch (this.library) {
+      case 'discord.js':
+        return message.guild;
+      case 'eris':
+        return message.channel.guild;
+    }
+  }
+
+  highestRole(message) {
+    switch (this.library) {
+      case 'discord.js':
+        return message.member.highestRole;
+      case 'eris': {
+        let highestRole = null;
+
+        for (let i = 0; i < message.member.roles.length; i++) {
+          const role = message.channel.guild.roles.get(message.member.roles[i]);
+          if (highestRole === null || role.position > highestRole.position) {
+            highestRole = role;
+          }
+        }
+
+        return highestRole;
+      }
+    }
+  }
+
   validateContext(command, message) {
     switch (this.library) {
       case 'discord.js':

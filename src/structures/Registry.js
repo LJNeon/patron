@@ -94,18 +94,18 @@ class Registry {
 
   /**
    * Registers all global type readers.
-   * @returns {Registry} The registry being used.
+   * @returns {Promise<Registry>} The registry being used.
    */
-  registerGlobalTypeReaders() {
-    return this.registerTypeReaders(RequireAll(path.join(__dirname, '/../readers', 'global')));
+  async registerGlobalTypeReaders() {
+    return this.registerTypeReaders(await RequireAll(path.join(__dirname, '/../readers', 'global')));
   }
 
   /**
    * Registers all library type readers.
-   * @returns {Registry} The registry being used.
+   * @returns {Promise<Registry>} The registry being used.
    */
-  registerLibraryTypeReaders() {
-    return this.registerTypeReaders(RequireAll(path.join(__dirname, '/../readers', this.library)));
+  async registerLibraryTypeReaders() {
+    return this.registerTypeReaders(await RequireAll(path.join(__dirname, '/../readers', this.library)));
   }
 
   /**

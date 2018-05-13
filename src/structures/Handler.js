@@ -97,7 +97,8 @@ class Handler {
    */
   async checkCooldown(message, command) {
     if (command.hasCooldown === true) {
-      const cooldown = command.cooldowns[message.author.id + (message.guild === null ? '' : '-' + message.guild.id)];
+      const guild = this.registry.libraryHandler.guild(message);
+      const cooldown = command.cooldowns[message.author.id + (guild === null ? '' : '-' + guild.id)];
 
       if (cooldown !== undefined) {
         const difference = cooldown - Date.now();
@@ -214,7 +215,8 @@ class Handler {
    */
   async updateCooldown(message, command) {
     if (command.hasCooldown === true) {
-      command.cooldowns[message.author.id + (message.guild === null ? '' : '-' + message.guild.id)] = Date.now() + command.cooldown;
+      const guild = this.registry.libraryHandler.guild(message);
+      command.cooldowns[message.author.id + (guild === null ? '' : '-' + guild.id)] = Date.now() + command.cooldown;
     }
     return Constants.results.success(command);
   }
@@ -293,7 +295,7 @@ class Handler {
       case ArgumentDefault.Guild:
         return message.guild;
       case ArgumentDefault.HighestRole:
-        return message.member.highestRole;
+        return this.registry.libraryHandler.highestRole(message);
       default:
         return defaultValue;
     }
