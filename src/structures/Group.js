@@ -3,6 +3,7 @@
  * @prop {string} name The name of the group.
  * @prop {string} description The description of the group.
  * @prop {Precondition[]} preconditions The preconditions to be run on all commands inside the group.
+ * @prop {object[]} preconditionOptions The options to be passed to all preconditions when they're run.
  * @prop {Command[]} commands An array of all commands inside the group.
  */
 class Group {

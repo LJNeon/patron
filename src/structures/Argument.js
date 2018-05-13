@@ -10,6 +10,7 @@ const Constants = require('../utility/Constants.js');
  * @prop {*} defaultValue The default value of the argument.
  * @prop {boolean} infinite Allow this argument accept an infinite number of values and return them in an array.
  * @prop {ArgumentPrecondition[]} preconditions The preconditions to be ran on the argument.
+ * @prop {object[]} preconditionOptions The options to be passed to all preconditions when they're run.
  * @prop {boolean} optional Whether the argument is optional.
  * @prop {boolean} remainder Whether the argument is the remainder.
  */

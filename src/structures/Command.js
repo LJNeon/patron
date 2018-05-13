@@ -11,6 +11,7 @@ const ContextKeys = Object.keys(Context);
  * @prop {string[]} memberPermissions The permissions required by the invoker to use the command.
  * @prop {string[]} botPermissions The permissions required by the bot to execute the command.
  * @prop {Precondition[]} preconditions The preconditions to be ran on the command.
+ * @prop {object[]} preconditionOptions The options to be passed to all preconditions when they're run.
  * @prop {Argument[]} args The arguments of the command.
  * @prop {boolean} hasCooldown Whether the command has a cooldown.
  * @prop {number} cooldown The length of the cooldown in milliseconds.
