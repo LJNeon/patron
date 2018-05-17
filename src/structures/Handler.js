@@ -216,7 +216,7 @@ class Handler {
   async updateCooldown(message, command) {
     if (command.hasCooldown === true) {
       const guild = this.registry.libraryHandler.guild(message);
-      command.cooldowns[message.author.id + (guild === null ? '' : '-' + guild.id)] = Date.now() + command.cooldown;
+      command.cooldowns[message.author.id + (guild === undefined ? '' : '-' + guild.id)] = Date.now() + command.cooldown;
     }
     return Constants.results.success(command);
   }
