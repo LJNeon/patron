@@ -154,7 +154,6 @@ class Registry {
 
       for (let j = 0; j < groups[i].preconditions.length; j++) {
         const name = typeof groups[i].preconditions[j] === 'string' ? groups[i].preconditions[j] : groups[i].preconditions[j].name;
-        const options = groups[i].preconditions[j].options;
         const precondition = this.preconditions.find((x) => this.equals(x.name, name));
 
         if (precondition === undefined) {
@@ -162,7 +161,6 @@ class Registry {
         }
 
         groups[i].preconditions[j] = precondition;
-        groups[i].preconditionOptions[j] = options;
       }
 
       this.groups.push(groups[i]);
@@ -205,7 +203,6 @@ class Registry {
 
         for (let h = 0; h < commands[i].args[j].preconditions.length; h++) {
           const name = typeof commands[i].args[j].preconditions[h] === 'string' ? commands[i].args[j].preconditions[h] : commands[i].args[j].preconditions[h].name;
-          const options = commands[i].args[j].preconditions[h].options;
           const precondition = this.argumentPreconditions.find((x) => this.equals(x.name, name));
 
           if (precondition === undefined) {
@@ -213,13 +210,11 @@ class Registry {
           }
 
           commands[i].args[j].preconditions[h] = precondition;
-          commands[i].args[j].preconditionOptions[h] = options;
         }
       }
 
       for (let j = 0; j < commands[i].preconditions.length; j++) {
         const name = typeof commands[i].preconditions[j] === 'string' ? commands[i].preconditions[j] : commands[i].preconditions[j].name;
-        const options = commands[i].preconditions[j].options;
         const precondition = this.preconditions.find((x) => this.equals(x.name, name));
 
         if (precondition === undefined) {
@@ -227,7 +222,6 @@ class Registry {
         }
 
         commands[i].preconditions[j] = precondition;
-        commands[i].preconditionOptions[j] = options;
       }
 
       const groupIndex = this.groups.findIndex((v) => this.equals(v.name, commands[i].groupName));

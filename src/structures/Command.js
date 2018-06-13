@@ -11,7 +11,7 @@ const ContextKeys = Object.keys(Context);
  * @prop {string[]} memberPermissions The permissions required by the invoker to use the command.
  * @prop {string[]} botPermissions The permissions required by the bot to execute the command.
  * @prop {Precondition[]} preconditions The preconditions to be ran on the command.
- * @prop {object[]} preconditionOptions The options to be passed to all preconditions when they're run.
+ * @prop {object[]} preconditionOptions The options to be passed to preconditions when they're run.
  * @prop {Argument[]} args The arguments of the command.
  * @prop {boolean} hasCooldown Whether the command has a cooldown.
  * @prop {number} cooldown The length of the cooldown in milliseconds.
@@ -27,6 +27,7 @@ class Command {
    * @prop {string[]} [memberPermissions=[]] The permissions required by the invoker to use the command.
    * @prop {string[]} [botPermissions=[]] The permissions required by the bot to execute the command.
    * @prop {Array<string|object>} [preconditions=[]] The preconditions to be ran on the command.
+   * @prop {Array<object>} [preconditionOptions=[]] The options to be passed to preconditions when they're run.
    * @prop {Argument[]} [args=[]] The arguments of the command.
    * @prop {number} [cooldown=0] The length of the cooldown in milliseconds.
    */
@@ -46,7 +47,7 @@ class Command {
     this.hasCooldown = options.cooldown !== undefined;
     this.cooldown = this.hasCooldown === true ? options.cooldown : 0;
     this.cooldowns = this.hasCooldown === true ? {} : null;
-    this.preconditionOptions = [];
+    this.preconditionOptions = options.preconditionOptions === undefined ? [] : options.preconditionOptions;
 
     this.constructor.validateCommand(this, this.constructor.name);
   }
@@ -126,6 +127,8 @@ class Command {
       throw new TypeError(name + ': The bot permissions must be an array.');
     } else if (Array.isArray(command.preconditions) === false) {
       throw new TypeError(name + ': The preconditions must be an array.');
+    } else if (Array.isArray(command.preconditionOptions) === false) {
+      throw new TypeError(name + ': The precondition options must be an array.');
     } else if (Array.isArray(command.args) === false) {
       throw new TypeError(name + ': The arguments must be an array.');
     } else if (typeof command.cooldown !== 'number') {

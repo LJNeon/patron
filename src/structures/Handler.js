@@ -18,10 +18,37 @@ class Handler {
    * @param {HandlerOptions} options The handler options.
    */
   constructor(options) {
+    this.busy = false;
+    this.queue = [];
     this.registry = options.registry;
     this.argumentRegex = options.argumentRegex === undefined ? Constants.regexes.argument : options.argumentRegex;
 
     this.constructor.validateHandler(this);
+  }
+
+  synchronize(task) {
+    return new Promise((resolve, reject) => {
+      this.queue.push([task, resolve, reject]);
+
+      if (this.busy === false) {
+        this.dequeue();
+      }
+    });
+  }
+
+  dequeue() {
+    this.busy = true;
+    const next = this.queue.shift();
+
+    if (next) {
+      this.execute(next);
+    } else {
+      this.busy = false;
+    }
+  }
+
+  execute(record) {
+    record[0]().then(record[1], record[2]).then(() => this.dequeue());
   }
 
   /**
@@ -90,26 +117,30 @@ class Handler {
   }
 
   /**
-   * Attempts to check if a Command is on cooldown.
+   * Attempts to update a Command's cooldown.
    * @param {Message} message The received message.
    * @param {Command} command The parsed command.
    * @returns {Promise<Result>|Promise<CooldownResult>} The result of checking the cooldowns.
    */
-  async checkCooldown(message, command) {
-    if (command.hasCooldown === true) {
-      const guild = this.registry.libraryHandler.guild(message);
-      const cooldown = command.cooldowns[message.author.id + (guild === null ? '' : '-' + guild.id)];
+  async updateCooldown(message, command) {
+    return this.synchronize(async () => {
+      if (command.hasCooldown === true) {
+        const guild = this.registry.libraryHandler.guild(message);
+        const cooldown = command.cooldowns[message.author.id + (guild === null ? '' : '-' + guild.id)];
 
-      if (cooldown !== undefined) {
-        const difference = cooldown - Date.now();
+        if (cooldown !== undefined) {
+          const difference = cooldown - Date.now();
 
-        if (difference > 0) {
-          return Constants.results.cooldown(command, difference);
+          if (difference > 0) {
+            return Constants.results.cooldown(command, difference);
+          }
         }
-      }
-    }
 
-    return Constants.results.success(command);
+        command.cooldowns[message.author.id + (guild == null ? '' : '-' + guild.id)] = Date.now() + command.cooldown;
+      }
+
+      return Constants.results.success(command);
+    });
   }
 
   /**
@@ -208,17 +239,20 @@ class Handler {
     return Constants.results.args(command, args);
   }
 
-  /** Attempts to update a Command's cooldown.
+  /** Attempts to revert a Command's cooldown.
    * @param {Message} message The received message.
    * @param {Command} command The parsed command.
    * @returns {Promise<Result>} The result of the cooldown's update.
    */
-  async updateCooldown(message, command) {
-    if (command.hasCooldown === true) {
-      const guild = this.registry.libraryHandler.guild(message);
-      command.cooldowns[message.author.id + (guild == null ? '' : '-' + guild.id)] = Date.now() + command.cooldown;
-    }
-    return Constants.results.success(command);
+  async revertCooldown(message, command) {
+    return this.synchronize(async () => {
+      if (command.hasCooldown === true) {
+        const guild = this.registry.libraryHandler.guild(message);
+        command.cooldowns[message.author.id + (guild == null ? '' : '-' + guild.id)] = undefined;
+      }
+
+      return Constants.results.success(command);
+    });
   }
 
   /**
@@ -230,6 +264,8 @@ class Handler {
    */
   async run(message, prefixLength, ...custom) {
     let command;
+    let cooldownApplied = false;
+
     try {
       let result = await this.parseCommand(message, prefixLength);
 
@@ -238,28 +274,30 @@ class Handler {
       }
 
       command = result.command;
-
       result = await this.validateCommand(message, command);
 
       if (result.success === false) {
         return result;
       }
 
-      result = await this.runCommandPreconditions(message, command, ...custom);
+      result = await this.updateCooldown(message, command);
 
       if (result.success === false) {
         return result;
       }
 
-      result = await this.checkCooldown(message, command);
+      cooldownApplied = true;
+      result = await this.runCommandPreconditions(message, command, ...custom);
 
       if (result.success === false) {
+        await this.revertCooldown(message, command);
         return result;
       }
 
       result = await this.parseArguments(message, command, prefixLength, ...custom);
 
       if (result.success === false) {
+        await this.revertCooldown(message, command);
         return result;
       }
 
@@ -267,10 +305,12 @@ class Handler {
 
       await command.run(message, args, ...custom);
 
-      await this.updateCooldown(message, command);
-
       return Constants.results.success(command);
     } catch (err) {
+      if (cooldownApplied === true) {
+        await this.revertCooldown(message, command);
+      }
+
       return Constants.results.exception(command, err);
     }
   }

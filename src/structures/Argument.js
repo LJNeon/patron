@@ -10,7 +10,7 @@ const Constants = require('../utility/Constants.js');
  * @prop {*} defaultValue The default value of the argument.
  * @prop {boolean} infinite Allow this argument accept an infinite number of values and return them in an array.
  * @prop {ArgumentPrecondition[]} preconditions The preconditions to be ran on the argument.
- * @prop {object[]} preconditionOptions The options to be passed to all preconditions when they're run.
+ * @prop {object[]} preconditionOptions The options to be passed to preconditions when they're run.
  * @prop {boolean} optional Whether the argument is optional.
  * @prop {boolean} remainder Whether the argument is the remainder.
  */
@@ -24,6 +24,7 @@ class Argument {
    * @prop {*} [defaultValue=undefined] The default value of the argument.
    * @prop {boolean} [infinite=false] Allow this argument accept an infinite number of values and return them in an array.
    * @prop {Array<string|object>} [preconditions=[]] The preconditions to be ran on the argument.
+   * @prop {Array<object>} [preconditionOptions=[]] The options to be passed to preconditions when they're run.
    * @prop {boolean} [remainder=false] Whether the argument is the remainder.
    */
 
@@ -40,7 +41,7 @@ class Argument {
     this.preconditions = options.preconditions === undefined ? [] : options.preconditions;
     this.optional = options.defaultValue !== undefined;
     this.remainder = options.remainder === undefined ? false : options.remainder;
-    this.preconditionOptions = [];
+    this.preconditionOptions = options.preconditionOptions === undefined ? [] : options.preconditionOptions;
 
     this.constructor.validateArgument(this, this.constructor.name);
   }
@@ -68,6 +69,8 @@ class Argument {
       throw new Error(name + ': An argument may not be infinite and remainder.');
     } else if (Array.isArray(argument.preconditions) === false) {
       throw new TypeError(name + ': The preconditions must be an array.');
+    } else if (Array.isArray(argument.preconditionOptions) === false) {
+      throw new TypeError(name + ': The precondition options must be an array.');
     }
   }
 }
