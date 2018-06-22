@@ -12,6 +12,7 @@ const ContextKeys = Object.keys(Context);
  * @prop {string[]} botPermissions The permissions required by the bot to execute the command.
  * @prop {Precondition[]} preconditions The preconditions to be ran on the command.
  * @prop {object[]} preconditionOptions The options to be passed to preconditions when they're run.
+ * @prop {Postcondition[]} postconditions The postconditions to be ran on the command.
  * @prop {Argument[]} args The arguments of the command.
  * @prop {boolean} hasCooldown Whether the command has a cooldown.
  * @prop {number} cooldown The length of the cooldown in milliseconds.
@@ -26,6 +27,7 @@ class Command {
    * @prop {Symbol[]} [usableContexts=[Context.Guild]] An array of contexts the command can be used.
    * @prop {string[]} [memberPermissions=[]] The permissions required by the invoker to use the command.
    * @prop {string[]} [botPermissions=[]] The permissions required by the bot to execute the command.
+   * @prop {Array<string|object>} [postconditions=[]] The postconditions to be ran on the command.
    * @prop {Array<string|object>} [preconditions=[]] The preconditions to be ran on the command.
    * @prop {Array<object>} [preconditionOptions=[]] The options to be passed to preconditions when they're run.
    * @prop {Argument[]} [args=[]] The arguments of the command.
@@ -43,6 +45,7 @@ class Command {
     this.memberPermissions = options.memberPermissions === undefined ? [] : options.memberPermissions;
     this.botPermissions = options.botPermissions === undefined ? [] : options.botPermissions;
     this.preconditions = options.preconditions === undefined ? [] : options.preconditions;
+    this.postconditions = options.postconditions === undefined ? [] : options.postconditions;
     this.args = options.args === undefined ? [] : options.args;
     this.hasCooldown = options.cooldown !== undefined;
     this.cooldown = this.hasCooldown === true ? options.cooldown : 0;
@@ -56,9 +59,9 @@ class Command {
    * Executes the command.
    * @param {Message} message The received message.
    * @param {object} args The arguments of the command.
-   * @param {*} custom The custom parameters passed into the handler.
+   * @param {...*} custom The custom parameters passed into the handler.
    * @abstract
-   * @returns {Promise} Resolves once the execution of the command is complete.
+   * @returns {Promise<?CommandResult>} Resolves once the execution of the command is complete.
    */
   async run(message, args, custom) {
     throw new Error(this.constructor.name + ' does not have a run method.');
@@ -129,6 +132,8 @@ class Command {
       throw new TypeError(name + ': The preconditions must be an array.');
     } else if (Array.isArray(command.preconditionOptions) === false) {
       throw new TypeError(name + ': The precondition options must be an array.');
+    } else if (Array.isArray(command.postconditions) === false) {
+      throw new TypeError(name + ': The postconditions must be an array.');
     } else if (Array.isArray(command.args) === false) {
       throw new TypeError(name + ': The arguments must be an array.');
     } else if (typeof command.cooldown !== 'number') {

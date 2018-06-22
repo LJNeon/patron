@@ -1,5 +1,6 @@
 const Registry = require('./Registry.js');
 const ArgumentDefault = require('../enums/ArgumentDefault.js');
+const CommandResult = require('../results/CommandResult.js');
 const Constants = require('../utility/Constants.js');
 
 /**
@@ -93,7 +94,7 @@ class Handler {
    * Attempts to run the Preconditions registered to a Command.
    * @param {Message} message The received message.
    * @param {Command} command The parsed command.
-   * @param {*} custom Any custom parameters to be passed into all preconditions.
+   * @param {...*} custom Any custom parameters to be passed into all preconditions.
    * @returns {Promise<Result>|Promise<PreconditionResult>} The result of running the preconditions.
    */
   async runCommandPreconditions(message, command, ...custom) {
@@ -114,6 +115,27 @@ class Handler {
     }
 
     return Constants.results.success(command);
+  }
+
+  /**
+   * Attempts to run the Postconditions registered to a Command.
+   * @param {Message} message The received message.
+   * @param {Command} command The parsed command.
+   * @param {?CommandResult} result The command result.
+   * @param {...*} custom Any custom parameters to be passed into all postconditions.
+   */
+  async runCommandPostconditions(message, command, result, ...custom) {
+    if (result instanceof CommandResult) {
+      result.setCommand(command);
+    }
+
+    for (let i = 0; i < command.group.postconditions.length; i++) {
+      await command.group.postconditions[i].run(message, result, ...custom);
+    }
+
+    for (let i = 0; i < command.postconditions.length; i++) {
+      await command.postconditions[i].run(message, result, ...custom);
+    }
   }
 
   /**
@@ -148,7 +170,7 @@ class Handler {
    * @param {Message} message The received message.
    * @param {Command} command The parsed command.
    * @param {number} prefixLength The length of the prefix to use when handling the command.
-   * @param {*} custom Any custom parameters to be passed into all preconditions and typereaders.
+   * @param {...*} custom Any custom parameters to be passed into all preconditions and typereaders.
    * @returns {Promise<ArgumentResult>|Promise<TypeReaderResult>|Promise<PreconditionResult>} The result of the argument parsing.
    */
   async parseArguments(message, command, prefixLength, ...custom) {
@@ -259,7 +281,7 @@ class Handler {
    * Attempts to execute a command.
    * @param {Message} message The received message.
    * @param {number} prefixLength The length of the prefix to use when handling the command.
-   * @param {*} custom Any custom parameters to be passed into all preconditions, commands, and type readers.
+   * @param {...*} custom Any custom parameters to be passed into all preconditions, commands, and type readers.
    * @returns {Promise<Result>|Promise<ArgumentResult>|Promise<CooldownResult>|Promise<TypeReaderResult>|Promise<PreconditionResult>|Promise<ExceptionResult>} The result of the command execution.
    */
   async run(message, prefixLength, ...custom) {
@@ -302,8 +324,8 @@ class Handler {
       }
 
       const args = result.args;
-
-      await command.run(message, args, ...custom);
+      result = await command.run(message, args, ...custom);
+      await this.runCommandPostconditions(message, command, result, ...custom);
 
       return Constants.results.success(command);
     } catch (err) {

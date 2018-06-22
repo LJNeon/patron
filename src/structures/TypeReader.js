@@ -31,7 +31,7 @@ class TypeReader {
    * @param {Argument} argument The argument in question.
    * @param {object} args The currently resolved arguments.
    * @param {string} input The user input.
-   * @param {*} custom The custom parameters passed into the handler.
+   * @param {...*} custom The custom parameters passed into the handler.
    * @abstract
    * @returns {Promise<TypeReaderResult>} The result of the type reader.
    */

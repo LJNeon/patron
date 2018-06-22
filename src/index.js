@@ -5,6 +5,7 @@ module.exports = {
   ArgumentResult: require('./results/ArgumentResult.js'),
   Command: require('./structures/Command.js'),
   CommandError: require('./enums/CommandError.js'),
+  CommandResult: require('./results/CommandResult.js'),
   Context: require('./enums/Context.js'),
   CooldownResult: require('./results/CooldownResult.js'),
   ExceptionResult: require('./results/ExceptionResult.js'),

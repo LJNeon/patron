@@ -4,6 +4,7 @@
  * @prop {string} description The description of the group.
  * @prop {Precondition[]} preconditions The preconditions to be run on all commands inside the group.
  * @prop {object[]} preconditionOptions The options to be passed to preconditions when they're run.
+ * @prop {Postcondition[]} postconditions The postconditions to be run on all commands inside the group.
  * @prop {Command[]} commands An array of all commands inside the group.
  */
 class Group {
@@ -13,6 +14,7 @@ class Group {
    * @prop {string} [description=''] The description of the group.
    * @prop {Array<string|object>} [preconditions=[]] The preconditions to be run on all commands inside the group.
    * @prop {Array<object>} [preconditionOptions=[]] The options to be passed to preconditions when they're run.
+   * @prop {Array<string|object>} [postconditions=[]] The postconditions to be run on all commands inside the group.
    */
 
   /**
@@ -22,6 +24,7 @@ class Group {
     this.name = options.name;
     this.description = options.description === undefined ? '' : options.description;
     this.preconditions = options.preconditions === undefined ? [] : options.preconditions;
+    this.postconditions = options.postconditions === undefined ? [] : options.postconditions;
     this.commands = [];
     this.preconditionOptions = options.preconditionOptions === undefined ? [] : options.preconditionOptions;
 
@@ -43,6 +46,8 @@ class Group {
       throw new TypeError(name + ': The preconditions must be an array.');
     } else if (Array.isArray(group.preconditionOptions) === false) {
       throw new TypeError(name + ': The precondition options must be an array.');
+    } else if (Array.isArray(group.postconditions) === false) {
+      throw new TypeError(name + ': The postconditions must be an array.');
     }
   }
 }

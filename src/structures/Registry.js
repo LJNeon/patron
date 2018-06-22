@@ -3,6 +3,7 @@ const ArgumentPrecondition = require('./ArgumentPrecondition.js');
 const Command = require('./Command.js');
 const Group = require('./Group.js');
 const Precondition = require('./Precondition.js');
+const Postcondition = require('./Postcondition.js');
 const TypeReader = require('./TypeReader.js');
 const TypeReaderCategory = require('../enums/TypeReaderCategory.js');
 const Library = require('../enums/Library.js');
@@ -16,6 +17,7 @@ const RequireAll = require('../utility/RequireAll.js');
  * @prop {TypeReader[]} typeReaders All registered type readers.
  * @prop {Precondition[]} preconditions All registered preconditions.
  * @prop {ArgumentPrecondtion[]} argumentPreconditions All registered argument preconditions.
+ * @prop {Postcondition[]} postconditions All registered postconditions.
  * @prop {string} library The library being used.
  */
 class Registry {
@@ -34,6 +36,7 @@ class Registry {
     this.typeReaders = [];
     this.preconditions = [];
     this.argumentPreconditions = [];
+    this.postconditions = [];
     this.caseSensitive = options.caseSensitive === undefined ? true : options.caseSensitive;
     this.library = options.library;
     this.libraryHandler = new LibraryHandler({ library: this.library });
@@ -87,6 +90,31 @@ class Registry {
       }
 
       this.argumentPreconditions.push(argumentPreconditions[i]);
+    }
+
+    return this;
+  }
+
+  /**
+   * Registers an array of postconditions.
+   * @param {Postcondition[]} postconditions An array of postconditions to be registered.
+   * @returns {Registry} The registry being used.
+   */
+  registerPostconditions(postconditions) {
+    if (Array.isArray(postconditions) === false) {
+      throw new TypeError('Postcondition must be an array.');
+    }
+
+    for (let i = 0; i < postconditions.length; i ++) {
+      if (typeof postconditions[i] !== 'object') {
+        throw new TypeError('All postcondition exports must be an instance of the postcondition.');
+      } else if ((postconditions[i] instanceof Postcondition) === false) {
+        throw new Error('All postconditions must inherit the Postcondition class.');
+      } else if (this.preconditions.some((v) => this.equals(v.name, postconditions[i].name)) === true) {
+        throw new Error('The ' + postconditions[i].name + ' postcondition already exists.');
+      }
+
+      this.postconditions.push(postconditions[i]);
     }
 
     return this;
@@ -163,6 +191,17 @@ class Registry {
         groups[i].preconditions[j] = precondition;
       }
 
+      for (let j = 0; j < groups[i].postconditions.length; j++) {
+        const name = typeof groups[i].postconditions[j] === 'string' ? groups[i].postconditions[j] : groups[i].postconditions[j].name;
+        const postcondition = this.postconditions.find((x) => this.equals(x.name, name));
+
+        if (postcondition === undefined) {
+          throw new Error('The ' + name + ' postcondition is not registered.');
+        }
+
+        groups[i].postconditions[j] = postcondition;
+      }
+
       this.groups.push(groups[i]);
     }
 
@@ -222,6 +261,17 @@ class Registry {
         }
 
         commands[i].preconditions[j] = precondition;
+      }
+
+      for (let j = 0; j < commands[i].postconditions.length; j++) {
+        const name = typeof commands[i].postconditions[j] === 'string' ? commands[i].postconditions[j] : commands[i].postconditions[j].name;
+        const postcondition = this.postconditions.find((x) => this.equals(x.name, name));
+
+        if (postcondition === undefined) {
+          throw new Error('The ' + name + ' postcondition is not registered.');
+        }
+
+        commands[i].postconditions[j] = postcondition;
       }
 
       const groupIndex = this.groups.findIndex((v) => this.equals(v.name, commands[i].groupName));
@@ -290,6 +340,35 @@ class Registry {
       }
 
       this.argumentPreconditions.splice(this.argumentPreconditions.findIndex((p) => this.equals(p.name, argumentPreconditions[i].name)), 1);
+    }
+
+    return this;
+  }
+
+  /**
+   * Unregisters an array of postconditions.
+   * @param {Postcondition[]} postconditions An array of postconditions to be unregistered.
+   * @returns {Registry} The registry being used.
+   */
+  unregisterPostconditions(postconditions) {
+    if (Array.isArray(postconditions) === false) {
+      throw new TypeError('Preconditions must be an array.');
+    }
+
+    for (let i = 0; i < postconditions.length; i ++) {
+      if (typeof postconditions[i] !== 'object') {
+        throw new TypeError('All postcondition exports must be an instance of the postcondition.');
+      } else if ((postconditions[i] instanceof Precondition) === false) {
+        throw new Error('All postconditions must inherit the Postcondition class.');
+      } else if (this.postconditions.every((p) => this.equals(p.name, postconditions[i].name) === false) === true) {
+        throw new Error('The ' + postconditions[i].name + ' postcondition is already not registered.');
+      } else if (this.commands.some((c) => c.postconditions.some((p) => this.equals(p.name, postconditions[i].name))) === true) {
+        throw new Error('The ' + postconditions[i].name + ' postcondition is registered to a command.');
+      } else if (this.groups.some((g) => g.postconditions.some((p) => this.equals(p.name, postconditions[i].name))) === true) {
+        throw new Error('The ' + postconditions[i].name + ' postcondition is registered to a group.');
+      }
+
+      this.postconditions.splice(this.postconditions.findIndex((p) => this.equals(p.name, postconditions[i].name)), 1);
     }
 
     return this;

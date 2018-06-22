@@ -5,6 +5,8 @@
  */
 
 const CommandError = {
+  /** A command failure. */
+  Command: Symbol(),
   /** A precondition failure. */
   Precondition: Symbol(),
   /** A member lacking permissions. */
