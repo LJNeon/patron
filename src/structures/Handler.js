@@ -313,6 +313,8 @@ class Handler {
 
       if (result.success === false) {
         await this.revertCooldown(message, command);
+        await this.runCommandPostconditions(message, command, result, ...custom);
+
         return result;
       }
 
@@ -320,17 +322,22 @@ class Handler {
 
       if (result.success === false) {
         await this.revertCooldown(message, command);
+        await this.runCommandPostconditions(message, command, result, ...custom);
+
         return result;
       }
 
-      const args = result.args;
-      result = await command.run(message, args, ...custom);
+      result = await command.run(message, result.args, ...custom);
       await this.runCommandPostconditions(message, command, result, ...custom);
 
       return Constants.results.success(command);
     } catch (err) {
       if (cooldownApplied === true) {
         await this.revertCooldown(message, command);
+      }
+
+      if (command !== undefined) {
+        await this.runCommandPostconditions(message, command, err, ...custom);
       }
 
       return Constants.results.exception(command, err);

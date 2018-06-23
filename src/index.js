@@ -13,6 +13,7 @@ module.exports = {
   Handler: require('./structures/Handler.js'),
   InvalidContextResult: require('./results/InvalidContextResult.js'),
   Library: require('./enums/Library.js'),
+  Postcondition: require('./structures/Postcondition.js'),
   Precondition: require('./structures/Precondition.js'),
   PreconditionResult: require('./results/PreconditionResult.js'),
   Registry: require('./structures/Registry.js'),
