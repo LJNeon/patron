@@ -36,7 +36,7 @@ class CommandResult extends Result {
    * @returns {CommandResult} The result in question.
    */
   static fromError(data) {
-    return new CommandResult({ success: false, command: null, commandError: CommandError.Command, errorReason: null, data });
+    return new CommandResult({ success: false, commandError: CommandError.Command, data });
   }
 }
 
