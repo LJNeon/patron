@@ -32,11 +32,12 @@ class CommandResult extends Result {
 
   /**
    * Returns a failed command result.
+   * @param {string} errorReason The reason for the command's failure.
    * @param {*} data Information to be passed to the postconditions.
    * @returns {CommandResult} The result in question.
    */
-  static fromError(data) {
-    return new CommandResult({ success: false, commandError: CommandError.Command, data });
+  static fromError(errorReason, data) {
+    return new CommandResult({ success: false, commandError: CommandError.Command, data, errorReason });
   }
 }
 

@@ -330,6 +330,10 @@ class Handler {
       result = await command.run(message, result.args, ...custom);
       await this.runCommandPostconditions(message, command, result, ...custom);
 
+      if (result instanceof CommandResult) {
+        return result;
+      }
+
       return Constants.results.success(command);
     } catch (err) {
       if (cooldownApplied === true) {
