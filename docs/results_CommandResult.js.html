@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: enums/CommandError.js</title>
+    <title>JSDoc: Source: results/CommandResult.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: enums/CommandError.js</h1>
+    <h1 class="page-title">Source: results/CommandResult.js</h1>
 
     
 
@@ -26,38 +26,50 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/**
- * The command errors.
- * @enum {Symbol}
- * @readonly
+            <pre class="prettyprint source linenums"><code>const Result = require('./Result.js');
+const CommandError = require('../enums/CommandError.js');
+
+/**
+ * A command result.
+ * @prop {*} data Information to be passed to the postconditions.
+ * @extends {Result}
  */
+class CommandResult extends Result {
+  /**
+   * @typedef {CommandResultOptions} CommandResultOptions The command result options.
+   * @prop {*} data Information to be passed to the postconditions.
+   */
 
-const CommandError = {
-  /** A command failure. */
-  Command: Symbol(),
-  /** A precondition failure. */
-  Precondition: Symbol(),
-  /** A member lacking permissions. */
-  MemberPermission: Symbol(),
-  /** The client lacking permissions. */
-  BotPermission: Symbol(),
-  /** A type reader failure. */
-  TypeReader: Symbol(),
-  /** An unknown command. */
-  CommandNotFound: Symbol(),
-  /** A command used while on cooldown. */
-  Cooldown: Symbol(),
-  /** An invalid argument was provided. */
-  InvalidArg: Symbol(),
-  /** An invalid amount of arguments provided. */
-  InvalidArgCount: Symbol(),
-  /** An exception during command execution. */
-  Exception: Symbol(),
-  /** An invalid context for a command. */
-  InvalidContext: Symbol()
-};
+  /**
+   * @param {CommandResultOptions} options The command result options.
+   */
+  constructor(options) {
+    super(options);
 
-module.exports = CommandError;
+    this.data = options.data;
+  }
+
+  /**
+   * Sets this result's command.
+   * @param {Command} command The command this result came from.
+   */
+  setCommand(command) {
+    this.command = command;
+    this.commandName = command.names[0];
+  }
+
+  /**
+   * Returns a failed command result.
+   * @param {string} errorReason The reason for the command's failure.
+   * @param {*} data Information to be passed to the postconditions.
+   * @returns {CommandResult} The result in question.
+   */
+  static fromError(errorReason, data) {
+    return new CommandResult({ success: false, commandError: CommandError.Command, data, errorReason });
+  }
+}
+
+module.exports = CommandResult;
 </code></pre>
         </article>
     </section>

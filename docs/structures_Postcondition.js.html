@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: enums/CommandError.js</title>
+    <title>JSDoc: Source: structures/Postcondition.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: enums/CommandError.js</h1>
+    <h1 class="page-title">Source: structures/Postcondition.js</h1>
 
     
 
@@ -27,37 +27,54 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * The command errors.
- * @enum {Symbol}
- * @readonly
+ * A command postcondition.
+ * @prop {string} name The name of the postcondition.
+ * @prop {string} description The description of the postcondition.
  */
+class Postcondition {
+  /**
+   * @typedef {object} PostconditionOptions The postconditions options.
+   * @prop {string} name The name of the postcondition.
+   * @prop {string} [description=''] The description of the postcondition.
+   */
 
-const CommandError = {
-  /** A command failure. */
-  Command: Symbol(),
-  /** A precondition failure. */
-  Precondition: Symbol(),
-  /** A member lacking permissions. */
-  MemberPermission: Symbol(),
-  /** The client lacking permissions. */
-  BotPermission: Symbol(),
-  /** A type reader failure. */
-  TypeReader: Symbol(),
-  /** An unknown command. */
-  CommandNotFound: Symbol(),
-  /** A command used while on cooldown. */
-  Cooldown: Symbol(),
-  /** An invalid argument was provided. */
-  InvalidArg: Symbol(),
-  /** An invalid amount of arguments provided. */
-  InvalidArgCount: Symbol(),
-  /** An exception during command execution. */
-  Exception: Symbol(),
-  /** An invalid context for a command. */
-  InvalidContext: Symbol()
-};
+  /**
+   * @param {PostconditionOptions} options The postconditions options.
+   */
+  constructor(options) {
+    this.name = options.name;
+    this.description = options.description === undefined ? '' : options.description;
 
-module.exports = CommandError;
+    this.constructor.validatePostcondition(this, this.constructor.name);
+  }
+
+  /**
+   * Executes the postcondition.
+   * @param {Message} message The received message.
+   * @param {?CommandResult} result The result of the command execution, if any.
+   * @param {...*} custom The custom parameters passed into the handler.
+   * @abstract
+   */
+  async run(message, result, custom) {
+    throw new Error(this.constructor.name + ' has no run method.');
+  }
+
+  /**
+   * Validates a postcondition.
+   * @param {Postcondition} postcondition The postcondition to validate.
+   * @param {string} name The name of the constructor of the postcondition.
+   * @private
+   */
+  static validatePostcondition(postcondition, name) {
+    if (typeof postcondition.name !== 'string') {
+      throw new TypeError(name + ': The name must be a string.');
+    } else if (typeof postcondition.description !== 'string') {
+      throw new TypeError(name + ': All precondition descriptions must be a string.');
+    }
+  }
+}
+
+module.exports = Postcondition;
 </code></pre>
         </article>
     </section>

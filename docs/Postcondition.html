@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: TypeReaderResult</title>
+    <title>JSDoc: Class: Postcondition</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: TypeReaderResult</h1>
+    <h1 class="page-title">Class: Postcondition</h1>
 
     
 
@@ -28,9 +28,9 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>TypeReaderResult<span class="signature">(options)</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>Postcondition<span class="signature">(options)</span><span class="type-signature"></span></h2>
         
-            <div class="class-description">A type reader result.</div>
+            <div class="class-description">A command postcondition.</div>
         
     
 </header>
@@ -45,7 +45,7 @@
     
 
     
-    <h4 class="name" id="TypeReaderResult"><span class="type-signature"></span>new TypeReaderResult<span class="signature">(options)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="Postcondition"><span class="type-signature"></span>new Postcondition<span class="signature">(options)</span><span class="type-signature"></span></h4>
     
 
     
@@ -91,7 +91,7 @@
             <td class="type">
             
                 
-<span class="param-type"><a href="global.html#TypeReaderResultOptions">TypeReaderResultOptions</a></span>
+<span class="param-type"><a href="global.html#PostconditionOptions">PostconditionOptions</a></span>
 
 
             
@@ -101,7 +101,7 @@
 
             
 
-            <td class="description last">The type reader result options.</td>
+            <td class="description last">The postconditions options.</td>
         </tr>
 
     
@@ -127,8 +127,6 @@
         <th>Type</th>
 
         
-        <th>Attributes</th>
-        
 
         
 
@@ -141,62 +139,46 @@
 
         <tr>
             
-                <td class="name"><code>value</code></td>
+                <td class="name"><code>name</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">*</span>
+<span class="param-type">string</span>
 
 
             
             </td>
 
             
-                <td class="attributes">
-                
-
-                
-                    &lt;nullable><br>
-                
-                </td>
-            
 
             
 
-            <td class="description last">The parsed value from the type reader.</td>
+            <td class="description last">The name of the postcondition.</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>matches</code></td>
+                <td class="name"><code>description</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;object></span>
+<span class="param-type">string</span>
 
 
             
             </td>
 
             
-                <td class="attributes">
-                
-
-                
-                    &lt;nullable><br>
-                
-                </td>
-            
 
             
 
-            <td class="description last">The type reader matches.</td>
+            <td class="description last">The description of the postcondition.</td>
         </tr>
 
     
@@ -235,7 +217,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="results_TypeReaderResult.js.html">results/TypeReaderResult.js</a>, <a href="results_TypeReaderResult.js.html#line10">line 10</a>
+        <a href="structures_Postcondition.js.html">structures/Postcondition.js</a>, <a href="structures_Postcondition.js.html#line6">line 6</a>
     </li></ul></dd>
     
 
@@ -267,17 +249,6 @@
     </div>
 
     
-        <h3 class="subsection-title">Extends</h3>
-
-        
-
-
-    <ul>
-        <li><a href="Result.html">Result</a></li>
-    </ul>
-
-
-    
 
     
 
@@ -300,7 +271,7 @@
     
 
     
-    <h4 class="name" id=".fromError"><span class="type-signature">(static) </span>fromError<span class="signature">(command, reason, matches<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="TypeReaderResult.html">TypeReaderResult</a>}</span></h4>
+    <h4 class="name" id="run"><span class="type-signature">(async, abstract) </span>run<span class="signature">(message, result<span class="signature-attributes">nullable</span>, &hellip;custom)</span><span class="type-signature"></span></h4>
     
 
     
@@ -308,7 +279,7 @@
 
 
 <div class="description">
-    Returns a failed type reader result.
+    Executes the postcondition.
 </div>
 
 
@@ -346,13 +317,13 @@
 
         <tr>
             
-                <td class="name"><code>command</code></td>
+                <td class="name"><code>message</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="Command.html">Command</a></span>
+<span class="param-type">Message</span>
 
 
             
@@ -370,20 +341,20 @@
 
             
 
-            <td class="description last">The command being executed.</td>
+            <td class="description last">The received message.</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>reason</code></td>
+                <td class="name"><code>result</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type"><a href="CommandResult.html">CommandResult</a></span>
 
 
             
@@ -394,38 +365,7 @@
                 
 
                 
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">The reason for the type reader failure.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>matches</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;object></span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
+                    &lt;nullable><br>
                 
 
                 
@@ -434,148 +374,14 @@
 
             
 
-            <td class="description last">The type reader matches.</td>
+            <td class="description last">The result of the command execution, if any.</td>
         </tr>
 
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="results_TypeReaderResult.js.html">results/TypeReaderResult.js</a>, <a href="results_TypeReaderResult.js.html#line43">line 43</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    The result in question.
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="TypeReaderResult.html">TypeReaderResult</a></span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id=".fromSuccess"><span class="type-signature">(static) </span>fromSuccess<span class="signature">(value)</span><span class="type-signature"> &rarr; {<a href="TypeReaderResult.html">TypeReaderResult</a>}</span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    Returns a successful type reader result.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
     
 
         <tr>
             
-                <td class="name"><code>value</code></td>
+                <td class="name"><code>custom</code></td>
             
 
             <td class="type">
@@ -588,10 +394,20 @@
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+
+                
+                    &lt;repeatable><br>
+                
+                </td>
+            
 
             
 
-            <td class="description last">The parsed value from the type reader.</td>
+            <td class="description last">The custom parameters passed into the handler.</td>
         </tr>
 
     
@@ -632,7 +448,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="results_TypeReaderResult.js.html">results/TypeReaderResult.js</a>, <a href="results_TypeReaderResult.js.html#line32">line 32</a>
+        <a href="structures_Postcondition.js.html">structures/Postcondition.js</a>, <a href="structures_Postcondition.js.html#line30">line 30</a>
     </li></ul></dd>
     
 
@@ -655,28 +471,6 @@
 
 
 
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    The result in question.
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="TypeReaderResult.html">TypeReaderResult</a></span>
-
-
-    </dd>
-</dl>
-
-    
 
 
 

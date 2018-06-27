@@ -59,6 +59,7 @@ declare module 'patron.js' {
     MemberPermission,
     BotPermission,
     TypeReader,
+    Command,
     CommandNotFound,
     Cooldown,
     InvalidArgCount,
@@ -69,7 +70,6 @@ declare module 'patron.js' {
   export enum Context {
     DM,
     Guild
-    Group
   }
 
   export class CooldownResult extends Result {
@@ -95,6 +95,7 @@ declare module 'patron.js' {
     public registry: Registry;
     public parseCommand(message: object, prefixLength: number): Promise<Result>;
     public validateCommand(message: object, command: Command): Promise<Result | InvalidContextResult>;
+    public runCommandPostconditions(message: object, command: Command, result: CommandResult, ...custom): Promise;
     public runCommandPreconditions(message: object, command: Command, ...custom): Promise<Result | PreconditionResult>;
     public checkCooldown(message: object, command: Command): Promise<Result | CooldownResult>;
     public parseArguments(message: object, command: Command, prefixLength: number, ...custom): Promise<ArgumentResult | TypeReaderResult | PreconditionResult>;
@@ -111,6 +112,14 @@ declare module 'patron.js' {
   export enum Library {
     DiscordJS,
     Eris
+  }
+
+  export class Postcondition {
+    private static validatePostcondition(registry: Postcondition, name: string): void;
+    public name: string;
+    public description: string;
+    public run(command: Command, message: object, result: CommandResult, custom: any): Promise;
+    constructor(options: PostconditionOptions);
   }
 
   export class Precondition {
@@ -223,6 +232,11 @@ declare module 'patron.js' {
     name: string;
     description?: string;
     preconditions?: string[] | object[];
+  }
+
+  interface PostconditionOptions {
+    name: string;
+    description?: string;
   }
 
   interface PreconditionOptions {
