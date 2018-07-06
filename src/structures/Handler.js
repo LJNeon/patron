@@ -331,6 +331,8 @@ class Handler {
       await this.runCommandPostconditions(message, command, result, ...custom);
 
       if (result instanceof CommandResult) {
+        await this.revertCooldown(message, command);
+
         return result;
       }
 
