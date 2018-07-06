@@ -2,6 +2,7 @@ const Registry = require('./Registry.js');
 const ArgumentDefault = require('../enums/ArgumentDefault.js');
 const CommandResult = require('../results/CommandResult.js');
 const Constants = require('../utility/Constants.js');
+const MultiMutex = require('../utility/MultiMutex.js');
 
 /**
  * The command handler.
@@ -23,33 +24,9 @@ class Handler {
     this.queue = [];
     this.registry = options.registry;
     this.argumentRegex = options.argumentRegex === undefined ? Constants.regexes.argument : options.argumentRegex;
+    this.mutex = new MultiMutex();
 
     this.constructor.validateHandler(this);
-  }
-
-  synchronize(task) {
-    return new Promise((resolve, reject) => {
-      this.queue.push([task, resolve, reject]);
-
-      if (this.busy === false) {
-        this.dequeue();
-      }
-    });
-  }
-
-  dequeue() {
-    this.busy = true;
-    const next = this.queue.shift();
-
-    if (next) {
-      this.execute(next);
-    } else {
-      this.busy = false;
-    }
-  }
-
-  execute(record) {
-    record[0]().then(record[1], record[2]).then(() => this.dequeue());
   }
 
   /**
@@ -145,10 +122,11 @@ class Handler {
    * @returns {Promise<Result>|Promise<CooldownResult>} The result of checking the cooldowns.
    */
   async updateCooldown(message, command) {
-    return this.synchronize(async () => {
+    const guild = this.registry.libraryHandler.guild(message);
+    const id = guild == null ? '' : guild.id;
+    return this.mutex.sync(id, async () => {
       if (command.hasCooldown === true) {
-        const guild = this.registry.libraryHandler.guild(message);
-        const cooldown = command.cooldowns[message.author.id + (guild === null ? '' : '-' + guild.id)];
+        const cooldown = command.cooldowns[message.author.id + (guild == null ? '' : '-' + guild.id)];
 
         if (cooldown !== undefined) {
           const difference = cooldown - Date.now();
@@ -267,9 +245,10 @@ class Handler {
    * @returns {Promise<Result>} The result of the cooldown's update.
    */
   async revertCooldown(message, command) {
-    return this.synchronize(async () => {
+    const guild = this.registry.libraryHandler.guild(message);
+    const id = guild == null ? '' : guild.id;
+    return this.mutex.sync(id, async () => {
       if (command.hasCooldown === true) {
-        const guild = this.registry.libraryHandler.guild(message);
         command.cooldowns[message.author.id + (guild == null ? '' : '-' + guild.id)] = undefined;
       }
 
