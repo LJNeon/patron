@@ -273,10 +273,6 @@ class Handler {
     const {command} = result;
     result = await this.internalRun(message, command, prefixLength, ...custom);
 
-    if (result.success === false) {
-      await this.revertCooldown(message, command);
-    }
-
     await this.runCommandPostconditions(message, command, result, ...custom);
 
     return result;
@@ -299,21 +295,29 @@ class Handler {
       result = await this.runCommandPreconditions(message, command, ...custom);
 
       if (result.success === false) {
+        await this.revertCooldown(message, command);
+
         return result;
       }
 
       result = await this.parseArguments(message, command, prefixLength, ...custom);
 
       if (result.success === false) {
+        await this.revertCooldown(message, command);
+
         return result;
       }
 
       result = await command.run(message, result.args, ...custom);
     } catch (err) {
+      await this.revertCooldown(message, command);
+
       return Constants.results.exception(command, err);
     }
 
-    if (result instanceof CommandResult) {
+    if (result.success === false) {
+      await this.revertCooldown(message, command);
+
       return result;
     }
 
