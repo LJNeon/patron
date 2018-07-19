@@ -264,69 +264,60 @@ class Handler {
    * @returns {Promise<Result>|Promise<ArgumentResult>|Promise<CooldownResult>|Promise<TypeReaderResult>|Promise<PreconditionResult>|Promise<ExceptionResult>} The result of the command execution.
    */
   async run(message, prefixLength, ...custom) {
-    let command;
-    let cooldownApplied = false;
+    let result = await this.parseCommand(message, prefixLength);
+
+    if (result.success === false) {
+      return result;
+    }
+
+    const {command} = result;
+    result = await this.internalRun(message, command, prefixLength, ...custom);
+
+    if (result.success === false) {
+      await this.revertCooldown(message, command);
+    }
+
+    await this.runCommandPostconditions(message, command, result, ...custom);
+
+    return result;
+  }
+
+  async internalRun(message, command, prefixLength, ...custom) {
+    let result = await this.validateCommand(message, command);
+
+    if (result.success === false) {
+      return result;
+    }
+
+    result = await this.updateCooldown(message, command);
+
+    if (result.success === false) {
+      return result;
+    }
 
     try {
-      let result = await this.parseCommand(message, prefixLength);
-
-      if (result.success === false) {
-        return result;
-      }
-
-      command = result.command;
-      result = await this.validateCommand(message, command);
-
-      if (result.success === false) {
-        return result;
-      }
-
-      result = await this.updateCooldown(message, command);
-
-      if (result.success === false) {
-        return result;
-      }
-
-      cooldownApplied = true;
       result = await this.runCommandPreconditions(message, command, ...custom);
 
       if (result.success === false) {
-        await this.revertCooldown(message, command);
-        await this.runCommandPostconditions(message, command, result, ...custom);
-
         return result;
       }
 
       result = await this.parseArguments(message, command, prefixLength, ...custom);
 
       if (result.success === false) {
-        await this.revertCooldown(message, command);
-        await this.runCommandPostconditions(message, command, result, ...custom);
-
         return result;
       }
 
       result = await command.run(message, result.args, ...custom);
-      await this.runCommandPostconditions(message, command, result, ...custom);
-
-      if (result instanceof CommandResult) {
-        await this.revertCooldown(message, command);
-
-        return result;
-      }
-
-      return Constants.results.success(command);
     } catch (err) {
-      if (cooldownApplied === true) {
-        await this.revertCooldown(message, command);
-      }
-
-      if (command !== undefined) {
-        await this.runCommandPostconditions(message, command, err, ...custom);
-      }
-
       return Constants.results.exception(command, err);
     }
+
+    if (result instanceof CommandResult) {
+      return result;
+    }
+
+    return Constants.results.success(command);
   }
 
   /**
