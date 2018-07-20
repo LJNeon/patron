@@ -315,13 +315,15 @@ class Handler {
       return Constants.results.exception(command, err);
     }
 
-    if (result.success === false) {
-      await this.revertCooldown(message, command);
-
-      return result;
+    if (result == null) {
+      result = Constants.results.success(command);
     }
 
-    return Constants.results.success(command);
+    if (result.success === false) {
+      await this.revertCooldown(message, command);
+    }
+
+    return result;
   }
 
   /**
