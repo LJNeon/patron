@@ -315,7 +315,7 @@ class Handler {
       return Constants.results.exception(command, err);
     }
 
-    if (result == null) {
+    if (result instanceof CommandResult === false) {
       result = Constants.results.success(command);
     }
 
