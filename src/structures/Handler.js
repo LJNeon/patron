@@ -58,10 +58,16 @@ class Handler {
    * @returns {Promise<Result>|Promise<InvalidContextResult>} The result of the command validation.
    */
   async validateCommand(message, command) {
-    const result = this.registry.libraryHandler.validateContext(command, message);
+    let result = this.registry.libraryHandler.validateContext(command, message);
 
-    if (result === undefined) {
-      return Constants.results.success(command);
+    if (result !== undefined) {
+      return result;
+    }
+
+    result = this.registry.libraryHandler.validatePermissions(command, message);
+
+    if (result !== undefined) {
+      return result;
     }
 
     return result;
