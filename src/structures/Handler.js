@@ -70,7 +70,7 @@ class Handler {
       return result;
     }
 
-    return result;
+    return Constants.results.success(command);
   }
 
   /**
