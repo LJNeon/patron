@@ -15,7 +15,7 @@ class TextChannelTypeReader extends TypeReader {
     if (Constants.regexes.textChannelMention.test(input) === true || Constants.regexes.id.test(input) === true) {
       const channel = message.guild.channels.get(input.match(Constants.regexes.findId)[0]);
 
-      if (channel !== undefined && channel.type === 'text') {
+      if (channel != null && channel.type === 'text') {
         return TypeReaderResult.fromSuccess(channel);
       }
 

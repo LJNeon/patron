@@ -12,7 +12,7 @@ class DMChannelTypeReader extends TypeReader {
   }
 
   async read(command, message, argument, args, input) {
-    if (warningEmitted === false && message.client.shard !== undefined) {
+    if (warningEmitted === false && message.client.shard != null) {
       process.emitWarning('The DM channel type reader is unreliable when shards are split between multiple clients.');
       warningEmitted = true;
     }
@@ -20,7 +20,7 @@ class DMChannelTypeReader extends TypeReader {
     if (Constants.regexes.id.test(input) === true) {
       const channel = message.client.channels.get(input.match(Constants.regexes.findId)[0]);
 
-      if (channel !== undefined && channel.type === 'dm') {
+      if (channel != null && channel.type === 'dm') {
         return TypeReaderResult.fromSuccess(channel);
       }
     }

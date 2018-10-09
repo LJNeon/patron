@@ -13,7 +13,7 @@ class UserTypeReader extends TypeReader {
   }
 
   async read(command, message, argument, args, input) {
-    if (warningEmitted === false && message.client.shard !== undefined) {
+    if (warningEmitted === false && message.client.shard != null) {
       process.emitWarning('The user type reader is unreliable when shards are split between multiple clients.');
       warningEmitted = true;
     }
@@ -33,7 +33,7 @@ class UserTypeReader extends TypeReader {
     if (Constants.regexes.usernameAndDiscrim.test(input) === true) {
       const user = message.client.users.findValue((v) => v.tag.toLowerCase() === lowerInput);
 
-      if (user !== undefined) {
+      if (user != null) {
         return TypeReaderResult.fromSuccess(user);
       }
 
@@ -42,8 +42,8 @@ class UserTypeReader extends TypeReader {
 
     let matches = [];
 
-    if (message.guild !== null) {
-      const memberMatches = message.guild.members.filterValues((v) => v.nickname !== null && v.nickname.toLowerCase().includes(lowerInput));
+    if (message.guild != null) {
+      const memberMatches = message.guild.members.filterValues((v) => v.nickname != null && v.nickname.toLowerCase().includes(lowerInput));
 
       for (let i = 0; i < memberMatches.length; i++) {
         matches.push(memberMatches[i].user);

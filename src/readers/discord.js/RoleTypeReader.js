@@ -15,7 +15,7 @@ class RoleTypeReader extends TypeReader {
     if (Constants.regexes.roleMention.test(input) === true || Constants.regexes.id.test(input) === true) {
       const role = message.guild.roles.get(input.match(Constants.regexes.findId)[0]);
 
-      if (role !== undefined) {
+      if (role != null) {
         return TypeReaderResult.fromSuccess(role);
       }
 

@@ -12,7 +12,7 @@ class ChannelTypeReader extends TypeReader {
   }
 
   async read(command, message, argument, args, input) {
-    if (warningEmitted === false && message.client.shard !== undefined) {
+    if (warningEmitted === false && message.client.shard != null) {
       process.emitWarning('The channel type reader is unreliable when shards are split between multiple clients.');
       warningEmitted = true;
     }
@@ -20,7 +20,7 @@ class ChannelTypeReader extends TypeReader {
     if (Constants.regexes.id.test(input) === true) {
       const channel = message.client.channels.get(input.match(Constants.regexes.findId)[0]);
 
-      if (channel !== undefined) {
+      if (channel != null) {
         return TypeReaderResult.fromSuccess(channel);
       }
     }

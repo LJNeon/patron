@@ -13,7 +13,7 @@ class GuildTypeReader extends TypeReader {
   }
 
   async read(command, message, argument, args, input) {
-    if (warningEmitted === false && message.client.shard !== undefined) {
+    if (warningEmitted === false && message.client.shard != null) {
       process.emitWarning('The guild type reader is unreliable when shards are split between multiple clients.');
       warningEmitted = true;
     }
@@ -21,7 +21,7 @@ class GuildTypeReader extends TypeReader {
     if (Constants.regexes.id.test(input) === true) {
       const guild = message.client.guilds.get(input.match(Constants.regexes.findId)[0]);
 
-      if (guild !== undefined) {
+      if (guild != null) {
         return TypeReaderResult.fromSuccess(guild);
       }
 

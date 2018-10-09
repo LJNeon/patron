@@ -17,7 +17,7 @@ class MemberTypeReader extends TypeReader {
         const user = await message.client.users.fetch(input.match(Constants.regexes.findId)[0]);
         const member = message.guild.member(user);
 
-        if (member !== null) {
+        if (member != null) {
           return TypeReaderResult.fromSuccess(member);
         }
       } catch (err) {
@@ -31,14 +31,14 @@ class MemberTypeReader extends TypeReader {
     if (Constants.regexes.usernameAndDiscrim.test(input) === true) {
       const member = message.guild.members.findValue((v) => v.user.tag.toLowerCase() === lowerInput);
 
-      if (member !== undefined) {
+      if (member != null) {
         return TypeReaderResult.fromSuccess(member);
       }
 
       return TypeReaderResult.fromError(command, Constants.errors.memberNotFound);
     }
 
-    const matches = message.guild.members.filterValues((v) => v.user.username.toLowerCase().includes(lowerInput) || (v.nickname !== null && v.nickname.toLowerCase().includes(lowerInput)));
+    const matches = message.guild.members.filterValues((v) => v.user.username.toLowerCase().includes(lowerInput) || (v.nickname != null && v.nickname.toLowerCase().includes(lowerInput)));
 
     return TypeReaderUtil.handleMatches(command, matches, 'memberNotFound', null, true);
   }

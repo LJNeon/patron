@@ -15,7 +15,7 @@ class VoiceChannelTypeReader extends TypeReader {
     if (Constants.regexes.id.test(input) === true) {
       const channel = message.guild.channels.get(input.match(Constants.regexes.findId)[0]);
 
-      if (channel !== undefined && channel.type === 'voice') {
+      if (channel != null && channel.type === 'voice') {
         return TypeReaderResult.fromSuccess(channel);
       }
 

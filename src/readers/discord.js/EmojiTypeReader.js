@@ -13,7 +13,7 @@ class EmojiTypeReader extends TypeReader {
   }
 
   async read(command, message, argument, args, input) {
-    if (warningEmitted === false && message.client.shard !== undefined) {
+    if (warningEmitted === false && message.client.shard != null) {
       process.emitWarning('The emoji type reader is unreliable when shards are split between multiple clients.');
       warningEmitted = true;
     }
@@ -21,7 +21,7 @@ class EmojiTypeReader extends TypeReader {
     if (Constants.regexes.emoji.test(input) === true || Constants.regexes.id.test(input) === true) {
       const emoji = message.client.emojis.get(input.match(Constants.regexes.findId)[0]);
 
-      if (emoji !== undefined) {
+      if (emoji != null) {
         return TypeReaderResult.fromSuccess(emoji);
       }
 

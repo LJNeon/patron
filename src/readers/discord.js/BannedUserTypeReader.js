@@ -17,7 +17,7 @@ class BannedUserTypeReader extends TypeReader {
     if (Constants.regexes.userMention.test(input) === true || Constants.regexes.id.test(input) === true) {
       const ban = bans.get(input.match(Constants.regexes.findId)[0]);
 
-      if (ban !== undefined) {
+      if (ban != null) {
         return TypeReaderResult.fromSuccess(ban.user);
       }
 
@@ -29,7 +29,7 @@ class BannedUserTypeReader extends TypeReader {
     if (Constants.regexes.usernameAndDiscrim.test(input) === true) {
       const ban = bans.findValue((v) => v.user.tag.toLowerCase() === lowerInput);
 
-      if (ban !== undefined) {
+      if (ban != null) {
         return TypeReaderResult.fromSuccess(ban.user);
       }
 
