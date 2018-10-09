@@ -20,7 +20,7 @@ class UserTypeReader extends TypeReader {
 
     if (Constants.regexes.userMention.test(input) === true || Constants.regexes.id.test(input) === true) {
       try {
-        const user = await message.client.fetchUser(input.match(Constants.regexes.findId)[0]);
+        const user = await message.client.users.fetch(input.match(Constants.regexes.findId)[0]);
 
         return TypeReaderResult.fromSuccess(user);
       } catch (err) {

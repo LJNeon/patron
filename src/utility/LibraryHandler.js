@@ -19,7 +19,7 @@ class LibraryHandler {
   highestRole(message) {
     switch (this.library) {
       case 'discord.js':
-        return message.member.highestRole;
+        return message.member.roles.highest;
       case 'eris': {
         let highestRole = null;
 

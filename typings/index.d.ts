@@ -7,6 +7,7 @@ declare module 'patron.js' {
     public example: string;
     public defaultValue: any;
     public infinite: boolean;
+    public preconditionOptions: object[];
     public preconditions: ArgumentPrecondition[];
     public optional: boolean;
     public remainder: boolean;
@@ -43,6 +44,7 @@ declare module 'patron.js' {
     public usableContexts: Symbol[];
     public memberPermissions: string[];
     public botPermissions: string[];
+    public preconditionOptions: object[];
     public preconditions: Precondition[];
     public args: Argument[];
     public hasCooldown: boolean;
@@ -77,6 +79,13 @@ declare module 'patron.js' {
     private constructor(options: CooldownResultOptions);
   }
 
+  export class CommandResult extends Result {
+    public data: any;
+    private setCommand(command: Command): void;
+    public static fromError(reason: string, data: any): CommandResult;
+    private constructor(options: CommandResultOptions);
+  }
+
   export class ExceptionResult extends Result {
     public error: Error;
     private constructor(options: ExceptionResultOptions);
@@ -95,7 +104,7 @@ declare module 'patron.js' {
     public registry: Registry;
     public parseCommand(message: object, prefixLength: number): Promise<Result>;
     public validateCommand(message: object, command: Command): Promise<Result | InvalidContextResult>;
-    public runCommandPostconditions(message: object, command: Command, result: CommandResult, ...custom): Promise;
+    public runCommandPostconditions(message: object, command: Command, result: CommandResult, ...custom): Promise<any>;
     public runCommandPreconditions(message: object, command: Command, ...custom): Promise<Result | PreconditionResult>;
     public checkCooldown(message: object, command: Command): Promise<Result | CooldownResult>;
     public parseArguments(message: object, command: Command, prefixLength: number, ...custom): Promise<ArgumentResult | TypeReaderResult | PreconditionResult>;
@@ -118,7 +127,7 @@ declare module 'patron.js' {
     private static validatePostcondition(registry: Postcondition, name: string): void;
     public name: string;
     public description: string;
-    public run(command: Command, message: object, result: CommandResult, custom: any): Promise;
+    public run(command: Command, message: object, result: CommandResult, custom: any): Promise<any>;
     constructor(options: PostconditionOptions);
   }
 
@@ -195,6 +204,7 @@ declare module 'patron.js' {
     example: string;
     defaultValue?: any;
     infinite?: boolean;
+    preconditionOptions?: object[];
     preconditions?: string[] | object[];
     remainder?: boolean;
   }
@@ -215,6 +225,7 @@ declare module 'patron.js' {
     usableContexts?: symbol[];
     memberPermissions?: string[];
     botPermissions?: string[];
+    preconditionOptions?: object[];
     preconditions?: string[] | object[];
     args?: Argument[];
     cooldown?: number;
@@ -222,6 +233,10 @@ declare module 'patron.js' {
 
   interface CooldownResultOptions extends ResultOptions {
     remaining: number;
+  }
+
+  interface CommandResultOptions extends ResultOptions {
+    data: any;
   }
 
   interface ExceptionResultOptions extends ResultOptions {

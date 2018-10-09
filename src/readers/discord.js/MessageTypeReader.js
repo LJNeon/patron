@@ -19,7 +19,7 @@ class MessageTypeReader extends TypeReader {
 
       if (msg === undefined) {
         try {
-          msg = await message.channel.fetchMessage(parsedId);
+          msg = await message.channel.messages.fetch(parsedId);
 
           return TypeReaderResult.fromSuccess(msg);
         } catch (err) {

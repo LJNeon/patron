@@ -13,6 +13,8 @@ module.exports = {
   Handler: require('./structures/Handler.js'),
   InvalidContextResult: require('./results/InvalidContextResult.js'),
   Library: require('./enums/Library.js'),
+  Mutex: require('./utility/Mutex.js'),
+  MultiMutex: require('./utility/MultiMutex.js'),
   Postcondition: require('./structures/Postcondition.js'),
   Precondition: require('./structures/Precondition.js'),
   PreconditionResult: require('./results/PreconditionResult.js'),

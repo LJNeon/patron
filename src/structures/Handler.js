@@ -276,7 +276,7 @@ class Handler {
       return result;
     }
 
-    const {command} = result;
+    const { command } = result;
     result = await this.internalRun(message, command, prefixLength, ...custom);
 
     await this.runCommandPostconditions(message, command, result, ...custom);
