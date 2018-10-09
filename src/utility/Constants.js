@@ -75,6 +75,7 @@ class Constants {
       roleMention: /^<@&\d+>/,
       seconds: /^(\d+(\.\d+)?|\.\d+)\s*(sec(onds)?s?|s)$/i,
       smallHex: /^(0x|#)?[\da-f]{3}$/i,
+      startWhitespace: /^\s/,
       textChannelMention: /^<#\d+>/,
       thousand: /k\$?$/i,
       usernameAndDiscrim: /.+#\d{4}/,

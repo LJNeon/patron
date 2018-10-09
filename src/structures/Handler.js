@@ -36,9 +36,10 @@ class Handler {
    * @returns {Promise<Result>} The result of the command parsing.
    */
   async parseCommand(message, prefixLength) {
-    const split = message.content.slice(prefixLength).match(this.argumentRegex);
+    const content = message.content.slice(prefixLength);
+    const split = content.match(this.argumentRegex);
 
-    if (split === null) {
+    if (split == null || content.match(Constants.regexes.startWhitespace) != null) {
       return Constants.results.commandNotFound('');
     }
 
