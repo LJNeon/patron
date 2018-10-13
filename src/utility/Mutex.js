@@ -31,7 +31,7 @@ class Mutex {
    * Adds a task to the queue.
    * @async
    * @param {AsyncFunction} task The task to execute.
-   * @returns {Promise} The result of the task.
+   * @returns {Promise<*>} The result of the task.
    */
   sync(task) {
     return new Promise((resolve, reject) => {

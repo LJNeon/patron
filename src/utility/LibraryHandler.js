@@ -62,7 +62,7 @@ class LibraryHandler {
     switch (this.library) {
       case 'discord.js':
         if (message.channel.type !== 'text') {
-          return;
+          break;
         } else if (command.memberPermissions.length > 0 && message.member.hasPermission(command.memberPermissions) === false) {
           return Constants.results.memberPermissions(command, command.memberPermissions);
         } else if (command.botPermissions.length > 0 && message.guild.me.hasPermission(command.botPermissions) === false) {
@@ -71,7 +71,7 @@ class LibraryHandler {
         break;
       case 'eris':
         if (message.channel.type !== DiscordChannelType.TextChannel) {
-          return;
+          break;
         } else if (command.memberPermissions.length > 0 && command.memberPermissions.every((permission) => message.member.permission.has(permission)) === false) {
           return Constants.results.memberPermissions(command, command.memberPermissions);
         } else if (command.botPermissions.length > 0 && command.botPermissions.every((permission) => message.channel.guild.members.get(message._client.user.id).permission.has(permission)) === false) {

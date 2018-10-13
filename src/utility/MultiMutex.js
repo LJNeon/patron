@@ -13,7 +13,7 @@ class MultiMutex {
    * @async
    * @param {*} id The ID of the queue.
    * @param {AsyncFunction} task The task to execute.
-   * @returns {Promise} The result of the task.
+   * @returns {Promise<*>} The result of the task.
    */
   sync(id, task) {
     if (this.mutexes.has(id) === false) {

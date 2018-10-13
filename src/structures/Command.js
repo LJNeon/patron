@@ -163,8 +163,6 @@ class Command {
       throw new TypeError(name + ': The postconditions must be an array.');
     } else if (Array.isArray(command.args) === false) {
       throw new TypeError(name + ': The arguments must be an array.');
-    } else if (typeof command.cooldown !== 'number') {
-      throw new TypeError(name + ': The cooldown must be a number.');
     } else if (Array.isArray(command.usableContexts) === false) {
       throw new TypeError(name + ': The usableContexts must be an array.');
     }

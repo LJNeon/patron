@@ -18,7 +18,7 @@ class Cooldown {
    * @param {number|CooldownOptions} options The cooldown options.
    */
   constructor(options) {
-    if (typeof options === "number") {
+    if (typeof options === 'number') {
       this.time = options;
       this.limit = 1;
     } else {
@@ -30,7 +30,7 @@ class Cooldown {
     this.users = {};
     this.mutex = new MultiMutex();
 
-    this.constructor.validateCommand(this, this.constructor.name);
+    this.constructor.validateCooldown(this);
   }
 
   /**
@@ -111,12 +111,12 @@ class Cooldown {
    * @param {Cooldown} cooldown The cooldown to validate.
    * @private
    */
-  static validateCommand(cooldown) {
-    if (typeof this.time !== 'number') {
+  static validateCooldown(cooldown) {
+    if (typeof cooldown.time !== 'number') {
       throw new TypeError('Cooldown: The time must be a number.');
-    } else if (typeof this.limit !== 'number') {
+    } else if (typeof cooldown.limit !== 'number') {
       throw new TypeError('Cooldown: The limit must be a number.');
-    } else if (this.sorter != null && typeof this.sorter !== 'function') {
+    } else if (cooldown.sorter != null && typeof cooldown.sorter !== 'function') {
       throw new TypeError('Cooldown: The sorter must be a function.');
     }
   }
