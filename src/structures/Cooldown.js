@@ -91,7 +91,7 @@ class Cooldown {
   }
 
   isInvalid(key) {
-    return this.users[key] == null || this.users[key].resets > Date.now();
+    return this.users[key] == null || this.users[key].resets <= Date.now();
   }
 
   parseKey(userId, guildId) {

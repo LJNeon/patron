@@ -129,7 +129,7 @@ class Handler {
     guild = guild == null ? null : guild.id;
     let cooldown = await command.updateCooldown(message.author.id, guild);
 
-    if (cooldown) {
+    if (!cooldown) {
       return Constants.results.success(command);
     }
 
