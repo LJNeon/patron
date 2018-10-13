@@ -138,6 +138,21 @@ declare module 'patron.js' {
     Eris
   }
 
+  export class MultiMutex {
+    private mutexes: object;
+    constructor();
+    public sync(id: any, task: function): Promise<any>;
+  }
+
+  export class Mutex {
+    private busy: boolean;
+    private queue: object[];
+    constructor();
+    private dequeue(): void;
+    private execute(): void;
+    public sync(task: function): Promise<any>;
+  }
+
   export class Postcondition {
     private static validatePostcondition(registry: Postcondition, name: string): void;
     public name: string;

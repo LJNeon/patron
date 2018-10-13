@@ -1,7 +1,5 @@
 /**
  * A mutex.
- * @prop {boolean} busy Whether or not the Mutex has tasks in it's queue.
- * @prop {object[]} queue The actual queue, an array of tasks to be completed.
  */
 class Mutex {
   constructor() {
@@ -21,16 +19,20 @@ class Mutex {
     }
   }
 
-  execute(record) {
-    record.task()
-      .then(record.resolve, record.reject)
-      .then(() => this.dequeue());
+  async execute(record) {
+    try {
+      record.resolve(await record.task());
+    } catch (e) {
+      record.reject(e);
+    } finally {
+      this.dequeue();
+    }
   }
 
   /**
    * Adds a task to the queue.
    * @async
-   * @param {AsyncFunction} task The task to execute.
+   * @param {function} task The task to execute.
    * @returns {Promise<*>} The result of the task.
    */
   sync(task) {
