@@ -14,10 +14,10 @@ class BannedUserTypeReader extends TypeReader {
   async read(command, message, argument, args, input) {
     const bans = await message.channel.guild.getBans();
 
-    if (Constants.regexes.userMention.test(input) === true || Constants.regexes.id.test(input) === true) {
+    if (Constants.regexes.userMention.test(input) || Constants.regexes.id.test(input)) {
       const user = bans.find((u) => u.id === input.match(Constants.regexes.findId)[0]);
 
-      if (user !== undefined) {
+      if (user != null) {
         return TypeReaderResult.fromSuccess(user);
       }
 
@@ -26,10 +26,10 @@ class BannedUserTypeReader extends TypeReader {
 
     const lowerInput = input.toLowerCase();
 
-    if (Constants.regexes.usernameAndDiscrim.test(input) === true) {
+    if (Constants.regexes.usernameAndDiscrim.test(input)) {
       const user = bans.find((v) => v.tag.toLowerCase() === lowerInput);
 
-      if (user !== undefined) {
+      if (user != null) {
         return TypeReaderResult.fromSuccess(user);
       }
 

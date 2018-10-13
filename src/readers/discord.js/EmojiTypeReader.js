@@ -18,7 +18,7 @@ class EmojiTypeReader extends TypeReader {
       warningEmitted = true;
     }
 
-    if (Constants.regexes.emoji.test(input) === true || Constants.regexes.id.test(input) === true) {
+    if (Constants.regexes.emoji.test(input) || Constants.regexes.id.test(input)) {
       const emoji = message.client.emojis.get(input.match(Constants.regexes.findId)[0]);
 
       if (emoji != null) {

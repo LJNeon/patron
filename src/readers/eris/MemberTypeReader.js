@@ -18,10 +18,10 @@ class MemberTypeReader extends TypeReader {
       warningEmitted = true;
     }
 
-    if (Constants.regexes.userMention.test(input) === true || Constants.regexes.id.test(input) === true) {
+    if (Constants.regexes.userMention.test(input) || Constants.regexes.id.test(input)) {
       let member;
 
-      if (message._client.options.restMode === true) {
+      if (message._client.options.restMode) {
         try {
           member = await message.channel.guild.getRESTMember(input.match(Constants.regexes.findId)[0]);
         } catch (err) {
@@ -30,7 +30,7 @@ class MemberTypeReader extends TypeReader {
         member = message.channel.guild.members.get(input.match(Constants.regexes.findId)[0]);
       }
 
-      if (member !== undefined) {
+      if (member != null) {
         return TypeReaderResult.fromSuccess(member);
       }
 
@@ -39,17 +39,17 @@ class MemberTypeReader extends TypeReader {
 
     const lowerInput = input.toLowerCase();
 
-    if (Constants.regexes.usernameAndDiscrim.test(input) === true) {
+    if (Constants.regexes.usernameAndDiscrim.test(input)) {
       const member = message.channel.guild.members.find((v) => v.username.toLowerCase() + '#' + v.discriminator === lowerInput);
 
-      if (member !== undefined) {
+      if (member != null) {
         return TypeReaderResult.fromSuccess(member);
       }
 
       return TypeReaderResult.fromError(command, Constants.errors.memberNotFound);
     }
 
-    const matches = message.channel.guild.members.filter((v) => v.user.username.toLowerCase().includes(lowerInput) || (v.nickname !== null && v.nickname.toLowerCase().includes(lowerInput)));
+    const matches = message.channel.guild.members.filter((v) => v.user.username.toLowerCase().includes(lowerInput) || (v.nickname != null && v.nickname.toLowerCase().includes(lowerInput)));
 
     return TypeReaderUtil.handleMatches(command, matches, 'memberNotFound', null, true);
   }

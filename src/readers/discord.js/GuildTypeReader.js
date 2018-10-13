@@ -18,7 +18,7 @@ class GuildTypeReader extends TypeReader {
       warningEmitted = true;
     }
 
-    if (Constants.regexes.id.test(input) === true) {
+    if (Constants.regexes.id.test(input)) {
       const guild = message.client.guilds.get(input.match(Constants.regexes.findId)[0]);
 
       if (guild != null) {

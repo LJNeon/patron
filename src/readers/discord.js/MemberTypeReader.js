@@ -12,7 +12,7 @@ class MemberTypeReader extends TypeReader {
   }
 
   async read(command, message, argument, args, input) {
-    if (Constants.regexes.userMention.test(input) === true || Constants.regexes.id.test(input) === true) {
+    if (Constants.regexes.userMention.test(input) || Constants.regexes.id.test(input)) {
       try {
         const user = await message.client.users.fetch(input.match(Constants.regexes.findId)[0]);
         const member = message.guild.member(user);
@@ -28,7 +28,7 @@ class MemberTypeReader extends TypeReader {
 
     const lowerInput = input.toLowerCase();
 
-    if (Constants.regexes.usernameAndDiscrim.test(input) === true) {
+    if (Constants.regexes.usernameAndDiscrim.test(input)) {
       const member = message.guild.members.findValue((v) => v.user.tag.toLowerCase() === lowerInput);
 
       if (member != null) {

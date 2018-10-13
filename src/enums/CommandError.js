@@ -19,8 +19,6 @@ const CommandError = {
   CommandNotFound: Symbol(),
   /** A command used while on cooldown. */
   Cooldown: Symbol(),
-  /** An invalid argument was provided. */
-  InvalidArg: Symbol(),
   /** An invalid amount of arguments provided. */
   InvalidArgCount: Symbol(),
   /** An exception during command execution. */

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: PreconditionResult</title>
+    <title>JSDoc: Class: Mutex</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: PreconditionResult</h1>
+    <h1 class="page-title">Class: Mutex</h1>
 
     
 
@@ -28,9 +28,9 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>PreconditionResult<span class="signature">(options)</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>Mutex<span class="signature">()</span><span class="type-signature"></span></h2>
         
-            <div class="class-description">A precondition result.</div>
+            <div class="class-description">A mutex.</div>
         
     
 </header>
@@ -45,7 +45,7 @@
     
 
     
-    <h4 class="name" id="PreconditionResult"><span class="type-signature"></span>new PreconditionResult<span class="signature">(options)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="Mutex"><span class="type-signature"></span>new Mutex<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -60,10 +60,15 @@
 
 
 
-    <h5>Parameters:</h5>
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
     
 
-<table class="params">
+<table class="props">
     <thead>
     <tr>
         
@@ -85,13 +90,13 @@
 
         <tr>
             
-                <td class="name"><code>options</code></td>
+                <td class="name"><code>busy</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="global.html#ResultOptions">ResultOptions</a></span>
+<span class="param-type">boolean</span>
 
 
             
@@ -101,14 +106,35 @@
 
             
 
-            <td class="description last">The result options.</td>
+            <td class="description last">Whether or not the Mutex has tasks in it's queue.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>queue</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;object></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The actual queue, an array of tasks to be completed.</td>
         </tr>
 
     
     </tbody>
 </table>
-
-
 
 
 
@@ -142,7 +168,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="results_PreconditionResult.js.html">results/PreconditionResult.js</a>, <a href="results_PreconditionResult.js.html#line8">line 8</a>
+        <a href="utility_Mutex.js.html">utility/Mutex.js</a>, <a href="utility_Mutex.js.html#line6">line 6</a>
     </li></ul></dd>
     
 
@@ -174,17 +200,6 @@
     </div>
 
     
-        <h3 class="subsection-title">Extends</h3>
-
-        
-
-
-    <ul>
-        <li><a href="Result.html">Result</a></li>
-    </ul>
-
-
-    
 
     
 
@@ -207,7 +222,7 @@
     
 
     
-    <h4 class="name" id=".fromError"><span class="type-signature">(static) </span>fromError<span class="signature">(command, reason)</span><span class="type-signature"> &rarr; {<a href="PreconditionResult.html">PreconditionResult</a>}</span></h4>
+    <h4 class="name" id="sync"><span class="type-signature">(async) </span>sync<span class="signature">(task)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
     
 
     
@@ -215,7 +230,7 @@
 
 
 <div class="description">
-    Returns a failed precondition result.
+    Adds a task to the queue.
 </div>
 
 
@@ -251,13 +266,13 @@
 
         <tr>
             
-                <td class="name"><code>command</code></td>
+                <td class="name"><code>task</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="Command.html">Command</a></span>
+<span class="param-type">AsyncFunction</span>
 
 
             
@@ -267,30 +282,7 @@
 
             
 
-            <td class="description last">The command being executed.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>reason</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The reason for the precondition failure.</td>
+            <td class="description last">The task to execute.</td>
         </tr>
 
     
@@ -331,7 +323,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="results_PreconditionResult.js.html">results/PreconditionResult.js</a>, <a href="results_PreconditionResult.js.html#line30">line 30</a>
+        <a href="utility_Mutex.js.html">utility/Mutex.js</a>, <a href="utility_Mutex.js.html#line36">line 36</a>
     </li></ul></dd>
     
 
@@ -358,7 +350,7 @@
 
         
 <div class="param-desc">
-    The result in question.
+    The result of the task.
 </div>
 
 
@@ -369,115 +361,7 @@
     </dt>
     <dd>
         
-<span class="param-type"><a href="PreconditionResult.html">PreconditionResult</a></span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id=".fromSuccess"><span class="type-signature">(static) </span>fromSuccess<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="PreconditionResult.html">PreconditionResult</a>}</span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    Returns a successful precondition result.
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="results_PreconditionResult.js.html">results/PreconditionResult.js</a>, <a href="results_PreconditionResult.js.html#line20">line 20</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    The result in question.
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="PreconditionResult.html">PreconditionResult</a></span>
+<span class="param-type">Promise</span>
 
 
     </dd>

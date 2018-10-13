@@ -13,13 +13,13 @@ class ColorTypeReader extends TypeReader {
   async read(command, message, argument, args, value) {
     let match;
 
-    if ((match = value.match(Constants.regexes.smallHex)) !== null) {
+    if ((match = value.match(Constants.regexes.smallHex)) != null) {
       /* eslint-disable no-magic-numbers */
       return TypeReaderResult.fromSuccess(Number('0x' + match[0].slice(-3).split('').map((c) => c + c).join('')));
-    } else if ((match = value.match(Constants.regexes.hex)) !== null) {
+    } else if ((match = value.match(Constants.regexes.hex)) != null) {
       return TypeReaderResult.fromSuccess(Number('0x' + match[0].slice(-6)));
       /* eslint-enable no-magic-numbers */
-    } else if ((match = value.match(Constants.regexes.rgb)) !== null) {
+    } else if ((match = value.match(Constants.regexes.rgb)) != null) {
       const r = Number(match[0].slice(match[0].indexOf('(') + 1, match[0].indexOf(',')));
 
       if (r > Constants.numbers.maxRGB) {

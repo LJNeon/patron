@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: TypeReader</title>
+    <title>JSDoc: Class: Cooldown</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: TypeReader</h1>
+    <h1 class="page-title">Class: Cooldown</h1>
 
     
 
@@ -28,9 +28,9 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>TypeReader<span class="signature">(options)</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>Cooldown<span class="signature">(options)</span><span class="type-signature"></span></h2>
         
-            <div class="class-description">A type reader.</div>
+            <div class="class-description">A command.</div>
         
     
 </header>
@@ -45,7 +45,7 @@
     
 
     
-    <h4 class="name" id="TypeReader"><span class="type-signature"></span>new TypeReader<span class="signature">(options)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="Cooldown"><span class="type-signature"></span>new Cooldown<span class="signature">(options)</span><span class="type-signature"></span></h4>
     
 
     
@@ -91,7 +91,10 @@
             <td class="type">
             
                 
-<span class="param-type"><a href="global.html#TypeReaderOptions">TypeReaderOptions</a></span>
+<span class="param-type">number</span>
+|
+
+<span class="param-type"><a href="global.html#CooldownOptions">CooldownOptions</a></span>
 
 
             
@@ -101,7 +104,7 @@
 
             
 
-            <td class="description last">The type reader options.</td>
+            <td class="description last">The cooldown options.</td>
         </tr>
 
     
@@ -127,6 +130,8 @@
         <th>Type</th>
 
         
+        <th>Attributes</th>
+        
 
         
 
@@ -139,69 +144,89 @@
 
         <tr>
             
-                <td class="name"><code>type</code></td>
+                <td class="name"><code>limit</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">number</span>
 
 
             
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+                </td>
+            
 
             
 
-            <td class="description last">The type of the type reader.</td>
+            <td class="description last">The amount of uses allowed before a user's cooldown resets.</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>category</code></td>
+                <td class="name"><code>time</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">number</span>
 
 
             
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+                </td>
+            
 
             
 
-            <td class="description last">Which category the type reader belongs to.</td>
+            <td class="description last">The time before a user's cooldown resets.</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>description</code></td>
+                <td class="name"><code>sorter</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">function</span>
 
 
             
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+                    &lt;nullable><br>
+                
+                </td>
+            
 
             
 
-            <td class="description last">The description of the type reader.</td>
+            <td class="description last">If present, sorts users into different cooldowns by returning a key to be used for that user when passed user ID and if applicable guild ID.</td>
         </tr>
 
     
@@ -240,7 +265,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="structures_TypeReader.js.html">structures/TypeReader.js</a>, <a href="structures_TypeReader.js.html#line9">line 9</a>
+        <a href="structures_Cooldown.js.html">structures/Cooldown.js</a>, <a href="structures_Cooldown.js.html#line9">line 9</a>
     </li></ul></dd>
     
 
@@ -294,7 +319,7 @@
     
 
     
-    <h4 class="name" id="read"><span class="type-signature">(async, abstract) </span>read<span class="signature">(command, message, argument, args, input, &hellip;custom)</span><span class="type-signature"> &rarr; {Promise.&lt;<a href="TypeReaderResult.html">TypeReaderResult</a>>}</span></h4>
+    <h4 class="name" id="get"><span class="type-signature"></span>get<span class="signature">(userId, guildId<span class="signature-attributes">nullable</span>)</span><span class="type-signature"> &rarr; {Promise.&lt;?object>}</span></h4>
     
 
     
@@ -302,7 +327,7 @@
 
 
 <div class="description">
-    Parses the value of an argument.
+    Gets a user's cooldown.
 </div>
 
 
@@ -340,131 +365,7 @@
 
         <tr>
             
-                <td class="name"><code>command</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Command.html">Command</a></span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">The command being executed.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>message</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Message</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">The received message.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>argument</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Argument.html">Argument</a></span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">The argument in question.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>args</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">The currently resolved arguments.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>input</code></td>
+                <td class="name"><code>userId</code></td>
             
 
             <td class="type">
@@ -488,20 +389,20 @@
 
             
 
-            <td class="description last">The user input.</td>
+            <td class="description last">The user ID.</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>custom</code></td>
+                <td class="name"><code>guildId</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">*</span>
+<span class="param-type">string</span>
 
 
             
@@ -512,16 +413,16 @@
                 
 
                 
-
+                    &lt;nullable><br>
                 
-                    &lt;repeatable><br>
+
                 
                 </td>
             
 
             
 
-            <td class="description last">The custom parameters passed into the handler.</td>
+            <td class="description last">The guild ID, if applicable.</td>
         </tr>
 
     
@@ -562,7 +463,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="structures_TypeReader.js.html">structures/TypeReader.js</a>, <a href="structures_TypeReader.js.html#line38">line 38</a>
+        <a href="structures_Cooldown.js.html">structures/Cooldown.js</a>, <a href="structures_Cooldown.js.html#line42">line 42</a>
     </li></ul></dd>
     
 
@@ -589,7 +490,7 @@
 
         
 <div class="param-desc">
-    The result of the type reader.
+    Resolves to a valid cooldown object or undefined.
 </div>
 
 
@@ -600,7 +501,407 @@
     </dt>
     <dd>
         
-<span class="param-type">Promise.&lt;<a href="TypeReaderResult.html">TypeReaderResult</a>></span>
+<span class="param-type">Promise.&lt;?object></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="revert"><span class="type-signature"></span>revert<span class="signature">(userId, guildId<span class="signature-attributes">nullable</span>)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Decrements a user's cooldown.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>userId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The user ID.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>guildId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                    &lt;nullable><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The guild ID, if applicable.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="structures_Cooldown.js.html">structures/Cooldown.js</a>, <a href="structures_Cooldown.js.html#line83">line 83</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Resolves once the cooldown has been reverted.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="use"><span class="type-signature"></span>use<span class="signature">(userId, guildId<span class="signature-attributes">nullable</span>)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Increments a user's cooldown.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>userId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The user ID.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>guildId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                    &lt;nullable><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The guild ID, if applicable.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="structures_Cooldown.js.html">structures/Cooldown.js</a>, <a href="structures_Cooldown.js.html#line58">line 58</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Returns whether or not the user is on cooldown.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
 
 
     </dd>

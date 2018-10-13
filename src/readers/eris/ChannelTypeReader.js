@@ -18,18 +18,18 @@ class ChannelTypeReader extends TypeReader {
       warningEmitted = true;
     }
 
-    if (Constants.regexes.id.test(input) === true) {
+    if (Constants.regexes.id.test(input)) {
       let channel;
       message._client.guilds.forEach((guild) => {
-        if (channel === undefined) {
+        if (channel == null) {
           const match = guild.channels.find((c) => c.id === input.match(Constants.regexes.findId)[0]);
-          if (match !== undefined) {
+          if (match != null) {
             channel = match;
           }
         }
       });
 
-      if (channel !== undefined) {
+      if (channel != null) {
         return TypeReaderResult.fromSuccess(channel);
       }
     }

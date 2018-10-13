@@ -4,7 +4,7 @@ discord.Collection.prototype.filterValues = function (fn) {
   const results = [];
 
   for (const value of this.values()) {
-    if (fn(value) === true) {
+    if (fn(value)) {
       results.push(value);
     }
   }
@@ -14,7 +14,7 @@ discord.Collection.prototype.filterValues = function (fn) {
 
 discord.Collection.prototype.findValue = function (fn) {
   for (const value of this.values()) {
-    if (fn(value) === true) {
+    if (fn(value)) {
       return value;
     }
   }

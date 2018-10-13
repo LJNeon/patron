@@ -37,11 +37,11 @@ class Argument {
     this.type = options.type;
     this.example = options.example;
     this.defaultValue = options.defaultValue;
-    this.infinite = options.infinite === undefined ? false : options.infinite;
-    this.preconditions = options.preconditions === undefined ? [] : options.preconditions;
-    this.optional = options.defaultValue !== undefined;
-    this.remainder = options.remainder === undefined ? false : options.remainder;
-    this.preconditionOptions = options.preconditionOptions === undefined ? [] : options.preconditionOptions;
+    this.infinite = options.infinite == null ? false : options.infinite;
+    this.preconditions = options.preconditions == null ? [] : options.preconditions;
+    this.optional = options.defaultValue != null;
+    this.remainder = options.remainder == null ? false : options.remainder;
+    this.preconditionOptions = options.preconditionOptions == null ? [] : options.preconditionOptions;
 
     this.constructor.validateArgument(this, this.constructor.name);
   }
@@ -65,7 +65,7 @@ class Argument {
       throw new TypeError(name + ': The infinite setting must be a boolean.');
     } else if (typeof argument.remainder !== 'boolean') {
       throw new TypeError(name + ': The remainder setting must be a boolean.');
-    } else if (argument.infinite === true && argument.remainder === true) {
+    } else if (argument.infinite && argument.remainder) {
       throw new Error(name + ': An argument may not be infinite and remainder.');
     } else if (Array.isArray(argument.preconditions) === false) {
       throw new TypeError(name + ': The preconditions must be an array.');

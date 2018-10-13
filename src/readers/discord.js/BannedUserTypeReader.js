@@ -14,7 +14,7 @@ class BannedUserTypeReader extends TypeReader {
   async read(command, message, argument, args, input) {
     const bans = await message.guild.fetchBans();
 
-    if (Constants.regexes.userMention.test(input) === true || Constants.regexes.id.test(input) === true) {
+    if (Constants.regexes.userMention.test(input) || Constants.regexes.id.test(input)) {
       const ban = bans.get(input.match(Constants.regexes.findId)[0]);
 
       if (ban != null) {
@@ -26,7 +26,7 @@ class BannedUserTypeReader extends TypeReader {
 
     const lowerInput = input.toLowerCase();
 
-    if (Constants.regexes.usernameAndDiscrim.test(input) === true) {
+    if (Constants.regexes.usernameAndDiscrim.test(input)) {
       const ban = bans.findValue((v) => v.user.tag.toLowerCase() === lowerInput);
 
       if (ban != null) {

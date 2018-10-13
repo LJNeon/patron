@@ -8,7 +8,7 @@ class PermissionUtil {
     for (let i = 0; i < permissions.length; i++) {
       const lastIteration = i === permissions.length - 1;
 
-      if (i !== 0 && lastIteration === true) {
+      if (i !== 0 && lastIteration) {
         formattedPermissions += ' and';
       }
 

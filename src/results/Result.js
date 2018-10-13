@@ -22,7 +22,7 @@ class Result {
   constructor(options) {
     this.success = options.success;
     this.command = options.command;
-    this.commandName = options.command === undefined ? options.commandName : options.command.names[0];
+    this.commandName = options.command == null ? options.commandName : options.command.names[0];
     this.commandError = options.commandError;
     this.errorReason = options.errorReason;
   }

@@ -12,7 +12,7 @@ class CategoryChannelTypeReader extends TypeReader {
   }
 
   async read(command, message, argument, args, input) {
-    if (Constants.regexes.textChannelMention.test(input) === true || Constants.regexes.id.test(input) === true) {
+    if (Constants.regexes.textChannelMention.test(input) || Constants.regexes.id.test(input)) {
       const channel = message.guild.channels.get(input.match(Constants.regexes.findId)[0]);
 
       if (channel != null && channel.type === 'category') {

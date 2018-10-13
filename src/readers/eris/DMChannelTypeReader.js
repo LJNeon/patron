@@ -17,10 +17,10 @@ class DMChannelTypeReader extends TypeReader {
       warningEmitted = true;
     }
 
-    if (Constants.regexes.id.test(input) === true) {
+    if (Constants.regexes.id.test(input)) {
       const channel = message._client.privateChannels.find((c) => c.id === input.match(Constants.regexes.findId)[0]);
 
-      if (channel !== undefined) {
+      if (channel != null) {
         return TypeReaderResult.fromSuccess(channel);
       }
     }

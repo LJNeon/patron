@@ -22,11 +22,11 @@ class Group {
    */
   constructor(options) {
     this.name = options.name;
-    this.description = options.description === undefined ? '' : options.description;
-    this.preconditions = options.preconditions === undefined ? [] : options.preconditions;
-    this.postconditions = options.postconditions === undefined ? [] : options.postconditions;
+    this.description = options.description == null ? '' : options.description;
+    this.preconditions = options.preconditions == null ? [] : options.preconditions;
+    this.postconditions = options.postconditions == null ? [] : options.postconditions;
     this.commands = [];
-    this.preconditionOptions = options.preconditionOptions === undefined ? [] : options.preconditionOptions;
+    this.preconditionOptions = options.preconditionOptions == null ? [] : options.preconditionOptions;
 
     this.constructor.validateGroup(this, this.constructor.name);
   }

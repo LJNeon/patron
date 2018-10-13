@@ -18,7 +18,7 @@ class UserTypeReader extends TypeReader {
       warningEmitted = true;
     }
 
-    if (Constants.regexes.userMention.test(input) === true || Constants.regexes.id.test(input) === true) {
+    if (Constants.regexes.userMention.test(input) || Constants.regexes.id.test(input)) {
       try {
         const user = await message.client.users.fetch(input.match(Constants.regexes.findId)[0]);
 
@@ -30,7 +30,7 @@ class UserTypeReader extends TypeReader {
 
     const lowerInput = input.toLowerCase();
 
-    if (Constants.regexes.usernameAndDiscrim.test(input) === true) {
+    if (Constants.regexes.usernameAndDiscrim.test(input)) {
       const user = message.client.users.findValue((v) => v.tag.toLowerCase() === lowerInput);
 
       if (user != null) {

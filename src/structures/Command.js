@@ -1,5 +1,6 @@
 const Argument = require('./Argument.js');
 const Context = require('../enums/Context.js');
+const Cooldown = require('./Cooldown.js');
 const ContextKeys = Object.keys(Context);
 
 /**
@@ -15,8 +16,7 @@ const ContextKeys = Object.keys(Context);
  * @prop {Postcondition[]} postconditions The postconditions to be ran on the command.
  * @prop {Argument[]} args The arguments of the command.
  * @prop {boolean} hasCooldown Whether the command has a cooldown.
- * @prop {number} cooldown The length of the cooldown in milliseconds.
- * @prop {object} cooldowns An object of all user cooldowns on the command.
+ * @prop {?Cooldown} cooldowns An object of all user cooldowns and cooldown options on the command.
  */
 class Command {
   /**
@@ -31,7 +31,7 @@ class Command {
    * @prop {Array<string|object>} [preconditions=[]] The preconditions to be ran on the command.
    * @prop {Array<object>} [preconditionOptions=[]] The options to be passed to preconditions when they're run.
    * @prop {Argument[]} [args=[]] The arguments of the command.
-   * @prop {number} [cooldown=0] The length of the cooldown in milliseconds.
+   * @prop {?number|object} cooldown The length of the cooldown in milliseconds or an object. See Cooldown class documentation for details on the object's structure.
    */
 
   /**
@@ -40,17 +40,18 @@ class Command {
   constructor(options) {
     this.names = options.names;
     this.groupName = options.groupName;
-    this.description = options.description === undefined ? '' : options.description;
-    this.usableContexts = options.usableContexts === undefined ? [Context.Guild] : options.usableContexts;
-    this.memberPermissions = options.memberPermissions === undefined ? [] : options.memberPermissions;
-    this.botPermissions = options.botPermissions === undefined ? [] : options.botPermissions;
-    this.preconditions = options.preconditions === undefined ? [] : options.preconditions;
-    this.postconditions = options.postconditions === undefined ? [] : options.postconditions;
-    this.args = options.args === undefined ? [] : options.args;
-    this.hasCooldown = options.cooldown !== undefined;
-    this.cooldown = this.hasCooldown === true ? options.cooldown : 0;
-    this.cooldowns = this.hasCooldown === true ? {} : null;
-    this.preconditionOptions = options.preconditionOptions === undefined ? [] : options.preconditionOptions;
+    this.description = options.description == null ? '' : options.description;
+    this.usableContexts = options.usableContexts == null ? [Context.Guild] : options.usableContexts;
+    this.memberPermissions = options.memberPermissions == null ? [] : options.memberPermissions;
+    this.botPermissions = options.botPermissions == null ? [] : options.botPermissions;
+    this.preconditions = options.preconditions == null ? [] : options.preconditions;
+    this.postconditions = options.postconditions == null ? [] : options.postconditions;
+    this.args = options.args == null ? [] : options.args;
+    this.hasCooldown = options.cooldown != null;
+    if (this.hasCooldown) {
+      this.cooldowns = new Cooldown(options.cooldown);
+    }
+    this.preconditionOptions = options.preconditionOptions == null ? [] : options.preconditionOptions;
 
     this.constructor.validateCommand(this, this.constructor.name);
   }
@@ -78,7 +79,7 @@ class Command {
       let before = '<';
       let after = '>';
 
-      if (this.args[i].optional === true) {
+      if (this.args[i].optional) {
         before = '[';
         after = ']';
       }
@@ -109,6 +110,32 @@ class Command {
     }
 
     return example;
+  }
+
+  /**
+   * Attempts to update the Command's cooldown.
+   * @param {string} userId The user ID.
+   * @param {?string} guildId The guild ID.
+   * @returns {Promise<boolean>} Returns false if the user isn't on cooldown or no cooldown is set, and true if they are on cooldown.
+   */
+  async updateCooldown(userId, guildId) {
+    if (!this.hasCooldown) {
+      return false;
+    }
+
+    return this.cooldowns.use(userId, guildId);
+  }
+
+  /**
+   * Attempts to revert the Command's cooldown.
+   * @param {string} userId The user ID.
+   * @param {?string} guildId The guild ID.
+   * @returns {Promise} Resolves once the cooldown is reverted.
+   */
+  async revertCooldown(userId, guildId) {
+    if (this.hasCooldown) {
+      return this.cooldowns.revert(userId, guildId);
+    }
   }
 
   /**
@@ -172,9 +199,9 @@ class Command {
     for (let i = 0; i < command.args.length; i++) {
       if ((command.args[i] instanceof Argument) === false) {
         throw new TypeError(name + ': All arguments must be instances of the Argument class.');
-      } else if (command.args[i].remainder === true && i !== command.args.length - 1) {
+      } else if (command.args[i].remainder && i !== command.args.length - 1) {
         throw new Error(name + ': Only the last argument of a command may be the remainder.');
-      } else if (command.args[i].infinite === true && i !== command.args.length - 1) {
+      } else if (command.args[i].infinite && i !== command.args.length - 1) {
         throw new Error(name + ': Only the last argument of a command may be infinite.');
       } else if (command.args.filter((value) => value.name === command.args[i].name).length > 1) {
         throw new Error(name + ': There is more than one argument by the name of ' + command.args[i].name + '.');

@@ -2,7 +2,6 @@ const Registry = require('./Registry.js');
 const ArgumentDefault = require('../enums/ArgumentDefault.js');
 const CommandResult = require('../results/CommandResult.js');
 const Constants = require('../utility/Constants.js');
-const MultiMutex = require('../utility/MultiMutex.js');
 
 /**
  * The command handler.
@@ -20,11 +19,8 @@ class Handler {
    * @param {HandlerOptions} options The handler options.
    */
   constructor(options) {
-    this.busy = false;
-    this.queue = [];
     this.registry = options.registry;
-    this.argumentRegex = options.argumentRegex === undefined ? Constants.regexes.argument : options.argumentRegex;
-    this.mutex = new MultiMutex();
+    this.argumentRegex = options.argumentRegex == null ? Constants.regexes.argument : options.argumentRegex;
 
     this.constructor.validateHandler(this);
   }
@@ -45,7 +41,7 @@ class Handler {
 
     const command = this.registry.commands.find((c) => c.names.some((n) => this.registry.equals(n, split[0])));
 
-    if (command === undefined) {
+    if (command == null) {
       return Constants.results.commandNotFound(split[0]);
     }
 
@@ -61,13 +57,13 @@ class Handler {
   async validateCommand(message, command) {
     let result = this.registry.libraryHandler.validateContext(command, message);
 
-    if (result !== undefined) {
+    if (result != null) {
       return result;
     }
 
     result = this.registry.libraryHandler.validatePermissions(command, message);
 
-    if (result !== undefined) {
+    if (result != null) {
       return result;
     }
 
@@ -129,25 +125,17 @@ class Handler {
    * @returns {Promise<Result>|Promise<CooldownResult>} The result of checking the cooldowns.
    */
   async updateCooldown(message, command) {
-    const guild = this.registry.libraryHandler.guild(message);
-    const id = guild == null ? '' : guild.id;
-    return this.mutex.sync(id, async () => {
-      if (command.hasCooldown === true) {
-        const cooldown = command.cooldowns[message.author.id + (guild == null ? '' : '-' + guild.id)];
+    let guild = this.registry.libraryHandler.guild(message);
+    guild = guild == null ? null : guild.id;
+    let cooldown = await command.updateCooldown(message.author.id, guild);
 
-        if (cooldown !== undefined) {
-          const difference = cooldown - Date.now();
-
-          if (difference > 0) {
-            return Constants.results.cooldown(command, difference);
-          }
-        }
-
-        command.cooldowns[message.author.id + (guild == null ? '' : '-' + guild.id)] = Date.now() + command.cooldown;
-      }
-
+    if (cooldown) {
       return Constants.results.success(command);
-    });
+    }
+
+    cooldown = await command.cooldowns.get(message.author.id, guild);
+
+    return Constants.results.cooldown(command, cooldown.resets - Date.now());
   }
 
   /**
@@ -174,9 +162,9 @@ class Handler {
     for (let i = 0; i < command.args.length; i++) {
       let value = [];
 
-      if (command.args[i].infinite === true) {
+      if (command.args[i].infinite) {
         if (split.length === 0) {
-          if (command.args[i].optional === true) {
+          if (command.args[i].optional) {
             value = this.defaultValue(command.args[i].defaultValue, message);
           } else {
             return Constants.results.invalidArgCount(command);
@@ -184,7 +172,7 @@ class Handler {
         } else {
           for (let j = 0; j < split.length; j++) {
             content = content.slice(content.indexOf(split[j]));
-            if (this.registry.argumentRegex === Constants.regexes.argument && Constants.regexes.quotesMatch.test(split[j]) === true) {
+            if (this.registry.argumentRegex === Constants.regexes.argument && Constants.regexes.quotesMatch.test(split[j])) {
               split[j] = split[j].replace(Constants.regexes.quotes, '');
             }
 
@@ -203,7 +191,7 @@ class Handler {
         if (command.args[i].remainder === false) {
           input = split.shift();
 
-          if (input !== undefined) {
+          if (input != null) {
             if (split.length > 0) {
               content = content.slice(content.indexOf(split[0], input.length));
             } else {
@@ -212,11 +200,11 @@ class Handler {
           }
         }
 
-        if (this.argumentRegex === Constants.regexes.argument && Constants.regexes.quotesMatch.test(input) === true) {
+        if (this.argumentRegex === Constants.regexes.argument && Constants.regexes.quotesMatch.test(input)) {
           input = input.replace(Constants.regexes.quotes, '');
         }
 
-        if (input === undefined || input === '') {
+        if (input == null || input === '') {
           if (command.args[i].optional === false) {
             return Constants.results.invalidArgCount(command);
           }
@@ -249,18 +237,12 @@ class Handler {
   /** Attempts to revert a Command's cooldown.
    * @param {Message} message The received message.
    * @param {Command} command The parsed command.
-   * @returns {Promise<Result>} The result of the cooldown's update.
+   * @returns {Promise} Resolves once the cooldown has been reverted.
    */
   async revertCooldown(message, command) {
-    const guild = this.registry.libraryHandler.guild(message);
-    const id = guild == null ? '' : guild.id;
-    return this.mutex.sync(id, async () => {
-      if (command.hasCooldown === true) {
-        command.cooldowns[message.author.id + (guild == null ? '' : '-' + guild.id)] = undefined;
-      }
-
-      return Constants.results.success(command);
-    });
+    let guild = this.registry.libraryHandler.guild(message);
+    guild = guild == null ? null : guild.id;
+    await command.revertCooldown(message.author.id, guild);
   }
 
   /**

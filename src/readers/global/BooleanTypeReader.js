@@ -13,9 +13,9 @@ class BooleanTypeReader extends TypeReader {
   async read(command, message, argument, args, value) {
     const lowerValue = value.toLowerCase();
 
-    if (Constants.trueValues.includes(lowerValue) === true) {
+    if (Constants.trueValues.includes(lowerValue)) {
       return TypeReaderResult.fromSuccess(true);
-    } else if (Constants.falseValues.includes(lowerValue) === true) {
+    } else if (Constants.falseValues.includes(lowerValue)) {
       return TypeReaderResult.fromSuccess(false);
     }
 

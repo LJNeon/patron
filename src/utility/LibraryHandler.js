@@ -25,7 +25,7 @@ class LibraryHandler {
 
         for (let i = 0; i < message.member.roles.length; i++) {
           const role = message.channel.guild.roles.get(message.member.roles[i]);
-          if (highestRole === null || role.position > highestRole.position) {
+          if (highestRole == null || role.position > highestRole.position) {
             highestRole = role;
           }
         }
@@ -72,9 +72,9 @@ class LibraryHandler {
       case 'eris':
         if (message.channel.type !== DiscordChannelType.TextChannel) {
           return;
-        } else if (command.memberPermissions.length > 0 && command.memberPermissions.every((permission) => message.member.permission.has(permission) === true) === false) {
+        } else if (command.memberPermissions.length > 0 && command.memberPermissions.every((permission) => message.member.permission.has(permission)) === false) {
           return Constants.results.memberPermissions(command, command.memberPermissions);
-        } else if (command.botPermissions.length > 0 && command.botPermissions.every((permission) => message.channel.guild.members.get(message._client.user.id).permission.has(permission) === true) === false) {
+        } else if (command.botPermissions.length > 0 && command.botPermissions.every((permission) => message.channel.guild.members.get(message._client.user.id).permission.has(permission)) === false) {
           return Constants.results.botPermissions(message._client, command, command.botPermissions);
         }
         break;

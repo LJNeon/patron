@@ -13,7 +13,7 @@ class IntTypeReader extends TypeReader {
   async read(command, message, argument, args, input) {
     const result = Number.parseFloat(input);
 
-    if (Number.isInteger(result) === true) {
+    if (Number.isInteger(result)) {
       return TypeReaderResult.fromSuccess(result);
     }
 

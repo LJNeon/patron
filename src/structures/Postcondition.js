@@ -15,7 +15,7 @@ class Postcondition {
    */
   constructor(options) {
     this.name = options.name;
-    this.description = options.description === undefined ? '' : options.description;
+    this.description = options.description == null ? '' : options.description;
 
     this.constructor.validatePostcondition(this, this.constructor.name);
   }

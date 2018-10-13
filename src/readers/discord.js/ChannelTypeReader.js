@@ -17,7 +17,7 @@ class ChannelTypeReader extends TypeReader {
       warningEmitted = true;
     }
 
-    if (Constants.regexes.id.test(input) === true) {
+    if (Constants.regexes.id.test(input)) {
       const channel = message.client.channels.get(input.match(Constants.regexes.findId)[0]);
 
       if (channel != null) {

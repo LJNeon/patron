@@ -48,12 +48,27 @@ declare module 'patron.js' {
     public preconditions: Precondition[];
     public args: Argument[];
     public hasCooldown: boolean;
-    public cooldown: number;
-    private cooldowns: object;
+    public cooldowns?: Cooldown;
     constructor(options: CommandOptions);
     public run(message: object, args: object, custom: any): Promise<any>;
     public getUsage(): string;
     public getExample(): string;
+    public updateCooldown(userId: string, guildId?: string): Promise<boolean>;
+    public revertCooldown(userId: string, guildId?: string): Promise;
+  }
+
+  export class Cooldown {
+    private static validateCooldown(cooldown: Cooldown): void;
+    public limit: number;
+    public time: number;
+    public sorter?: function;
+    constructor(options: number | CooldownOptions);
+    public get(userId: string, guildId?: string): Promise<?object>;
+    public use(userId: string, guildId?: string): Promise<boolean>;
+    public revert(userId: string, guildId?: string): Promise;
+    private isInvalid(key: string): boolean;
+    private parseKey(userId: string, guildId?: string): string | Promise<string>;
+    private parseMutex(guildId?: string): string;
   }
 
   export enum CommandError {
@@ -228,7 +243,13 @@ declare module 'patron.js' {
     preconditionOptions?: object[];
     preconditions?: string[] | object[];
     args?: Argument[];
-    cooldown?: number;
+    cooldown?: number | object;
+  }
+
+  interface CooldownOptions {
+    limit: number;
+    time: number;
+    sorter?: function;
   }
 
   interface CooldownResultOptions extends ResultOptions {

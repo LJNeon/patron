@@ -15,7 +15,7 @@ class ArgumentPrecondition {
    */
   constructor(options) {
     this.name = options.name;
-    this.description = options.description === undefined ? '' : options.description;
+    this.description = options.description == null ? '' : options.description;
 
     this.constructor.validateArgumentPrecondition(this, this.constructor.name);
   }

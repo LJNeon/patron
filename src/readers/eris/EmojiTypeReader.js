@@ -18,18 +18,18 @@ class EmojiTypeReader extends TypeReader {
       warningEmitted = true;
     }
 
-    if (Constants.regexes.emoji.test(input) === true || Constants.regexes.id.test(input) === true) {
+    if (Constants.regexes.emoji.test(input) || Constants.regexes.id.test(input)) {
       let emoji;
       message._client.guilds.forEach((guild) => {
-        if (emoji === undefined) {
+        if (emoji == null) {
           const match = guild.emojis.find((e) => e.id === input.match(Constants.regexes.findId)[0]);
-          if (match !== undefined) {
+          if (match != null) {
             emoji = match;
           }
         }
       });
 
-      if (emoji !== undefined) {
+      if (emoji != null) {
         return TypeReaderResult.fromSuccess(emoji);
       }
 

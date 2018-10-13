@@ -13,10 +13,10 @@ class TextChannelTypeReader extends TypeReader {
   }
 
   async read(command, message, argument, args, input) {
-    if (Constants.regexes.textChannelMention.test(input) === true || Constants.regexes.id.test(input) === true) {
+    if (Constants.regexes.textChannelMention.test(input) || Constants.regexes.id.test(input)) {
       const channel = message.channel.guild.channels.get(input.match(Constants.regexes.findId)[0]);
 
-      if (channel !== undefined && channel.type === DiscordChannelType.TextChannel) {
+      if (channel != null && channel.type === DiscordChannelType.TextChannel) {
         return TypeReaderResult.fromSuccess(channel);
       }
 

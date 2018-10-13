@@ -23,10 +23,10 @@ class UserTypeReader extends TypeReader {
       warningEmitted[1] = true;
     }
 
-    if (Constants.regexes.userMention.test(input) === true || Constants.regexes.id.test(input) === true) {
+    if (Constants.regexes.userMention.test(input) || Constants.regexes.id.test(input)) {
       let user;
 
-      if (message._client.options.restMode === true) {
+      if (message._client.options.restMode) {
         try {
           user = await message._client.getRESTUser(input.match(Constants.regexes.findId)[0]);
         } catch (err) {
@@ -35,7 +35,7 @@ class UserTypeReader extends TypeReader {
         user = message._client.users.get(input.match(Constants.regexes.findId)[0]);
       }
 
-      if (user !== undefined) {
+      if (user != null) {
         return TypeReaderResult.fromSuccess(user);
       }
 
@@ -44,10 +44,10 @@ class UserTypeReader extends TypeReader {
 
     const lowerInput = input.toLowerCase();
 
-    if (Constants.regexes.usernameAndDiscrim.test(input) === true) {
+    if (Constants.regexes.usernameAndDiscrim.test(input)) {
       const user = message._client.users.find((v) => v.tag.toLowerCase() === lowerInput);
 
-      if (user !== undefined) {
+      if (user != null) {
         return TypeReaderResult.fromSuccess(user);
       }
 
@@ -56,8 +56,8 @@ class UserTypeReader extends TypeReader {
 
     let matches = [];
 
-    if (message.channel.guild !== undefined) {
-      const memberMatches = message.channel.guild.members.filter((v) => v.nickname !== null && v.nickname.toLowerCase().includes(lowerInput));
+    if (message.channel.guild != null) {
+      const memberMatches = message.channel.guild.members.filter((v) => v.nickname != null && v.nickname.toLowerCase().includes(lowerInput));
 
       for (let i = 0; i < memberMatches.length; i++) {
         matches.push(memberMatches[i].user);

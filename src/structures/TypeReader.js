@@ -19,7 +19,7 @@ class TypeReader {
   constructor(options) {
     this.category = TypeReaderCategory.User;
     this.type = options.type;
-    this.description = options.description === undefined ? '' : options.description;
+    this.description = options.description == null ? '' : options.description;
 
     this.constructor.validateTypeReader(this, this.constructor.name);
   }

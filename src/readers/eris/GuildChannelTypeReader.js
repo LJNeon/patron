@@ -12,10 +12,10 @@ class GuildChannelTypeReader extends TypeReader {
   }
 
   async read(command, message, argument, args, input) {
-    if (Constants.regexes.id.test(input) === true) {
+    if (Constants.regexes.id.test(input)) {
       const channel = message.channel.guild.channels.get(input.match(Constants.regexes.findId)[0]);
 
-      if (channel !== undefined) {
+      if (channel != null) {
         return TypeReaderResult.fromSuccess(channel);
       }
     }

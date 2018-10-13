@@ -14,11 +14,11 @@ class QuantityTypeReader extends TypeReader {
     let value = Number.parseFloat(input);
 
     if (Number.isNaN(value) === false) {
-      if (Constants.regexes.thousand.test(input) === true) {
+      if (Constants.regexes.thousand.test(input)) {
         value *= Constants.numbers.thousand;
-      } else if (Constants.regexes.million.test(input) === true) {
+      } else if (Constants.regexes.million.test(input)) {
         value *= Constants.numbers.million;
-      } else if (Constants.regexes.billion.test(input) === true) {
+      } else if (Constants.regexes.billion.test(input)) {
         value *= Constants.numbers.billion;
       }
 

@@ -12,10 +12,10 @@ class GuildEmojiTypeReader extends TypeReader {
   }
 
   async read(command, message, argument, args, input) {
-    if (Constants.regexes.emoji.test(input) === true || Constants.regexes.id.test(input) === true) {
+    if (Constants.regexes.emoji.test(input) || Constants.regexes.id.test(input)) {
       const emoji = message.channel.guild.emojis.find((e) => e.id === input.match(Constants.regexes.findId)[0]);
 
-      if (emoji !== undefined) {
+      if (emoji != null) {
         return TypeReaderResult.fromSuccess(emoji);
       }
 
