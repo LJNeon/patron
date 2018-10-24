@@ -6,4 +6,4 @@ cache: {
   directories: [node_modules]
 }
 
-install: npm install --production
+install: npm install
