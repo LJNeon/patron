@@ -1,6 +1,2 @@
 # Packages
 node_modules/
-
-# Miscellaneous
-.vscode/
-.directory

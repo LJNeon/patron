@@ -1,18 +1,41 @@
-const Registry = require('./Registry.js');
-const ArgumentDefault = require('../enums/ArgumentDefault.js');
-const CommandResult = require('../results/CommandResult.js');
-const Constants = require('../utility/Constants.js');
+/*
+ * patron.js - The cleanest command framework for discord.js and eris.
+ * Copyright (c) 2018 patron.js contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License version 3 as
+ * published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+"use strict";
+const ArgumentDefault = require("../enums/ArgumentDefault.js");
+const ArgumentResult = require("../results/ArgumentResult.js");
+const CommandResult = require("../results/CommandResult.js");
+const Constants = require("../utility/Constants.js");
+const CooldownResult = require("../results/CooldownResult.js");
+const ExceptionResult = require("../results/ExceptionResult.js");
+const Registry = require("./Registry.js");
+const Result = require("../results/Result.js");
 
 /**
  * The command handler.
- * @prop {RegExp} argumentRegex The regex used to parse arguments from messages.
- * @prop {Registry} registry The registry used to instantiate the command handler.
+ * @prop {RegExp} argumentRegex The regex used to parse arguments from
+ * messages.
+ * @prop {Registry} registry The registry used to store the commands.
  */
-class Handler {
+module.exports = class Handler {
   /**
    * @typedef {object} HandlerOptions The handler options.
-   * @prop {RegExp} [argumentRegex=/"[\S\s]+?"|[\S\n]+/g] The regex used to parse arguments from messages.
-   * @prop {Registry} registry The registry used to handle the commands.
+   * @prop {RegExp} [argumentRegex=/"[\S\s]+?"|[\S\n]+/g] The regex used to
+   * parse arguments from messages.
+   * @prop {Registry} registry The registry used to store the commands.
    */
 
   /**
@@ -20,7 +43,14 @@ class Handler {
    */
   constructor(options) {
     this.registry = options.registry;
-    this.argumentRegex = options.argumentRegex == null ? Constants.regexes.argument : options.argumentRegex;
+
+    if (options.argumentRegex == null) {
+      this.argumentRegex = Constants.regexes.argument;
+      this.hasDefaultRegex = true;
+    } else {
+      this.argumentRegex = options.argumentRegex;
+      this.hasDefaultRegex = this.argumentRegex === Constants.regexes.argument;
+    }
 
     this.constructor.validateHandler(this);
   }
@@ -28,73 +58,86 @@ class Handler {
   /**
    * Attempts to parse a Command.
    * @param {Message} message The received message.
-   * @param {number} prefixLength The length of the prefix to use when handling the command.
+   * @param {number} prefixLength The length of the prefix to use when handling
+   * the command.
    * @returns {Promise<Result>} The result of the command parsing.
    */
   async parseCommand(message, prefixLength) {
     const content = message.content.slice(prefixLength);
     const split = content.match(this.argumentRegex);
 
-    if (split == null || content.match(Constants.regexes.startWhitespace) != null) {
-      return Constants.results.commandNotFound('');
-    }
+    if (split == null
+        || content.match(Constants.regexes.startWhitespace) != null)
+      return CommandResult.fromUnknown("");
 
-    const command = this.registry.commands.find((c) => c.names.some((n) => this.registry.equals(n, split[0])));
+    const command = this.registry.commands.find(
+      cmd => cmd.names.some(name => this.registry.equals(name, split[0]))
+    );
 
-    if (command == null) {
-      return Constants.results.commandNotFound(split[0]);
-    }
+    if (command == null)
+      return CommandResult.fromUnknown(split[0]);
 
-    return Constants.results.success(command);
+    return Result.fromSuccess(command);
   }
 
   /**
    * Attempts to validate a Command.
    * @param {Message} message The received message.
    * @param {Command} command The parsed command.
-   * @returns {Promise<Result>|Promise<InvalidContextResult>} The result of the command validation.
+   * @returns {Promise<InvalidContextResult|Result>} The result of the command
+   * validation.
    */
   async validateCommand(message, command) {
-    let result = this.registry.libraryHandler.validateContext(command, message);
+    let result = this.registry.libraryHandler.validateContext(
+      command,
+      message
+    );
 
-    if (result != null) {
+    if (result != null)
       return result;
-    }
 
-    result = this.registry.libraryHandler.validatePermissions(command, message);
+    result = this.registry.libraryHandler.validatePermissions(
+      command,
+      message
+    );
 
-    if (result != null) {
+    if (result != null)
       return result;
-    }
 
-    return Constants.results.success(command);
+    return Result.fromSuccess(command);
   }
 
   /**
    * Attempts to run the Preconditions registered to a Command.
    * @param {Message} message The received message.
    * @param {Command} command The parsed command.
-   * @param {...*} custom Any custom parameters to be passed into all preconditions.
-   * @returns {Promise<Result>|Promise<PreconditionResult>} The result of running the preconditions.
+   * @returns {Promise<PreconditionResult|Result>} The result of running the
+   * preconditions.
    */
-  async runCommandPreconditions(message, command, ...custom) {
+  async runCommandPreconditions(message, command) {
     for (let i = 0; i < command.group.preconditions.length; i++) {
-      const result = await command.group.preconditions[i].run(command, message, command.group.preconditionOptions[i], ...custom);
+      const result = await command.group.preconditions[i].run(
+        command,
+        message,
+        command.group.preconditionOptions[i]
+      );
 
-      if (result.success === false) {
+      if (!result.success)
         return result;
-      }
     }
 
     for (let i = 0; i < command.preconditions.length; i++) {
-      const result = await command.preconditions[i].run(command, message, command.preconditionOptions[i], ...custom);
+      const result = await command.preconditions[i].run(
+        command,
+        message,
+        command.preconditionOptions[i]
+      );
 
-      if (result.success === false) {
+      if (!result.success)
         return result;
-      }
     }
 
-    return Constants.results.success(command);
+    return Result.fromSuccess(command);
   }
 
   /**
@@ -102,226 +145,270 @@ class Handler {
    * @param {Message} message The received message.
    * @param {Command} command The parsed command.
    * @param {?CommandResult} result The command result.
-   * @param {...*} custom Any custom parameters to be passed into all postconditions.
    */
-  async runCommandPostconditions(message, command, result, ...custom) {
-    if (result instanceof CommandResult) {
+  async runCommandPostconditions(message, command, result) {
+    if (result instanceof CommandResult)
       result.setCommand(command);
-    }
 
-    for (let i = 0; i < command.group.postconditions.length; i++) {
-      await command.group.postconditions[i].run(message, result, ...custom);
-    }
+    for (let i = 0; i < command.group.postconditions.length; i++)
+      await command.group.postconditions[i].run(message, result);
 
-    for (let i = 0; i < command.postconditions.length; i++) {
-      await command.postconditions[i].run(message, result, ...custom);
-    }
+    for (let i = 0; i < command.postconditions.length; i++)
+      await command.postconditions[i].run(message, result);
   }
 
   /**
    * Attempts to update a Command's cooldown.
    * @param {Message} message The received message.
    * @param {Command} command The parsed command.
-   * @returns {Promise<Result>|Promise<CooldownResult>} The result of checking the cooldowns.
+   * @returns {Promise<Result>|Promise<CooldownResult>} The result of checking
+   * the cooldowns.
    */
   async updateCooldown(message, command) {
-    let guild = this.registry.libraryHandler.guild(message);
-    guild = guild == null ? null : guild.id;
-    let cooldown = await command.updateCooldown(message.author.id, guild);
+    const guild = this.registry.libraryHandler.guild(message);
+    let cooldown = await command.updateCooldown(
+      message.author.id,
+      guild == null ? null : guild.id
+    );
 
-    if (!cooldown) {
-      return Constants.results.success(command);
-    }
+    if (!cooldown)
+      return Result.fromSuccess(command);
 
     cooldown = await command.cooldowns.get(message.author.id, guild);
 
-    return Constants.results.cooldown(command, cooldown.resets - Date.now());
+    return CooldownResult.fromError(command, cooldown.time - Date.now());
+  }
+
+  async parseInfiniteArg(message, command, i, args, split, value) {
+    const input = split;
+
+    if (input.length === 0) {
+      if (command.args[i].optional)
+        return this.defaultValue(command.args[i].defaultValue, message);
+
+      return ArgumentResult.fromInvalidCount(command);
+    }
+
+    for (let j = 0; j < input.length; j++) {
+      if (this.hasDefaultRegex)
+        input[j] = input[j].replace(Constants.regexes.quotes, "");
+
+      const typeReaderResult = await command.args[i].typeReader.read(
+        command,
+        message,
+        command.args[i],
+        args,
+        input[j]
+      );
+
+      if (!typeReaderResult.success)
+        return typeReaderResult;
+
+      value.push(typeReaderResult.value);
+    }
+  }
+
+  async parseFiniteArg(message, command, i, args, content, split) {
+    let input = content;
+    let newContent = content;
+
+    if (!command.args[i].remainder) {
+      input = split.shift();
+
+      if (input != null) {
+        if (split.length > 0)
+          newContent = content.slice(content.indexOf(split[0], input.length));
+        else
+          newContent = "";
+      }
+    }
+
+    if (this.hasDefaultRegex)
+      input = input.replace(Constants.regexes.quotes, "");
+
+    if (input == null || input === "") {
+      if (command.args[i].optional) {
+        return {
+          content: newContent,
+          input,
+          value: this.defaultValue(command.args[i].defaultValue, message)
+        };
+      }
+
+      return {
+        content: newContent,
+        input,
+        value: ArgumentResult.fromInvalidCount(command)
+      };
+    }
+
+    const typeReaderResult = await command.args[i].typeReader.read(
+      command,
+      message,
+      command.args[i],
+      args,
+      input
+    );
+
+    return {
+      content: newContent,
+      input,
+      value: typeReaderResult
+    };
+  }
+
+  async runArgPreconditions(message, command, i, args, value) {
+    for (let j = 0; j < command.args[i].preconditions.length; j++) {
+      const preconditionResult = await command.args[i].preconditions[j].run(
+        command,
+        message,
+        command.args[i],
+        args,
+        value,
+        command.args[i].preconditionOptions[j]
+      );
+
+      if (!preconditionResult.success)
+        return preconditionResult;
+    }
   }
 
   /**
    * Attempts to parse Arguments.
    * @param {Message} message The received message.
    * @param {Command} command The parsed command.
-   * @param {number} prefixLength The length of the prefix to use when handling the command.
-   * @param {...*} custom Any custom parameters to be passed into all preconditions and typereaders.
-   * @returns {Promise<ArgumentResult>|Promise<TypeReaderResult>|Promise<PreconditionResult>} The result of the argument parsing.
+   * @param {number} prefixLength The length of the prefix to use when handling
+   * the command.
+   * @returns {Promise<ArgumentResult|PreconditionResult|TypeReaderResult>} The
+   * result of the argument parsing.
    */
-  async parseArguments(message, command, prefixLength, ...custom) {
-    let content = message.content.slice(prefixLength);
+  async parseArguments(msg, cmd, prefixLength) {
     const args = {};
-    let split = content.match(this.argumentRegex);
+    let cnt = msg.content.slice(prefixLength);
+    let split = cnt.match(this.argumentRegex);
 
-    if (split.length > 1) {
-      content = content.slice(content.indexOf(split[1], split[0].length));
-    } else {
-      content = '';
-    }
+    if (split.length > 1)
+      cnt = cnt.slice(cnt.indexOf(split[1], split[0].length));
+    else
+      cnt = "";
 
     split = split.slice(1);
 
-    for (let i = 0; i < command.args.length; i++) {
-      let value = [];
+    for (let i = 0; i < cmd.args.length; i++) {
+      let val = [];
 
-      if (command.args[i].infinite) {
-        if (split.length === 0) {
-          if (command.args[i].optional) {
-            value = this.defaultValue(command.args[i].defaultValue, message);
-          } else {
-            return Constants.results.invalidArgCount(command);
-          }
-        } else {
-          for (let j = 0; j < split.length; j++) {
-            content = content.slice(content.indexOf(split[j]));
-            if (this.registry.argumentRegex === Constants.regexes.argument && Constants.regexes.quotesMatch.test(split[j])) {
-              split[j] = split[j].replace(Constants.regexes.quotes, '');
-            }
+      if (cmd.args[i].infinite) {
+        const res = await this.parseInfiniteArg(msg, cmd, i, args, split, val);
 
-            const typeReaderResult = await command.args[i].typeReader.read(command, message, command.args[i], args, split[j], ...custom);
+        if (res != null) {
+          if (res.success === false)
+            return res;
 
-            if (typeReaderResult.success === false) {
-              return typeReaderResult;
-            }
-
-            value.push(typeReaderResult.value);
-          }
+          val = res;
         }
       } else {
-        let input = content;
+        const res = await this.parseFiniteArg(msg, cmd, i, args, cnt, split);
 
-        if (command.args[i].remainder === false) {
-          input = split.shift();
+        ({val} = res);
+        cnt = res.newContent;
 
-          if (input != null) {
-            if (split.length > 0) {
-              content = content.slice(content.indexOf(split[0], input.length));
-            } else {
-              content = '';
-            }
-          }
-        }
-
-        if (this.argumentRegex === Constants.regexes.argument && Constants.regexes.quotesMatch.test(input)) {
-          input = input.replace(Constants.regexes.quotes, '');
-        }
-
-        if (input == null || input === '') {
-          if (command.args[i].optional === false) {
-            return Constants.results.invalidArgCount(command);
-          }
-
-          value = this.defaultValue(command.args[i].defaultValue, message);
-        } else {
-          const typeReaderResult = await command.args[i].typeReader.read(command, message, command.args[i], args, input, ...custom);
-
-          if (typeReaderResult.success === false) {
-            return typeReaderResult;
-          }
-
-          value = typeReaderResult.value;
-        }
+        if (res.value.success === false)
+          return res.value;
       }
 
-      for (let j = 0; j < command.args[i].preconditions.length; j++) {
-        const preconditionResult = await command.args[i].preconditions[j].run(command, message, command.args[i], args, value, command.args[i].preconditionOptions[j], ...custom);
+      const res = await this.runArgPreconditions(msg, cmd, i, args, val);
 
-        if (preconditionResult.success === false) {
-          return preconditionResult;
-        }
-      }
-      args[command.args[i].key] = value;
+      if (res != null)
+        return res;
+
+      args[cmd.args[i].key] = val;
     }
 
-    return Constants.results.args(command, args);
+    return ArgumentResult.fromSuccess(cmd, args);
   }
 
-  /** Attempts to revert a Command's cooldown.
+  /**
+   * Attempts to revert a Command's cooldown.
    * @param {Message} message The received message.
    * @param {Command} command The parsed command.
    * @returns {Promise} Resolves once the cooldown has been reverted.
    */
   async revertCooldown(message, command) {
-    let guild = this.registry.libraryHandler.guild(message);
-    guild = guild == null ? null : guild.id;
-    await command.revertCooldown(message.author.id, guild);
+    const guild = this.registry.libraryHandler.guild(message);
+
+    await command.revertCooldown(
+      message.author.id,
+      guild == null ? null : guild.id
+    );
   }
 
   /**
    * Attempts to execute a command.
    * @param {Message} message The received message.
-   * @param {number} prefixLength The length of the prefix to use when handling the command.
-   * @param {...*} custom Any custom parameters to be passed into all preconditions, commands, and type readers.
-   * @returns {Promise<Result>|Promise<ArgumentResult>|Promise<CooldownResult>|Promise<TypeReaderResult>|Promise<PreconditionResult>|Promise<ExceptionResult>} The result of the command execution.
+   * @param {number} prefixLength The length of the prefix to use when handling
+   * the command.
+   * @returns {Promise<ArgumentResult|CooldownResult|PreconditionResult
+   * |TypeReaderResult|ExceptionResult|Result>} The result of the command
+   * execution.
    */
-  async run(message, prefixLength, ...custom) {
+  async run(message, prefixLength) {
     let result = await this.parseCommand(message, prefixLength);
 
-    if (result.success === false) {
+    if (!result.success)
       return result;
-    }
 
-    const { command } = result;
-    result = await this.internalRun(message, command, prefixLength, ...custom);
+    const {command} = result;
 
-    await this.runCommandPostconditions(message, command, result, ...custom);
+    result = await this.internalRun(message, command, prefixLength);
+    await this.runCommandPostconditions(message, command, result);
+
+    if (!(result instanceof Result))
+      result = Result.fromSuccess(command);
 
     return result;
   }
 
-  async internalRun(message, command, prefixLength, ...custom) {
+  async internalRun(message, command, prefixLength) {
     let result = await this.validateCommand(message, command);
 
-    if (result.success === false) {
+    if (!result.success)
       return result;
-    }
 
     result = await this.updateCooldown(message, command);
 
-    if (result.success === false) {
+    if (!result.success)
       return result;
-    }
 
     try {
-      result = await this.runCommandPreconditions(message, command, ...custom);
+      result = await this.runCommandPreconditions(message, command);
 
-      if (result.success === false) {
+      if (!result.success) {
         await this.revertCooldown(message, command);
 
         return result;
       }
 
-      result = await this.parseArguments(message, command, prefixLength, ...custom);
+      result = await this.parseArguments(message, command, prefixLength);
 
-      if (result.success === false) {
+      if (!result.success) {
         await this.revertCooldown(message, command);
 
         return result;
       }
 
-      result = await command.run(message, result.args, ...custom);
+      result = await command.run(message, result.args);
     } catch (err) {
       await this.revertCooldown(message, command);
 
-      return Constants.results.exception(command, err);
+      return ExceptionResult.fromError(command, err);
     }
 
-    if (result instanceof CommandResult === false) {
-      result = Constants.results.success(command);
-    }
-
-    if (result.success === false) {
+    if (!result.success)
       await this.revertCooldown(message, command);
-    }
 
     return result;
   }
 
-  /**
-   * The default value of an argument based off a command message.
-   * @param {*} defaultValue The defaultValue being parsed.
-   * @param {Message} message The received message.
-   * @returns {*} The default value of the argument.
-   * @private
-   */
   defaultValue(defaultValue, message) {
     switch (defaultValue) {
       case ArgumentDefault.Author:
@@ -341,20 +428,15 @@ class Handler {
     }
   }
 
-  /**
-   * Validates the handler.
-   * @param {Handler} handler The handler to validate.
-   * @private
-   */
   static validateHandler(handler) {
-    if (typeof handler.registry !== 'object') {
-      throw new TypeError('Handler.registry must be an instance of the registry.');
-    } else if ((handler.registry instanceof Registry) === false) {
-      throw new TypeError('Handler.registry must inherit the Registry class.');
-    } else if ((handler.argumentRegex instanceof RegExp) === false) {
-      throw new TypeError('Handler.argumentRegex must be a regex.');
+    if (!(handler.registry instanceof Registry)) {
+      throw new TypeError(
+        "Handler: The registry must be an instance of the Registry class."
+      );
+    } else if (!(handler.argumentRegex instanceof RegExp)) {
+      throw new TypeError(
+        "Handler: The argument regex must be a regular expression."
+      );
     }
   }
-}
-
-module.exports = Handler;
+};

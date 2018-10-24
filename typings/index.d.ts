@@ -1,87 +1,24 @@
-declare module 'patron.js' {
-  export class Argument {
-    private static validateArgument(argument: Argument, name: string): void;
-    public name: string;
-    public key: string;
-    public typeReader: TypeReader;
-    public example: string;
-    public defaultValue: any;
-    public infinite: boolean;
-    public preconditionOptions: object[];
-    public preconditions: ArgumentPrecondition[];
-    public optional: boolean;
-    public remainder: boolean;
-    constructor(options: ArgumentOptions);
-  }
-
+declare module "patron.js" {
   export enum ArgumentDefault {
     Author,
-    Message,
-    Member,
     Channel,
     Guild,
-    HighestRole
-  }
-
-  export class ArgumentPrecondition {
-    private static validateArgumentPrecondition(registry: ArgumentPrecondition, name: string): void;
-    public name: string;
-    public description: string;
-    public run(command: Command, message: object, argument: Argument, args: object, value: any, options: any, custom: any): Promise<PreconditionResult>;
-    constructor(options: ArgumentPreconditionOptions);
-  }
-
-  export class ArgumentResult {
-    public args: object;
-    private constructor(options: ArgumentResultOptions);
-  }
-
-  export class Command {
-    private static validateCommand(command: Command, name: string): void;
-    public names: string[];
-    public group: Group;
-    public description: string;
-    public usableContexts: Symbol[];
-    public memberPermissions: string[];
-    public botPermissions: string[];
-    public preconditionOptions: object[];
-    public preconditions: Precondition[];
-    public args: Argument[];
-    public hasCooldown: boolean;
-    public cooldowns?: Cooldown;
-    constructor(options: CommandOptions);
-    public run(message: object, args: object, custom: any): Promise<any>;
-    public getUsage(): string;
-    public getExample(): string;
-    public updateCooldown(userId: string, guildId?: string): Promise<boolean>;
-    public revertCooldown(userId: string, guildId?: string): Promise;
-  }
-
-  export class Cooldown {
-    private static validateCooldown(cooldown: Cooldown): void;
-    public limit: number;
-    public time: number;
-    public sorter?: function;
-    constructor(options: number | CooldownOptions);
-    public get(userId: string, guildId?: string): Promise<?object>;
-    public use(userId: string, guildId?: string): Promise<boolean>;
-    public revert(userId: string, guildId?: string): Promise;
-    private isInvalid(key: string): boolean;
-    private parseKey(userId: string, guildId?: string): string | Promise<string>;
-    private parseMutex(guildId?: string): string;
+    HighestRole,
+    Member,
+    Message
   }
 
   export enum CommandError {
-    Precondition,
-    MemberPermission,
     BotPermission,
-    TypeReader,
     Command,
-    CommandNotFound,
     Cooldown,
-    InvalidArgCount,
     Exception,
-    InvalidContext
+    InvalidArgCount,
+    InvalidContext,
+    MemberPermission,
+    Precondition,
+    TypeReader,
+    UnknownCmd
   }
 
   export enum Context {
@@ -89,231 +26,115 @@ declare module 'patron.js' {
     Guild
   }
 
-  export class CooldownResult extends Result {
-    public remaining: number;
-    private constructor(options: CooldownResultOptions);
-  }
-
-  export class CommandResult extends Result {
-    public data: any;
-    private setCommand(command: Command): void;
-    public static fromError(reason: string, data: any): CommandResult;
-    private constructor(options: CommandResultOptions);
-  }
-
-  export class ExceptionResult extends Result {
-    public error: Error;
-    private constructor(options: ExceptionResultOptions);
-  }
-
-  export class Group {
-    private static validateGroup(group: Group, name: string): void;
-    public name: string;
-    public description: string;
-    public preconditions: Precondition[];
-    public commands: Command[];
-    constructor(options: GroupOptions);
-  }
-
-  export class Handler {
-    public registry: Registry;
-    public parseCommand(message: object, prefixLength: number): Promise<Result>;
-    public validateCommand(message: object, command: Command): Promise<Result | InvalidContextResult>;
-    public runCommandPostconditions(message: object, command: Command, result: CommandResult, ...custom): Promise<any>;
-    public runCommandPreconditions(message: object, command: Command, ...custom): Promise<Result | PreconditionResult>;
-    public checkCooldown(message: object, command: Command): Promise<Result | CooldownResult>;
-    public parseArguments(message: object, command: Command, prefixLength: number, ...custom): Promise<ArgumentResult | TypeReaderResult | PreconditionResult>;
-    public updateCooldown(message: object, command: Command): Promise<Result>;
-    public run(message: object, prefixLength: number, ...custom): Promise<Result | CooldownResult | ExceptionResult | PreconditionResult | TypeReaderResult>;
-    constructor(registry: Registry);
-  }
-
-  export class InvalidContextResult {
-    public context: Symbol;
-    private constructor(options: ResultOptions);
-  }
-
   export enum Library {
     DiscordJS,
     Eris
   }
 
-  export class MultiMutex {
-    private mutexes: object;
-    constructor();
-    public sync(id: any, task: function): Promise<any>;
+  export enum TypeReaderCategory {
+    Global,
+    Library,
+    User
   }
 
-  export class Mutex {
-    private busy: boolean;
-    private queue: object[];
-    constructor();
-    private dequeue(): void;
-    private execute(): void;
-    public sync(task: function): Promise<any>;
+  export class Result {
+    public command?: Command;
+    public commandError?: CommandError;
+    public commandName?: string;
+    public errorReason?: string;
+    public success: boolean;
+    public static fromSuccess(command?: Command): Result;
+    private constructor(options: ResultOptions);
   }
 
-  export class Postcondition {
-    private static validatePostcondition(registry: Postcondition, name: string): void;
-    public name: string;
-    public description: string;
-    public run(command: Command, message: object, result: CommandResult, custom: any): Promise<any>;
-    constructor(options: PostconditionOptions);
+  export class ArgumentResult extends Result {
+    public args: object;
+    public static fromInvalidCount(command: Command): Result;
+    public static fromSuccess(command: Command, args: object): ArgumentResult;
+    private constructor(options: ArgumentResultOptions);
   }
 
-  export class Precondition {
-    private static validatePrecondition(registry: Precondition, name: string): void;
-    public name: string;
-    public description: string;
-    public run(command: Command, message: object, options: any, custom: any): Promise<PreconditionResult>;
-    constructor(options: PreconditionOptions);
+  export class CommandResult extends Result {
+    public data: any;
+    public static fromError(reason: string, data: any): CommandResult;
+    public static fromUnknown(commandName: string): Result;
+    private setCommand(command: Command): void;
+    private constructor(options: CommandResultOptions);
+  }
+
+  export class CooldownResult extends Result {
+    public remaining: number;
+    public static fromError(command: Command, remaining: number): CooldownResult;
+    private constructor(options: CooldownResultOptions);
+  }
+
+  export class ExceptionResult extends Result {
+    public error: Error;
+    public static fromError(command: Command, error: Error): ExceptionResult;
+    private constructor(options: ExceptionResultOptions);
+  }
+
+  export class InvalidContextResult extends Result {
+    public context: Symbol;
+    public static fromError(command: Command, context: Symbol): InvalidContextResult;
+    private constructor(options: InvalidContextResultOptions);
+  }
+
+  export class PermissionResult extends Result {
+    public permissions: string[];
+    public static format(permissions: string[]): string;
+    public static fromBot(command: Command, permissions: string[]): PermissionResult;
+    public static fromMember(command: Command, permissions: string[]): PermissionResult;
+    private constructor(options: PermissionResultOptions);
   }
 
   export class PreconditionResult extends Result {
     public static fromSuccess(): PreconditionResult;
     public static fromError(command: Command, reason: string): PreconditionResult;
-    private constructor(options: ResultOptions);
-  }
-
-  export class Registry {
-    private static validateRegistry(registry: Registry, name: string): void;
-    public commands: Command[];
-    public groups: Group[];
-    public typeReaders: TypeReader[];
-    public preconditions: Precondition[];
-    public argumentPreconditions: ArgumentPrecondition[];
-    public library: string;
-    public registerArgumentPreconditions(argumentPreconditions: ArgumentPrecondition[]): Registry;
-    public registerCommands(commands: Command[]): Registry;
-    public registerGlobalTypeReaders(): Registry;
-    public registerGroups(groups: Group[]): Registry;
-    public registerLibraryTypeReaders(): Registry;
-    public registerPreconditions(preconditions: Precondition[]): Registry;
-    public registerTypeReaders(typeReaders: TypeReader[]): Registry;
-    public unregisterArgumentPreconditions(argumentPreconditions: ArgumentPrecondition[]): Registry;
-    public unregisterCommands(commands: Command[]): Registry;
-    public unregisterGlobalTypeReaders(): Registry;
-    public unregisterGroups(groups: Group[]): Registry;
-    public unregisterLibraryTypeReaders(): Registry;
-    public unregisterPreconditions(preconditions: Precondition[]): Registry;
-    public unregisterTypeReaders(typeReaders: TypeReader[]): Registry;
-    constructor(options: RegistryOptions);
-  }
-
-  export class Result {
-    public success: boolean;
-    public command?: Command;
-    public commandName?: string;
-    public commandError?: CommandError;
-    public errorReason?: string;
-    constructor(options: ResultOptions);
-  }
-
-  export function RequireAll(path: string): Promise<object[]>;
-
-  export class TypeReader {
-    private static validateTypeReader(typeReader: TypeReader, name: string): void;
-    public type: string;
-    public description: string;
-    public read(command: Command, message: object, argument: Argument, args: object, input: string, custom: any): Promise<TypeReaderResult>;
-    constructor(options: TypeReaderOptions);
   }
 
   export class TypeReaderResult extends Result {
-    public static fromSuccess(value: any): TypeReaderResult;
-    public static fromError(command: Command, reason: string, matches?: object[]): TypeReaderResult;
-    public value: any;
     public matches?: object[];
+    public value: any;
+    public static fromError(command: Command, reason: string, matches?: object[]): TypeReaderResult;
+    public static fromSuccess(value: any): TypeReaderResult;
     constructor(options: TypeReaderResultOptions);
   }
 
-  interface ArgumentOptions {
-    name: string;
-    key: string;
-    type: string;
-    example: string;
-    defaultValue?: any;
-    infinite?: boolean;
-    preconditionOptions?: object[];
-    preconditions?: string[] | object[];
-    remainder?: boolean;
-  }
-
-  interface ArgumentPreconditionOptions {
-    name: string;
-    description?: string;
+  interface ResultOptions {
+    command?: Command;
+    commandError?: CommandError;
+    commandName?: string;
+    errorReason?: string;
+    success: boolean;
   }
 
   interface ArgumentResultOptions extends ResultOptions {
     args: object;
   }
 
-  interface CommandOptions {
-    names: string[];
-    groupName: string;
-    description?: string;
-    usableContexts?: symbol[];
-    memberPermissions?: string[];
-    botPermissions?: string[];
-    preconditionOptions?: object[];
-    preconditions?: string[] | object[];
-    args?: Argument[];
-    cooldown?: number | object;
-  }
-
-  interface CooldownOptions {
-    limit: number;
-    time: number;
-    sorter?: function;
+  interface CommandResultOptions extends ResultOptions {
+    data: any;
   }
 
   interface CooldownResultOptions extends ResultOptions {
     remaining: number;
   }
 
-  interface CommandResultOptions extends ResultOptions {
-    data: any;
-  }
-
   interface ExceptionResultOptions extends ResultOptions {
     error: Error;
   }
 
-  interface GroupOptions {
-    name: string;
-    description?: string;
-    preconditions?: string[] | object[];
+  interface InvalidContextResultOptions extends ResultOptions {
+    context: Symbol;
   }
 
-  interface PostconditionOptions {
-    name: string;
-    description?: string;
-  }
-
-  interface PreconditionOptions {
-    name: string;
-    description?: string;
-  }
-
-  interface RegistryOptions {
-    library: string;
-  }
-
-  interface ResultOptions {
-    success: boolean;
-    command?: Command;
-    commandName?: string;
-    commandError?: CommandError;
-    errorReason?: string;
-  }
-
-  interface TypeReaderOptions {
-    type: string;
-    description?: string;
+  interface PermissionResultOptions extends ResultOptions {
+    permissions: string[];
   }
 
   interface TypeReaderResultOptions extends ResultOptions {
-    value?: any;
     matches?: object[];
+    value: any;
   }
 }

@@ -1,36 +1,48 @@
-const TypeReaderResult = require('../results/TypeReaderResult.js');
-const Constants = require('./Constants.js');
+/*
+ * patron.js - The cleanest command framework for discord.js and eris.
+ * Copyright (c) 2018 patron.js contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License version 3 as
+ * published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+"use strict";
+const Constants = require("./Constants.js");
+const StringUtil = require("./StringUtil.js");
+const TypeReaderResult = require("../results/TypeReaderResult.js");
 
-class TypeReaderUtil {
-  static formatMatches(array, prop = 'name', member = false) {
-    let formatted = '';
+module.exports = {
+  formatMatches(array, format) {
+    return StringUtil.list(
+      array.map(i => (format == null ? i.name : format(i)))
+    );
+  },
 
-    for (let i = 0; i < array.length; i++) {
-      if (i !== 0 && i === array.length - 1) {
-        formatted += 'and ';
-      }
-
-      formatted += member ? array[i].user.username + '#' + array[i].user.discriminator : array[i][prop];
-
-      if (i !== array.length - 1) {
-        formatted += ', ';
-      }
-    }
-
-    return formatted;
-  }
-
-  static handleMatches(command, matches, type, prop = 'name', member = false) {
+  handleMatches(cmd, matches, errMsg, format) {
     if (matches.length > Constants.config.maxMatches) {
-      return TypeReaderResult.fromError(command, Constants.errors.tooManyMatches, matches);
+      return TypeReaderResult.fromError(
+        cmd,
+        "Multiple matches found, please be more specific.",
+        matches
+      );
     } else if (matches.length > 1) {
-      return TypeReaderResult.fromError(command, Constants.errors.multipleMatches(this.formatMatches(matches, prop, member)), matches);
+      return TypeReaderResult.fromError(
+        cmd,
+        `Multiple matches found: ${this.formatMatches(matches, format)}.`,
+        matches
+      );
     } else if (matches.length === 1) {
       return TypeReaderResult.fromSuccess(matches[0]);
     }
 
-    return TypeReaderResult.fromError(command, Constants.errors[type]);
+    return TypeReaderResult.fromError(cmd, errMsg);
   }
-}
-
-module.exports = TypeReaderUtil;
+};

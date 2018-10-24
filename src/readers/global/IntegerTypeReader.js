@@ -15,21 +15,25 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 "use strict";
-const discord = require("discord.js");
+const TypeReader = require("../../structures/TypeReader.js");
+const TypeReaderCategory = require("../../enums/TypeReaderCategory.js");
+const TypeReaderResult = require("../../results/TypeReaderResult.js");
 
-discord.Collection.prototype.filterValues = function(fn) {
-  const results = [];
-
-  for (const value of this.values()) {
-    if (fn(value))
-      results.push(value);
+module.exports = new class IntegerTypeReader extends TypeReader {
+  constructor() {
+    super({type: "int"});
+    this.category = TypeReaderCategory.Global;
   }
 
-  return results;
-};
-discord.Collection.prototype.findValue = function(fn) {
-  for (const value of this.values()) {
-    if (fn(value))
-      return value;
+  async read(cmd, msg, arg, args, val) {
+    const result = Number(val);
+
+    if (Number.isInteger(result))
+      return TypeReaderResult.fromSuccess(result);
+
+    return TypeReaderResult.fromError(
+      cmd,
+      `You have provided an invalid ${arg.name}.`
+    );
   }
-};
+}();

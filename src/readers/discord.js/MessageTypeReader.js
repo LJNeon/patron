@@ -1,41 +1,63 @@
-const TypeReader = require('../../structures/TypeReader.js');
-const TypeReaderCategory = require('../../enums/TypeReaderCategory.js');
-const TypeReaderResult = require('../../results/TypeReaderResult.js');
-const TypeReaderUtil = require('../../utility/TypeReaderUtil.js');
-const Constants = require('../../utility/Constants.js');
+/*
+ * patron.js - The cleanest command framework for discord.js and eris.
+ * Copyright (c) 2018 patron.js contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License version 3 as
+ * published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+"use strict";
+const Constants = require("../../utility/Constants.js");
+const TypeReader = require("../../structures/TypeReader.js");
+const TypeReaderCategory = require("../../enums/TypeReaderCategory.js");
+const TypeReaderResult = require("../../results/TypeReaderResult.js");
+const TypeReaderUtil = require("../../utility/TypeReaderUtil.js");
 
-class MessageTypeReader extends TypeReader {
+module.exports = new class MessageTypeReader extends TypeReader {
   constructor() {
-    super({ type: 'message' });
-
+    super({type: "message"});
     this.category = TypeReaderCategory.Library;
   }
 
-  async read(command, message, argument, args, input) {
-    if (Constants.regexes.id.test(input)) {
-      const parsedId = input.match(Constants.regexes.findId)[0];
+  async read(cmd, msg, arg, args, val) {
+    const id = val.match(Constants.regexes.id);
 
-      let msg = message.channel.messages.get(parsedId);
+    if (id != null) {
+      let message = msg.channel.messages.get(id[0]);
 
-      if (msg == null) {
-        try {
-          msg = await message.channel.messages.fetch(parsedId);
+      if (message != null)
+        return TypeReaderResult.fromSuccess(message);
 
-          return TypeReaderResult.fromSuccess(msg);
-        } catch (err) {
-          return TypeReaderResult.fromError(command, Constants.errors.messageNotFound);
-        }
-      } else {
-        return TypeReaderResult.fromSuccess(msg);
+      try {
+        message = await msg.channel.messages.fetch(id);
+      } catch (e) {
+        if (e.code !== Constants.errors.unknownMsg)
+          throw e;
       }
+
+      if (message == null)
+        return TypeReaderResult.fromError(cmd, "Message not found.");
+
+      return TypeReaderResult.fromSuccess(message);
     }
 
-    const lowerInput = input.toLowerCase();
+    const lowerVal = val.toLowerCase();
 
-    const matches = message.channel.messages.filterValues((v) => v.content.toLowerCase().includes(lowerInput));
-
-    return TypeReaderUtil.handleMatches(command, matches, 'messageNotFound', 'id');
+    return TypeReaderUtil.handleMatches(
+      cmd,
+      msg.channel.messages.filterValues(
+        m => m.content.toLowerCase().startsWith(lowerVal)
+      ),
+      "Message not found.",
+      m => m.id
+    );
   }
-}
-
-module.exports = new MessageTypeReader();
+}();

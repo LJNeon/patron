@@ -1,33 +1,53 @@
-const TypeReader = require('../../structures/TypeReader.js');
-const TypeReaderCategory = require('../../enums/TypeReaderCategory.js');
-const TypeReaderResult = require('../../results/TypeReaderResult.js');
-const TypeReaderUtil = require('../../utility/TypeReaderUtil.js');
-const Constants = require('../../utility/Constants.js');
+/*
+ * patron.js - The cleanest command framework for discord.js and eris.
+ * Copyright (c) 2018 patron.js contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License version 3 as
+ * published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+"use strict";
+const Constants = require("../../utility/Constants.js");
+const TypeReader = require("../../structures/TypeReader.js");
+const TypeReaderCategory = require("../../enums/TypeReaderCategory.js");
+const TypeReaderResult = require("../../results/TypeReaderResult.js");
+const TypeReaderUtil = require("../../utility/TypeReaderUtil.js");
 
-class TextChannelTypeReader extends TypeReader {
+module.exports = new class TextChannelTypeReader extends TypeReader {
   constructor() {
-    super({ type: 'textchannel' });
-
+    super({type: "textchannel"});
     this.category = TypeReaderCategory.Library;
   }
 
-  async read(command, message, argument, args, input) {
-    if (Constants.regexes.textChannelMention.test(input) || Constants.regexes.id.test(input)) {
-      const channel = message.guild.channels.get(input.match(Constants.regexes.findId)[0]);
+  async read(cmd, msg, arg, args, val) {
+    let id = val.match(Constants.regexes.channelMention);
 
-      if (channel != null && channel.type === 'text') {
+    if (id != null || (id = val.match(Constants.regexes.id)) != null) {
+      const channel = msg.guild.channels.get(id[id.length - 1]);
+
+      if (channel != null && channel.type === "text")
         return TypeReaderResult.fromSuccess(channel);
-      }
 
-      return TypeReaderResult.fromError(command, Constants.errors.textChannelNotFound);
+      return TypeReaderResult.fromError(cmd, "Text channel not found.");
     }
 
-    const lowerInput = input.toLowerCase();
+    const lowerVal = val.toLowerCase();
 
-    const matches = message.guild.channels.filterValues((v) => v.name.toLowerCase().includes(lowerInput) && v.type === 'text');
-
-    return TypeReaderUtil.handleMatches(command, matches, 'textChannelNotFound');
+    return TypeReaderUtil.handleMatches(
+      cmd,
+      msg.guild.channels.filter(
+        channel => channel.name.toLowerCase().startsWith(lowerVal)
+          && channel.type === "text"
+      ),
+      "Text channel not found."
+    );
   }
-}
-
-module.exports = new TextChannelTypeReader();
+}();

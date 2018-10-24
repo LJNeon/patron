@@ -1,32 +1,53 @@
-const TypeReader = require('../../structures/TypeReader.js');
-const TypeReaderCategory = require('../../enums/TypeReaderCategory.js');
-const TypeReaderResult = require('../../results/TypeReaderResult.js');
-const TypeReaderUtil = require('../../utility/TypeReaderUtil.js');
-const Constants = require('../../utility/Constants.js');
+/*
+ * patron.js - The cleanest command framework for discord.js and eris.
+ * Copyright (c) 2018 patron.js contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License version 3 as
+ * published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+"use strict";
+const Constants = require("../../utility/Constants.js");
+const TypeReader = require("../../structures/TypeReader.js");
+const TypeReaderCategory = require("../../enums/TypeReaderCategory.js");
+const TypeReaderResult = require("../../results/TypeReaderResult.js");
+const TypeReaderUtil = require("../../utility/TypeReaderUtil.js");
 
-class GuildEmojiTypeReader extends TypeReader {
+module.exports = new class GuildEmojiTypeReader extends TypeReader {
   constructor() {
-    super({ type: 'guildemoji' });
-
+    super({type: "guildemoji"});
     this.category = TypeReaderCategory.Library;
   }
 
-  async read(command, message, argument, args, input) {
-    if (Constants.regexes.emoji.test(input) || Constants.regexes.id.test(input)) {
-      const emoji = message.guild.emojis.get(input.match(Constants.regexes.findId)[0]);
+  async read(cmd, msg, arg, args, val) {
+    let id = val.match(Constants.regexes.emoji);
 
-      if (emoji != null) {
-        return TypeReaderResult.fromSuccess(emoji);
-      }
+    if (id != null || (id = val.match(Constants.regexes.id)) != null) {
+      const emoji = msg.guild.emojis.get(id[id.length - 1]);
 
-      return TypeReaderResult.fromError(command, Constants.errors.guildEmojiNotFound);
+      if (emoji == null)
+        return TypeReaderResult.fromError(cmd, "Server emoji not found.");
+
+      return TypeReaderResult.fromSuccess(emoji);
     }
 
-    const lowerInput = input.toLowerCase();
-    const matches = message.guild.emojis.filterValues((v) => v.name.toLowerCase().includes(lowerInput));
+    const lowerVal = val.toLowerCase();
 
-    return TypeReaderUtil.handleMatches(command, matches, 'guildEmojiNotFound');
+    return TypeReaderUtil.handleMatches(
+      cmd,
+      msg.guild.emojis.filterValues(
+        emoji => emoji.name.toLowerCase().startsWith(lowerVal)
+      ),
+      "Server emoji not found.",
+      emoji => `<:${emoji.name}:${emoji.id}>`
+    );
   }
-}
-
-module.exports = new GuildEmojiTypeReader();
+}();

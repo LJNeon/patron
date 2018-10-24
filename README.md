@@ -1,35 +1,34 @@
 <div align="center">
     <br/>
-    <a href="https://github.com/vim2meta/patron.js/"><img src="https://i.imgur.com/6j61q1V.png" width="600" alt="patron.js" /></a>
+    <a href="https://github.com/vim2meta/patron.js/"><img src="https://i.imgur.com/6j61q1V.png" width="600" alt="patron.js"/></a>
     <br/>
     <br/>
-    <a href="https://discord.gg/Dn6k7bm"><img src="https://discordapp.com/api/guilds/409140755391578142/embed.png" alt="Discord Server" /></a>
-    <a href="https://www.npmjs.com/package/patron.js"><img src="https://img.shields.io/npm/v/patron.js.svg?maxAge=3600" alt="NPM version" /></a>
-    <a href="https://www.npmjs.com/package/patron.js"><img src="https://img.shields.io/npm/dt/patron.js.svg?maxAge=3600" alt="NPM downloads" /></a>
-    <a href="https://travis-ci.org/vim2meta/patron.js"><img src="https://travis-ci.org/vim2meta/patron.js.svg?branch=master" alt="Build Status" /></a>
-    <a href="https://david-dm.org/vim2meta/patron.js"><img src="https://david-dm.org/vim2meta/patron.js.svg" alt="Dependencies" /></a>
-    <a href="https://github.com/vim2meta/patron.js/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License" /></a>
-    <a href="https://github.com/vim2meta/patron.js/releases"><img src="https://img.shields.io/github/release/vim2meta/patron.js.svg" alt="Release" /></a>
+    <a href="https://discord.gg/Dn6k7bm"><img src="https://discordapp.com/api/guilds/409140755391578142/embed.png" alt="Discord Server"/></a>
+    <a href="https://www.npmjs.com/package/patron.js"><img src="https://img.shields.io/npm/v/patron.js.svg?maxAge=3600" alt="NPM version"/></a>
+    <a href="https://www.npmjs.com/package/patron.js"><img src="https://img.shields.io/npm/dt/patron.js.svg?maxAge=3600" alt="NPM downloads"/></a>
+    <a href="https://travis-ci.org/vim2meta/patron.js"><img src="https://travis-ci.org/vim2meta/patron.js.svg?branch=master" alt="Build Status"/></a>
+    <a href="https://david-dm.org/vim2meta/patron.js"><img src="https://david-dm.org/vim2meta/patron.js.svg" alt="Dependencies"/></a>
+    <a href="https://github.com/vim2meta/patron.js/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-AGPL%20v3-blue.svg" alt="License"/></a>
 </div>
 
 ## About
 [Patron.js](https://vim2meta.github.io/patron.js/) is an efficient, stable and reliable command framework for [discord.js](https://github.com/hydrabolt/discord.js) and [eris](https://github.com/abalabahaha/eris), that aims for true flexibility. This framework does not have it's own client, it does not manage the message event for you, it does not clutter the library's classes with extensions and it most certainly does not send messages on your behalf.
 
 ## Official example
-Patron.js has an [official example](https://github.com/LJNeon/patron.js-example) filled with useful comments, allowing you to build your code on a solid base while learning at the same time. This example will be maintained and updated to ensure it will always be a useful reference for beginners. The example may be viewed here: https://github.com/LJNeon/patron.js-example.
+Patron.js has an [official example](https://github.com/LJNeon/patron.js-example) filled with useful comments, allowing you to build your code on a solid base while learning at the same time. This example will be maintained and updated to ensure it will always be a useful reference for beginners. The example may be viewed [here](https://github.com/LJNeon/patron.js-example).
 
 ## Command Results
 Every single command execution returns a result object. This [result](https://vim2meta.github.io/patron.js/Result.html) object will always have the `success` property. If the command execution was unsuccessful, this property will be set to false. If this is the case, the result will also have the [commandError](https://vim2meta.github.io/patron.js/global.html#CommandError) property, allowing you to handle the error and respond (or not) accordingly. These are the current command errors:
 - `BotPermission`
-- `CommandNotFound`
+- `Command`
 - `Cooldown`
 - `Exception`
-- `InvalidArg`
 - `InvalidArgCount`
 - `InvalidContext`
 - `MemberPermission`
 - `Precondition`
 - `TypeReader`
+- `UnknownCommand`
 
 Depending on which error occurred, the result object will have different properties. This is an example ([discord.js](https://github.com/LJNeon/patron.js-example/blob/master/src/services/CommandService.js)/[eris](https://github.com/LJNeon/patron.js-example/blob/eris/src/services/CommandService.js)) of how these errors may be handled.
 

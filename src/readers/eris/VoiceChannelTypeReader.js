@@ -1,34 +1,54 @@
-const DiscordChannelType = require('../../enums/DiscordChannelType.js');
-const TypeReader = require('../../structures/TypeReader.js');
-const TypeReaderCategory = require('../../enums/TypeReaderCategory.js');
-const TypeReaderResult = require('../../results/TypeReaderResult.js');
-const TypeReaderUtil = require('../../utility/TypeReaderUtil.js');
-const Constants = require('../../utility/Constants.js');
+/*
+ * patron.js - The cleanest command framework for discord.js and eris.
+ * Copyright (c) 2018 patron.js contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License version 3 as
+ * published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+"use strict";
+const Constants = require("../../utility/Constants.js");
+const DiscordChannelType = require("../../enums/DiscordChannelType.js");
+const TypeReader = require("../../structures/TypeReader.js");
+const TypeReaderCategory = require("../../enums/TypeReaderCategory.js");
+const TypeReaderResult = require("../../results/TypeReaderResult.js");
+const TypeReaderUtil = require("../../utility/TypeReaderUtil.js");
 
-class VoiceChannelTypeReader extends TypeReader {
+module.exports = new class VoiceChannelTypeReader extends TypeReader {
   constructor() {
-    super({ type: 'voicechannel' });
-
+    super({type: "voicechannel"});
     this.category = TypeReaderCategory.Library;
   }
 
-  async read(command, message, argument, args, input) {
-    if (Constants.regexes.textChannelMention.test(input) || Constants.regexes.id.test(input)) {
-      const channel = message.channel.guild.channels.get(input.match(Constants.regexes.findId)[0]);
+  async read(cmd, msg, arg, args, val) {
+    let id = val.match(Constants.regexes.channelMention);
 
-      if (channel != null && channel.type === DiscordChannelType.VoiceChannel) {
+    if (id != null || (id = val.match(Constants.regexes.id)) != null) {
+      const channel = msg.channel.guild.channels.get(id[id.length - 1]);
+
+      if (channel != null && channel.type === DiscordChannelType.Voice)
         return TypeReaderResult.fromSuccess(channel);
-      }
 
-      return TypeReaderResult.fromError(command, Constants.errors.voiceChannelNotFound);
+      return TypeReaderResult.fromError(cmd, "Voice channel not found.");
     }
 
-    const lowerInput = input.toLowerCase();
+    const lowerVal = val.toLowerCase();
 
-    const matches = message.channel.guild.channels.filter((v) => v.name.toLowerCase().includes(lowerInput) && v.type === DiscordChannelType.VoiceChannel);
-
-    return TypeReaderUtil.handleMatches(command, matches, 'voiceChannelNotFound');
+    return TypeReaderUtil.handleMatches(
+      cmd,
+      msg.channel.guild.channels.filter(
+        channel => channel.name.toLowerCase().startsWith(lowerVal)
+          && channel.type === DiscordChannelType.Voice
+      ),
+      "Voice channel not found."
+    );
   }
-}
-
-module.exports = new VoiceChannelTypeReader();
+}();

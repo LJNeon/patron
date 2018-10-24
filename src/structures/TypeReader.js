@@ -1,57 +1,68 @@
-const TypeReaderCategory = require('../enums/TypeReaderCategory.js');
+/*
+ * patron.js - The cleanest command framework for discord.js and eris.
+ * Copyright (c) 2018 patron.js contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License version 3 as
+ * published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+"use strict";
+const TypeReaderCategory = require("../enums/TypeReaderCategory.js");
 
 /**
  * A type reader.
- * @prop {string} type The type of the type reader.
- * @prop {string} category Which category the type reader belongs to.
- * @prop {string} description The description of the type reader.
+ * @prop {string} type The type reader's type.
+ * @prop {string} category The type reader's category.
+ * @prop {string} description The type reader's description.
  */
-class TypeReader {
+module.exports = class TypeReader {
   /**
    * @typedef {object} TypeReaderOptions The type reader options.
-   * @prop {string} type The type of the type reader.
-   * @prop {string} [description=''] The description of the type reader.
+   * @prop {string} type The type reader's type.
+   * @prop {string} [description=""] The type reader's description.
    */
 
   /**
-    * @param {TypeReaderOptions} options The type reader options.
-    */
+   * @param {TypeReaderOptions} options The type reader options.
+   */
   constructor(options) {
     this.category = TypeReaderCategory.User;
     this.type = options.type;
-    this.description = options.description == null ? '' : options.description;
-
-    this.constructor.validateTypeReader(this, this.constructor.name);
+    this.description = options.description == null ? "" : options.description;
+    this.constructor.validateTypeReader(this);
   }
 
   /**
-   * Parses the value of an argument.
+   * Parses the argument's value.
    * @param {Command} command The command being executed.
    * @param {Message} message The received message.
    * @param {Argument} argument The argument in question.
    * @param {object} args The currently resolved arguments.
-   * @param {string} input The user input.
-   * @param {...*} custom The custom parameters passed into the handler.
+   * @param {string} input The user's input.
    * @abstract
-   * @returns {Promise<TypeReaderResult>} The result of the type reader.
+   * @returns {Promise<TypeReaderResult>} The type reader's result.
    */
-  async read(command, message, argument, args, input, custom) {
-    throw new Error(this.constructor.name + ' has no read method.');
+  async read() {
+    throw new ReferenceError(`${this.constructor.name} has no read method.`);
   }
 
-  /**
-   * Validates the argument.
-   * @param {TypeReader} typeReader The type reader to validate.
-   * @param {string} name The name of the constructor of the type reader.
-   * @private
-   */
-  static validateTypeReader(typeReader, name) {
-    if (typeof typeReader.type !== 'string') {
-      throw new TypeError(name + ': The type must be a string.');
-    } else if (typeof typeReader.description !== 'string') {
-      throw new TypeError(name + ': All type reader descriptions must be a string.');
+  static validateTypeReader(typeReader) {
+    if (typeof typeReader.type !== "string") {
+      throw new TypeError(
+        `${typeReader.constructor.name}: The type must be a string.`
+      );
+    } else if (typeof typeReader.description !== "string") {
+      throw new TypeError(
+        `${typeReader.constructor.name}: The description must be a string.`
+      );
     }
   }
-}
-
-module.exports = TypeReader;
+};

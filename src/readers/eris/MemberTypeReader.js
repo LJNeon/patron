@@ -1,58 +1,77 @@
-const TypeReader = require('../../structures/TypeReader.js');
-const TypeReaderCategory = require('../../enums/TypeReaderCategory.js');
-const TypeReaderResult = require('../../results/TypeReaderResult.js');
-const TypeReaderUtil = require('../../utility/TypeReaderUtil.js');
-const Constants = require('../../utility/Constants.js');
+/*
+ * patron.js - The cleanest command framework for discord.js and eris.
+ * Copyright (c) 2018 patron.js contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License version 3 as
+ * published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+"use strict";
+const Constants = require("../../utility/Constants.js");
+const StringUtil = require("../../utility/StringUtil.js");
+const TypeReader = require("../../structures/TypeReader.js");
+const TypeReaderCategory = require("../../enums/TypeReaderCategory.js");
+const TypeReaderResult = require("../../results/TypeReaderResult.js");
+const TypeReaderUtil = require("../../utility/TypeReaderUtil.js");
 let warningEmitted = false;
 
-class MemberTypeReader extends TypeReader {
+module.exports = new class MemberTypeReader extends TypeReader {
   constructor() {
-    super({ type: 'member' });
-
+    super({type: "member"});
     this.category = TypeReaderCategory.Library;
   }
 
-  async read(command, message, argument, args, input) {
-    if (message._client.options.getAllUsers === false && warningEmitted === false) {
-      process.emitWarning('The member type reader is unreliable when getAllUsers is set to false.');
+  async read(cmd, msg, arg, args, val) {
+    const {_client: client} = msg;
+    let id = val.match(Constants.regexes.userMention);
+
+    if (!warningEmitted && !client.options.getAllUsers) {
       warningEmitted = true;
+      process.emitWarning(
+        "The member TypeReader is unreliable when the getAllUsers option is \
+        disabled."
+      );
     }
 
-    if (Constants.regexes.userMention.test(input) || Constants.regexes.id.test(input)) {
-      let member;
+    if (id != null || (id = val.match(Constants.regexes.id)) != null) {
+      const member = msg.channel.guild.members.get(id[id.length - 1]);
 
-      if (message._client.options.restMode) {
-        try {
-          member = await message.channel.guild.getRESTMember(input.match(Constants.regexes.findId)[0]);
-        } catch (err) {
-        }
-      } else {
-        member = message.channel.guild.members.get(input.match(Constants.regexes.findId)[0]);
-      }
+      if (member == null)
+        return TypeReaderResult.fromError(cmd, "Member not found.");
 
-      if (member != null) {
-        return TypeReaderResult.fromSuccess(member);
-      }
-
-      return TypeReaderResult.fromError(command, Constants.errors.memberNotFound);
+      return TypeReaderResult.fromSuccess(member);
     }
 
-    const lowerInput = input.toLowerCase();
+    const lowerVal = val.toLowerCase();
 
-    if (Constants.regexes.usernameAndDiscrim.test(input)) {
-      const member = message.channel.guild.members.find((v) => v.username.toLowerCase() + '#' + v.discriminator === lowerInput);
-
-      if (member != null) {
-        return TypeReaderResult.fromSuccess(member);
-      }
-
-      return TypeReaderResult.fromError(command, Constants.errors.memberNotFound);
+    if (Constants.regexes.userTag.test(val)) {
+      return TypeReaderUtil.handleMatches(
+        cmd,
+        msg.channel.guild.members.filter(
+          m => `${m.username.toLowerCase()}#${m.discriminator}` === lowerVal
+        ),
+        "Member not found.",
+        m => `${StringUtil.escapeMarkdown(m.username)}#${m.discriminator}`
+      );
     }
 
-    const matches = message.channel.guild.members.filter((v) => v.user.username.toLowerCase().includes(lowerInput) || (v.nickname != null && v.nickname.toLowerCase().includes(lowerInput)));
-
-    return TypeReaderUtil.handleMatches(command, matches, 'memberNotFound', null, true);
+    return TypeReaderUtil.handleMatches(
+      cmd,
+      msg.channel.guild.members.filter(
+        m => m.username.toLowerCase().startsWith(lowerVal)
+          || (m.nickname != null
+          && m.nickname.toLowerCase().startsWith(lowerVal))
+      ),
+      "Member not found.",
+      m => `${StringUtil.escapeMarkdown(m.username)}#${m.discriminator}`
+    );
   }
-}
-
-module.exports = new MemberTypeReader();
+}();

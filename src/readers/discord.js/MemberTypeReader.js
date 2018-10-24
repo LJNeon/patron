@@ -1,47 +1,75 @@
-const TypeReader = require('../../structures/TypeReader.js');
-const TypeReaderCategory = require('../../enums/TypeReaderCategory.js');
-const TypeReaderResult = require('../../results/TypeReaderResult.js');
-const TypeReaderUtil = require('../../utility/TypeReaderUtil.js');
-const Constants = require('../../utility/Constants.js');
+/*
+ * patron.js - The cleanest command framework for discord.js and eris.
+ * Copyright (c) 2018 patron.js contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License version 3 as
+ * published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+"use strict";
+const Constants = require("../../utility/Constants.js");
+const TypeReader = require("../../structures/TypeReader.js");
+const TypeReaderCategory = require("../../enums/TypeReaderCategory.js");
+const TypeReaderResult = require("../../results/TypeReaderResult.js");
+const TypeReaderUtil = require("../../utility/TypeReaderUtil.js");
+let warningEmitted = false;
 
-class MemberTypeReader extends TypeReader {
+module.exports = new class MemberTypeReader extends TypeReader {
   constructor() {
-    super({ type: 'member' });
-
+    super({type: "member"});
     this.category = TypeReaderCategory.Library;
   }
 
-  async read(command, message, argument, args, input) {
-    if (Constants.regexes.userMention.test(input) || Constants.regexes.id.test(input)) {
-      try {
-        const user = await message.client.users.fetch(input.match(Constants.regexes.findId)[0]);
-        const member = message.guild.member(user);
+  async read(cmd, msg, arg, args, val) {
+    let id = val.match(Constants.regexes.userMention);
 
-        if (member != null) {
-          return TypeReaderResult.fromSuccess(member);
-        }
-      } catch (err) {
-      }
-
-      return TypeReaderResult.fromError(command, Constants.errors.memberNotFound);
+    if (!warningEmitted && !msg.client.options.fetchAllUsers) {
+      warningEmitted = true;
+      process.emitWarning(
+        "The member TypeReader is unreliable when the fetchAllUsers option is \
+        disabled."
+      );
     }
 
-    const lowerInput = input.toLowerCase();
+    if (id != null || (id = val.match(Constants.regexes.id)) != null) {
+      const member = msg.guild.members.get(id[id.length - 1]);
 
-    if (Constants.regexes.usernameAndDiscrim.test(input)) {
-      const member = message.guild.members.findValue((v) => v.user.tag.toLowerCase() === lowerInput);
+      if (member == null)
+        return TypeReaderResult.fromError(cmd, "Member not found.");
 
-      if (member != null) {
-        return TypeReaderResult.fromSuccess(member);
-      }
-
-      return TypeReaderResult.fromError(command, Constants.errors.memberNotFound);
+      return TypeReaderResult.fromSuccess(member);
     }
 
-    const matches = message.guild.members.filterValues((v) => v.user.username.toLowerCase().includes(lowerInput) || (v.nickname != null && v.nickname.toLowerCase().includes(lowerInput)));
+    const lowerVal = val.toLowerCase();
 
-    return TypeReaderUtil.handleMatches(command, matches, 'memberNotFound', null, true);
+    if (Constants.regexes.userTag.test(val)) {
+      return TypeReaderUtil.handleMatches(
+        cmd,
+        msg.guild.members.filterValues(
+          member => member.user.tag.toLowerCase() === lowerVal
+        ),
+        "Member not found.",
+        member => member.user.tag
+      );
+    }
+
+    return TypeReaderUtil.handleMatches(
+      cmd,
+      msg.guild.members.filterValues(
+        member => member.user.username.toLowerCase().startsWith(lowerVal)
+          || (member.nickname != null
+          && member.nickname.toLowerCase().startsWith(lowerVal))
+      ),
+      "Member not found.",
+      member => member.user.tag
+    );
   }
-}
-
-module.exports = new MemberTypeReader();
+}();

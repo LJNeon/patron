@@ -1,24 +1,40 @@
-const TypeReader = require('../../structures/TypeReader.js');
-const TypeReaderCategory = require('../../enums/TypeReaderCategory.js');
-const TypeReaderResult = require('../../results/TypeReaderResult.js');
-const Constants = require('../../utility/Constants.js');
+/*
+ * patron.js - The cleanest command framework for discord.js and eris.
+ * Copyright (c) 2018 patron.js contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License version 3 as
+ * published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+"use strict";
+const TypeReader = require("../../structures/TypeReader.js");
+const TypeReaderCategory = require("../../enums/TypeReaderCategory.js");
+const TypeReaderResult = require("../../results/TypeReaderResult.js");
 
-class FloatTypeReader extends TypeReader {
+module.exports = new class FloatTypeReader extends TypeReader {
   constructor() {
-    super({ type: 'float' });
-
+    super({type: "float"});
     this.category = TypeReaderCategory.Global;
   }
 
-  async read(command, message, argument, args, input) {
-    const result = Number.parseFloat(input);
+  async read(cmd, msg, arg, args, val) {
+    const result = Number(val);
 
-    if (Number.isNaN(result) === false) {
-      return TypeReaderResult.fromSuccess(result);
+    if (Number.isNaN(result)) {
+      return TypeReaderResult.fromError(
+        cmd,
+        `You have provided an invalid ${arg.name}.`
+      );
     }
 
-    return TypeReaderResult.fromError(command, Constants.errors.invalidArg(argument));
+    return TypeReaderResult.fromSuccess(result);
   }
-}
-
-module.exports = new FloatTypeReader();
+}();
