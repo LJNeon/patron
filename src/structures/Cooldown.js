@@ -77,7 +77,7 @@ class Cooldown {
    * Increments a user's cooldown.
    * @param {string} userId The user ID.
    * @param {string} [guildId] The guild ID, if applicable.
-   * @returns {boolean} Returns whether or not the user is on cooldown.
+   * @returns {Promise<boolean>} Returns whether or not the user is on cooldown.
    */
   use(userId, guildId) {
     return this.mutex.sync(this.parseMutex(guildId), async () => {

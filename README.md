@@ -1,6 +1,6 @@
 <div align="center">
     <br/>
-    <a href="https://github.com/vim2meta/patron.js/"><img src="https://i.imgur.com/6j61q1V.png" width="600" alt="patron.js"/></a>
+    <a href="https://github.com/vim2meta/patron.js"><img src="https://i.imgur.com/6j61q1V.png" width="600" alt="patron.js"/></a>
     <br/>
     <br/>
     <a href="https://discord.gg/Dn6k7bm"><img src="https://discordapp.com/api/guilds/409140755391578142/embed.png" alt="Discord Server"/></a>

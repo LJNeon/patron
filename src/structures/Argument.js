@@ -42,7 +42,7 @@ class Argument {
    * number of values and return them in an array.
    * @prop {string} key The argument's property name on the args object.
    * @prop {string} name The argument's name.
-   * @prop {Array.<*>} [preconditionOptions=[]] The options to be passed to
+   * @prop {Array<*>} [preconditionOptions=[]] The options to be passed to
    * preconditions when they're run.
    * @prop {string[]} [preconditions=[]] The preconditions to be ran on the
    * argument.

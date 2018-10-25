@@ -144,7 +144,7 @@ class Handler {
    * Attempts to run the Postconditions registered to a Command.
    * @param {Message} message The received message.
    * @param {Command} command The parsed command.
-   * @param {?CommandResult} result The command result.
+   * @param {*} result The command result.
    */
   async runCommandPostconditions(message, command, result) {
     if (result instanceof CommandResult)

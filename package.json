@@ -7,7 +7,7 @@
   "scripts": {
     "test": "npm run lint && node src/index.js",
     "lint": "node_modules/.bin/eslint ./src/** --ext .js",
-    "docs": "node_modules/.bin/jsdoc src -r -c jsdoc.json -R README.md -d docs"
+    "docs": "node_modules/.bin/jsdoc src -c jsdoc.json"
   },
   "repository": {
     "type": "git",
@@ -32,6 +32,7 @@
   "devDependencies": {
     "eslint": "^5.7.0",
     "jsdoc": "^3.5.5",
+    "tui-jsdoc-template": "^1.2.2",
     "typescript": "^3.1.3"
   }
 }
