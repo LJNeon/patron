@@ -23,9 +23,9 @@ const readDir = util.promisify(fs.readdir);
 /**
  * A function which returns all module exports of a folder.
  * @param {string} path The path in question.
- * @returns {Promise<*[]>} An array of all the module exports.
+ * @returns {Promise<Array.<*>>} An array of all the module exports.
  */
-async function RequireAll(path) {
+module.exports = async function RequireAll(path) {
   const files = await readDir(path);
   const modules = [];
 
@@ -39,6 +39,4 @@ async function RequireAll(path) {
   }
 
   return modules;
-}
-
-module.exports = RequireAll;
+};

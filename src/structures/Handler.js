@@ -150,18 +150,28 @@ module.exports = class Handler {
     if (result instanceof CommandResult)
       result.setCommand(command);
 
-    for (let i = 0; i < command.group.postconditions.length; i++)
-      await command.group.postconditions[i].run(message, result);
+    for (let i = 0; i < command.group.postconditions.length; i++) {
+      await command.group.postconditions[i].run(
+        message,
+        result,
+        command.group.postconditionOptions[i]
+      );
+    }
 
-    for (let i = 0; i < command.postconditions.length; i++)
-      await command.postconditions[i].run(message, result);
+    for (let i = 0; i < command.postconditions.length; i++) {
+      await command.postconditions[i].run(
+        message,
+        result,
+        command.postconditionOptions[i]
+      );
+    }
   }
 
   /**
    * Attempts to update a Command's cooldown.
    * @param {Message} message The received message.
    * @param {Command} command The parsed command.
-   * @returns {Promise<Result>|Promise<CooldownResult>} The result of checking
+   * @returns {Promise<CooldownResult|Result>} The result of checking
    * the cooldowns.
    */
   async updateCooldown(message, command) {

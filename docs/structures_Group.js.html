@@ -26,61 +26,116 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/**
- * A command group.
- * @prop {string} name The name of the group.
- * @prop {string} description The description of the group.
- * @prop {Precondition[]} preconditions The preconditions to be run on all commands inside the group.
- * @prop {object[]} preconditionOptions The options to be passed to preconditions when they're run.
- * @prop {Postcondition[]} postconditions The postconditions to be run on all commands inside the group.
- * @prop {Command[]} commands An array of all commands inside the group.
+            <pre class="prettyprint source linenums"><code>/*
+ * patron.js - The cleanest command framework for discord.js and eris.
+ * Copyright (c) 2018 patron.js contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License version 3 as
+ * published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see &lt;http://www.gnu.org/licenses/>.
  */
-class Group {
+"use strict";
+/**
+ * A command group.
+ * @prop {Command[]} commands An array of all commands inside the group.
+ * @prop {string} description The description of the group.
+ * @prop {string} name The name of the group.
+ * @prop {Array.&lt;*>} preconditionOptions The options to be passed to preconditions
+ * when they're run.
+ * @prop {Precondition[]} preconditions The preconditions to be run on all
+ * commands inside the group.
+ * @prop {Array.&lt;*>} postconditionOptions The options to be passed to postconditions
+ * when they're run.
+ * @prop {Postcondition[]} postconditions The postconditions to be run on all
+ * commands inside the group.
+ */
+module.exports = class Group {
   /**
    * @typedef {object} GroupOptions The group options.
+   * @prop {string} [description=""] The description of the group.
    * @prop {string} name The name of the group.
-   * @prop {string} [description=''] The description of the group.
-   * @prop {Array&lt;string|object>} [preconditions=[]] The preconditions to be run on all commands inside the group.
-   * @prop {Array&lt;object>} [preconditionOptions=[]] The options to be passed to preconditions when they're run.
-   * @prop {Array&lt;string|object>} [postconditions=[]] The postconditions to be run on all commands inside the group.
+   * @prop {Array.&lt;*>} [postconditionOptions=[]] The options to be passed to
+   * postconditions when they're run.
+   * @prop {string[]} [postconditions=[]] The postconditions to be run on all
+   * commands inside the group.
+   * @prop {Array.&lt;*>} [preconditionOptions=[]] The options to be passed to
+   * preconditions when they're run.
+   * @prop {string[]} [preconditions=[]] The preconditions to be run on all
+   * commands inside the group.
    */
 
   /**
    * @param {GroupOptions} options The group options.
    */
   constructor(options) {
-    this.name = options.name;
-    this.description = options.description == null ? '' : options.description;
-    this.preconditions = options.preconditions == null ? [] : options.preconditions;
-    this.postconditions = options.postconditions == null ? [] : options.postconditions;
     this.commands = [];
-    this.preconditionOptions = options.preconditionOptions == null ? [] : options.preconditionOptions;
+    this.description = options.description == null ? "" : options.description;
+    this.name = options.name;
 
-    this.constructor.validateGroup(this, this.constructor.name);
+    if (options.preconditionOptions == null)
+      this.preconditionOptions = [];
+    else
+      this.preconditionOptions = options.preconditionOptions;
+
+    if (options.preconditions == null)
+      this.preconditions = [];
+    else
+      this.preconditions = options.preconditions;
+
+    if (options.postconditionOptions == null)
+      this.postconditionOptions = [];
+    else
+      this.postconditionOptions = options.postconditionOptions;
+
+    if (options.postconditions == null)
+      this.postconditions = [];
+    else
+      this.postconditions = options.postconditions;
+
+    this.constructor.validateGroup(this);
   }
 
-  /**
-   * Validates a group.
-   * @param {Group} group The group to validate.
-   * @param {string} name The name of the constructor of the group.
-   * @private
-   */
-  static validateGroup(group, name) {
-    if (typeof group.name !== 'string') {
-      throw new TypeError(name + ': The name must be a string.');
-    } else if (typeof group.description !== 'string') {
-      throw new TypeError(name + ': All group descriptions must be a string.');
-    } else if (Array.isArray(group.preconditions) === false) {
-      throw new TypeError(name + ': The preconditions must be an array.');
-    } else if (Array.isArray(group.preconditionOptions) === false) {
-      throw new TypeError(name + ': The precondition options must be an array.');
-    } else if (Array.isArray(group.postconditions) === false) {
-      throw new TypeError(name + ': The postconditions must be an array.');
+  static validateGroup(group) {
+    if (typeof group.description !== "string") {
+      throw new TypeError(
+        `${group.constructor.name}: The description must be a string.`
+      );
+    } else if (typeof group.name !== "string") {
+      throw new TypeError(
+        `${group.constructor.name}: The name must be a string.`
+      );
+    } else if (!Array.isArray(group.postconditionOptions)) {
+      throw new TypeError(
+        `${group.constructor.name}: The postcondition options must be an \
+        array.`
+      );
+    } else if (!Array.isArray(group.postconditions)
+        || group.postconditions.some(p => typeof p !== "string")) {
+      throw new TypeError(
+        `${group.constructor.name}: The postconditions must be an array of \
+        strings.`
+      );
+    } else if (!Array.isArray(group.preconditionOptions)) {
+      throw new TypeError(
+        `${group.constructor.name}: The precondition options must be an array.`
+      );
+    } else if (!Array.isArray(group.preconditions)
+        || group.preconditions.some(p => typeof p !== "string")) {
+      throw new TypeError(
+        `${group.constructor.name}: The preconditions must be an array of \
+        strings.`
+      );
     }
   }
-}
-
-module.exports = Group;
+};
 </code></pre>
         </article>
     </section>
@@ -91,13 +146,13 @@ module.exports = Group;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Argument.html">Argument</a></li><li><a href="ArgumentPrecondition.html">ArgumentPrecondition</a></li><li><a href="ArgumentResult.html">ArgumentResult</a></li><li><a href="Command.html">Command</a></li><li><a href="CommandResult.html">CommandResult</a></li><li><a href="Cooldown.html">Cooldown</a></li><li><a href="CooldownResult.html">CooldownResult</a></li><li><a href="ExceptionResult.html">ExceptionResult</a></li><li><a href="Group.html">Group</a></li><li><a href="Handler.html">Handler</a></li><li><a href="InvalidContextResult.html">InvalidContextResult</a></li><li><a href="MultiMutex.html">MultiMutex</a></li><li><a href="Mutex.html">Mutex</a></li><li><a href="Postcondition.html">Postcondition</a></li><li><a href="Precondition.html">Precondition</a></li><li><a href="PreconditionResult.html">PreconditionResult</a></li><li><a href="Registry.html">Registry</a></li><li><a href="Result.html">Result</a></li><li><a href="TypeReader.html">TypeReader</a></li><li><a href="TypeReaderResult.html">TypeReaderResult</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ArgumentDefault">ArgumentDefault</a></li><li><a href="global.html#CommandError">CommandError</a></li><li><a href="global.html#Context">Context</a></li><li><a href="global.html#Library">Library</a></li><li><a href="global.html#RequireAll">RequireAll</a></li><li><a href="global.html#TypeReaderCategory">TypeReaderCategory</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="module.html#.exports">exports</a></li></ul><h3>Global</h3><ul><li><a href="global.html#RequireAll">RequireAll</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Oct 13 2018 18:52:25 GMT+0000 (Coordinated Universal Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Oct 25 2018 03:18:55 GMT+0000 (Coordinated Universal Time)
 </footer>
 
 <script> prettyPrint(); </script>

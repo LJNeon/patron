@@ -21,7 +21,7 @@ const Result = require("./Result.js");
 /**
  * A type reader result.
  * @prop {?*} value The parsed value from the type reader.
- * @prop {?*[]} matches The type reader matches.
+ * @prop {?Array.<*>} matches The type reader matches.
  * @extends {Result}
  */
 module.exports = class TypeReaderResult extends Result {
@@ -29,7 +29,7 @@ module.exports = class TypeReaderResult extends Result {
    * @typedef {TypeReaderResultOptions} TypeReaderResultOptions The type reader
    * result options.
    * @prop {*} [value] The parsed value from the type reader.
-   * @prop {*[]} [matches] The type reader matches.
+   * @prop {Array.<*>} [matches] The type reader matches.
    */
 
   /**
@@ -57,7 +57,7 @@ module.exports = class TypeReaderResult extends Result {
    * Returns a failed type reader result.
    * @param {Command} command The command being executed.
    * @param {string} reason The reason for the type reader failure.
-   * @param {*[]} [matches] The type reader matches.
+   * @param {Array.<*>} [matches] The type reader matches.
    * @returns {TypeReaderResult} The result in question.
    */
   static fromError(command, reason, matches) {

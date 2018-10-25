@@ -26,219 +26,268 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>const Argument = require('./Argument.js');
-const Context = require('../enums/Context.js');
-const Cooldown = require('./Cooldown.js');
-const ContextKeys = Object.keys(Context);
+            <pre class="prettyprint source linenums"><code>/*
+ * patron.js - The cleanest command framework for discord.js and eris.
+ * Copyright (c) 2018 patron.js contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License version 3 as
+ * published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see &lt;http://www.gnu.org/licenses/>.
+ */
+"use strict";
+const Argument = require("./Argument.js");
+const Context = require("../enums/Context.js");
+const Cooldown = require("./Cooldown.js");
 
 /**
  * A command.
- * @prop {string[]} names The names of the command.
- * @prop {Group} group The group of the command.
- * @prop {string} description The description of the command.
- * @prop {Symbol[]} usableContexts An array of contexts the command can be used.
- * @prop {string[]} memberPermissions The permissions required by the invoker to use the command.
- * @prop {string[]} botPermissions The permissions required by the bot to execute the command.
- * @prop {Precondition[]} preconditions The preconditions to be ran on the command.
- * @prop {object[]} preconditionOptions The options to be passed to preconditions when they're run.
- * @prop {Postcondition[]} postconditions The postconditions to be ran on the command.
- * @prop {Argument[]} args The arguments of the command.
- * @prop {boolean} hasCooldown Whether the command has a cooldown.
- * @prop {?Cooldown} cooldowns An object of all user cooldowns and cooldown options on the command.
+ * @prop {Argument[]} args The command's arguments.
+ * @prop {string[]} botPermissions The permissions required by the bot to
+ * execute the command.
+ * @prop {?Cooldown} cooldowns An object of all user cooldowns and cooldown
+ * options on the command.
+ * @prop {string} description The command's description.
+ * @prop {Group} group The command's group.
+ * @prop {boolean} hasCooldown Whether or not the command has a cooldown.
+ * @prop {string[]} memberPermissions The permissions required by the invoker
+ * to use the command.
+ * @prop {string[]} names The command's names.
+ * @prop {Array.&lt;*>} preconditionOptions The options to be passed to preconditions
+ * when they're run.
+ * @prop {Precondition[]} preconditions The preconditions to be ran on the
+ * command.
+ * @prop {Array.&lt;*>} postconditionOptions The options to be passed to postconditions
+ * when they're run.
+ * @prop {Postcondition[]} postconditions The postconditions to be ran on the
+ * command.
+ * @prop {Symbol[]} usableContexts An array of contexts the command can be used
+ * in.
  */
-class Command {
+module.exports = class Command {
   /**
    * @typedef {object} CommandOptions The command options.
-   * @prop {string[]} names The names of the command.
-   * @prop {string} groupName The name of the group of the command.
-   * @prop {string} [description=''] The description of the command.
-   * @prop {Symbol[]} [usableContexts=[Context.Guild]] An array of contexts the command can be used.
-   * @prop {string[]} [memberPermissions=[]] The permissions required by the invoker to use the command.
-   * @prop {string[]} [botPermissions=[]] The permissions required by the bot to execute the command.
-   * @prop {Array&lt;string|object>} [postconditions=[]] The postconditions to be ran on the command.
-   * @prop {Array&lt;string|object>} [preconditions=[]] The preconditions to be ran on the command.
-   * @prop {Array&lt;object>} [preconditionOptions=[]] The options to be passed to preconditions when they're run.
-   * @prop {Argument[]} [args=[]] The arguments of the command.
-   * @prop {?number|object} cooldown The length of the cooldown in milliseconds or an object. See Cooldown class documentation for details on the object's structure.
+   * @prop {Argument[]} [args=[]] The command's arguments.
+   * @prop {string[]} [botPermissions=[]] The permissions required by the bot
+   * to execute the command.
+   * @prop {number|object} [cooldown] The length of the cooldown in
+   * milliseconds or an object. See Cooldown class documentation for details on
+   * the object's structure.
+   * @prop {string} [description=""] The command's description.
+   * @prop {string} groupName The name of the command's group.
+   * @prop {string[]} [memberPermissions=[]] The permissions required by the
+   * invoker to use the command.
+   * @prop {string[]} names The command's names.
+   * @prop {Array.&lt;*>} [preconditionOptions=[]] The options to be passed to
+   * preconditions when they're run.
+   * @prop {string[]} [preconditions=[]] The preconditions to be ran on the
+   * command.
+   * @prop {Array.&lt;*>} [postconditionOptions=[]] The options to be passed to
+   * postconditions when they're run.
+   * @prop {string[]} [postconditions=[]] The postconditions to be ran on the
+   * command.
+   * @prop {Symbol[]} [usableContexts=[Context.Guild]] An array of contexts the
+   * command can be used in.
    */
 
   /**
-   * @param {CommandOptions} options The commands options.
+   * @param {CommandOptions} options The command options.
    */
   constructor(options) {
-    this.names = options.names;
-    this.groupName = options.groupName;
-    this.description = options.description == null ? '' : options.description;
-    this.usableContexts = options.usableContexts == null ? [Context.Guild] : options.usableContexts;
-    this.memberPermissions = options.memberPermissions == null ? [] : options.memberPermissions;
-    this.botPermissions = options.botPermissions == null ? [] : options.botPermissions;
-    this.preconditions = options.preconditions == null ? [] : options.preconditions;
-    this.postconditions = options.postconditions == null ? [] : options.postconditions;
     this.args = options.args == null ? [] : options.args;
-    this.hasCooldown = options.cooldown != null;
-    if (this.hasCooldown) {
-      this.cooldowns = new Cooldown(options.cooldown);
-    }
-    this.preconditionOptions = options.preconditionOptions == null ? [] : options.preconditionOptions;
 
-    this.constructor.validateCommand(this, this.constructor.name);
+    if (options.botPermissions == null)
+      this.botPermissions = [];
+    else
+      this.botPermissions = options.botPermissions;
+
+    this.hasCooldown = options.cooldown != null;
+
+    if (this.hasCooldown)
+      this.cooldowns = new Cooldown(options.cooldown);
+
+    this.description = options.description == null ? "" : options.description;
+    this.groupName = options.groupName;
+
+    if (options.memberPermissions == null)
+      this.memberPermissions = [];
+    else
+      this.memberPermissions = options.memberPermissions;
+
+    this.names = options.names;
+
+    if (options.preconditionOptions == null)
+      this.preconditionOptions = [];
+    else
+      this.preconditionOptions = options.preconditionOptions;
+
+    if (options.preconditions == null)
+      this.preconditions = [];
+    else
+      this.preconditions = options.preconditions;
+
+    if (options.postconditionOptions == null)
+      this.postconditionOptions = [];
+    else
+      this.postconditionOptions = options.postconditionOptions;
+
+    if (options.postconditions == null)
+      this.postconditions = [];
+    else
+      this.postconditions = options.postconditions;
+
+    if (options.usableContexts == null)
+      this.usableContexts = [Context.Guild];
+    else
+      this.usableContexts = options.usableContexts;
+
+    this.constructor.validateCommand(this);
   }
 
   /**
    * Executes the command.
    * @param {Message} message The received message.
    * @param {object} args The arguments of the command.
-   * @param {...*} custom The custom parameters passed into the handler.
    * @abstract
-   * @returns {Promise&lt;?CommandResult>} Resolves once the execution of the command is complete.
+   * @returns {Promise&lt;*>} Resolves once the execution of the
+   * command is complete.
    */
-  async run(message, args, custom) {
-    throw new Error(this.constructor.name + ' does not have a run method.');
+  async run() {
+    throw new ReferenceError(`${this.constructor.name} has no run method.`);
   }
 
   /**
-   * Creates the usage string of the command.
+   * Returns a usage string of the command.
    * @returns {string} The usage of the command.
    */
   getUsage() {
-    let usage = this.names[0];
+    if (this.usage != null)
+      return this.usage;
 
-    for (let i = 0; i &lt; this.args.length; i ++) {
-      let before = '&lt;';
-      let after = '>';
+    [this.usage] = this.names;
+
+    for (let i = 0; i &lt; this.args.length; i++) {
+      let before = "&lt;";
+      let after = ">";
 
       if (this.args[i].optional) {
-        before = '[';
-        after = ']';
+        before = "[";
+        after = "]";
       }
 
-      const type = this.args[i].typeReader.type;
+      const {type} = this.args[i].typeReader;
 
-      if (type === 'role' || type === 'member' || type === 'user') {
-        before += '@';
-      } else if (type === 'textchannel') {
-        before += '#';
-      }
+      if (type.toLowerCase().includes("role")
+          || type.toLowerCase().includes("member")
+          || type.toLowerCase().includes("user"))
+        before += "@";
+      else if (type.toLowerCase().includes("channel"))
+        before += "#";
 
-      usage += ' ' + before + this.args[i].name + after;
+      this.usage += ` ${before}${this.args[i].name}${after}`;
     }
 
-    return usage;
+    return this.usage;
   }
 
   /**
-   * Creates the example string of the command.
+   * Returns an example string of the command.
    * @returns {string} An example of usage of the command.
    */
   getExample() {
-    let example = this.names[0];
+    if (this.example != null)
+      return this.example;
 
-    for (let i = 0; i &lt; this.args.length; i++) {
-      example += ' ' + this.args[i].example;
-    }
+    [this.example] = this.names;
 
-    return example;
+    for (let i = 0; i &lt; this.args.length; i++)
+      this.example += ` ${this.args[i].example}`;
+
+    return this.example;
   }
 
   /**
    * Attempts to update the Command's cooldown.
    * @param {string} userId The user ID.
-   * @param {?string} guildId The guild ID.
-   * @returns {Promise&lt;boolean>} Returns false if the user isn't on cooldown or no cooldown is set, and true if they are on cooldown.
+   * @param {string} [guildId] The guild ID.
+   * @returns {Promise&lt;boolean>} Whether or not the user is on cooldown.
    */
   async updateCooldown(userId, guildId) {
-    if (!this.hasCooldown) {
+    if (!this.hasCooldown)
       return false;
-    }
 
     return this.cooldowns.use(userId, guildId);
   }
 
   /**
-   * Attempts to revert the Command's cooldown.
+   * Attempts to revert the Command"s cooldown.
    * @param {string} userId The user ID.
-   * @param {?string} guildId The guild ID.
+   * @param {string} [guildId] The guild ID.
    * @returns {Promise} Resolves once the cooldown is reverted.
    */
   async revertCooldown(userId, guildId) {
-    if (this.hasCooldown) {
+    if (this.hasCooldown)
       return this.cooldowns.revert(userId, guildId);
-    }
   }
 
-  /**
-   * Validates a command.
-   * @param {Command} command The command to validate.
-   * @param {string} name The name of the constructor of the command.
-   * @private
-   */
-  static validateCommand(command, name) {
-    if (Array.isArray(command.names) === false) {
-      throw new TypeError(name + ': The names must be an array.');
-    } else if (typeof command.groupName !== 'string') {
-      throw new TypeError(name + ': The group name must be a string.');
-    } else if (typeof command.description !== 'string') {
-      throw new TypeError(name + ': The description must be a string.');
-    } else if (Array.isArray(command.memberPermissions) === false) {
-      throw new TypeError(name + ': The user permissions must be an array.');
-    } else if (Array.isArray(command.botPermissions) === false) {
-      throw new TypeError(name + ': The bot permissions must be an array.');
-    } else if (Array.isArray(command.preconditions) === false) {
-      throw new TypeError(name + ': The preconditions must be an array.');
-    } else if (Array.isArray(command.preconditionOptions) === false) {
-      throw new TypeError(name + ': The precondition options must be an array.');
-    } else if (Array.isArray(command.postconditions) === false) {
-      throw new TypeError(name + ': The postconditions must be an array.');
-    } else if (Array.isArray(command.args) === false) {
-      throw new TypeError(name + ': The arguments must be an array.');
-    } else if (Array.isArray(command.usableContexts) === false) {
-      throw new TypeError(name + ': The usableContexts must be an array.');
-    }
+  static validateCommand(command) {
+    const name = `${command.constructor.name}:`;
 
-    const allPermissions = command.memberPermissions.concat(command.botPermissions);
-
-    for (let i = 0; i &lt; allPermissions.length; i++) {
-      if (typeof allPermissions[i] !== 'string') {
-        throw new TypeError(name + ': All permissions must be strings.');
-      }
-    }
-
-    for (let i = 0; i &lt; command.names.length; i++) {
-      if (typeof command.names[i] !== 'string') {
-        throw new TypeError(command.names[i] + ': All command names must be strings.');
-      }
-    }
-
-    for (let i = 0; i &lt; command.usableContexts.length; i++) {
-      let valid = false;
-      for (let j = 0; j &lt; ContextKeys.length; j++) {
-        if (Context[ContextKeys[j]] === command.usableContexts[i]) {
-          valid = true;
-          break;
-        }
-      }
-      if (valid === false) {
-        throw new TypeError(command.names[i] + ': Invalid Context.');
-      }
-    }
-
-    for (let i = 0; i &lt; command.args.length; i++) {
-      if ((command.args[i] instanceof Argument) === false) {
-        throw new TypeError(name + ': All arguments must be instances of the Argument class.');
-      } else if (command.args[i].remainder &amp;&amp; i !== command.args.length - 1) {
-        throw new Error(name + ': Only the last argument of a command may be the remainder.');
-      } else if (command.args[i].infinite &amp;&amp; i !== command.args.length - 1) {
-        throw new Error(name + ': Only the last argument of a command may be infinite.');
-      } else if (command.args.filter((value) => value.name === command.args[i].name).length > 1) {
-        throw new Error(name + ': There is more than one argument by the name of ' + command.args[i].name + '.');
-      } else if (command.args.filter((value) => value.key === command.args[i].key).length > 1) {
-        throw new Error(name + ': There is more than one argument by the key of ' + command.args[i].key + '.');
-      }
+    if (!Array.isArray(command.args)
+        || command.args.some(arg => !(arg instanceof Argument))) {
+      throw new TypeError(
+        `${name} The args must be an array of instances of the Argument class.`
+      );
+    } else if (!Array.isArray(command.botPermissions)
+        || command.botPermissions.some(perm => typeof perm !== "string")) {
+      throw new TypeError(
+        `${name} The bot permissions must be an array of strings.`
+      );
+    } else if (typeof command.description !== "string") {
+      throw new TypeError(`${name} The description must be a string.`);
+    } else if (typeof command.groupName !== "string") {
+      throw new TypeError(`${name} The group name must be a string.`);
+    } else if (!Array.isArray(command.memberPermissions)
+        || command.memberPermissions.some(perm => typeof perm !== "string")) {
+      throw new TypeError(
+        `${name} The member permissions must be an array of strings.`
+      );
+    } else if (!Array.isArray(command.names)
+        || command.names.some(n => typeof n !== "string")) {
+      throw new TypeError(`${name} The names must be an array of strings.`);
+    } else if (!Array.isArray(command.postconditionOptions)) {
+      throw new TypeError(
+        `${name} The postcondition options must be an array.`
+      );
+    } else if (!Array.isArray(command.postconditions)
+        || command.postconditions.some(pcnd => typeof pcnd !== "string")) {
+      throw new TypeError(
+        `${name} The postconditions must be an array of strings.`
+      );
+    } else if (!Array.isArray(command.preconditionOptions)) {
+      throw new TypeError(
+        `${name} The precondition options must be an array.`
+      );
+    } else if (!Array.isArray(command.preconditions)
+        || command.preconditions.some(pcnd => typeof pcnd !== "string")) {
+      throw new TypeError(
+        `${name} The preconditions must be an array of strings.`
+      );
+    } else if (!Array.isArray(command.usableContexts)
+        || command.usableContexts.some(ctxt => typeof ctxt !== "symbol")) {
+      throw new TypeError(
+        `${name} The usable contexts must be an array of symbols.`
+      );
     }
   }
-}
-
-module.exports = Command;
+};
 </code></pre>
         </article>
     </section>
@@ -249,13 +298,13 @@ module.exports = Command;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Argument.html">Argument</a></li><li><a href="ArgumentPrecondition.html">ArgumentPrecondition</a></li><li><a href="ArgumentResult.html">ArgumentResult</a></li><li><a href="Command.html">Command</a></li><li><a href="CommandResult.html">CommandResult</a></li><li><a href="Cooldown.html">Cooldown</a></li><li><a href="CooldownResult.html">CooldownResult</a></li><li><a href="ExceptionResult.html">ExceptionResult</a></li><li><a href="Group.html">Group</a></li><li><a href="Handler.html">Handler</a></li><li><a href="InvalidContextResult.html">InvalidContextResult</a></li><li><a href="MultiMutex.html">MultiMutex</a></li><li><a href="Mutex.html">Mutex</a></li><li><a href="Postcondition.html">Postcondition</a></li><li><a href="Precondition.html">Precondition</a></li><li><a href="PreconditionResult.html">PreconditionResult</a></li><li><a href="Registry.html">Registry</a></li><li><a href="Result.html">Result</a></li><li><a href="TypeReader.html">TypeReader</a></li><li><a href="TypeReaderResult.html">TypeReaderResult</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ArgumentDefault">ArgumentDefault</a></li><li><a href="global.html#CommandError">CommandError</a></li><li><a href="global.html#Context">Context</a></li><li><a href="global.html#Library">Library</a></li><li><a href="global.html#RequireAll">RequireAll</a></li><li><a href="global.html#TypeReaderCategory">TypeReaderCategory</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="module.html#.exports">exports</a></li></ul><h3>Global</h3><ul><li><a href="global.html#RequireAll">RequireAll</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Oct 13 2018 18:52:25 GMT+0000 (Coordinated Universal Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Oct 25 2018 03:18:55 GMT+0000 (Coordinated Universal Time)
 </footer>
 
 <script> prettyPrint(); </script>

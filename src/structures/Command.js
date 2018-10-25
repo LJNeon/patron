@@ -32,11 +32,11 @@ const Cooldown = require("./Cooldown.js");
  * @prop {string[]} memberPermissions The permissions required by the invoker
  * to use the command.
  * @prop {string[]} names The command's names.
- * @prop {*[]} preconditionOptions The options to be passed to preconditions
+ * @prop {Array.<*>} preconditionOptions The options to be passed to preconditions
  * when they're run.
  * @prop {Precondition[]} preconditions The preconditions to be ran on the
  * command.
- * @prop {*[]} postconditionOptions The options to be passed to postconditions
+ * @prop {Array.<*>} postconditionOptions The options to be passed to postconditions
  * when they're run.
  * @prop {Postcondition[]} postconditions The postconditions to be ran on the
  * command.
@@ -57,11 +57,11 @@ module.exports = class Command {
    * @prop {string[]} [memberPermissions=[]] The permissions required by the
    * invoker to use the command.
    * @prop {string[]} names The command's names.
-   * @prop {*[]} [preconditionOptions=[]] The options to be passed to
+   * @prop {Array.<*>} [preconditionOptions=[]] The options to be passed to
    * preconditions when they're run.
    * @prop {string[]} [preconditions=[]] The preconditions to be ran on the
    * command.
-   * @prop {*[]} [postconditionOptions=[]] The options to be passed to
+   * @prop {Array.<*>} [postconditionOptions=[]] The options to be passed to
    * postconditions when they're run.
    * @prop {string[]} [postconditions=[]] The postconditions to be ran on the
    * command.

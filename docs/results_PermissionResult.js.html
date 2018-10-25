@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: results/ArgumentResult.js</title>
+    <title>JSDoc: Source: results/PermissionResult.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: results/ArgumentResult.js</h1>
+    <h1 class="page-title">Source: results/PermissionResult.js</h1>
 
     
 
@@ -44,53 +44,87 @@
  */
 "use strict";
 const CommandError = require("../enums/CommandError.js");
+const Constants = require("../utility/Constants.js");
 const Result = require("./Result.js");
+const StringUtil = require("../utility/StringUtil.js");
 
 /**
- * An argument result.
- * @prop {object} args The parsed arguments.
+ * A permission result.
+ * @prop {object} permissions The missing permissions.
  * @extends {Result}
  */
-module.exports = class ArgumentResult extends Result {
+module.exports = class PermissionResult extends Result {
   /**
-   * @typedef {ArgumentResultOptions} ArgumentResultOptions The argument result
-   * options.
-   * @prop {object} args The parsed arguments.
+   * @typedef {PermissionResultOptions} PermissionResultOptions The permission
+   * result options.
+   * @prop {string[]} permissions The missing permissions.
    */
 
   /**
-   * @param {ArgumentResultOptions} options The argument result options.
+   * @param {PermissionResultOptions} options The permission result options.
    */
   constructor(options) {
     super(options);
-    this.args = options.args;
+    this.permissions = options.permissions;
   }
 
   /**
-   * Returns an invalid argument count result.
-   * @param {Command} command The command being executed.
-   * @returns {Result} The result in question.
+   * Formats an array of permissions into a list.
+   * @param {string[]} permissions The permissions.
+   * @returns {string} A list of the permissions.
    */
-  static fromInvalidCount(command) {
-    return new Result({
+  format(permissions) {
+    return StringUtil.list(permissions.map(permission => {
+      const words = permission.match(Constants.regexes.word);
+
+      for (let i = 0; i &lt; words.length; i++) {
+        words[i] = StringUtil.capitalize(words[i]);
+
+        if (words[i] === "Guild") {
+          words[i] = "Server";
+        } else if (words[i] === "Vad") {
+          words[i] = "Voice Activity";
+        } else if (words[i] === "Voice") {
+          words.splice(i, 1);
+          i--;
+        }
+      }
+
+      return words.join(" ");
+    }));
+  }
+
+  /**
+   * Returns a failed bot permissions result.
+   * @param {Command} command The command being executed.
+   * @param {string[]} permissions The missing permissions.
+   * @returns {PermissionResult} The result in question.
+   */
+  static fromBot(command, permissions) {
+    return new PermissionResult({
       command,
-      commandError: CommandError.InvalidArgCount,
-      errorReason: "You have provided an invalid number of arguments.",
+      commandError: CommandError.BotPermission,
+      errorReason: "This command can't be executed due to lacking the \
+      required permissions.",
+      permissions,
       success: false
     });
   }
 
   /**
-   * Returns a successful argument result.
+   * Returns a failed member permissions result.
    * @param {Command} command The command being executed.
-   * @param {object} args The parsed values from all arguments.
-   * @returns {ArgumentResult} The result in question.
+   * @param {string[]} permissions The missing permissions.
+   * @returns {PermissionResult} The result in question.
    */
-  static fromSuccess(command, args) {
-    return new ArgumentResult({
-      args,
+  static fromMember(command, permissions) {
+    return new Result({
       command,
-      success: true
+      commandError: CommandError.MemberPermission,
+      errorReason: "This command may only be used by members with the \
+      required permissions.",
+      permissions,
+      success: false
     });
   }
 };

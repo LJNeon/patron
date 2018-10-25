@@ -40,6 +40,7 @@ module.exports = class Postcondition {
    * Executes the postcondition.
    * @param {Message} message The received message.
    * @param {*} [result] The result of the command execution, if any.
+   * @param {*} options The options of the postcondition.
    * @abstract
    */
   async run() {
