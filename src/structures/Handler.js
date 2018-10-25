@@ -252,7 +252,7 @@ class Handler {
       };
     }
 
-    const typeReaderResult = await command.args[i].typeReader.read(
+    const result = await command.args[i].typeReader.read(
       command,
       message,
       command.args[i],
@@ -263,7 +263,7 @@ class Handler {
     return {
       content: newContent,
       input,
-      value: typeReaderResult
+      value: result.value
     };
   }
 
@@ -319,7 +319,7 @@ class Handler {
       } else {
         const res = await this.parseFiniteArg(msg, cmd, i, args, cnt, split);
 
-        ({val} = res);
+        ({value: val} = res);
         cnt = res.newContent;
 
         if (res.value.success === false)
@@ -413,7 +413,7 @@ class Handler {
       return ExceptionResult.fromError(command, err);
     }
 
-    if (!result.success)
+    if (result instanceof CommandResult)
       await this.revertCooldown(message, command);
 
     return result;
