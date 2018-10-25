@@ -20,7 +20,7 @@
  * @prop {string} name The name of the precondition.
  * @prop {string} description The description of the precondition.
  */
-module.exports = class Precondition {
+class Precondition {
   /**
    * @typedef {object} PreconditionOptions The preconditions options.
    * @prop {string} name The name of the precondition.
@@ -59,4 +59,6 @@ module.exports = class Precondition {
       );
     }
   }
-};
+}
+
+module.exports = Precondition;

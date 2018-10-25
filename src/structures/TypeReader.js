@@ -23,7 +23,7 @@ const TypeReaderCategory = require("../enums/TypeReaderCategory.js");
  * @prop {string} category The type reader's category.
  * @prop {string} description The type reader's description.
  */
-module.exports = class TypeReader {
+class TypeReader {
   /**
    * @typedef {object} TypeReaderOptions The type reader options.
    * @prop {string} type The type reader's type.
@@ -65,4 +65,6 @@ module.exports = class TypeReader {
       );
     }
   }
-};
+}
+
+module.exports = TypeReader;

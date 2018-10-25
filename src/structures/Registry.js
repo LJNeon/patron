@@ -38,7 +38,7 @@ const TypeReaderCategory = require("../enums/TypeReaderCategory.js");
  * @prop {Precondition[]} preconditions All registered preconditions.
  * @prop {TypeReader[]} typeReaders All registered type readers.
  */
-module.exports = class Registry {
+class Registry {
   /**
    * @typedef {object} RegistryOptions The registry options.
    * @prop {boolean} [caseSensitive=true] Whether or not patron treats strings
@@ -649,4 +649,6 @@ module.exports = class Registry {
       );
     }
   }
-};
+}
+
+module.exports = Registry;

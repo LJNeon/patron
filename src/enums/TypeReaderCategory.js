@@ -20,7 +20,7 @@
  * @enum {Symbol}
  * @readonly
  */
-module.exports = {
+const TypeReaderCategory = {
   /** Global type readers. */
   Global: Symbol("TypeReaderCategory.Global"),
   /** Library-specific type readers. */
@@ -28,3 +28,5 @@ module.exports = {
   /** User-made type readers. */
   User: Symbol("TypeReaderCategory.User")
 };
+
+module.exports = TypeReaderCategory;

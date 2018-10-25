@@ -23,9 +23,9 @@ const Result = require("./Result.js");
  * @prop {object} args The parsed arguments.
  * @extends {Result}
  */
-module.exports = class ArgumentResult extends Result {
+class ArgumentResult extends Result {
   /**
-   * @typedef {ArgumentResultOptions} ArgumentResultOptions The argument result
+   * @typedef {object} ArgumentResultOptions The argument result
    * options.
    * @prop {object} args The parsed arguments.
    */
@@ -65,4 +65,6 @@ module.exports = class ArgumentResult extends Result {
       success: true
     });
   }
-};
+}
+
+module.exports = ArgumentResult;

@@ -28,12 +28,12 @@ Every single command execution returns a result object. This [result](https://vi
 - `MemberPermission`
 - `Precondition`
 - `TypeReader`
-- `UnknownCommand`
+- `UnknownCmd`
 
 Depending on which error occurred, the result object will have different properties. This is an example ([discord.js](https://github.com/LJNeon/patron.js-example/blob/master/src/services/CommandService.js)/[eris](https://github.com/LJNeon/patron.js-example/blob/eris/src/services/CommandService.js)) of how these errors may be handled.
 
 ## Arguments
-Patron.js's arguments allow for contextual default values. For example, if you have a user argument in your command, you can set the default of this argument to `ArgumentDefault.Author`. [This enum](https://vim2meta.github.io/patron.js/global.html#ArgumentDefault) allows you to set defaults of arguments based off the context in which the command was used.
+Patron.js's arguments allow for contextual default values. For example, if you have a user argument in your command, you can set the default of this argument to `ArgumentDefault.Author`. [This enum](https://vim2meta.github.io/patron.js/global.html#ArgumentDefault) allows you to set defaults of arguments based on the context in which the command was used.
 
 Furthermore, this framework has featured, efficient and reliable type readers. For example, the user type reader can parse a user object based off of an id, mention, username, or nickname (if they are in a guild). If there are multiple matches found, it will return an unsuccessful [TypeReaderResult](https://vim2meta.github.io/patron.js/TypeReaderResult.html) with the matches in question in the error reason. If there are too many matches to list, it will simply ask the user to be more specific. All available type readers are [here](https://github.com/vim2meta/patron.js/tree/master/src/readers).
 

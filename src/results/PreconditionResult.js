@@ -22,7 +22,7 @@ const Result = require("./Result.js");
  * A precondition result.
  * @extends {Result}
  */
-module.exports = class PreconditionResult extends Result {
+class PreconditionResult extends Result {
   /**
    * Returns a successful precondition result.
    * @returns {PreconditionResult} The result in question.
@@ -45,4 +45,6 @@ module.exports = class PreconditionResult extends Result {
       success: false
     });
   }
-};
+}
+
+module.exports = PreconditionResult;

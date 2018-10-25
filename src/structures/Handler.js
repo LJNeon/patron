@@ -30,7 +30,7 @@ const Result = require("../results/Result.js");
  * messages.
  * @prop {Registry} registry The registry used to store the commands.
  */
-module.exports = class Handler {
+class Handler {
   /**
    * @typedef {object} HandlerOptions The handler options.
    * @prop {RegExp} [argumentRegex=/"[\S\s]+?"|[\S\n]+/g] The regex used to
@@ -449,4 +449,6 @@ module.exports = class Handler {
       );
     }
   }
-};
+}
+
+module.exports = Handler;

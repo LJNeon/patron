@@ -23,7 +23,7 @@
  * @prop {?CommandError} commandError The command error.
  * @prop {?string} errorReason The reason for the failed execution.
  */
-module.exports = class Result {
+class Result {
   /**
    * @typedef {object} ResultOptions The result options.
    * @prop {boolean} success Whether or not the command execution was
@@ -60,4 +60,6 @@ module.exports = class Result {
       success: true
     });
   }
-};
+}
+
+module.exports = Result;

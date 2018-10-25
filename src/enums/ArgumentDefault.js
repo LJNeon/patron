@@ -20,7 +20,7 @@
  * @enum {Symbol}
  * @readonly
  */
-module.exports = {
+const ArgumentDefault = {
   /** The author of the command message. */
   Author: Symbol("ArgumentDefault.Author"),
   /** The channel of the command message. */
@@ -34,3 +34,5 @@ module.exports = {
   /** The command message. */
   Message: Symbol("ArgumentDefault.Message")
 };
+
+module.exports = ArgumentDefault;

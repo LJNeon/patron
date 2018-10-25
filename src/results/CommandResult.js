@@ -23,9 +23,9 @@ const Result = require("./Result.js");
  * @prop {*} data Information to be passed to the postconditions.
  * @extends {Result}
  */
-module.exports = class CommandResult extends Result {
+class CommandResult extends Result {
   /**
-   * @typedef {CommandResultOptions} CommandResultOptions The command result
+   * @typedef {object} CommandResultOptions The command result
    * options.
    * @prop {*} data Information to be passed to the postconditions.
    */
@@ -75,4 +75,6 @@ module.exports = class CommandResult extends Result {
       success: false
     });
   }
-};
+}
+
+module.exports = CommandResult;

@@ -101,7 +101,7 @@
 
             
 
-            <td class="description last">The commands options.</td>
+            <td class="description last">The command options.</td>
         </tr>
 
     
@@ -141,13 +141,13 @@
 
         <tr>
             
-                <td class="name"><code>names</code></td>
+                <td class="name"><code>args</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;string></span>
+<span class="param-type">Array.&lt;<a href="Argument.html">Argument</a>></span>
 
 
             
@@ -163,123 +163,7 @@
 
             
 
-            <td class="description last">The names of the command.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>group</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Group.html">Group</a></span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">The group of the command.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>description</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">The description of the command.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>usableContexts</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;Symbol></span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">An array of contexts the command can be used.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>memberPermissions</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;string></span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">The permissions required by the invoker to use the command.</td>
+            <td class="description last">The command's arguments.</td>
         </tr>
 
     
@@ -308,152 +192,8 @@
 
             
 
-            <td class="description last">The permissions required by the bot to execute the command.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>preconditions</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;<a href="Precondition.html">Precondition</a>></span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">The preconditions to be ran on the command.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>preconditionOptions</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;object></span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">The options to be passed to preconditions when they're run.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>postconditions</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;<a href="Postcondition.html">Postcondition</a>></span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">The postconditions to be ran on the command.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>args</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;<a href="Argument.html">Argument</a>></span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">The arguments of the command.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>hasCooldown</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">Whether the command has a cooldown.</td>
+            <td class="description last">The permissions required by the bot to
+execute the command.</td>
         </tr>
 
     
@@ -484,7 +224,304 @@
 
             
 
-            <td class="description last">An object of all user cooldowns and cooldown options on the command.</td>
+            <td class="description last">An object of all user cooldowns and cooldown
+options on the command.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>description</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The command's description.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>group</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Group.html">Group</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The command's group.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>hasCooldown</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">Whether or not the command has a cooldown.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>memberPermissions</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;string></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The permissions required by the invoker
+to use the command.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>names</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;string></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The command's names.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>preconditionOptions</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;*></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The options to be passed to
+preconditions when they're run.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>preconditions</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="Precondition.html">Precondition</a>></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The preconditions to be ran on the
+command.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>postconditionOptions</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;*></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The options to be passed to
+postconditions when they're run.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>postconditions</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="Postcondition.html">Postcondition</a>></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The postconditions to be ran on the
+command.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>usableContexts</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;Symbol></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">An array of contexts the command can be used
+in.</td>
         </tr>
 
     
@@ -520,11 +557,6 @@
 
     
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="structures_Command.js.html">structures/Command.js</a>, <a href="structures_Command.js.html#line21">line 21</a>
-    </li></ul></dd>
     
 
     
@@ -585,7 +617,7 @@
 
 
 <div class="description">
-    Creates the example string of the command.
+    Returns an example string of the command.
 </div>
 
 
@@ -626,11 +658,6 @@
 
     
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="structures_Command.js.html">structures/Command.js</a>, <a href="structures_Command.js.html#line105">line 105</a>
-    </li></ul></dd>
     
 
     
@@ -693,7 +720,7 @@
 
 
 <div class="description">
-    Creates the usage string of the command.
+    Returns a usage string of the command.
 </div>
 
 
@@ -734,11 +761,6 @@
 
     
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="structures_Command.js.html">structures/Command.js</a>, <a href="structures_Command.js.html#line75">line 75</a>
-    </li></ul></dd>
     
 
     
@@ -793,7 +815,7 @@
     
 
     
-    <h4 class="name" id="revertCooldown"><span class="type-signature">(async) </span>revertCooldown<span class="signature">(userId, guildId<span class="signature-attributes">nullable</span>)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    <h4 class="name" id="revertCooldown"><span class="type-signature">(async) </span>revertCooldown<span class="signature">(userId, guildId<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
     
 
     
@@ -801,7 +823,7 @@
 
 
 <div class="description">
-    Attempts to revert the Command's cooldown.
+    Attempts to revert the Command"s cooldown.
 </div>
 
 
@@ -885,9 +907,9 @@
             
                 <td class="attributes">
                 
-
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+
                 
 
                 
@@ -934,11 +956,6 @@
 
     
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="structures_Command.js.html">structures/Command.js</a>, <a href="structures_Command.js.html#line135">line 135</a>
-    </li></ul></dd>
     
 
     
@@ -993,7 +1010,7 @@
     
 
     
-    <h4 class="name" id="run"><span class="type-signature">(async, abstract) </span>run<span class="signature">(message, args, &hellip;custom)</span><span class="type-signature"> &rarr; {Promise.&lt;?<a href="CommandResult.html">CommandResult</a>>}</span></h4>
+    <h4 class="name" id="run"><span class="type-signature">(async, abstract) </span>run<span class="signature">(message, args)</span><span class="type-signature"> &rarr; {Promise.&lt;*>}</span></h4>
     
 
     
@@ -1025,8 +1042,6 @@
         <th>Type</th>
 
         
-        <th>Attributes</th>
-        
 
         
 
@@ -1052,14 +1067,6 @@
             </td>
 
             
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
 
             
 
@@ -1083,51 +1090,10 @@
             </td>
 
             
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
 
             
 
             <td class="description last">The arguments of the command.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>custom</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">*</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                    &lt;repeatable><br>
-                
-                </td>
-            
-
-            
-
-            <td class="description last">The custom parameters passed into the handler.</td>
         </tr>
 
     
@@ -1166,11 +1132,6 @@
     
 
     
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="structures_Command.js.html">structures/Command.js</a>, <a href="structures_Command.js.html#line67">line 67</a>
-    </li></ul></dd>
-    
 
     
 
@@ -1195,7 +1156,8 @@
 
         
 <div class="param-desc">
-    Resolves once the execution of the command is complete.
+    Resolves once the execution of the
+command is complete.
 </div>
 
 
@@ -1206,7 +1168,7 @@
     </dt>
     <dd>
         
-<span class="param-type">Promise.&lt;?<a href="CommandResult.html">CommandResult</a>></span>
+<span class="param-type">Promise.&lt;*></span>
 
 
     </dd>
@@ -1224,7 +1186,7 @@
     
 
     
-    <h4 class="name" id="updateCooldown"><span class="type-signature">(async) </span>updateCooldown<span class="signature">(userId, guildId<span class="signature-attributes">nullable</span>)</span><span class="type-signature"> &rarr; {Promise.&lt;boolean>}</span></h4>
+    <h4 class="name" id="updateCooldown"><span class="type-signature">(async) </span>updateCooldown<span class="signature">(userId, guildId<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise.&lt;boolean>}</span></h4>
     
 
     
@@ -1316,9 +1278,9 @@
             
                 <td class="attributes">
                 
-
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+
                 
 
                 
@@ -1366,11 +1328,6 @@
     
 
     
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="structures_Command.js.html">structures/Command.js</a>, <a href="structures_Command.js.html#line121">line 121</a>
-    </li></ul></dd>
-    
 
     
 
@@ -1395,7 +1352,7 @@
 
         
 <div class="param-desc">
-    Returns false if the user isn't on cooldown or no cooldown is set, and true if they are on cooldown.
+    Whether or not the user is on cooldown.
 </div>
 
 
@@ -1434,13 +1391,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Argument.html">Argument</a></li><li><a href="ArgumentPrecondition.html">ArgumentPrecondition</a></li><li><a href="ArgumentResult.html">ArgumentResult</a></li><li><a href="Command.html">Command</a></li><li><a href="CommandResult.html">CommandResult</a></li><li><a href="Cooldown.html">Cooldown</a></li><li><a href="CooldownResult.html">CooldownResult</a></li><li><a href="ExceptionResult.html">ExceptionResult</a></li><li><a href="Group.html">Group</a></li><li><a href="Handler.html">Handler</a></li><li><a href="InvalidContextResult.html">InvalidContextResult</a></li><li><a href="MultiMutex.html">MultiMutex</a></li><li><a href="Mutex.html">Mutex</a></li><li><a href="Postcondition.html">Postcondition</a></li><li><a href="Precondition.html">Precondition</a></li><li><a href="PreconditionResult.html">PreconditionResult</a></li><li><a href="Registry.html">Registry</a></li><li><a href="Result.html">Result</a></li><li><a href="TypeReader.html">TypeReader</a></li><li><a href="TypeReaderResult.html">TypeReaderResult</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ArgumentDefault">ArgumentDefault</a></li><li><a href="global.html#CommandError">CommandError</a></li><li><a href="global.html#Context">Context</a></li><li><a href="global.html#Library">Library</a></li><li><a href="global.html#RequireAll">RequireAll</a></li><li><a href="global.html#TypeReaderCategory">TypeReaderCategory</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Argument.html">Argument</a></li><li><a href="ArgumentPrecondition.html">ArgumentPrecondition</a></li><li><a href="ArgumentResult.html">ArgumentResult</a></li><li><a href="Command.html">Command</a></li><li><a href="CommandResult.html">CommandResult</a></li><li><a href="Cooldown.html">Cooldown</a></li><li><a href="CooldownResult.html">CooldownResult</a></li><li><a href="ExceptionResult.html">ExceptionResult</a></li><li><a href="Group.html">Group</a></li><li><a href="Handler.html">Handler</a></li><li><a href="InvalidContextResult.html">InvalidContextResult</a></li><li><a href="MultiMutex.html">MultiMutex</a></li><li><a href="Mutex.html">Mutex</a></li><li><a href="PermissionResult.html">PermissionResult</a></li><li><a href="Postcondition.html">Postcondition</a></li><li><a href="Precondition.html">Precondition</a></li><li><a href="PreconditionResult.html">PreconditionResult</a></li><li><a href="Registry.html">Registry</a></li><li><a href="Result.html">Result</a></li><li><a href="TypeReader.html">TypeReader</a></li><li><a href="TypeReaderResult.html">TypeReaderResult</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ArgumentDefault">ArgumentDefault</a></li><li><a href="global.html#CommandError">CommandError</a></li><li><a href="global.html#Context">Context</a></li><li><a href="global.html#Library">Library</a></li><li><a href="global.html#RequireAll">RequireAll</a></li><li><a href="global.html#TypeReaderCategory">TypeReaderCategory</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Oct 13 2018 18:52:25 GMT+0000 (Coordinated Universal Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Oct 25 2018 04:41:11 GMT+0000 (Coordinated Universal Time)
 </footer>
 
 <script> prettyPrint(); </script>

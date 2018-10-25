@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: TypeReaderResult</title>
+    <title>JSDoc: Class: PermissionResult</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: TypeReaderResult</h1>
+    <h1 class="page-title">Class: PermissionResult</h1>
 
     
 
@@ -28,9 +28,9 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>TypeReaderResult<span class="signature">(options)</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>PermissionResult<span class="signature">(options)</span><span class="type-signature"></span></h2>
         
-            <div class="class-description">A type reader result.</div>
+            <div class="class-description">A permission result.</div>
         
     
 </header>
@@ -45,7 +45,7 @@
     
 
     
-    <h4 class="name" id="TypeReaderResult"><span class="type-signature"></span>new TypeReaderResult<span class="signature">(options)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="PermissionResult"><span class="type-signature"></span>new PermissionResult<span class="signature">(options)</span><span class="type-signature"></span></h4>
     
 
     
@@ -91,7 +91,7 @@
             <td class="type">
             
                 
-<span class="param-type"><a href="global.html#TypeReaderResultOptions">TypeReaderResultOptions</a></span>
+<span class="param-type"><a href="global.html#PermissionResultOptions">PermissionResultOptions</a></span>
 
 
             
@@ -101,7 +101,7 @@
 
             
 
-            <td class="description last">The type reader result options.</td>
+            <td class="description last">The permission result options.</td>
         </tr>
 
     
@@ -127,8 +127,6 @@
         <th>Type</th>
 
         
-        <th>Attributes</th>
-        
 
         
 
@@ -141,62 +139,23 @@
 
         <tr>
             
-                <td class="name"><code>value</code></td>
+                <td class="name"><code>permissions</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">*</span>
+<span class="param-type">object</span>
 
 
             
             </td>
 
             
-                <td class="attributes">
-                
-
-                
-                    &lt;nullable><br>
-                
-                </td>
-            
 
             
 
-            <td class="description last">The parsed value from the type reader.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>matches</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;*></span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-                    &lt;nullable><br>
-                
-                </td>
-            
-
-            
-
-            <td class="description last">The type reader matches.</td>
+            <td class="description last">The missing permissions.</td>
         </tr>
 
     
@@ -295,7 +254,7 @@
     
 
     
-    <h4 class="name" id=".fromError"><span class="type-signature">(static) </span>fromError<span class="signature">(command, reason, matches<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="TypeReaderResult.html">TypeReaderResult</a>}</span></h4>
+    <h4 class="name" id=".fromBot"><span class="type-signature">(static) </span>fromBot<span class="signature">(command, permissions)</span><span class="type-signature"> &rarr; {<a href="PermissionResult.html">PermissionResult</a>}</span></h4>
     
 
     
@@ -303,7 +262,7 @@
 
 
 <div class="description">
-    Returns a failed type reader result.
+    Returns a failed bot permissions result.
 </div>
 
 
@@ -326,8 +285,6 @@
 
         <th>Type</th>
 
-        
-        <th>Attributes</th>
         
 
         
@@ -354,14 +311,6 @@
             </td>
 
             
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
 
             
 
@@ -372,64 +321,23 @@
 
         <tr>
             
-                <td class="name"><code>reason</code></td>
+                <td class="name"><code>permissions</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">Array.&lt;string></span>
 
 
             
             </td>
 
             
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
 
             
 
-            <td class="description last">The reason for the type reader failure.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>matches</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;*></span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">The type reader matches.</td>
+            <td class="description last">The missing permissions.</td>
         </tr>
 
     
@@ -503,7 +411,7 @@
     </dt>
     <dd>
         
-<span class="param-type"><a href="TypeReaderResult.html">TypeReaderResult</a></span>
+<span class="param-type"><a href="PermissionResult.html">PermissionResult</a></span>
 
 
     </dd>
@@ -521,7 +429,7 @@
     
 
     
-    <h4 class="name" id=".fromSuccess"><span class="type-signature">(static) </span>fromSuccess<span class="signature">(value)</span><span class="type-signature"> &rarr; {<a href="TypeReaderResult.html">TypeReaderResult</a>}</span></h4>
+    <h4 class="name" id=".fromMember"><span class="type-signature">(static) </span>fromMember<span class="signature">(command, permissions)</span><span class="type-signature"> &rarr; {<a href="PermissionResult.html">PermissionResult</a>}</span></h4>
     
 
     
@@ -529,7 +437,7 @@
 
 
 <div class="description">
-    Returns a successful type reader result.
+    Returns a failed member permissions result.
 </div>
 
 
@@ -565,13 +473,13 @@
 
         <tr>
             
-                <td class="name"><code>value</code></td>
+                <td class="name"><code>command</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">*</span>
+<span class="param-type"><a href="Command.html">Command</a></span>
 
 
             
@@ -581,7 +489,30 @@
 
             
 
-            <td class="description last">The parsed value from the type reader.</td>
+            <td class="description last">The command being executed.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>permissions</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;string></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The missing permissions.</td>
         </tr>
 
     
@@ -655,7 +586,159 @@
     </dt>
     <dd>
         
-<span class="param-type"><a href="TypeReaderResult.html">TypeReaderResult</a></span>
+<span class="param-type"><a href="PermissionResult.html">PermissionResult</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="format"><span class="type-signature"></span>format<span class="signature">(permissions)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Formats an array of permissions into a list.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>permissions</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;string></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The permissions.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    A list of the permissions.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
 
 
     </dd>

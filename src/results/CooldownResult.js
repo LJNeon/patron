@@ -23,9 +23,9 @@ const Result = require("./Result.js");
  * @prop {number} remaining The time remaining on the command cooldown.
  * @extends {Result}
  */
-module.exports = class CooldownResult extends Result {
+class CooldownResult extends Result {
   /**
-   * @typedef {CooldownResultOptions} CooldownResultOptions The cooldown result
+   * @typedef {object} CooldownResultOptions The cooldown result
    * options.
    * @prop {number} remaining The time remaining on the command cooldown.
    */
@@ -53,4 +53,6 @@ module.exports = class CooldownResult extends Result {
       success: false
     });
   }
-};
+}
+
+module.exports = CooldownResult;

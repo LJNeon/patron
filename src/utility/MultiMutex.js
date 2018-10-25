@@ -20,7 +20,7 @@ const Mutex = require("./Mutex.js");
 /**
  * A Map of mutexes organized by IDs.
  */
-module.exports = class MultiMutex {
+class MultiMutex {
   constructor() {
     this.mutexes = new Map();
   }
@@ -37,4 +37,6 @@ module.exports = class MultiMutex {
 
     return this.mutexes.get(id).sync(task);
   }
-};
+}
+
+module.exports = MultiMutex;

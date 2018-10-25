@@ -20,7 +20,7 @@
  * @prop {string} name The name of the postcondition.
  * @prop {string} description The description of the postcondition.
  */
-module.exports = class Postcondition {
+class Postcondition {
   /**
    * @typedef {object} PostconditionOptions The postconditions options.
    * @prop {string} name The name of the postcondition.
@@ -58,4 +58,6 @@ module.exports = class Postcondition {
       );
     }
   }
-};
+}
+
+module.exports = Postcondition;

@@ -33,7 +33,7 @@ const Constants = require("../utility/Constants.js");
  * @prop {boolean} remainder Whether or not the argument is the remainder.
  * @prop {TypeReader} typeReader The argument's TypeReader.
  */
-module.exports = class Argument {
+class Argument {
   /**
    * @typedef {object} ArgumentOptions The argument options.
    * @prop {*} [defaultValue] The argument's default value.
@@ -117,4 +117,6 @@ module.exports = class Argument {
       );
     }
   }
-};
+}
+
+module.exports = Argument;

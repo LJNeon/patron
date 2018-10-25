@@ -20,7 +20,7 @@
  * @enum {Symbol}
  * @readonly
  */
-module.exports = {
+const CommandError = {
   /** The client lacking permissions. */
   BotPermission: Symbol("CommandError.BotPermission"),
   /** A command failure. */
@@ -42,3 +42,5 @@ module.exports = {
   /** An unknown command. */
   UnknownCmd: Symbol("CommandError.UnknownCmd")
 };
+
+module.exports = CommandError;

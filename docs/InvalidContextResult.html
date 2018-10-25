@@ -91,7 +91,7 @@
             <td class="type">
             
                 
-<span class="param-type"><a href="global.html#ResultOptions">ResultOptions</a></span>
+<span class="param-type"><a href="global.html#InvalidContextResultOptions">InvalidContextResultOptions</a></span>
 
 
             
@@ -101,7 +101,8 @@
 
             
 
-            <td class="description last">The result options.</td>
+            <td class="description last">The invalid context result
+options.</td>
         </tr>
 
     
@@ -139,11 +140,6 @@
 
     
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="results_InvalidContextResult.js.html">results/InvalidContextResult.js</a>, <a href="results_InvalidContextResult.js.html#line7">line 7</a>
-    </li></ul></dd>
     
 
     
@@ -199,6 +195,185 @@
     
 
     
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".fromError"><span class="type-signature">(static) </span>fromError<span class="signature">(command, context)</span><span class="type-signature"> &rarr; {<a href="InvalidContextResult.html">InvalidContextResult</a>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Returns an invalid context result.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>command</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Command.html">Command</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The command being executed.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>context</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Symbol</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The invalid context in question.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    The result in question.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="InvalidContextResult.html">InvalidContextResult</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+    
 
     
 
@@ -213,13 +388,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Argument.html">Argument</a></li><li><a href="ArgumentPrecondition.html">ArgumentPrecondition</a></li><li><a href="ArgumentResult.html">ArgumentResult</a></li><li><a href="Command.html">Command</a></li><li><a href="CommandResult.html">CommandResult</a></li><li><a href="Cooldown.html">Cooldown</a></li><li><a href="CooldownResult.html">CooldownResult</a></li><li><a href="ExceptionResult.html">ExceptionResult</a></li><li><a href="Group.html">Group</a></li><li><a href="Handler.html">Handler</a></li><li><a href="InvalidContextResult.html">InvalidContextResult</a></li><li><a href="MultiMutex.html">MultiMutex</a></li><li><a href="Mutex.html">Mutex</a></li><li><a href="Postcondition.html">Postcondition</a></li><li><a href="Precondition.html">Precondition</a></li><li><a href="PreconditionResult.html">PreconditionResult</a></li><li><a href="Registry.html">Registry</a></li><li><a href="Result.html">Result</a></li><li><a href="TypeReader.html">TypeReader</a></li><li><a href="TypeReaderResult.html">TypeReaderResult</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ArgumentDefault">ArgumentDefault</a></li><li><a href="global.html#CommandError">CommandError</a></li><li><a href="global.html#Context">Context</a></li><li><a href="global.html#Library">Library</a></li><li><a href="global.html#RequireAll">RequireAll</a></li><li><a href="global.html#TypeReaderCategory">TypeReaderCategory</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Argument.html">Argument</a></li><li><a href="ArgumentPrecondition.html">ArgumentPrecondition</a></li><li><a href="ArgumentResult.html">ArgumentResult</a></li><li><a href="Command.html">Command</a></li><li><a href="CommandResult.html">CommandResult</a></li><li><a href="Cooldown.html">Cooldown</a></li><li><a href="CooldownResult.html">CooldownResult</a></li><li><a href="ExceptionResult.html">ExceptionResult</a></li><li><a href="Group.html">Group</a></li><li><a href="Handler.html">Handler</a></li><li><a href="InvalidContextResult.html">InvalidContextResult</a></li><li><a href="MultiMutex.html">MultiMutex</a></li><li><a href="Mutex.html">Mutex</a></li><li><a href="PermissionResult.html">PermissionResult</a></li><li><a href="Postcondition.html">Postcondition</a></li><li><a href="Precondition.html">Precondition</a></li><li><a href="PreconditionResult.html">PreconditionResult</a></li><li><a href="Registry.html">Registry</a></li><li><a href="Result.html">Result</a></li><li><a href="TypeReader.html">TypeReader</a></li><li><a href="TypeReaderResult.html">TypeReaderResult</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ArgumentDefault">ArgumentDefault</a></li><li><a href="global.html#CommandError">CommandError</a></li><li><a href="global.html#Context">Context</a></li><li><a href="global.html#Library">Library</a></li><li><a href="global.html#RequireAll">RequireAll</a></li><li><a href="global.html#TypeReaderCategory">TypeReaderCategory</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Oct 13 2018 18:52:25 GMT+0000 (Coordinated Universal Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Oct 25 2018 04:41:11 GMT+0000 (Coordinated Universal Time)
 </footer>
 
 <script> prettyPrint(); </script>

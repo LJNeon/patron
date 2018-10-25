@@ -15,9 +15,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 "use strict";
-module.exports = {
+const DiscordChannelType = {
   Category: 4,
   DM: 1,
   Text: 0,
   Voice: 2
 };
+
+module.exports = DiscordChannelType;

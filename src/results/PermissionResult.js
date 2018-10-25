@@ -25,9 +25,9 @@ const StringUtil = require("../utility/StringUtil.js");
  * @prop {object} permissions The missing permissions.
  * @extends {Result}
  */
-module.exports = class PermissionResult extends Result {
+class PermissionResult extends Result {
   /**
-   * @typedef {PermissionResultOptions} PermissionResultOptions The permission
+   * @typedef {object} PermissionResultOptions The permission
    * result options.
    * @prop {string[]} permissions The missing permissions.
    */
@@ -99,4 +99,6 @@ module.exports = class PermissionResult extends Result {
       success: false
     });
   }
-};
+}
+
+module.exports = PermissionResult;

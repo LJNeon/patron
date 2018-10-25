@@ -20,16 +20,16 @@
  * @prop {Command[]} commands An array of all commands inside the group.
  * @prop {string} description The description of the group.
  * @prop {string} name The name of the group.
- * @prop {Array.<*>} preconditionOptions The options to be passed to preconditions
- * when they're run.
- * @prop {Precondition[]} preconditions The preconditions to be run on all
- * commands inside the group.
- * @prop {Array.<*>} postconditionOptions The options to be passed to postconditions
- * when they're run.
+ * @prop {Array.<*>} postconditionOptions The options to be passed to
+ * postconditions when they're run.
  * @prop {Postcondition[]} postconditions The postconditions to be run on all
  * commands inside the group.
+ * @prop {Array.<*>} preconditionOptions The options to be passed to
+ * preconditions when they're run.
+ * @prop {Precondition[]} preconditions The preconditions to be run on all
+ * commands inside the group.
  */
-module.exports = class Group {
+class Group {
   /**
    * @typedef {object} GroupOptions The group options.
    * @prop {string} [description=""] The description of the group.
@@ -107,4 +107,6 @@ module.exports = class Group {
       );
     }
   }
-};
+}
+
+module.exports = Group;

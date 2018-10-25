@@ -166,7 +166,8 @@
 
             
 
-            <td class="description last">The amount of uses allowed before a user's cooldown resets.</td>
+            <td class="description last">The amount of uses allowed before a user"s cooldown
+resets.</td>
         </tr>
 
     
@@ -195,7 +196,7 @@
 
             
 
-            <td class="description last">The time before a user's cooldown resets.</td>
+            <td class="description last">The time before a user"s cooldown resets.</td>
         </tr>
 
     
@@ -226,7 +227,9 @@
 
             
 
-            <td class="description last">If present, sorts users into different cooldowns by returning a key to be used for that user when passed user ID and if applicable guild ID.</td>
+            <td class="description last">If present, sorts users into different cooldowns by
+returning a key to be used for that user when passed user ID, and if
+applicable guild ID.</td>
         </tr>
 
     
@@ -262,11 +265,6 @@
 
     
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="structures_Cooldown.js.html">structures/Cooldown.js</a>, <a href="structures_Cooldown.js.html#line9">line 9</a>
-    </li></ul></dd>
     
 
     
@@ -319,7 +317,7 @@
     
 
     
-    <h4 class="name" id="get"><span class="type-signature"></span>get<span class="signature">(userId, guildId<span class="signature-attributes">nullable</span>)</span><span class="type-signature"> &rarr; {Promise.&lt;?object>}</span></h4>
+    <h4 class="name" id="get"><span class="type-signature"></span>get<span class="signature">(userId, guildId<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise.&lt;?object>}</span></h4>
     
 
     
@@ -411,9 +409,9 @@
             
                 <td class="attributes">
                 
-
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+
                 
 
                 
@@ -461,11 +459,6 @@
     
 
     
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="structures_Cooldown.js.html">structures/Cooldown.js</a>, <a href="structures_Cooldown.js.html#line42">line 42</a>
-    </li></ul></dd>
-    
 
     
 
@@ -490,7 +483,8 @@
 
         
 <div class="param-desc">
-    Resolves to a valid cooldown object or undefined.
+    Resolves to a valid cooldown object or
+undefined.
 </div>
 
 
@@ -519,7 +513,7 @@
     
 
     
-    <h4 class="name" id="revert"><span class="type-signature"></span>revert<span class="signature">(userId, guildId<span class="signature-attributes">nullable</span>)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    <h4 class="name" id="revert"><span class="type-signature"></span>revert<span class="signature">(userId, guildId<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
     
 
     
@@ -611,9 +605,9 @@
             
                 <td class="attributes">
                 
-
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+
                 
 
                 
@@ -660,11 +654,6 @@
 
     
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="structures_Cooldown.js.html">structures/Cooldown.js</a>, <a href="structures_Cooldown.js.html#line83">line 83</a>
-    </li></ul></dd>
     
 
     
@@ -719,7 +708,7 @@
     
 
     
-    <h4 class="name" id="use"><span class="type-signature"></span>use<span class="signature">(userId, guildId<span class="signature-attributes">nullable</span>)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+    <h4 class="name" id="use"><span class="type-signature"></span>use<span class="signature">(userId, guildId<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
     
 
     
@@ -811,9 +800,9 @@
             
                 <td class="attributes">
                 
-
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+
                 
 
                 
@@ -860,11 +849,6 @@
 
     
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="structures_Cooldown.js.html">structures/Cooldown.js</a>, <a href="structures_Cooldown.js.html#line58">line 58</a>
-    </li></ul></dd>
     
 
     
@@ -929,13 +913,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Argument.html">Argument</a></li><li><a href="ArgumentPrecondition.html">ArgumentPrecondition</a></li><li><a href="ArgumentResult.html">ArgumentResult</a></li><li><a href="Command.html">Command</a></li><li><a href="CommandResult.html">CommandResult</a></li><li><a href="Cooldown.html">Cooldown</a></li><li><a href="CooldownResult.html">CooldownResult</a></li><li><a href="ExceptionResult.html">ExceptionResult</a></li><li><a href="Group.html">Group</a></li><li><a href="Handler.html">Handler</a></li><li><a href="InvalidContextResult.html">InvalidContextResult</a></li><li><a href="MultiMutex.html">MultiMutex</a></li><li><a href="Mutex.html">Mutex</a></li><li><a href="Postcondition.html">Postcondition</a></li><li><a href="Precondition.html">Precondition</a></li><li><a href="PreconditionResult.html">PreconditionResult</a></li><li><a href="Registry.html">Registry</a></li><li><a href="Result.html">Result</a></li><li><a href="TypeReader.html">TypeReader</a></li><li><a href="TypeReaderResult.html">TypeReaderResult</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ArgumentDefault">ArgumentDefault</a></li><li><a href="global.html#CommandError">CommandError</a></li><li><a href="global.html#Context">Context</a></li><li><a href="global.html#Library">Library</a></li><li><a href="global.html#RequireAll">RequireAll</a></li><li><a href="global.html#TypeReaderCategory">TypeReaderCategory</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Argument.html">Argument</a></li><li><a href="ArgumentPrecondition.html">ArgumentPrecondition</a></li><li><a href="ArgumentResult.html">ArgumentResult</a></li><li><a href="Command.html">Command</a></li><li><a href="CommandResult.html">CommandResult</a></li><li><a href="Cooldown.html">Cooldown</a></li><li><a href="CooldownResult.html">CooldownResult</a></li><li><a href="ExceptionResult.html">ExceptionResult</a></li><li><a href="Group.html">Group</a></li><li><a href="Handler.html">Handler</a></li><li><a href="InvalidContextResult.html">InvalidContextResult</a></li><li><a href="MultiMutex.html">MultiMutex</a></li><li><a href="Mutex.html">Mutex</a></li><li><a href="PermissionResult.html">PermissionResult</a></li><li><a href="Postcondition.html">Postcondition</a></li><li><a href="Precondition.html">Precondition</a></li><li><a href="PreconditionResult.html">PreconditionResult</a></li><li><a href="Registry.html">Registry</a></li><li><a href="Result.html">Result</a></li><li><a href="TypeReader.html">TypeReader</a></li><li><a href="TypeReaderResult.html">TypeReaderResult</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ArgumentDefault">ArgumentDefault</a></li><li><a href="global.html#CommandError">CommandError</a></li><li><a href="global.html#Context">Context</a></li><li><a href="global.html#Library">Library</a></li><li><a href="global.html#RequireAll">RequireAll</a></li><li><a href="global.html#TypeReaderCategory">TypeReaderCategory</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Oct 13 2018 18:52:25 GMT+0000 (Coordinated Universal Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Oct 25 2018 04:41:11 GMT+0000 (Coordinated Universal Time)
 </footer>
 
 <script> prettyPrint(); </script>

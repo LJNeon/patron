@@ -139,13 +139,13 @@
 
         <tr>
             
-                <td class="name"><code>name</code></td>
+                <td class="name"><code>defaultValue</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">*</span>
 
 
             
@@ -155,76 +155,7 @@
 
             
 
-            <td class="description last">The name of the argument.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>key</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The key of the argument, acting as the name of the property on the args object.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>type</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The type of the argument.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>typeReader</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="TypeReader.html">TypeReader</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The type reader of the argument.</td>
+            <td class="description last">The argument's default value.</td>
         </tr>
 
     
@@ -247,30 +178,7 @@
 
             
 
-            <td class="description last">An example of the argument.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>defaultValue</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">*</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The default value of the argument.</td>
+            <td class="description last">The argument's example.</td>
         </tr>
 
     
@@ -293,20 +201,21 @@
 
             
 
-            <td class="description last">Allow this argument accept an infinite number of values and return them in an array.</td>
+            <td class="description last">Allow the argument to accept an infinite number of
+values and return them in an array.</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>preconditions</code></td>
+                <td class="name"><code>key</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;<a href="ArgumentPrecondition.html">ArgumentPrecondition</a>></span>
+<span class="param-type">string</span>
 
 
             
@@ -316,20 +225,20 @@
 
             
 
-            <td class="description last">The preconditions to be ran on the argument.</td>
+            <td class="description last">The argument's property name on the args object.</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>preconditionOptions</code></td>
+                <td class="name"><code>name</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;object></span>
+<span class="param-type">string</span>
 
 
             
@@ -339,7 +248,7 @@
 
             
 
-            <td class="description last">The options to be passed to preconditions when they're run.</td>
+            <td class="description last">The argument's name.</td>
         </tr>
 
     
@@ -362,7 +271,55 @@
 
             
 
-            <td class="description last">Whether the argument is optional.</td>
+            <td class="description last">Whether or not the argument is optional.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>preconditionOptions</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;object></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The options to be passed to
+preconditions when they're run.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>preconditions</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="ArgumentPrecondition.html">ArgumentPrecondition</a>></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The preconditions to be ran on
+the argument.</td>
         </tr>
 
     
@@ -385,7 +342,30 @@
 
             
 
-            <td class="description last">Whether the argument is the remainder.</td>
+            <td class="description last">Whether or not the argument is the remainder.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>typeReader</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="TypeReader.html">TypeReader</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The argument's TypeReader.</td>
         </tr>
 
     
@@ -421,11 +401,6 @@
 
     
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="structures_Argument.js.html">structures/Argument.js</a>, <a href="structures_Argument.js.html#line17">line 17</a>
-    </li></ul></dd>
     
 
     
@@ -484,13 +459,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Argument.html">Argument</a></li><li><a href="ArgumentPrecondition.html">ArgumentPrecondition</a></li><li><a href="ArgumentResult.html">ArgumentResult</a></li><li><a href="Command.html">Command</a></li><li><a href="CommandResult.html">CommandResult</a></li><li><a href="Cooldown.html">Cooldown</a></li><li><a href="CooldownResult.html">CooldownResult</a></li><li><a href="ExceptionResult.html">ExceptionResult</a></li><li><a href="Group.html">Group</a></li><li><a href="Handler.html">Handler</a></li><li><a href="InvalidContextResult.html">InvalidContextResult</a></li><li><a href="MultiMutex.html">MultiMutex</a></li><li><a href="Mutex.html">Mutex</a></li><li><a href="Postcondition.html">Postcondition</a></li><li><a href="Precondition.html">Precondition</a></li><li><a href="PreconditionResult.html">PreconditionResult</a></li><li><a href="Registry.html">Registry</a></li><li><a href="Result.html">Result</a></li><li><a href="TypeReader.html">TypeReader</a></li><li><a href="TypeReaderResult.html">TypeReaderResult</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ArgumentDefault">ArgumentDefault</a></li><li><a href="global.html#CommandError">CommandError</a></li><li><a href="global.html#Context">Context</a></li><li><a href="global.html#Library">Library</a></li><li><a href="global.html#RequireAll">RequireAll</a></li><li><a href="global.html#TypeReaderCategory">TypeReaderCategory</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Argument.html">Argument</a></li><li><a href="ArgumentPrecondition.html">ArgumentPrecondition</a></li><li><a href="ArgumentResult.html">ArgumentResult</a></li><li><a href="Command.html">Command</a></li><li><a href="CommandResult.html">CommandResult</a></li><li><a href="Cooldown.html">Cooldown</a></li><li><a href="CooldownResult.html">CooldownResult</a></li><li><a href="ExceptionResult.html">ExceptionResult</a></li><li><a href="Group.html">Group</a></li><li><a href="Handler.html">Handler</a></li><li><a href="InvalidContextResult.html">InvalidContextResult</a></li><li><a href="MultiMutex.html">MultiMutex</a></li><li><a href="Mutex.html">Mutex</a></li><li><a href="PermissionResult.html">PermissionResult</a></li><li><a href="Postcondition.html">Postcondition</a></li><li><a href="Precondition.html">Precondition</a></li><li><a href="PreconditionResult.html">PreconditionResult</a></li><li><a href="Registry.html">Registry</a></li><li><a href="Result.html">Result</a></li><li><a href="TypeReader.html">TypeReader</a></li><li><a href="TypeReaderResult.html">TypeReaderResult</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ArgumentDefault">ArgumentDefault</a></li><li><a href="global.html#CommandError">CommandError</a></li><li><a href="global.html#Context">Context</a></li><li><a href="global.html#Library">Library</a></li><li><a href="global.html#RequireAll">RequireAll</a></li><li><a href="global.html#TypeReaderCategory">TypeReaderCategory</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Oct 13 2018 18:52:25 GMT+0000 (Coordinated Universal Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Oct 25 2018 04:41:11 GMT+0000 (Coordinated Universal Time)
 </footer>
 
 <script> prettyPrint(); </script>

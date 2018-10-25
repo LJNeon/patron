@@ -24,9 +24,9 @@ const Result = require("./Result.js");
  * @prop {?Array.<*>} matches The type reader matches.
  * @extends {Result}
  */
-module.exports = class TypeReaderResult extends Result {
+class TypeReaderResult extends Result {
   /**
-   * @typedef {TypeReaderResultOptions} TypeReaderResultOptions The type reader
+   * @typedef {object} TypeReaderResultOptions The type reader
    * result options.
    * @prop {*} [value] The parsed value from the type reader.
    * @prop {Array.<*>} [matches] The type reader matches.
@@ -69,4 +69,6 @@ module.exports = class TypeReaderResult extends Result {
       success: false
     });
   }
-};
+}
+
+module.exports = TypeReaderResult;

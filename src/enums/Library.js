@@ -20,9 +20,11 @@
  * @enum {string}
  * @readonly
  */
-module.exports = {
+const Library = {
   /** The discord.js library */
   DiscordJS: "discord.js",
   /** The eris library */
   Eris: "eris"
 };
+
+module.exports = Library;

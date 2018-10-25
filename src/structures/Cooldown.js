@@ -26,7 +26,7 @@ const MultiMutex = require("../utility/MultiMutex.js");
  * returning a key to be used for that user when passed user ID, and if
  * applicable guild ID.
  */
-module.exports = class Cooldown {
+class Cooldown {
   /**
    * @typedef {object} CooldownOptions The cooldown options, if a number is
    * passed it"s set to time and limit is set to 1.
@@ -137,4 +137,6 @@ module.exports = class Cooldown {
         && typeof cooldown.sorter !== "function")
       throw new TypeError("Cooldown: The sorter must be a function.");
   }
-};
+}
+
+module.exports = Cooldown;

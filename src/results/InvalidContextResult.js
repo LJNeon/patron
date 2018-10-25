@@ -22,9 +22,9 @@ const Result = require("./Result.js");
  * An invalid context result.
  * @extends {Result}
  */
-module.exports = class InvalidContextResult extends Result {
+class InvalidContextResult extends Result {
   /**
-   * @typedef {InvalidContextResultOptions} InvalidContextResultOptions The
+   * @typedef {object} InvalidContextResultOptions The
    * invalid context result options.
    * @prop {Symbol} context The invalid context in question.
    */
@@ -53,4 +53,6 @@ module.exports = class InvalidContextResult extends Result {
       success: false
     });
   }
-};
+}
+
+module.exports = InvalidContextResult;

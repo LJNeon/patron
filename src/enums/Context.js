@@ -20,9 +20,11 @@
  * @enum {Symbol}
  * @readonly
  */
-module.exports = {
+const Context = {
   /** Usable in DMs. */
   DM: Symbol("Context.DM"),
   /** Usable in Guilds. */
   Guild: Symbol("Context.Guild")
 };
+
+module.exports = Context;

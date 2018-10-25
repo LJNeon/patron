@@ -18,7 +18,7 @@
 /**
  * A mutex.
  */
-module.exports = class Mutex {
+class Mutex {
   constructor() {
     this.busy = false;
     this.queue = [];
@@ -62,4 +62,6 @@ module.exports = class Mutex {
         this.dequeue();
     });
   }
-};
+}
+
+module.exports = Mutex;

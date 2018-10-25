@@ -30,7 +30,7 @@
     
         <h2><span class="attribs"><span class="type-signature"></span></span>Registry<span class="signature">(options)</span><span class="type-signature"></span></h2>
         
-            <div class="class-description">A registry containing all commands, groups and type readers.</div>
+            <div class="class-description">A registry containing all commands, groups, preconditions, and type readers.</div>
         
     
 </header>
@@ -139,6 +139,30 @@
 
         <tr>
             
+                <td class="name"><code>argumentPreconditions</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;ArgumentPrecondtion></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">All registered argument
+preconditions.</td>
+        </tr>
+
+    
+
+        <tr>
+            
                 <td class="name"><code>commands</code></td>
             
 
@@ -185,13 +209,13 @@
 
         <tr>
             
-                <td class="name"><code>typeReaders</code></td>
+                <td class="name"><code>library</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;<a href="TypeReader.html">TypeReader</a>></span>
+<span class="param-type"><a href="global.html#Library">Library</a></span>
 
 
             
@@ -201,53 +225,7 @@
 
             
 
-            <td class="description last">All registered type readers.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>preconditions</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;<a href="Precondition.html">Precondition</a>></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">All registered preconditions.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>argumentPreconditions</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;ArgumentPrecondtion></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">All registered argument preconditions.</td>
+            <td class="description last">The library being used.</td>
         </tr>
 
     
@@ -277,13 +255,13 @@
 
         <tr>
             
-                <td class="name"><code>library</code></td>
+                <td class="name"><code>preconditions</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">Array.&lt;<a href="Precondition.html">Precondition</a>></span>
 
 
             
@@ -293,7 +271,30 @@
 
             
 
-            <td class="description last">The library being used.</td>
+            <td class="description last">All registered preconditions.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>typeReaders</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="TypeReader.html">TypeReader</a>></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">All registered type readers.</td>
         </tr>
 
     
@@ -329,11 +330,6 @@
 
     
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="structures_Registry.js.html">structures/Registry.js</a>, <a href="structures_Registry.js.html#line23">line 23</a>
-    </li></ul></dd>
     
 
     
@@ -436,7 +432,7 @@
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;<a href="Precondition.html">Precondition</a>></span>
+<span class="param-type">Array.&lt;<a href="ArgumentPrecondition.html">ArgumentPrecondition</a>></span>
 
 
             
@@ -446,7 +442,8 @@
 
             
 
-            <td class="description last">An array of argument preconditions to be registered.</td>
+            <td class="description last">An array of argument
+preconditions to be registered.</td>
         </tr>
 
     
@@ -484,11 +481,6 @@
 
     
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="structures_Registry.js.html">structures/Registry.js</a>, <a href="structures_Registry.js.html#line78">line 78</a>
-    </li></ul></dd>
     
 
     
@@ -642,11 +634,6 @@
     
 
     
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="structures_Registry.js.html">structures/Registry.js</a>, <a href="structures_Registry.js.html#line216">line 216</a>
-    </li></ul></dd>
-    
 
     
 
@@ -749,11 +736,6 @@
 
     
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="structures_Registry.js.html">structures/Registry.js</a>, <a href="structures_Registry.js.html#line127">line 127</a>
-    </li></ul></dd>
     
 
     
@@ -907,11 +889,6 @@
     
 
     
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="structures_Registry.js.html">structures/Registry.js</a>, <a href="structures_Registry.js.html#line169">line 169</a>
-    </li></ul></dd>
-    
 
     
 
@@ -1014,11 +991,6 @@
 
     
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="structures_Registry.js.html">structures/Registry.js</a>, <a href="structures_Registry.js.html#line135">line 135</a>
-    </li></ul></dd>
     
 
     
@@ -1133,7 +1105,8 @@
 
             
 
-            <td class="description last">An array of postconditions to be registered.</td>
+            <td class="description last">An array of postconditions to be
+registered.</td>
         </tr>
 
     
@@ -1171,11 +1144,6 @@
 
     
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="structures_Registry.js.html">structures/Registry.js</a>, <a href="structures_Registry.js.html#line103">line 103</a>
-    </li></ul></dd>
     
 
     
@@ -1290,7 +1258,8 @@
 
             
 
-            <td class="description last">An array of preconditions to be registered.</td>
+            <td class="description last">An array of preconditions to be
+registered.</td>
         </tr>
 
     
@@ -1328,11 +1297,6 @@
 
     
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="structures_Registry.js.html">structures/Registry.js</a>, <a href="structures_Registry.js.html#line53">line 53</a>
-    </li></ul></dd>
     
 
     
@@ -1486,11 +1450,6 @@
     
 
     
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="structures_Registry.js.html">structures/Registry.js</a>, <a href="structures_Registry.js.html#line144">line 144</a>
-    </li></ul></dd>
-    
 
     
 
@@ -1594,7 +1553,7 @@
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;<a href="Precondition.html">Precondition</a>></span>
+<span class="param-type">Array.&lt;string></span>
 
 
             
@@ -1604,7 +1563,8 @@
 
             
 
-            <td class="description last">An array of argument preconditions to be unregistered.</td>
+            <td class="description last">An array of argument
+precondition names to be unregistered.</td>
         </tr>
 
     
@@ -1642,11 +1602,6 @@
 
     
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="structures_Registry.js.html">structures/Registry.js</a>, <a href="structures_Registry.js.html#line326">line 326</a>
-    </li></ul></dd>
     
 
     
@@ -1751,7 +1706,7 @@
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;<a href="Command.html">Command</a>></span>
+<span class="param-type">Array.&lt;string></span>
 
 
             
@@ -1761,7 +1716,7 @@
 
             
 
-            <td class="description last">An array of commands to unregister.</td>
+            <td class="description last">An array of command names to unregister.</td>
         </tr>
 
     
@@ -1799,11 +1754,6 @@
 
     
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="structures_Registry.js.html">structures/Registry.js</a>, <a href="structures_Registry.js.html#line452">line 452</a>
-    </li></ul></dd>
     
 
     
@@ -1908,11 +1858,6 @@
     
 
     
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="structures_Registry.js.html">structures/Registry.js</a>, <a href="structures_Registry.js.html#line381">line 381</a>
-    </li></ul></dd>
-    
 
     
 
@@ -2016,7 +1961,7 @@
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;<a href="Group.html">Group</a>></span>
+<span class="param-type">Array.&lt;string></span>
 
 
             
@@ -2026,7 +1971,7 @@
 
             
 
-            <td class="description last">An array of groups to be unregistered.</td>
+            <td class="description last">An array of group names to be unregistered.</td>
         </tr>
 
     
@@ -2064,11 +2009,6 @@
 
     
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="structures_Registry.js.html">structures/Registry.js</a>, <a href="structures_Registry.js.html#line425">line 425</a>
-    </li></ul></dd>
     
 
     
@@ -2173,11 +2113,6 @@
     
 
     
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="structures_Registry.js.html">structures/Registry.js</a>, <a href="structures_Registry.js.html#line389">line 389</a>
-    </li></ul></dd>
-    
 
     
 
@@ -2281,7 +2216,7 @@
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;<a href="Postcondition.html">Postcondition</a>></span>
+<span class="param-type">Array.&lt;string></span>
 
 
             
@@ -2291,7 +2226,8 @@
 
             
 
-            <td class="description last">An array of postconditions to be unregistered.</td>
+            <td class="description last">An array of postcondition names to be
+unregistered.</td>
         </tr>
 
     
@@ -2329,11 +2265,6 @@
 
     
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="structures_Registry.js.html">structures/Registry.js</a>, <a href="structures_Registry.js.html#line353">line 353</a>
-    </li></ul></dd>
     
 
     
@@ -2438,7 +2369,7 @@
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;<a href="Precondition.html">Precondition</a>></span>
+<span class="param-type">Array.&lt;string></span>
 
 
             
@@ -2448,7 +2379,8 @@
 
             
 
-            <td class="description last">An array of preconditions to be unregistered.</td>
+            <td class="description last">An array of precondition names to be
+unregistered.</td>
         </tr>
 
     
@@ -2486,11 +2418,6 @@
 
     
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="structures_Registry.js.html">structures/Registry.js</a>, <a href="structures_Registry.js.html#line297">line 297</a>
-    </li></ul></dd>
     
 
     
@@ -2595,7 +2522,7 @@
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;<a href="TypeReader.html">TypeReader</a>></span>
+<span class="param-type">Array.&lt;string></span>
 
 
             
@@ -2605,7 +2532,8 @@
 
             
 
-            <td class="description last">An array of type readers to unregister.</td>
+            <td class="description last">An array of type reader names to
+unregister.</td>
         </tr>
 
     
@@ -2643,11 +2571,6 @@
 
     
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="structures_Registry.js.html">structures/Registry.js</a>, <a href="structures_Registry.js.html#line398">line 398</a>
-    </li></ul></dd>
     
 
     
@@ -2712,13 +2635,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Argument.html">Argument</a></li><li><a href="ArgumentPrecondition.html">ArgumentPrecondition</a></li><li><a href="ArgumentResult.html">ArgumentResult</a></li><li><a href="Command.html">Command</a></li><li><a href="CommandResult.html">CommandResult</a></li><li><a href="Cooldown.html">Cooldown</a></li><li><a href="CooldownResult.html">CooldownResult</a></li><li><a href="ExceptionResult.html">ExceptionResult</a></li><li><a href="Group.html">Group</a></li><li><a href="Handler.html">Handler</a></li><li><a href="InvalidContextResult.html">InvalidContextResult</a></li><li><a href="MultiMutex.html">MultiMutex</a></li><li><a href="Mutex.html">Mutex</a></li><li><a href="Postcondition.html">Postcondition</a></li><li><a href="Precondition.html">Precondition</a></li><li><a href="PreconditionResult.html">PreconditionResult</a></li><li><a href="Registry.html">Registry</a></li><li><a href="Result.html">Result</a></li><li><a href="TypeReader.html">TypeReader</a></li><li><a href="TypeReaderResult.html">TypeReaderResult</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ArgumentDefault">ArgumentDefault</a></li><li><a href="global.html#CommandError">CommandError</a></li><li><a href="global.html#Context">Context</a></li><li><a href="global.html#Library">Library</a></li><li><a href="global.html#RequireAll">RequireAll</a></li><li><a href="global.html#TypeReaderCategory">TypeReaderCategory</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Argument.html">Argument</a></li><li><a href="ArgumentPrecondition.html">ArgumentPrecondition</a></li><li><a href="ArgumentResult.html">ArgumentResult</a></li><li><a href="Command.html">Command</a></li><li><a href="CommandResult.html">CommandResult</a></li><li><a href="Cooldown.html">Cooldown</a></li><li><a href="CooldownResult.html">CooldownResult</a></li><li><a href="ExceptionResult.html">ExceptionResult</a></li><li><a href="Group.html">Group</a></li><li><a href="Handler.html">Handler</a></li><li><a href="InvalidContextResult.html">InvalidContextResult</a></li><li><a href="MultiMutex.html">MultiMutex</a></li><li><a href="Mutex.html">Mutex</a></li><li><a href="PermissionResult.html">PermissionResult</a></li><li><a href="Postcondition.html">Postcondition</a></li><li><a href="Precondition.html">Precondition</a></li><li><a href="PreconditionResult.html">PreconditionResult</a></li><li><a href="Registry.html">Registry</a></li><li><a href="Result.html">Result</a></li><li><a href="TypeReader.html">TypeReader</a></li><li><a href="TypeReaderResult.html">TypeReaderResult</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ArgumentDefault">ArgumentDefault</a></li><li><a href="global.html#CommandError">CommandError</a></li><li><a href="global.html#Context">Context</a></li><li><a href="global.html#Library">Library</a></li><li><a href="global.html#RequireAll">RequireAll</a></li><li><a href="global.html#TypeReaderCategory">TypeReaderCategory</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Oct 13 2018 18:52:25 GMT+0000 (Coordinated Universal Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Oct 25 2018 04:41:11 GMT+0000 (Coordinated Universal Time)
 </footer>
 
 <script> prettyPrint(); </script>

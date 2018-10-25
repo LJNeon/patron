@@ -23,9 +23,9 @@ const Result = require("./Result.js");
  * @prop {Error} error The error in question.
  * @extends {Result}
  */
-module.exports = class ExceptionResult extends Result {
+class ExceptionResult extends Result {
   /**
-   * @typedef {ExceptionResultOptions} ExceptionResultOptions
+   * @typedef {object} ExceptionResultOptions
    * @prop {Error} error The error in question.
    */
 
@@ -52,4 +52,6 @@ module.exports = class ExceptionResult extends Result {
       success: false
     });
   }
-};
+}
+
+module.exports = ExceptionResult;
