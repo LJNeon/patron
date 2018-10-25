@@ -15,6 +15,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 "use strict";
+
 /**
  * A command group.
  * @prop {Command[]} commands An array of all commands inside the group.

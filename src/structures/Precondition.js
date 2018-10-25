@@ -15,6 +15,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 "use strict";
+
 /**
  * A command precondition.
  * @prop {string} name The name of the precondition.
