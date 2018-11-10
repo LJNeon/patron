@@ -215,6 +215,17 @@ class Handler {
         return typeReaderResult;
 
       value.push(typeReaderResult.value);
+
+      const res = await this.runArgPreconditions(
+        message,
+        command,
+        i,
+        args,
+        typeReaderResult.value
+      );
+
+      if (res != null)
+        return res;
     }
   }
 
@@ -305,7 +316,7 @@ class Handler {
     split = split.slice(1);
 
     for (let i = 0; i < cmd.args.length; i++) {
-      let val = [];
+      let val;
 
       if (cmd.args[i].infinite) {
         const res = await this.parseInfiniteArg(msg, cmd, i, args, split, val);
@@ -317,19 +328,19 @@ class Handler {
           val = res;
         }
       } else {
-        const res = await this.parseFiniteArg(msg, cmd, i, args, cnt, split);
+        let res = await this.parseFiniteArg(msg, cmd, i, args, cnt, split);
 
         ({value: val} = res);
         cnt = res.newContent;
 
         if (res.value.success === false)
           return res.value;
+
+        res = await this.runArgPreconditions(msg, cmd, i, args, val);
+
+        if (res != null)
+          return res;
       }
-
-      const res = await this.runArgPreconditions(msg, cmd, i, args, val);
-
-      if (res != null)
-        return res;
 
       args[cmd.args[i].key] = val;
     }

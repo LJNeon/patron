@@ -57,19 +57,19 @@ module.exports = class LibraryHandler {
     switch (this.library) {
       case "discord.js":
         if (message.channel.type === "dm"
-            && command.usableContexts.includes(Context.DM))
+            && !command.usableContexts.includes(Context.DM))
           return InvalidContextResult.fromError(command, Context.DM);
         else if (message.channel.type === "text"
-            && command.usableContexts.includes(Context.Guild))
+            && !command.usableContexts.includes(Context.Guild))
           return InvalidContextResult.fromError(command, Context.Guild);
 
         break;
       case "eris":
         if (message.channel.type === DiscordChannelType.DM
-            && command.usableContexts.includes(Context.DM))
+            && !command.usableContexts.includes(Context.DM))
           return InvalidContextResult.fromError(command, Context.DM);
         else if (message.channel.type === DiscordChannelType.TextChannel
-            && command.usableContexts.includes(Context.Guild))
+            && !command.usableContexts.includes(Context.Guild))
           return InvalidContextResult.fromError(command, Context.Guild);
 
         break;
