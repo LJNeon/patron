@@ -175,11 +175,11 @@ class Handler {
    * the cooldowns.
    */
   async updateCooldown(message, command) {
-    const guild = this.registry.libraryHandler.guild(message);
-    let cooldown = await command.updateCooldown(
-      message.author.id,
-      guild == null ? null : guild.id
-    );
+    let guild = this.registry.libraryHandler.guild(message);
+
+    guild == null ? null : guild.id;
+
+    let cooldown = await command.updateCooldown(message.author.id, guild);
 
     if (!cooldown)
       return Result.fromSuccess(command);
