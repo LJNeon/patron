@@ -177,7 +177,7 @@ class Handler {
   async updateCooldown(message, command) {
     let guild = this.registry.libraryHandler.guild(message);
 
-    guild == null ? null : guild.id;
+    guild = guild == null ? null : guild.id;
 
     let cooldown = await command.updateCooldown(message.author.id, guild);
 
@@ -186,10 +186,11 @@ class Handler {
 
     cooldown = await command.cooldowns.get(message.author.id, guild);
 
-    return CooldownResult.fromError(command, cooldown.time - Date.now());
+    return CooldownResult.fromError(command, cooldown.resets - Date.now());
   }
 
-  async parseInfiniteArg(message, command, i, args, split, value) {
+  async parseInfiniteArg(message, command, i, args, split) {
+    const value = [];
     const input = split;
 
     if (input.length === 0) {
@@ -200,7 +201,7 @@ class Handler {
     }
 
     for (let j = 0; j < input.length; j++) {
-      if (this.hasDefaultRegex)
+      if (this.hasDefaultRegex && input != null)
         input[j] = input[j].replace(Constants.regexes.quotes, "");
 
       const typeReaderResult = await command.args[i].typeReader.read(
@@ -244,7 +245,7 @@ class Handler {
       }
     }
 
-    if (this.hasDefaultRegex)
+    if (this.hasDefaultRegex && input != null)
       input = input.replace(Constants.regexes.quotes, "");
 
     if (input == null || input === "") {
@@ -252,6 +253,7 @@ class Handler {
         return {
           content: newContent,
           input,
+          success: true,
           value: this.defaultValue(command.args[i].defaultValue, message)
         };
       }
@@ -259,6 +261,7 @@ class Handler {
       return {
         content: newContent,
         input,
+        success: false,
         value: ArgumentResult.fromInvalidCount(command)
       };
     }
@@ -274,6 +277,7 @@ class Handler {
     return {
       content: newContent,
       input,
+      success: result.success,
       value: result.value
     };
   }
@@ -319,7 +323,7 @@ class Handler {
       let val;
 
       if (cmd.args[i].infinite) {
-        const res = await this.parseInfiniteArg(msg, cmd, i, args, split, val);
+        const res = await this.parseInfiniteArg(msg, cmd, i, args, split);
 
         if (res != null) {
           if (res.success === false)
@@ -331,10 +335,10 @@ class Handler {
         let res = await this.parseFiniteArg(msg, cmd, i, args, cnt, split);
 
         ({value: val} = res);
-        cnt = res.newContent;
+        cnt = res.content;
 
-        if (res.value.success === false)
-          return res.value;
+        if (res.success === false)
+          return res;
 
         res = await this.runArgPreconditions(msg, cmd, i, args, val);
 

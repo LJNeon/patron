@@ -51,7 +51,7 @@ module.exports = new class UserTypeReader extends TypeReader {
       warningEmitted = true;
       process.emitWarning(
         "The user TypeReader is unreliable when shards are split between \
-        multiple clients."
+multiple clients."
       );
     }
 

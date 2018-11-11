@@ -35,7 +35,7 @@ module.exports = new class MemberTypeReader extends TypeReader {
       warningEmitted = true;
       process.emitWarning(
         "The member TypeReader is unreliable when the fetchAllUsers option is \
-        disabled."
+disabled."
       );
     }
 

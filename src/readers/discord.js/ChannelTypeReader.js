@@ -36,7 +36,7 @@ module.exports = new class ChannelTypeReader extends TypeReader {
       warningEmitted = true;
       process.emitWarning(
         "The channel TypeReader is unreliable when shards are split between \
-        multiple processes"
+multiple processes"
       );
     }
 

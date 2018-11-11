@@ -31,8 +31,10 @@ module.exports = new class GuildTypeReader extends TypeReader {
   async read(cmd, msg, arg, args, val) {
     if (!warningEmitted && msg.client.shard != null) {
       warningEmitted = true;
-      process.emitWarning("The guild TypeReader is unreliable when shards are \
-      split between multiple processes.");
+      process.emitWarning(
+        "The guild TypeReader is unreliable when shards are \
+split between multiple processes."
+      );
     }
 
     const id = val.match(Constants.regexes.id);

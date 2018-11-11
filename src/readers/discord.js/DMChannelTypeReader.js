@@ -27,7 +27,7 @@ function checkForWarn(client) {
     warningEmitted = true;
     process.emitWarning(
       "The DM channel TypeReader is unreliable when shards are split between \
-      multiple processes."
+multiple processes."
     );
   }
 }
