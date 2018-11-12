@@ -228,13 +228,15 @@ class Handler {
       if (res != null)
         return res;
     }
+
+    return value;
   }
 
-  async parseFiniteArg(message, command, i, args, content, split) {
+  async parseFiniteArg(msg, cmd, i, args, content, split) {
     let input = content;
     let newContent = content;
 
-    if (!command.args[i].remainder) {
+    if (!cmd.args[i].remainder) {
       input = split.shift();
 
       if (input != null) {
@@ -249,27 +251,25 @@ class Handler {
       input = input.replace(Constants.regexes.quotes, "");
 
     if (input == null || input === "") {
-      if (command.args[i].optional) {
+      if (cmd.args[i].optional) {
         return {
           content: newContent,
           input,
-          success: true,
-          value: this.defaultValue(command.args[i].defaultValue, message)
+          result: {value: this.defaultValue(cmd.args[i].defaultValue, msg)}
         };
       }
 
       return {
         content: newContent,
         input,
-        success: false,
-        value: ArgumentResult.fromInvalidCount(command)
+        result: ArgumentResult.fromInvalidCount(cmd)
       };
     }
 
-    const result = await command.args[i].typeReader.read(
-      command,
-      message,
-      command.args[i],
+    const result = await cmd.args[i].typeReader.read(
+      cmd,
+      msg,
+      cmd.args[i],
       args,
       input
     );
@@ -277,8 +277,7 @@ class Handler {
     return {
       content: newContent,
       input,
-      success: result.success,
-      value: result.value
+      result
     };
   }
 
@@ -334,11 +333,11 @@ class Handler {
       } else {
         let res = await this.parseFiniteArg(msg, cmd, i, args, cnt, split);
 
-        ({value: val} = res);
+        val = res.result.value;
         cnt = res.content;
 
-        if (res.success === false)
-          return res;
+        if (res.result.success === false)
+          return res.result;
 
         res = await this.runArgPreconditions(msg, cmd, i, args, val);
 
