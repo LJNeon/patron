@@ -43,7 +43,7 @@ module.exports = new class TextChannelTypeReader extends TypeReader {
 
     return TypeReaderUtil.handleMatches(
       cmd,
-      msg.guild.channels.filter(
+      msg.guild.channels.filterValues(
         channel => channel.name.toLowerCase().startsWith(lowerVal)
           && channel.type === "text"
       ),

@@ -45,7 +45,7 @@ module.exports = new class BannedUserTypeReader extends TypeReader {
     if (Constants.regexes.userTag.test(val)) {
       return TypeReaderUtil.handleMatches(
         cmd,
-        bans.filterValue(ban => ban.user.tag === lowerVal)
+        bans.filterValues(ban => ban.user.tag === lowerVal)
           .map(ban => ban.user),
         "Banned user not found.",
         user => user.tag

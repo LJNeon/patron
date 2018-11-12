@@ -69,7 +69,7 @@ multiple processes"
 
     return TypeReaderUtil.handleMatches(
       cmd,
-      msg.guild.channels.filter(
+      msg.guild.channels.filterValues(
         channel => channel.name.toLowerCase().startsWith(lowerVal)
       ),
       "Channel not found."
