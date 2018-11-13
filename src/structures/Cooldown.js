@@ -83,7 +83,7 @@ class Cooldown {
     return this.mutex.sync(this.parseMutex(guildId), async () => {
       const key = await this.parseKey(userId, guildId);
 
-      if (this.isInvalid(key)) {
+      if (this.isInvalid(key) || this.users[key].used === 0) {
         this.users[key] = {
           resets: Date.now() + this.time,
           used: 1
