@@ -52,6 +52,13 @@ module.exports = new class BannedUserTypeReader extends TypeReader {
       );
     }
 
-    return TypeReaderResult.fromError(cmd, "Banned user not found.");
+    return TypeReaderUtil.handleMatches(
+      cmd,
+      bans.filterValues(
+        ban => ban.username.toLowerCase() === lowerVal
+      ).map(ban => ban.user),
+      "Banned user not found.",
+      user => user.tag
+    );
   }
 }();
