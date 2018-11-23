@@ -59,7 +59,7 @@ module.exports = new class BannedUserTypeReader extends TypeReader {
     return TypeReaderUtil.handleMatches(
       cmd,
       bans.filter(
-        ban => ban.username.toLowerCase() === lowerVal
+        ban => ban.username.toLowerCase().includes(lowerVal)
       ),
       "Banned user not found.",
       b => `${StringUtil.escapeMarkdown(b.username)}#${b.discriminator}`
