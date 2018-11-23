@@ -28,7 +28,7 @@ module.exports = {
 
   list(arr, or = "and") {
     if (arr.length <= Constants.numbers.maxCommas)
-      return arr.join(or);
+      return arr.join(` ${or} `);
 
     return `${arr.slice(0, -1).join(", ")}, ${or} ${arr[arr.length - 1]}`;
   }
