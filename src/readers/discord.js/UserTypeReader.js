@@ -76,9 +76,9 @@ multiple clients."
     return TypeReaderUtil.handleMatches(
       cmd,
       msg.guild.members.filterValues(
-        member => member.user.username.toLowerCase().startsWith(lowerVal)
+        member => member.user.username.toLowerCase().includes(lowerVal)
           || (member.nickname != null
-          && member.nickname.toLowerCase().startsWith(lowerVal))
+          && member.nickname.toLowerCase().includes(lowerVal))
       ).map(member => member.user),
       "User not found.",
       user => user.tag

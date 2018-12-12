@@ -95,9 +95,9 @@ module.exports = new class UserTypeReader extends TypeReader {
     return TypeReaderUtil.handleMatches(
       cmd,
       msg.channel.guild.members.filter(
-        member => member.username.toLowerCase().startsWith(lowerVal)
+        member => member.username.toLowerCase().includes(lowerVal)
           || (member.nickname != null
-          && member.nickname.toLowerCase().startsWith(lowerVal))
+          && member.nickname.toLowerCase().includes(lowerVal))
       ).map(member => member.user),
       "User not found.",
       u => `${StringUtil.escapeMarkdown(u.username)}#${u.discriminator}`

@@ -64,9 +64,9 @@ async function matchFromId(cmd, client, id) {
 
 async function matchWithGuild(msg, cmd, lowerVal) {
   const matches = msg.guild.members.filterValues(
-    member => member.user.username.toLowerCase().startsWith(lowerVal)
+    member => member.user.username.toLowerCase().includes(lowerVal)
       || (member.nickname != null
-      && member.nickname.toLowerCase().startsWith(lowerVal))
+      && member.nickname.toLowerCase().includes(lowerVal))
   );
 
   if (matches.length === 0)
