@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vim2meta/patron.js.git"
+    "url": "git+https://github.com/LJNeon/patron.js.git"
   },
   "keywords": [
     "bot",
@@ -25,9 +25,9 @@
   "author": "ElJay#7711",
   "license": "AGPL-3.0-only",
   "bugs": {
-    "url": "https://github.com/vim2meta/patron.js/issues"
+    "url": "https://github.com/LJNeon/patron.js/issues"
   },
-  "homepage": "https://github.com/vim2meta/patron.js#readme",
+  "homepage": "https://github.com/LJNeon/patron.js#readme",
   "dependencies": {},
   "devDependencies": {
     "eslint": "^5.7.0",

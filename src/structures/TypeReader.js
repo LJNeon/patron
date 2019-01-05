@@ -1,6 +1,6 @@
 /*
  * patron.js - The cleanest command framework for discord.js and eris.
- * Copyright (c) 2018 patron.js contributors
+ * Copyright (c) 2019 patron.js contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License version 3 as

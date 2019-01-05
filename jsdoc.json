@@ -13,12 +13,12 @@
         "include": ["styles"]
       }
     },
-    "footerText": "&#169; 2018 patron.js contributors",
+    "footerText": "&#169; 2019 patron.js contributors",
     "logo": {
       "url": "https://i.imgur.com/6j61q1V.png",
       "width": "61px",
       "height": "13px",
-      "link": "https://github.com/vim2meta/patron.js"
+      "link": "https://github.com/LJNeon/patron.js"
     },
     "name": "patron.js"
   }
