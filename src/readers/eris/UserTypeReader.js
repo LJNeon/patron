@@ -52,7 +52,7 @@ async function parseId(client, cmd, id) {
   try {
     user = await client.getRESTUser(id);
   } catch (e) {
-    if (e.code !== Constants.errorCodes.unknownUser)
+    if (e.code !== Constants.errors.unknownUser)
       throw e;
   }
 
