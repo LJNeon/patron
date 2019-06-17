@@ -30,9 +30,9 @@
   "homepage": "https://github.com/LJNeon/patron.js#readme",
   "dependencies": {},
   "devDependencies": {
-    "eslint": "^5.7.0",
-    "jsdoc": "^3.5.5",
+    "eslint": "^5.16.0",
+    "jsdoc": "^3.6.2",
     "tui-jsdoc-template": "^1.2.2",
-    "typescript": "^3.1.3"
+    "typescript": "^3.5.2"
   }
 }
