@@ -55,7 +55,7 @@ class Argument {
    * @param {ArgumentOptions} options The argument options.
    */
   constructor(options) {
-    this.optional = options.defaultValue != null;
+    this.optional = options.hasOwnProperty("defaultValue");
     this.defaultValue = options.defaultValue;
     this.example = options.example;
     this.infinite = options.infinite == null ? false : options.infinite;
