@@ -67,8 +67,8 @@ module.exports = new class MemberTypeReader extends TypeReader {
       cmd,
       msg.channel.guild.members.filter(
         m => m.username.toLowerCase().startsWith(lowerVal)
-          || (m.nickname != null
-          && m.nickname.toLowerCase().startsWith(lowerVal))
+          || (m.nick != null
+          && m.nick.toLowerCase().startsWith(lowerVal))
       ),
       "Member not found.",
       m => `${StringUtil.escapeMarkdown(m.username)}#${m.discriminator}`
