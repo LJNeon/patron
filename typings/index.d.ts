@@ -43,8 +43,8 @@ declare module "patron.js" {
     public commandName?: string;
     public errorReason?: string;
     public success: boolean;
-    private constructor(options: ResultOptions);
-    public static fromSuccess(command?: Command): Result;
+    public constructor(options: ResultOptions);
+    public static fromSuccess(...args): Result;
   }
 
   export class ArgumentResult extends Result {
@@ -56,6 +56,7 @@ declare module "patron.js" {
 
   export class CommandResult extends Result {
     public data: any;
+    public id?: string;
     private constructor(options: CommandResultOptions);
     public static fromError(reason: string, data: any): CommandResult;
     public static fromUnknown(commandName: string): Result;
@@ -68,8 +69,12 @@ declare module "patron.js" {
     public static fromError(command: Command, remaining: number): CooldownResult;
   }
 
+  export class ErrorWithCode extends Error {
+    public code?: number
+  }
+
   export class ExceptionResult extends Result {
-    public error: Error;
+    public error: ErrorWithCode;
     private constructor(options: ExceptionResultOptions);
     public static fromError(command: Command, error: Error): ExceptionResult;
   }
@@ -139,18 +144,18 @@ declare module "patron.js" {
     constructor(options: CommandOptions);
     public getUsage(): string;
     public getExample(): string;
-    public revertCooldown(userId: string, guildId?: string): Promise;
+    public revertCooldown(userId: string, guildId?: string): Promise<void>;
     public run(message: object, args: object): Promise<any>;
     public updateCooldown(userId: string, guildId?: string): Promise<boolean>;
   }
 
   export class Cooldown {
     public limit: number;
-    public sorter?: function;
+    public sorter?(userId: string, guildId?: string);
     public time: number;
     constructor(options: number | CooldownOptions);
-    public get(userId: string, guildId?: string): Promise<?object>;
-    public revert(userId: string, guildId?: string): Promise;
+    public get(userId: string, guildId?: string): Promise<object|void>;
+    public revert(userId: string, guildId?: string): Promise<void>;
     public use(userId: string, guildId?: string): Promise<boolean>;
   }
 
@@ -172,7 +177,7 @@ declare module "patron.js" {
     constructor(options: HandlerOptions);
     public parseArguments(message: object, command: Command, prefixLength: number): Promise<ArgumentResult | PreconditionResult | TypeReaderResult>;
     public parseCommand(message: object, prefixLength: number): Promise<Result>;
-    public revertCooldown(message: object, command: Command): Promise;
+    public revertCooldown(message: object, command: Command): Promise<void>;
     public run(message: object, prefixLength: number): Promise<CooldownResult | ExceptionResult | PreconditionResult | TypeReaderResult | Result>;
     public runCommandPostconditions(message: object, command: Command, result: any): void;
     public runCommandPreconditions(message: object, command: Command): Promise<PreconditionResult | Result>;
@@ -184,7 +189,7 @@ declare module "patron.js" {
     public description: string;
     public name: string;
     constructor(options: PostconditionOptions);
-    public run(command: Command, message: object, result: CommandResult, options: any): void;
+    public run(message: object, result: CommandResult, options?: any): void;
   }
 
   export class Precondition {
@@ -231,11 +236,11 @@ declare module "patron.js" {
   }
 
   export class MultiMutex {
-    public sync(id: any, task: function): Promise<any>;
+    public sync(id: any, task: (...arg: any[]) => any): Promise<any>;
   }
 
   export class Mutex {
-    public sync(task: function): Promise<any>;
+    public sync(task: (...arg: any[]) => any): Promise<any>;
   }
 
   export function RequireAll(path: string) : Promise<any[]>;
@@ -311,7 +316,7 @@ declare module "patron.js" {
 
   interface CooldownOptions {
     limit: number;
-    sorter?: function;
+    sorter?:(userId: string, guildId?: string) => any;
     time: number;
   }
 
@@ -325,7 +330,7 @@ declare module "patron.js" {
   }
 
   interface HandlerOptions {
-    argumentRegex: RegExp;
+    argumentRegex?: RegExp;
     registry: Registry;
   }
 
