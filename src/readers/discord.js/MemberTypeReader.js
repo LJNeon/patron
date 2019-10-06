@@ -31,11 +31,11 @@ module.exports = new class MemberTypeReader extends TypeReader {
   async read(cmd, msg, arg, args, val) {
     let id = val.match(Constants.regexes.userMention);
 
-    if (!warningEmitted && !msg.client.options.fetchAllUsers) {
+    if (!warningEmitted && !msg.client.options.fetchAllMembers) {
       warningEmitted = true;
       process.emitWarning(
-        "The member TypeReader is unreliable when the fetchAllUsers option is \
-disabled."
+        "The member TypeReader is unreliable when the fetchAllMembers option \
+is disabled."
       );
     }
 
