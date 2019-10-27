@@ -29,7 +29,7 @@ module.exports = new class BannedUserTypeReader extends TypeReader {
   }
 
   async read(cmd, msg, arg, args, val) {
-    const bans = await msg.channel.guild.getBans();
+    const bans = (await msg.channel.guild.getBans()).map(x => x.user);
     let id = val.match(Constants.regexes.userMention);
 
     if (id != null || (id = val.match(Constants.regexes.id)) != null) {
