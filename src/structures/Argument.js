@@ -23,6 +23,10 @@ const Constants = require("../utility/Constants.js");
  * @prop {string} example The argument's example.
  * @prop {boolean} infinite Allow the argument to accept an infinite number of
  * values and return them in an array.
+ * @prop {boolean} repeatable Repeate argument until it returns an error. If the
+ * first arugment returns error, it will fail.
+ * @prop {number} maxRepeats Stops repeatable arguments if they repeat more than this.
+ * -1 is infinite.
  * @prop {string} key The argument's property name on the args object.
  * @prop {string} name The argument's name.
  * @prop {boolean} optional Whether or not the argument is optional.
@@ -40,6 +44,10 @@ class Argument {
    * @prop {string} example The argument's example.
    * @prop {boolean} [infinite=false] Allow this argument accept an infinite
    * number of values and return them in an array.
+   * @prop {boolean} [repeatable=false] Repeate argument until it returns an error. If the
+   * first arugment returns error, it will fail.
+   * @prop {number} [maxRepeats=-1] Stops repeatable arguments if they repeat more than this.
+   * -1 is infinite.
    * @prop {string} key The argument's property name on the args object.
    * @prop {string} name The argument's name.
    * @prop {Array<*>} [preconditionOptions=[]] The options to be passed to
@@ -59,6 +67,8 @@ class Argument {
     this.defaultValue = options.defaultValue;
     this.example = options.example;
     this.infinite = options.infinite == null ? false : options.infinite;
+    this.repeatable = options.repeatable == null ? false : options.repeatable;
+    this.maxRepeats = options.maxRepeats == null ? -1 : options.maxRepeats;
     this.key = options.key;
     this.name = options.name;
 
@@ -86,7 +96,15 @@ class Argument {
       throw new TypeError(
         `${argument.constructor.name}: The infinite setting must be a boolean.`
       );
-    } else if (typeof argument.key !== "string"
+    } else if (typeof argument.repeatable !== "boolean") {
+      throw new TypeError(
+        `${argument.constructor.name}: The repeatable setting must be a boolean.`
+      );
+    } else if (typeof argument.maxRepeats !== "number") {
+      throw new TypeError(
+        `${argument.constructor.name}: The repeatable setting must be a number.`
+      );
+    }  else if (typeof argument.key !== "string"
         || Constants.regexes.whiteSpace.test(argument.key)) {
       throw new TypeError(
         `${argument.constructor.name}: The key must be a string that does not \
