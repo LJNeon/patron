@@ -102,7 +102,7 @@ class Argument {
       );
     } else if (typeof argument.maxRepeats !== "number") {
       throw new TypeError(
-        `${argument.constructor.name}: The repeatable setting must be a number.`
+        `${argument.constructor.name}: The maxRepeats setting must be a number.`
       );
     }  else if (typeof argument.key !== "string"
         || Constants.regexes.whiteSpace.test(argument.key)) {
