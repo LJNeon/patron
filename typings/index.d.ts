@@ -105,6 +105,8 @@ declare module "patron.js" {
     public defaultValue: any;
     public example: string;
     public infinite: boolean;
+    public repeatable: boolean;
+    public maxRepeats: number;
     public key: string;
     public name: string;
     public optional: boolean;
@@ -281,6 +283,8 @@ declare module "patron.js" {
     defaultValue?: any;
     example: string;
     infinite?: boolean;
+    repeatable?: boolean;
+    maxRepeats?: number;
     key: string;
     name: string;
     preconditionOptions?: any[];
