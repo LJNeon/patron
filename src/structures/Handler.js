@@ -330,6 +330,34 @@ class Handler {
 
           val = res;
         }
+      } else if (cmd.args[i].repeatable) {
+        let values = [];
+        let s;
+        for (let repeats = 0; cmd.args[i].maxRepeats === -1 || repeats < cmd.args[i].maxRepeats; repeats++) {
+          s = split[0];
+          let res = await this.parseFiniteArg(msg, cmd, i, args, cnt, split);
+
+          let val = res.result.value;
+          cnt = res.content;
+
+          if (res.result.success === false && repeats === 0)
+            return res.result;
+          else if (res.result.success === false && repeats > 0) {
+            split.unshift(s);
+            break;
+          }
+
+          res = await this.runArgPreconditions(msg, cmd, i, args, val);
+
+          if (res != null && repeats === 0)
+            return res;
+          else if (res != null && repeats > 0) {
+            split.unshift(s);
+            break;
+          } else
+            values.push(val);
+        }
+        val = values;
       } else {
         let res = await this.parseFiniteArg(msg, cmd, i, args, cnt, split);
 
