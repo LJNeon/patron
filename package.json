@@ -1,26 +1,30 @@
 {
   "name": "patron.js",
-  "version": "3.1.0",
+  "version": "3.2.0",
+  "type": "module",
   "description": "The cleanest command framework for discord.js and eris.",
-  "main": "src/index.js",
-  "types": "typings/index.d.ts",
+  "main": "./lib/index.js",
+  "types": "./types/index.d.ts",
   "scripts": {
-    "test": "npm run lint && node src/index.js",
-    "lint": "node_modules/.bin/eslint ./src/** --ext .js",
-    "docs": "node_modules/.bin/jsdoc src -c jsdoc.json"
+    "preinstall": "node lib/preinstall.js",
+    "postinstall": "node lib/postinstall.js",
+    "lint": "eslint lib --ext .js && eslint site --ext .js",
+    "test": "npm run lint",
+    "jsdoc": "jsdoc lib -r -X -d console",
+    "docs": "node site/index.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/LJNeon/patron.js.git"
   },
   "keywords": [
-    "bot",
-    "command",
     "discord",
-    "discord.js",
+    "api",
+    "nodejs",
+    "discordjs",
     "eris",
-    "framework",
-    "nodejs"
+    "command",
+    "framework"
   ],
   "author": "ElJay#7711",
   "license": "AGPL-3.0-only",
@@ -28,11 +32,9 @@
     "url": "https://github.com/LJNeon/patron.js/issues"
   },
   "homepage": "https://github.com/LJNeon/patron.js#readme",
-  "dependencies": {},
   "devDependencies": {
-    "eslint": "^5.16.0",
+    "eslint": "^6.6.0",
     "jsdoc": "^3.6.3",
-    "tui-jsdoc-template": "^1.2.2",
-    "typescript": "^3.6.3"
+    "puppeteer": "^2.0.0"
   }
 }

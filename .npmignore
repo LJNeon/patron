@@ -1,9 +1,3 @@
-# Packages
 node_modules/
-
-# Miscellaneous
 docs/
-.vscode/
-.eslintrc.json
-.gitignore
-.travis.yml
+site/
