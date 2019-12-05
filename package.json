@@ -11,8 +11,6 @@
   "scripts": {
     "preinstall": "node lib/preinstall.js",
     "postinstall": "node lib/postinstall.js",
-    "preuninstall": "node lib/uninstall.js",
-    "postuninstall": "node lib/uninstall.js",
     "lint": "eslint lib --ext .js && eslint site --ext .js",
     "test": "npm run lint"
   },
