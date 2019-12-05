@@ -22,10 +22,13 @@
   "scripts": {
     "preinstall": "node lib/preinstall.js",
     "postinstall": "node lib/postinstall.js",
-    "lint": "eslint lib --ext .js && eslint site --ext .js",
+    "lint": "eslint lib --ext .js",
     "test": "npm run lint"
   },
   "devDependencies": {
+    "@babel/core": "^7.7.4",
+    "@babel/plugin-syntax-import-meta": "^7.7.4",
+    "babel-eslint": "^10.0.3",
     "eslint": "^6.6.0",
     "jsdoc": "^3.6.3",
     "puppeteer": "^2.0.0"
