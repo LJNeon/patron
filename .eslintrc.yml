@@ -75,6 +75,10 @@ rules: {
     {blankLine: "always", next: "export", prev: "*"},
     {blankLine: "always", next: "*", prev: "export"},
     {blankLine: "never", next: "export", prev: "export"},
+    {blankLine: "always", next: "*", prev: "cjs-import"},
+    {blankLine: "never", next: "cjs-import", prev: "cjs-import"},
+    {blankLine: "always", next: "cjs-export", prev: "*"},
+    {blankLine: "never", next: "cjs-export", prev: "cjs-export"},
     {blankLine: "always", next: "*", prev: "class"},
     {blankLine: "always", next: "function", prev: "*"},
     {blankLine: "always", next: "*", prev: "function"},
@@ -112,9 +116,9 @@ rules: {
   strict: ["error", "global"]
 }
 
-parser: "babel-eslint"
+overrides: [{
+  files: ["**/*.mjs"],
+  parserOptions: {sourceType: "module"}
+}]
 
-parserOptions: {
-  ecmaVersion: 2020,
-  sourceType: "module"
-}
+parserOptions: {ecmaVersion: 2020}

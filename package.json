@@ -2,7 +2,7 @@
   "name": "patron",
   "version": "3.2.0",
   "author": "ElJay#7711",
-  "license": "AGPL-3.0-only",
+  "license": "GPL-3.0-or-later",
   "description": "The cleanest command framework for discord.js and eris.",
   "keywords": [
     "discord",
@@ -13,11 +13,12 @@
     "command",
     "framework"
   ],
-  "type": "module",
-  "engines": {
-    "node": ">=12.13.1"
-  },
   "main": "./lib/index.js",
+  "exports": {
+    "require": "./lib/index.js",
+    "node": "./lib/esm.mjs",
+    "default": "./lib/index.js"
+  },
   "types": "./types/index.d.ts",
   "scripts": {
     "preinstall": "node lib/preinstall.js",
@@ -26,10 +27,7 @@
     "test": "npm run lint"
   },
   "devDependencies": {
-    "@babel/core": "^7.7.4",
-    "@babel/plugin-syntax-import-meta": "^7.7.4",
-    "babel-eslint": "^10.0.3",
-    "eslint": "^6.6.0",
+    "eslint": "^6.7.2",
     "jsdoc": "^3.6.3",
     "puppeteer": "^2.0.0"
   },
@@ -40,5 +38,6 @@
   "bugs": {
     "url": "https://github.com/LJNeon/patron.js/issues"
   },
-  "homepage": "https://github.com/LJNeon/patron.js#readme"
+  "homepage": "https://github.com/LJNeon/patron.js#readme",
+  "dependencies": {}
 }

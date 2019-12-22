@@ -308,10 +308,9 @@ declare module "patron.js" {
     unlock(): void;
   }
 
-  interface RequireAllFunc {
-    (directory: string): Promise<object>
-    sync(directory: string): object;
-  }
+  export function ImportAll(directory: string): Promise<Array<object>>;
 
-  export const RequireAll: RequireAllFunc;
+  export function RequireAll(directory: string): Promise<Array<object>>;
+
+  export function RequireAllSync(directory: string): Array<object>;
 }
