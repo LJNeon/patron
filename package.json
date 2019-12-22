@@ -15,9 +15,12 @@
   ],
   "main": "./lib/index.js",
   "exports": {
-    "require": "./lib/index.js",
-    "node": "./lib/esm.mjs",
-    "default": "./lib/index.js"
+    ".": {
+      "require": "./lib/index.js",
+      "import": "./lib/esm.mjs",
+      "default": "./lib/index.js"
+    },
+    "./esm": "./lib/esm.mjs"
   },
   "types": "./types/index.d.ts",
   "scripts": {
