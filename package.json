@@ -31,6 +31,7 @@
     "lint": "eslint lib --ext .js",
     "test": "npm run lint"
   },
+  "dependencies": {},
   "devDependencies": {
     "eslint": "^6.7.2",
     "jsdoc": "^3.6.3",
@@ -43,6 +44,5 @@
   "bugs": {
     "url": "https://github.com/LJNeon/patron.js/issues"
   },
-  "homepage": "https://github.com/LJNeon/patron.js#readme",
-  "dependencies": {}
+  "homepage": "https://github.com/LJNeon/patron.js#readme"
 }

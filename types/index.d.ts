@@ -1,6 +1,6 @@
 import {Message} from "./lib";
 
-declare module "patron.js" {
+declare module "patron" {
   type MaybePromise<T> = T | Promise<T>;
 
   export enum ArgumentDefault {

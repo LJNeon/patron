@@ -4,4 +4,4 @@ node_js: ["lts/*", "node"]
 
 cache: {directories: ["node_modules"]}
 
-install: "npm i --only=dev"
+install: "npm i --no-optional eris && npm i --only=dev"
