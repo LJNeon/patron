@@ -158,7 +158,7 @@ declare module "patron" {
     preconditionOptions: Array<any>;
     preconditions: Array<string>;
     usableContexts: Array<Context>;
-    run(message: Message, arguments: object): MaybePromise<ExecutionResult | void>;
+    run(message: Message, arguments?: object): MaybePromise<ExecutionResult | void>;
     getExample(prefix?: string): string | undefined;
     getUsage(prefix?: string): string;
     getCooldown(userId: string, guildId?: string): Promise<CooldownInfo | void>;
@@ -255,7 +255,7 @@ declare module "patron" {
   }
 
   export class Registry {
-    constructor(options: RegistryOptions);
+    constructor(options?: RegistryOptions);
     caseSensitive: boolean;
     defaultReaders: boolean;
     argumentPreconditions: RegistryMap<ArgumentPrecondition>;
