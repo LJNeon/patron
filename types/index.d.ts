@@ -131,7 +131,7 @@ declare module "patron" {
   }
 
   interface CommandOptions {
-    arguments?: Array<Argument>;
+    arguments?: Array<ArgumentOptions | Argument>;
     clientPermissions?: Array<string>;
     cooldown?: number | CooldownOptions;
     description?: string;
@@ -233,6 +233,7 @@ declare module "patron" {
     argumentRegex: RegExp;
     separator: string;
     registry: Registry;
+    executeCommand(message: Message, command: Command, args: Array<String>): Promise<Results>;
     run(message: Message, prefixLength: number): Promise<Results>;
   }
 
