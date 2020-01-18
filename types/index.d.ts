@@ -233,7 +233,7 @@ declare module "patron" {
     argumentRegex: RegExp;
     separator: string;
     registry: Registry;
-    executeCommand(message: Message, command: Command, args: Array<String>): Promise<Results>;
+    executeCommand(message: Message, command: string | Command, args: Array<String>): Promise<Results>;
     run(message: Message, prefixLength: number): Promise<Results>;
   }
 
