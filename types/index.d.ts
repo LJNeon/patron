@@ -40,6 +40,7 @@ declare module "patron" {
   export class CommandResult extends Result {
     private constructor();
     name?: string;
+    count?: number;
   }
 
   export class ContextResult extends Result {
