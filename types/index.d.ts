@@ -99,7 +99,7 @@ declare module "patron" {
   }
 
   export class Argument {
-    constructor(options: ArgumentOptions);
+    constructor(options?: ArgumentOptions);
     defaultValue: any;
     example: string;
     infinite: boolean;
@@ -117,7 +117,7 @@ declare module "patron" {
   }
 
   export class ArgumentPrecondition {
-    constructor(options: ConditionOptions);
+    constructor(options?: ConditionOptions);
     name: string;
     run(
       value: any,
@@ -145,7 +145,7 @@ declare module "patron" {
   }
 
   export class Command {
-    constructor(options: CommandOptions);
+    constructor(options?: CommandOptions);
     arguments: Array<Argument>;
     clientPermissions: Array<string>;
     cooldowns?: Cooldown;
@@ -204,7 +204,7 @@ declare module "patron" {
   }
 
   export class Group {
-    constructor(options: GroupOptions);
+    constructor(options?: GroupOptions);
     cooldowns?: Cooldown;
     description?: string;
     name: string;
@@ -227,7 +227,7 @@ declare module "patron" {
   }
 
   export class Handler {
-    constructor(options: HandlerOptions);
+    constructor(options?: HandlerOptions);
     defaultRegex: boolean;
     argumentRegex: RegExp;
     separator: string;
@@ -236,13 +236,13 @@ declare module "patron" {
   }
 
   export class Postcondition {
-    constructor(options: ConditionOptions);
+    constructor(options?: ConditionOptions);
     name: string;
     run(message: Message, value: any, options: any): Promise<void>;
   }
 
   export class Precondition {
-    constructor(options: ConditionOptions);
+    constructor(options?: ConditionOptions);
     name: string;
     run(command: Command, message: Message, options: any): MaybePromise<PreconditionResult>;
   }
@@ -271,17 +271,17 @@ declare module "patron" {
     getPostcondition(name: string): Postcondition | void;
     getPrecondition(name: string): Precondition | void;
     getTypeReader(type: string): TypeReader | void;
-    registerArgumentPreconditions(conditions: Array<ArgumentPrecondition>): this;
+    registerArgumentPreconditions(conditions: string | Array<ArgumentPrecondition>): this;
     unregisterArgumentPreconditions(names: Array<string>): this;
-    registerCommands(commands: Array<Command>): this;
+    registerCommands(commands: string | Array<Command>): this;
     unregisterCommands(names: Array<string>): this;
-    registerGroups(groups: Array<Group>): this;
+    registerGroups(groups: string | Array<Group>): this;
     unregisterGroups(names: Array<string>): this;
-    registerPostconditions(conditions: Array<Postcondition>): this;
+    registerPostconditions(conditions: string | Array<Postcondition>): this;
     unregisterPostconditions(names: Array<string>): this;
-    registerPreconditions(conditions: Array<Precondition>): this;
+    registerPreconditions(conditions: string | Array<Precondition>): this;
     unregisterPreconditions(names: Array<string>): this;
-    registerTypeReaders(readers: Array<TypeReader>): this;
+    registerTypeReaders(readers: string | Array<TypeReader>): this;
     unregisterTypeReaders(types: Array<string>): this;
   }
 
@@ -290,7 +290,7 @@ declare module "patron" {
   }
 
   export class TypeReader {
-    constructor(options: TypeReaderOptions);
+    constructor(options?: TypeReaderOptions);
     default: boolean;
     type: string;
     read(
@@ -308,9 +308,9 @@ declare module "patron" {
     unlock(): void;
   }
 
-  export function ImportAll(directory: string): Promise<Array<object>>;
+  export function ImportAll(directory: string): Promise<Array<any>>;
 
-  export function RequireAll(directory: string): Promise<Array<object>>;
+  export function RequireAll(directory: string): Promise<Array<any>>;
 
-  export function RequireAllSync(directory: string): Array<object>;
+  export function RequireAllSync(directory: string): Array<any>;
 }
