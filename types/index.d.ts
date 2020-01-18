@@ -61,9 +61,9 @@ declare module "patron" {
 
   export class ExecutionResult extends Result {
     private constructor();
-    value?: any;
-    static fromSuccess(value?: any): ExecutionResult;
-    static fromFailure(value?: any): ExecutionResult;
+    value?: unknown;
+    static fromSuccess(value?: unknown): ExecutionResult;
+    static fromFailure(value?: unknown): ExecutionResult;
   }
 
   export class PermissionResult extends Result {
@@ -80,20 +80,20 @@ declare module "patron" {
 
   export class TypeReaderResult extends Result {
     private constructor();
-    matches?: Array<any>;
+    matches?: Array<unknown>;
     reason?: string;
-    value?: any;
-    static fromSuccess(value: any): TypeReaderResult;
-    static fromFailure(command: Command, reason: string, matches?: Array<any>): TypeReaderResult;
+    value?: unknown;
+    static fromSuccess(value: unknown): TypeReaderResult;
+    static fromFailure(command: Command, reason: string, matches?: Array<unknown>): TypeReaderResult;
   }
 
   interface ArgumentOptions {
-    defaultValue?: any;
+    defaultValue?: unknown;
     example?: string;
     infinite?: boolean;
     key?: string;
     name?: string;
-    preconditionOptions?: Array<any>;
+    preconditionOptions?: Array<unknown>;
     preconditions?: Array<string>;
     remainder?: boolean;
     type: string;
@@ -101,13 +101,13 @@ declare module "patron" {
 
   export class Argument {
     constructor(options?: ArgumentOptions);
-    defaultValue: any;
+    defaultValue: unknown;
     example: string;
     infinite: boolean;
     key: string;
     name: string;
     optional: boolean;
-    preconditionOptions: Array<any>;
+    preconditionOptions: Array<unknown>;
     preconditions: Array<string>;
     remainder: boolean;
     type: string;
@@ -121,12 +121,12 @@ declare module "patron" {
     constructor(options?: ConditionOptions);
     name: string;
     run(
-      value: any,
+      value: unknown,
       command: Command,
       message: Message,
       argument: Argument,
       arguments: object,
-      options: any
+      options: unknown
     ): MaybePromise<PreconditionResult>;
   }
 
@@ -138,9 +138,9 @@ declare module "patron" {
     group?: string;
     memberPermissions?: Array<string>;
     names: Array<string>;
-    postconditionOptions?: Array<any>;
+    postconditionOptions?: Array<unknown>;
     postconditions?: Array<string>;
-    preconditionOptions?: Array<any>;
+    preconditionOptions?: Array<unknown>;
     preconditions?: Array<string>;
     usableContexts?: Array<Context>;
   }
@@ -154,9 +154,9 @@ declare module "patron" {
     group?: string;
     memberPermissions: Array<string>;
     names: Array<string>;
-    postconditionOptions: Array<any>;
+    postconditionOptions: Array<unknown>;
     postconditions: Array<string>;
-    preconditionOptions: Array<any>;
+    preconditionOptions: Array<unknown>;
     preconditions: Array<string>;
     usableContexts: Array<Context>;
     run(message: Message, arguments?: object): MaybePromise<ExecutionResult | void>;
@@ -198,9 +198,9 @@ declare module "patron" {
     cooldown?: number | CooldownOptions;
     description?: string;
     name: string;
-    postconditionOptions?: Array<any>;
+    postconditionOptions?: Array<unknown>;
     postconditions?: Array<string>;
-    preconditionOptions?: Array<any>;
+    preconditionOptions?: Array<unknown>;
     preconditions?: Array<string>;
   }
 
@@ -209,9 +209,9 @@ declare module "patron" {
     cooldowns?: Cooldown;
     description?: string;
     name: string;
-    postconditionOptions: Array<any>;
+    postconditionOptions: Array<unknown>;
     postconditions: Array<string>;
-    preconditionOptions: Array<any>;
+    preconditionOptions: Array<unknown>;
     preconditions: Array<string>;
     getCooldown(userId: string, guildId?: string): Promise<CooldownInfo | void>;
     useCooldown(userId: string, guildId?: string): Promise<boolean>;
@@ -240,13 +240,13 @@ declare module "patron" {
   export class Postcondition {
     constructor(options?: ConditionOptions);
     name: string;
-    run(message: Message, value: any, options: any): Promise<void>;
+    run(message: Message, value: unknown, options: unknown): Promise<void>;
   }
 
   export class Precondition {
     constructor(options?: ConditionOptions);
     name: string;
-    run(command: Command, message: Message, options: any): MaybePromise<PreconditionResult>;
+    run(command: Command, message: Message, options: unknown): MaybePromise<PreconditionResult>;
   }
 
   type RegistryMap<V> = Map<string, V>;
