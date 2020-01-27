@@ -88,29 +88,31 @@ declare module "patron" {
   }
 
   interface ArgumentOptions {
-    defaultValue?: unknown;
+    defaultValue?: any;
     example?: string;
     infinite?: boolean;
     key?: string;
     name?: string;
-    preconditionOptions?: Array<unknown>;
+    preconditionOptions?: Array<any>;
     preconditions?: Array<string>;
     remainder?: boolean;
     type: string;
+    typeOptions?: any;
   }
 
   export class Argument {
     constructor(options?: ArgumentOptions);
-    defaultValue: unknown;
+    defaultValue: any;
     example: string;
     infinite: boolean;
     key: string;
     name: string;
     optional: boolean;
-    preconditionOptions: Array<unknown>;
+    preconditionOptions: Array<any>;
     preconditions: Array<string>;
     remainder: boolean;
     type: string;
+    typeOptions: any;
   }
 
   interface ConditionOptions {
