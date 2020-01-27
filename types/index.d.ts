@@ -1,4 +1,4 @@
-import {Message} from "./lib";
+import {Message, PermissionName} from "./lib";
 
 declare module "patron" {
   type MaybePromise<T> = T | Promise<T>;
@@ -68,7 +68,7 @@ declare module "patron" {
 
   export class PermissionResult extends Result {
     private constructor();
-    permissions: Array<string>;
+    permissions: Array<PermissionName>;
   }
 
   export class PreconditionResult extends Result {
@@ -134,11 +134,11 @@ declare module "patron" {
 
   interface CommandOptions {
     arguments?: Array<ArgumentOptions | Argument>;
-    clientPermissions?: Array<string>;
+    clientPermissions?: Array<PermissionName>;
     cooldown?: number | CooldownOptions;
     description?: string;
     group?: string;
-    memberPermissions?: Array<string>;
+    memberPermissions?: Array<PermissionName>;
     names: Array<string>;
     postconditionOptions?: Array<unknown>;
     postconditions?: Array<string>;
@@ -150,11 +150,11 @@ declare module "patron" {
   export class Command {
     constructor(options?: CommandOptions);
     arguments: Array<Argument>;
-    clientPermissions: Array<string>;
+    clientPermissions: Array<PermissionName>;
     cooldowns?: Cooldown;
     description?: string;
     group?: string;
-    memberPermissions: Array<string>;
+    memberPermissions: Array<PermissionName>;
     names: Array<string>;
     postconditionOptions: Array<unknown>;
     postconditions: Array<string>;
