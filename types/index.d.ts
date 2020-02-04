@@ -46,6 +46,8 @@ declare module "patron" {
   export enum ResultType {
     /** The amount of Arguments provided was incorrect. */
     ArgumentCount,
+    /** An Argument wasn't in the correct order. */
+    ArgumentOrder,
     /** Client lacks required Permissions. */
     ClientPermission,
     /** Command was used in an invalid [[Context]]. */
