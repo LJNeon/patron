@@ -92,6 +92,8 @@ declare module "patron" {
     name?: string;
     /** The incorrect amount of [[Argument]]s, if relevant. */
     count?: number;
+    /** The incorrectly ordered Argument, if relevent. */
+    unordered?: Argument;
   }
 
   /**
