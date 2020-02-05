@@ -507,13 +507,12 @@ declare module "patron" {
      * @param command The Command to execute.
      * @param args The provided Arguments.
      */
-    executeCommand(message: Message, command: string | Command, args: Array<String>): Promise<Results>;
+    executeCommand(message: Message, command: string | Command, args: Array<string>): Promise<Results>;
     /**
      * Attempts to find and execute a Command.
      * @param message The received Message.
-     * @param prefixLength The length of the Command prefix.
      */
-    run(message: Message, prefixLength: number): Promise<Results>;
+    run(message: Message): Promise<Results>;
   }
 
   /**
@@ -616,6 +615,18 @@ declare module "patron" {
      * @param type The reader's type.
      */
     getTypeReader(type: string): TypeReader | void;
+    /**
+     * Registers prefixes for use in a guild, or globally if no guild ID is provided.
+     * @param prefixes A list of prefixes.
+     * @param guildId A guild ID to limit use of the prefixes to.
+     */
+    registerPrefixes(prefixes: Array<string>, guildId?: string): void;
+    /**
+     * Unregisters prefixes from a guild, or globally if no guild ID is provided.
+     * @param prefixes A list of prefixes.
+     * @param guildId A guild ID to remove prefixes from.
+     */
+    unregisterPrefixes(prefixes: Array<string>, guildId?: string): void;
     /**
      * Registers a list of ArgumentPreconditions.
      * @param conditions An array or file path to a folder of conditions to register.
