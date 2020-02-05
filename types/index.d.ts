@@ -229,12 +229,15 @@ declare module "patron" {
    * @category Commands
    */
   export class Argument {
-    constructor(options?: ArgumentOptions);
+    constructor(options: ArgumentOptions);
     /** The value to use if no value is provided. */
     defaultValue: any;
     /** An example of valid input. */
     example: string;
-    /** Accepts an unlimited amount of values, returning them in an Array. */
+    /**
+     * Accepts an unlimited amount of values, returning them in an Array.
+     * @remarks Default=false
+     */
     infinite: boolean;
     /** The property name used for the parsed Arguments object supplied to the Command, defaults to the type. */
     key: string;
@@ -620,13 +623,13 @@ declare module "patron" {
      * @param prefixes A list of prefixes.
      * @param guildId A guild ID to limit use of the prefixes to.
      */
-    registerPrefixes(prefixes: Array<string>, guildId?: string): void;
+    registerPrefixes(prefixes: Array<string>, guildId?: string): this;
     /**
      * Unregisters prefixes from a guild, or globally if no guild ID is provided.
      * @param prefixes A list of prefixes.
      * @param guildId A guild ID to remove prefixes from.
      */
-    unregisterPrefixes(prefixes: Array<string>, guildId?: string): void;
+    unregisterPrefixes(prefixes: Array<string>, guildId?: string): this;
     /**
      * Registers a list of ArgumentPreconditions.
      * @param conditions An array or file path to a folder of conditions to register.
