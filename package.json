@@ -1,6 +1,6 @@
 {
   "name": "patron",
-  "version": "3.2.0",
+  "version": "4.0.0",
   "author": "ElJay#7711",
   "license": "GPL-3.0-or-later",
   "description": "The cleanest command framework for discord.js and eris.",
