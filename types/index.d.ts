@@ -295,9 +295,20 @@ declare module "patron" {
     group?: string;
     memberPermissions?: Array<PermissionName>;
     names: Array<string>;
-    postconditionOptions?: Array<unknown>;
+    postconditionOptions?: Array<any>;
     postconditions?: Array<string>;
-    preconditionOptions?: Array<unknown>;
+    preconditionOptions?: Array<any>;
+    preconditions?: Array<string>;
+    usableContexts?: Array<Context>;
+  }
+
+  interface DefaultCommandOptions {
+    clientPermissions?: Array<PermissionName>;
+    cooldown?: number | CooldownOptions;
+    memberPermissions?: Array<PermissionName>;
+    postconditionOptions?: Array<any>;
+    postconditions?: Array<string>;
+    preconditionOptions?: Array<any>;
     preconditions?: Array<string>;
     usableContexts?: Array<Context>;
   }
@@ -332,6 +343,11 @@ declare module "patron" {
     preconditions: Array<string>;
     /** A list of Contexts this Command can run in. */
     usableContexts: Array<Context>;
+    /**
+     * Sets default Command options.
+     * @param options The default Command options.
+     */
+    static setDefaults(options: DefaultCommandOptions) : void;
     /**
      * Executes this Command.
      * @remarks Abstract
@@ -430,9 +446,17 @@ declare module "patron" {
     cooldown?: number | CooldownOptions;
     description?: string;
     name: string;
-    postconditionOptions?: Array<unknown>;
+    postconditionOptions?: Array<any>;
     postconditions?: Array<string>;
-    preconditionOptions?: Array<unknown>;
+    preconditionOptions?: Array<any>;
+    preconditions?: Array<string>;
+  }
+
+  interface DefaultGroupOptions {
+    cooldown?: number | CooldownOptions;
+    postconditionOptions?: Array<any>;
+    postconditions?: Array<string>;
+    preconditionOptions?: Array<any>;
     preconditions?: Array<string>;
   }
 
@@ -441,7 +465,7 @@ declare module "patron" {
    * @category Commands
    */
   export class Group {
-    constructor(options?: GroupOptions);
+    constructor(options: GroupOptions);
     /** Cooldown options and all User cooldowns. */
     cooldowns?: Cooldown;
     /** A description of this Group. */
@@ -456,6 +480,11 @@ declare module "patron" {
     preconditionOptions: Array<any>;
     /** Names of Preconditions to run. */
     preconditions: Array<string>;
+    /**
+     * Sets the default Group options.
+     * @param options The default Group options.
+     */
+    static setDefaults(options: DefaultGroupOptions): void;
     /**
      * Requests the status of a User's cooldown for this Group.
      * @param userId A User ID.
