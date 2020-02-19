@@ -600,6 +600,8 @@ declare module "patron" {
     caseSensitive: boolean;
     /** Whether or not to register the default [[TypeReader]]s, which cover many commonly used [[Argument]] types. */
     defaultReaders: boolean;
+    /** A Map of all prefixes. */
+    prefixes: RegistryMap<string>;
     /** A Map of all [[ArgumentPrecondition]]s. */
     argumentPreconditions: RegistryMap<ArgumentPrecondition>;
     /** A Map of all Commands. */
