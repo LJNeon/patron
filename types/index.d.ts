@@ -162,7 +162,7 @@ declare module "patron" {
     /** @hidden */
     private constructor();
     /** The missing Permissions. */
-    permissions: Array<PermissionName>;
+    permissions: PermissionName[];
   }
 
   /**
@@ -192,7 +192,7 @@ declare module "patron" {
     /** @hidden */
     private constructor();
     /** A list of all values if multiple values were parsed. */
-    matches?: Array<unknown>;
+    matches?: unknown[];
     /** The reason for the failure, if relevant. */
     reason?: string;
     /** The parsed value. */
@@ -208,7 +208,7 @@ declare module "patron" {
      * @param reason The reason for the failure.
      * @param matches A list of all values if multiple values were parsed.
      */
-    static fromFailure(command: Command, reason: string, matches?: Array<unknown>): TypeReaderResult;
+    static fromFailure(command: Command, reason: string, matches?: unknown[]): TypeReaderResult;
   }
 
   interface ArgumentOptions {
@@ -217,8 +217,8 @@ declare module "patron" {
     infinite?: boolean;
     key?: string;
     name?: string;
-    preconditionOptions?: Array<any>;
-    preconditions?: Array<string>;
+    preconditionOptions?: any[];
+    preconditions?: string[];
     remainder?: boolean;
     type: string;
     typeOptions?: any;
@@ -244,9 +244,9 @@ declare module "patron" {
     /** The name used in Command#getUsage(), defaults to the type. */
     name: string;
     /** Options provided to the ArgumentPreconditions. */
-    preconditionOptions: Array<any>;
+    preconditionOptions: any[];
     /** Names of ArgumentPreconditions to run. */
-    preconditions: Array<string>;
+    preconditions: string[];
     /** Parses the full remainder of the command. */
     remainder: boolean;
     /** The name of the TypeReader to use. */
@@ -287,30 +287,32 @@ declare module "patron" {
     ): MaybePromise<PreconditionResult>;
   }
 
+  type MaybeArgument = ArgumentOptions | Argument;
+
   interface CommandOptions {
-    arguments?: Array<ArgumentOptions | Argument>;
-    clientPermissions?: Array<PermissionName>;
+    arguments?: MaybeArgument[];
+    clientPermissions?: PermissionName[];
     cooldown?: number | CooldownOptions;
     description?: string;
     group?: string;
-    memberPermissions?: Array<PermissionName>;
-    names: Array<string>;
-    postconditionOptions?: Array<any>;
-    postconditions?: Array<string>;
-    preconditionOptions?: Array<any>;
-    preconditions?: Array<string>;
-    usableContexts?: Array<Context>;
+    memberPermissions?: PermissionName[];
+    names: string[];
+    postconditionOptions?: any[];
+    postconditions?: string[];
+    preconditionOptions?: any[];
+    preconditions?: string[];
+    usableContexts?: Context[];
   }
 
   interface DefaultCommandOptions {
-    clientPermissions?: Array<PermissionName>;
+    clientPermissions?: PermissionName[];
     cooldown?: number | CooldownOptions;
-    memberPermissions?: Array<PermissionName>;
-    postconditionOptions?: Array<any>;
-    postconditions?: Array<string>;
-    preconditionOptions?: Array<any>;
-    preconditions?: Array<string>;
-    usableContexts?: Array<Context>;
+    memberPermissions?: PermissionName[];
+    postconditionOptions?: any[];
+    postconditions?: string[];
+    preconditionOptions?: any[];
+    preconditions?: string[];
+    usableContexts?: Context[];
   }
 
   /**
@@ -320,9 +322,9 @@ declare module "patron" {
   export class Command {
     constructor(options?: CommandOptions);
     /** This Command's Arguments */
-    arguments: Array<Argument>;
+    arguments: Argument[];
     /** Permissions that the Client needs to run this Command. */
-    clientPermissions: Array<PermissionName>;
+    clientPermissions: PermissionName[];
     /** Cooldown options and all User cooldowns. */
     cooldowns?: Cooldown;
     /** A description of this Command. */
@@ -330,19 +332,19 @@ declare module "patron" {
     /** The Group this Command is in, if any. */
     group?: string;
     /** Permissions that Members need to use this Command. */
-    memberPermissions: Array<PermissionName>;
+    memberPermissions: PermissionName[];
     /** Names this Command can be referenced by. */
-    names: Array<string>;
+    names: string[];
     /** Options provided to the Postconditions. */
-    postconditionOptions: Array<any>;
+    postconditionOptions: any[];
     /** Names of Postconditions to run. */
-    postconditions: Array<string>;
+    postconditions: string[];
     /** Options provided to the Preconditions. */
-    preconditionOptions: Array<any>;
+    preconditionOptions: any[];
     /** Names of Preconditions to run. */
-    preconditions: Array<string>;
+    preconditions: string[];
     /** A list of Contexts this Command can run in. */
-    usableContexts: Array<Context>;
+    usableContexts: Context[];
     /**
      * Sets default Command options.
      * @param options The default Command options.
@@ -446,18 +448,18 @@ declare module "patron" {
     cooldown?: number | CooldownOptions;
     description?: string;
     name: string;
-    postconditionOptions?: Array<any>;
-    postconditions?: Array<string>;
-    preconditionOptions?: Array<any>;
-    preconditions?: Array<string>;
+    postconditionOptions?: any[];
+    postconditions?: string[];
+    preconditionOptions?: any[];
+    preconditions?: string[];
   }
 
   interface DefaultGroupOptions {
     cooldown?: number | CooldownOptions;
-    postconditionOptions?: Array<any>;
-    postconditions?: Array<string>;
-    preconditionOptions?: Array<any>;
-    preconditions?: Array<string>;
+    postconditionOptions?: any[];
+    postconditions?: string[];
+    preconditionOptions?: any[];
+    preconditions?: string[];
   }
 
   /**
@@ -473,13 +475,13 @@ declare module "patron" {
     /** The name of this Group */
     name: string;
     /** Options provided to the Postconditions. */
-    postconditionOptions: Array<any>;
+    postconditionOptions: any[];
     /** Names of Postconditions to run. */
-    postconditions: Array<string>;
+    postconditions: string[];
     /** Options provided to the Preconditions. */
-    preconditionOptions: Array<any>;
+    preconditionOptions: any[];
     /** Names of Preconditions to run. */
-    preconditions: Array<string>;
+    preconditions: string[];
     /**
      * Sets the default Group options.
      * @param options The default Group options.
@@ -539,7 +541,7 @@ declare module "patron" {
      * @param command The Command to execute.
      * @param args The provided Arguments.
      */
-    executeCommand(message: Message, command: string | Command, args: Array<string>): Promise<Results>;
+    executeCommand(message: Message, command: string | Command, args: string[]): Promise<Results>;
     /**
      * Attempts to find and execute a Command.
      * @param message The received Message.
@@ -618,7 +620,7 @@ declare module "patron" {
      * Collects a list of Commands in a Group.
      * @param groupName The Group's name.
      */
-    getGroupedCommands(groupName: string): Array<Command>;
+    getGroupedCommands(groupName: string): Command[];
     /**
      * Attempts to retrieve an ArgumentPrecondition.
      * @param name The condition's name.
@@ -654,73 +656,73 @@ declare module "patron" {
      * @param prefixes A list of prefixes.
      * @param guildId A guild ID to limit use of the prefixes to.
      */
-    registerPrefixes(prefixes: Array<string>, guildId?: string): this;
+    registerPrefixes(prefixes: string[], guildId?: string): this;
     /**
      * Unregisters prefixes from a guild, or globally if no guild ID is provided.
      * @param prefixes A list of prefixes.
      * @param guildId A guild ID to remove prefixes from.
      */
-    unregisterPrefixes(prefixes: Array<string>, guildId?: string): this;
+    unregisterPrefixes(prefixes: string[] | "all", guildId?: string): this;
     /**
      * Registers a list of ArgumentPreconditions.
      * @param conditions An array or file path to a folder of conditions to register.
      */
-    registerArgumentPreconditions(conditions: string | Array<ArgumentPrecondition>): this;
+    registerArgumentPreconditions(conditions: string | ArgumentPrecondition[]): this;
     /**
      * Unregisters a list of ArgumentPreconditions.
      * @param names An array of condition names to unregister.
      */
-    unregisterArgumentPreconditions(names: Array<string>): this;
+    unregisterArgumentPreconditions(names: string[]): this;
     /**
      * Registers a list of Commands.
      * @param commands An array or file path to a folder of Commands to register.
      */
-    registerCommands(commands: string | Array<Command>): this;
+    registerCommands(commands: string | Command[]): this;
     /**
      * Unregisters a list of Commands.
      * @param names An array of Command names to unregister.
      */
-    unregisterCommands(names: Array<string>): this;
+    unregisterCommands(names: string[]): this;
     /**
      * Registers a list of Groups.
      * @param groups An array or file path to a folder of Groups to register.
      */
-    registerGroups(groups: string | Array<Group>): this;
+    registerGroups(groups: string | Group[]): this;
     /**
      * Unregisters a list of Groups.
      * @param names An array of Group names to unregister.
      */
-    unregisterGroups(names: Array<string>): this;
+    unregisterGroups(names: string[]): this;
     /**
      * Registers a list of Postconditions.
      * @param conditions An array or file path to a folder of conditions to register.
      */
-    registerPostconditions(conditions: string | Array<Postcondition>): this;
+    registerPostconditions(conditions: string | Postcondition[]): this;
     /**
      * Unregisters a list of Postconditions.
      * @param names An array of condition names to unregister.
      */
-    unregisterPostconditions(names: Array<string>): this;
+    unregisterPostconditions(names: string[]): this;
     /**
      * Registers a list of Preconditions.
      * @param conditions An array or file path to a folder of conditions to register.
      */
-    registerPreconditions(conditions: string | Array<Precondition>): this;
+    registerPreconditions(conditions: string | Precondition[]): this;
     /**
      * Unregisters a list of Preconditions.
      * @param names An array of condition names to unregister.
      */
-    unregisterPreconditions(names: Array<string>): this;
+    unregisterPreconditions(names: string[]): this;
     /**
      * Registers a list of TypeReaders.
      * @param readers An array or file path to a folder of readers to register.
      */
-    registerTypeReaders(readers: string | Array<TypeReader>): this;
+    registerTypeReaders(readers: string | TypeReader[]): this;
     /**
      * Unregisters a list of TypeReader.
      * @param types An array of reader types to unregister.
      */
-    unregisterTypeReaders(types: Array<string>): this;
+    unregisterTypeReaders(types: string[]): this;
   }
 
   interface TypeReaderOptions {
@@ -772,7 +774,7 @@ declare module "patron" {
    * @param directory The file path of a directory.
    * @returns An array of all the default exports.
    */
-  export function ImportAll(directory: string): Promise<Array<any>>;
+  export function ImportAll(directory: string): Promise<any[]>;
 
   /**
    * A function which requires all exports. This is only available when using CommonJS modules.
@@ -780,12 +782,12 @@ declare module "patron" {
    * @param directory The file path of a directory.
    * @returns An array of all the exports.
    */
-  export function RequireAll(directory: string): Promise<Array<any>>;
+  export function RequireAll(directory: string): Promise<any[]>;
 
   /**
    * A function which synchronously requires all exports. This is only available when using CommonJS modules.
    * @param directory The file path of a directory.
    * @returns An array of all the exports.
    */
-  export function RequireAllSync(directory: string): Array<any>;
+  export function RequireAllSync(directory: string): any[];
 }
