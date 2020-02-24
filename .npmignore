@@ -1,2 +1,6 @@
 node_modules/
 docs/
+.eslintrc.yml
+.gitignore
+.travis.yml
+README.md
