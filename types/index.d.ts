@@ -536,6 +536,12 @@ declare module "patron" {
     /** The Registry that stores everything. */
     registry: Registry;
     /**
+     * Runs Preconditions for a Command.
+     * @param message The received Message.
+     * @param command The Command to run Preconditions on.
+     */
+    runPreconditions(message: Message, command: string | Command): Promise<PreconditionResult | void>
+    /**
      * Attempts to execute a Command.
      * @param message The received Message.
      * @param command The Command to execute.
