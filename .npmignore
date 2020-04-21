@@ -1,6 +1,4 @@
 node_modules/
-docs/
+lib.d.ts
 .eslintrc.yml
-.gitignore
 .travis.yml
-README.md

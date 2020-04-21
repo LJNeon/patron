@@ -1,5 +1,4 @@
-import {Constants} from "eris";
+import {Constants, Message} from "eris";
 
-export {Message} from "eris";
-
+export {Message};
 export type PermissionName = keyof Constants["Permissions"];

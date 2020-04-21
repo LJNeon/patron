@@ -402,7 +402,7 @@ declare module "patron" {
   }
 
   interface CooldownInfo {
-    resets: number;
+    reset: number;
     used: number;
   }
 
@@ -747,6 +747,7 @@ declare module "patron" {
     type: string;
     /**
      * Parses the provided input into a type.
+     * @remarks Abstract
      * @param input The input provided by a user.
      * @param command The executed Command.
      * @param message The received Message.
@@ -758,7 +759,7 @@ declare module "patron" {
       command: Command,
       message: Message,
       argument: Argument,
-      arguments: object
+      arguments: unknown
     ): MaybePromise<TypeReaderResult>;
   }
 
