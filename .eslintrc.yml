@@ -115,9 +115,14 @@ rules: {
   strict: ["error", "global"]
 }
 
+parser: "babel-eslint"
+
 overrides: [{
   files: ["**/*.mjs"],
   parserOptions: {sourceType: "module"}
 }]
 
-parserOptions: {ecmaVersion: 2020}
+parserOptions: {
+  ecmaVersion: 2020,
+  sourceType: "script"
+}
