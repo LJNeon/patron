@@ -566,11 +566,12 @@ declare module "patron" {
     /**
      * Executes this Postconditon.
      * @remarks Abstract
+     * @param command The Command being executed.
      * @param message The received Message.
      * @param value A value that can be passed from the Command.
      * @param options Options provided by the Command or Group.
      */
-    run(message: Message, value: unknown, options: unknown): Promise<void>;
+    run(command: Command, message: Message, value: unknown, options: unknown): Promise<void>;
   }
 
   /**
