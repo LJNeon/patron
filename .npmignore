@@ -1,4 +1,5 @@
 node_modules/
+site/
 lib.d.ts
 .eslintrc.yml
 .travis.yml
