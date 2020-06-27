@@ -15,7 +15,7 @@ declare module "patron" {
    */
   export enum ArgumentDefault {
     /** The User who used the [[Command]]. */
-    Author,
+    Author = 0,
     /** The Channel the Command was used in. */
     Channel,
     /** The Guild the Command was used in. */
@@ -34,9 +34,18 @@ declare module "patron" {
    */
   export enum Context {
     /** Usable in DMs. */
-    DM,
+    DM = 0,
     /** Usable in Guilds. */
     Guild
+  }
+
+  /**
+   * Indicates what types of [[Command]] results a [[Cooldown]] should be run for.
+   * @category Enums
+   */
+  export enum CooldownType {
+    Successful = 0,
+    Failed
   }
 
   /**
@@ -45,7 +54,7 @@ declare module "patron" {
    */
   export enum ResultType {
     /** The amount of Arguments provided was incorrect. */
-    ArgumentCount,
+    ArgumentCount = 0,
     /** An Argument wasn't in the correct order. */
     ArgumentOrder,
     /** Client lacks required Permissions. */
@@ -96,6 +105,8 @@ declare module "patron" {
     count?: number;
     /** The incorrectly ordered Argument, if relevent. */
     unordered?: Argument;
+    /** The type of the result. */
+    type: ResultType.ArgumentCount | ResultType.ArgumentOrder | ResultType.Unknown;
   }
 
   /**
@@ -107,6 +118,8 @@ declare module "patron" {
     private constructor();
     /** The Context the [[Command]] was executed in. */
     context: Context;
+    /** The type of the result. */
+    type: ResultType.Context;
   }
 
   /**
@@ -118,8 +131,14 @@ declare module "patron" {
     private constructor();
     /** The amount of time remaining on the Cooldown in milliseconds. */
     remaining: number;
-    /** The Group the Cooldown was on, if the Cooldown wasn't on a [[Command]]. */
-    group?: Group;
+    /** Whether or not the Cooldown was on a [[Group]]. */
+    group: boolean;
+    /** An array of Cooldowns that are active. */
+    cooldowns: Cooldown[];
+    /** An array of User information for active Cooldowns. */
+    info: CooldownInfo[];
+    /** The type of the result. */
+    type: ResultType.Cooldown;
   }
 
   /**
@@ -131,6 +150,8 @@ declare module "patron" {
     private constructor();
     /** A thrown Error. */
     error: Error;
+    /** The type of the result. */
+    type: ResultType.Error;
   }
 
   /**
@@ -142,6 +163,8 @@ declare module "patron" {
     private constructor();
     /** The value to pass to any [[Postcondition]]s. */
     value?: unknown;
+    /** The type of the result. */
+    type: ResultType.Success | ResultType.Execution;
     /**
      * Generates a successful result which can pass a value to Postconditions.
      * @param value The value to pass to any Postconditions.
@@ -163,6 +186,8 @@ declare module "patron" {
     private constructor();
     /** The missing Permissions. */
     permissions: PermissionName[];
+    /** The type of the result. */
+    type: ResultType.ClientPermission | ResultType.MemberPermission;
   }
 
   /**
@@ -174,6 +199,8 @@ declare module "patron" {
     private constructor();
     /** The reason for a failure, if relevant. */
     reason?: string;
+    /** The type of the result. */
+    type: ResultType.Success | ResultType.Precondition;
     /** Generates a successful Precondition result. */
     static fromSuccess(): PreconditionResult;
     /**
@@ -197,6 +224,8 @@ declare module "patron" {
     reason?: string;
     /** The parsed value. */
     value?: unknown;
+    /** The type of the result. */
+    type: ResultType.Success | ResultType.TypeReader;
     /**
      * Generates a successful TypeReader result.
      * @param value The parsed value.
@@ -292,7 +321,7 @@ declare module "patron" {
   interface CommandOptions {
     arguments?: MaybeArgument[];
     clientPermissions?: PermissionName[];
-    cooldown?: number | CooldownOptions;
+    cooldowns?: (number | CooldownOptions)[];
     description?: string;
     group?: string;
     memberPermissions?: PermissionName[];
@@ -306,7 +335,7 @@ declare module "patron" {
 
   interface DefaultCommandOptions {
     clientPermissions?: PermissionName[];
-    cooldown?: number | CooldownOptions;
+    cooldowns?: (number | CooldownOptions)[];
     memberPermissions?: PermissionName[];
     postconditionOptions?: any[];
     postconditions?: string[];
@@ -370,28 +399,25 @@ declare module "patron" {
      */
     getUsage(prefix?: string): string;
     /**
-     * Requests the status of a User's cooldown for this Command.
-     * @param userId A User ID.
-     * @param guildId A Guild ID.
+     * Requests the status of a User's cooldowns for the Command.
+     * @param message A message to get cooldowns for.
      * @returns Resolves to a User's information if found.
      */
-    getCooldown(userId: string, guildId?: string): Promise<CooldownInfo | void>;
+    getCooldowns(message: Message): Promise<(CooldownInfo | void)[]>;
     /**
-     * Adds a use to a User's Cooldown for this Command.
-     * @param userId A User ID.
-     * @param guildId A Guild ID.
+     * Adds a use to a User's cooldowns for the Command.
+     * @param message A message to update cooldowns for.
      * @returns Whether or not the User is currently on cooldown.
      */
-    useCooldown(userId: string, guildId?: string): Promise<boolean>;
+    useCooldowns(message: Message): Promise<boolean[]>;
     /**
-     * Reverts a use from a User's Cooldown for this Command.
-     * @param userId A User ID.
-     * @param guildId A Guild ID.
+     * Reverts a use from a User's cooldowns for the Command.
+     * @param message A message to revert cooldowns for.
      */
-    revertCooldown(userId: string, guildId?: string): Promise<void>;
+    revertCooldowns(message: Message): Promise<void>;
   }
 
-  type CooldownSorter = (userId: string, guildId?: string) => any;
+  type CooldownSorter = (message: Message) => any;
 
   interface CooldownOptions {
     aggressive?: boolean;
@@ -428,20 +454,20 @@ declare module "patron" {
      * @param guildId A Guild ID.
      * @returns Resolves to a User's information if found.
      */
-    getCooldown(userId: string, guildId?: string): Promise<CooldownInfo | void>;
+    get(message: Message): Promise<CooldownInfo | void>;
     /**
      * Adds a use to a User's Cooldown.
      * @param userId A User ID.
      * @param guildId A Guild ID.
      * @returns Whether or not the User is currently on cooldown.
      */
-    useCooldown(userId: string, guildId?: string): Promise<boolean>;
+    use(message: Message): Promise<boolean>;
     /**
      * Reverts a use from a User's Cooldown.
      * @param userId A User ID.
      * @param guildId A Guild ID.
      */
-    revertCooldown(userId: string, guildId?: string): Promise<void>;
+    revert(message: Message): Promise<void>;
   }
 
   interface GroupOptions {
@@ -488,25 +514,22 @@ declare module "patron" {
      */
     static setDefaults(options: DefaultGroupOptions): void;
     /**
-     * Requests the status of a User's cooldown for this Group.
-     * @param userId A User ID.
-     * @param guildId A Guild ID.
+     * Requests the status of a User's cooldowns for the Group.
+     * @param message A message to get cooldowns for.
      * @returns Resolves to a User's information if found.
      */
-    getCooldown(userId: string, guildId?: string): Promise<CooldownInfo | void>;
+    getCooldowns(message: Message): Promise<(CooldownInfo | void)[]>;
     /**
-     * Adds a use to a User's Cooldown for this Group.
-     * @param userId A User ID.
-     * @param guildId A Guild ID.
+     * Adds a use to a User's cooldowns for the Group.
+     * @param message A message to update cooldowns for.
      * @returns Whether or not the User is currently on cooldown.
      */
-    useCooldown(userId: string, guildId?: string): Promise<boolean>;
+    useCooldowns(message: Message): Promise<boolean[]>;
     /**
-     * Reverts a use from a User's Cooldown for this Group.
-     * @param userId A User ID.
-     * @param guildId A Guild ID.
+     * Reverts a use from a User's cooldowns for the Group.
+     * @param message A message to revert cooldowns for.
      */
-    revertCooldown(userId: string, guildId?: string): Promise<void>;
+    revertCooldowns(message: Message): Promise<void>;
   }
 
   type Results = CommandResult | ContextResult | CooldownResult | ErrorResult
@@ -737,7 +760,26 @@ declare module "patron" {
   }
 
   /**
-   * A reader that parses input into a type.
+   * A reader that parses input into a type. A list of default types is provided below.
+   * | Type       | Returns      | Notes                                  |
+   * |------------|--------------|----------------------------------------|
+   * | bannedUser | User         |                                        |
+   * | boolean    | Boolean      | Supports inputs like "yes" and "no"    |
+   * | channel    | GuildChannel |                                        |
+   * | color      | Number       | Only supports hex color codes          |
+   * | command    | Command      |                                        |
+   * | emoji      | Emoji        | Guild emojis only, not guild-specific  |
+   * | float      | Number       |                                        |
+   * | group      | Group        |                                        |
+   * | guild      | Guild        |                                        |
+   * | integer    | Number       |                                        |
+   * | message    | Message      | Relies on cache when not using IDs     |
+   * | member     | Member       | Relies on cache when not using IDs     |
+   * | role       | Role         |                                        |
+   * | string     | String       | Passes input through untouched         |
+   * | time       | Number       | Supports most common units of time     |
+   * | url        | URL          |                                        |
+   * | user       | User         | Relies on cache when not using IDs     |
    * @category Commands
    */
   export class TypeReader {
