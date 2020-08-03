@@ -760,7 +760,9 @@ declare module "patron" {
   }
 
   /**
-   * A reader that parses input into a type. A list of default types is provided below.
+   * A reader that parses input into a type. A list of default types is provided below. The Argument.typeOptions for
+   * all default types is a method that returns a failure reason.
+   * (msg: Message, matches?: any[]) => Promise<string> | string
    * | Type       | Returns      | Notes                                  |
    * |------------|--------------|----------------------------------------|
    * | bannedUser | User         |                                        |
@@ -796,6 +798,7 @@ declare module "patron" {
      * @param message The received Message.
      * @param argument The Argument being parsed.
      * @param arguments The values of previous Arguments.
+     * @param options
      */
     read(
       input: string,
