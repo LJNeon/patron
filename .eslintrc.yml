@@ -1,9 +1,9 @@
 env: {
-  es6: true,
+  es2020: true,
   node: true
 }
 
-extends: "eslint:recommended"
+extends: ["eslint:recommended"]
 
 rules: {
   array-bracket-spacing: "error",
@@ -43,10 +43,14 @@ rules: {
     }
   }],
   max-len: ["error", 120],
+  new-parens: "error",
+  no-constant-condition: ["error", {checkLoops: false}],
   no-empty: ["error", {allowEmptyCatch: true}],
   no-extra-parens: ["error", "all", {nestedBinaryExpressions: false}],
   no-mixed-operators: "error",
   no-multiple-empty-lines: ["error", {max: 1}],
+  no-new-wrappers: "error",
+  no-process-exit: "off",
   no-prototype-builtins: "off",
   no-shadow: ["error", {builtinGlobals: true}],
   no-trailing-spaces: "error",
@@ -74,10 +78,6 @@ rules: {
     {blankLine: "always", next: "export", prev: "*"},
     {blankLine: "always", next: "*", prev: "export"},
     {blankLine: "never", next: "export", prev: "export"},
-    {blankLine: "always", next: "*", prev: "cjs-import"},
-    {blankLine: "never", next: "cjs-import", prev: "cjs-import"},
-    {blankLine: "always", next: "cjs-export", prev: "*"},
-    {blankLine: "never", next: "cjs-export", prev: "cjs-export"},
     {blankLine: "always", next: "*", prev: "class"},
     {blankLine: "always", next: "function", prev: "*"},
     {blankLine: "always", next: "*", prev: "function"},
@@ -91,6 +91,8 @@ rules: {
     {blankLine: "always", next: "*", prev: "try"},
     {blankLine: "always", next: "switch", prev: "*"},
     {blankLine: "always", next: "*", prev: "switch"},
+    {blankLine: "always", next: "do", prev: "*"},
+    {blankLine: "always", next: "*", prev: "do"},
     {blankLine: "always", next: "block-like", prev: "const"},
     {blankLine: "always", next: "const", prev: "block-like"},
     {blankLine: "always", next: "expression", prev: "const"},
@@ -100,7 +102,7 @@ rules: {
     {blankLine: "always", next: "expression", prev: "let"},
     {blankLine: "always", next: "let", prev: "expression"}
   ],
-  prefer-const: "error",
+  prefer-const: ["error", {destructuring: "all"}],
   prefer-template: "error",
   quotes: ["error", "double"],
   # Dishonor! Dishonor on you, dishonor on ya cow!
@@ -114,8 +116,6 @@ rules: {
   space-in-parens: "error",
   strict: ["error", "global"]
 }
-
-parser: "babel-eslint"
 
 overrides: [{
   files: ["**/*.mjs"],

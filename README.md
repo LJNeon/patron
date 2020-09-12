@@ -16,7 +16,7 @@
 Patron isn't designed for beginners, but for those who want a highly flexible framework and fast development time. Bots with complex or many features will see higher maintainability and reusable code.
 
 ## Installation
-Patron expects Eris or discord.js to be installed separately beforehand, in order to support both this is necessary. Once installed JavaScript users can switch libraries, but TypeScript users will want to reinstall patron afterwards. Using both libraries at once isn't supported. You can install in a single command using the right order, for example:
+Patron expects Eris or discord.js to be installed separately beforehand, in order to support both this is necessary. You'll need to reinstall patron if you want to switch between the two, as using both libraries at once isn't supported. You can install everything in a single command using the right order, for example:
 ```bash
 npm i --no-optional eris patron # remove --no-optional for voice
 ```

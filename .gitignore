@@ -1,3 +1,6 @@
+# Avoid committing generated library files.
+libraryHandler.js
+lib.d.ts
+# Avoid committing useless files.
 node_modules/
 package-lock.json
-lib.d.ts

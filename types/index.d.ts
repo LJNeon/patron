@@ -7,76 +7,65 @@
 import {Message, PermissionName} from "./lib";
 
 declare module "patron" {
-  type MaybePromise<T> = T | Promise<T>;
-
   /**
-   * Various contextual default values for an [[Argument]].
+   * Various contextual default values for an Argument.
    * @category Enums
    */
   export enum ArgumentDefault {
-    /** The User who used the [[Command]]. */
+    /** The User who used the Command. */
     Author = 0,
     /** The Channel the Command was used in. */
-    Channel,
+    Channel = 1,
     /** The Guild the Command was used in. */
-    Guild,
+    Guild = 2,
     /** The highest Role of the Member who used the Command. */
-    HighestRole,
+    HighestRole = 3,
     /** The Member who used the Command. */
-    Member,
+    Member = 4,
     /** The Message that used the Command. */
-    Message
+    Message = 5
   }
 
   /**
-   * Contexts that [[Command]]s may be used in.
+   * Contexts that Commands may be used in.
    * @category Enums
    */
   export enum Context {
     /** Usable in DMs. */
     DM = 0,
     /** Usable in Guilds. */
-    Guild
+    Guild = 1
   }
 
   /**
-   * Indicates what types of [[Command]] results a [[Cooldown]] should be run for.
-   * @category Enums
-   */
-  export enum CooldownType {
-    Successful = 0,
-    Failed
-  }
-
-  /**
-   * The various results of running the [[Handler]].
+   * The various results of running the Handler.
    * @category Enums
    */
   export enum ResultType {
     /** The amount of Arguments provided was incorrect. */
     ArgumentCount = 0,
     /** An Argument wasn't in the correct order. */
-    ArgumentOrder,
+    ArgumentOrder = 1,
     /** Client lacks required Permissions. */
-    ClientPermission,
-    /** Command was used in an invalid [[Context]]. */
-    Context,
-    /** Command is on [[Cooldown]]. */
-    Cooldown,
-    /** An Error was thrown during the [[Command]]'s execution. */
-    Error,
+    ClientPermission = 2,
+    /** Command was used in an invalid Context. */
+    Context = 3,
+    /** Command is on Cooldown. */
+    Cooldown = 4,
+    /** An Error was thrown during the Command's execution. */
+    Error = 5,
     /** Command explicitly failed when ran. */
-    Execution,
+    Execution = 6,
     /** The Member who used the Command lacks required Permissions. */
-    MemberPermission,
-    /** A [[Precondition]] failed when ran. */
-    Precondition,
+    MemberPermission = 7,
+    /** A Precondition failed when ran. */
+    Precondition = 8,
     /** Command was successfully executed. */
-    Success,
-    /** The [[TypeReader]] failed when ran */
-    TypeReader,
+    Success = 9,
+    /** The TypeReader failed when ran */
+    TypeReader = 10,
     /** Command used is unknown. */
-    Unknown
+    Unknown = 11
   }
 
   /**
@@ -93,7 +82,7 @@ declare module "patron" {
   }
 
   /**
-   * A failed result from [[Command]] parsing.
+   * A failed result from Command parsing.
    * @category Results
    */
   export class CommandResult extends Result {
@@ -101,7 +90,7 @@ declare module "patron" {
     private constructor();
     /** The name of the unknown Command, if relevant. */
     name?: string;
-    /** The incorrect amount of [[Argument]]s, if relevant. */
+    /** The incorrect amount of Arguments, if relevant. */
     count?: number;
     /** The incorrectly ordered Argument, if relevent. */
     unordered?: Argument;
@@ -116,14 +105,14 @@ declare module "patron" {
   export class ContextResult extends Result {
     /** @hidden */
     private constructor();
-    /** The Context the [[Command]] was executed in. */
+    /** The Context the Command was executed in. */
     context: Context;
     /** The type of the result. */
     type: ResultType.Context;
   }
 
   /**
-   * A failed result due to a [[Cooldown]].
+   * A failed result due to a Cooldown.
    * @category Results
    */
   export class CooldownResult extends Result {
@@ -131,7 +120,7 @@ declare module "patron" {
     private constructor();
     /** The amount of time remaining on the Cooldown in milliseconds. */
     remaining: number;
-    /** Whether or not the Cooldown was on a [[Group]]. */
+    /** Whether or not the Cooldown was on a Group. */
     group: boolean;
     /** An array of Cooldowns that are active. */
     cooldowns: Cooldown[];
@@ -155,13 +144,13 @@ declare module "patron" {
   }
 
   /**
-   * A failed result which can revert [[Cooldown]]s and pass a value to Postconditions.
+   * A failed result which can revert Cooldowns and pass a value to Postconditions.
    * @category Results
    */
   export class ExecutionResult extends Result {
     /** @hidden */
     private constructor();
-    /** The value to pass to any [[Postcondition]]s. */
+    /** The value to pass to any Postconditions. */
     value?: unknown;
     /** The type of the result. */
     type: ResultType.Success | ResultType.Execution;
@@ -191,7 +180,7 @@ declare module "patron" {
   }
 
   /**
-   * A [[Precondition]] result.
+   * A Precondition result.
    * @category Results
    */
   export class PreconditionResult extends Result {
@@ -212,7 +201,7 @@ declare module "patron" {
   }
 
   /**
-   * A [[TypeReader]] result.
+   * A TypeReader result.
    * @category Results
    */
   export class TypeReaderResult extends Result {
@@ -292,13 +281,12 @@ declare module "patron" {
    * A condition that must be passed in order to validate an Argument.
    * @category Commands
    */
-  export class ArgumentPrecondition {
+  export abstract class ArgumentPrecondition {
     constructor(options?: ConditionOptions);
     /** The condition's name. */
     name: string;
     /**
      * Executes the condition on an Argument.
-     * @remarks Abstract
      * @param value The parsed value.
      * @param command The executed Command.
      * @param message The received Message.
@@ -306,20 +294,18 @@ declare module "patron" {
      * @param arguments The values of previous Arguments.
      * @param options Options provided by the Argument.
      */
-    run(
+    abstract run(
       value: unknown,
       command: Command,
       message: Message,
       argument: Argument,
       arguments: object,
       options: unknown
-    ): MaybePromise<PreconditionResult>;
+    ): Promise<PreconditionResult> | PreconditionResult;
   }
 
-  type MaybeArgument = ArgumentOptions | Argument;
-
   interface CommandOptions {
-    arguments?: MaybeArgument[];
+    arguments?: (ArgumentOptions | Argument)[];
     clientPermissions?: PermissionName[];
     cooldowns?: (number | CooldownOptions)[];
     description?: string;
@@ -348,7 +334,7 @@ declare module "patron" {
    * A Command that Users can execute.
    * @category Commands
    */
-  export class Command {
+  export abstract class Command {
     constructor(options?: CommandOptions);
     /** This Command's Arguments */
     arguments: Argument[];
@@ -381,12 +367,11 @@ declare module "patron" {
     static setDefaults(options: DefaultCommandOptions) : void;
     /**
      * Executes this Command.
-     * @remarks Abstract
      * @param message The received Message.
      * @param arguments The parsed and validated Arguments.
      * @returns Returns or resolves once execution is complete, can provide a value to Postconditions.
      */
-    run(message: Message, arguments?: object): MaybePromise<ExecutionResult | void>;
+    abstract run(message: Message, arguments?: object): Promise<ExecutionResult> | Promise<void> | ExecutionResult | void;
     /**
      * Generates an example of this Command's use.
      * @param prefix The prefix to display.
@@ -417,13 +402,11 @@ declare module "patron" {
     revertCooldowns(message: Message): Promise<void>;
   }
 
-  type CooldownSorter = (message: Message) => any;
-
   interface CooldownOptions {
     aggressive?: boolean;
     duration: number;
     limit?: number;
-    sorter?: CooldownSorter;
+    sorter?: (message: Message) => any;
     expires?: number;
   }
 
@@ -445,7 +428,7 @@ declare module "patron" {
     /** Maximum amount of uses allowed per User. */
     limit: number;
     /** Allows custom sorting of user cooldowns, returns a key used to determine which cooldown will be applied. */
-    sorter?: CooldownSorter;
+    sorter?: (message: Message) => any;
     /** Age entries should be deleted at in minutes. Entires won't be cleared by default. */
     expires?: number;
     /**
@@ -532,8 +515,7 @@ declare module "patron" {
     revertCooldowns(message: Message): Promise<void>;
   }
 
-  type Results = CommandResult | ContextResult | CooldownResult | ErrorResult
-    | PermissionResult | PreconditionResult | TypeReaderResult;
+  type AnyResult = CommandResult | ContextResult | CooldownResult | ErrorResult | PermissionResult | PreconditionResult | TypeReaderResult;
 
   interface HandlerOptions {
     argumentRegex?: RegExp;
@@ -542,7 +524,7 @@ declare module "patron" {
   }
 
   /**
-   * The Handler responsible for executing [[Command]]s.
+   * The Handler responsible for executing Commands.
    * @category Management
    */
   export class Handler {
@@ -550,7 +532,7 @@ declare module "patron" {
     /** Whether or not a custom RegExp for parsing argument was provided. */
     defaultRegex: boolean;
     /**
-     * The RegExp used to parse [[Argument]]s from Message content.
+     * The RegExp used to parse Arguments from Message content.
      * @remarks Defaults to `/"[\S\s]+?"|[\S\n]+/g`.
      */
     argumentRegex: RegExp;
@@ -558,6 +540,11 @@ declare module "patron" {
     separator: string;
     /** The Registry that stores everything. */
     registry: Registry;
+    /**
+     * Parses the prefix used in a Message, or returns undefined if no prefix was found.
+     * @param message The received Message.
+     */
+    parsePrefix(message: Message): string | void;
     /**
      * Runs Preconditions for a Command.
      * @param message The received Message.
@@ -570,52 +557,48 @@ declare module "patron" {
      * @param command The Command to execute.
      * @param args The provided Arguments.
      */
-    executeCommand(message: Message, command: string | Command, args: string[]): Promise<Results>;
+    executeCommand(message: Message, command: string | Command, args: string[]): Promise<AnyResult>;
     /**
      * Attempts to find and execute a Command.
      * @param message The received Message.
      */
-    run(message: Message): Promise<Results>;
+    run(message: Message): Promise<AnyResult>;
   }
 
   /**
    * Executed after a Command is run, can be provided with a result.
    * @category Commands
    */
-  export class Postcondition {
+  export abstract class Postcondition {
     constructor(options?: ConditionOptions);
     /** The condition's name. */
     name: string;
     /**
      * Executes this Postconditon.
-     * @remarks Abstract
      * @param command The Command being executed.
      * @param message The received Message.
      * @param value A value that can be passed from the Command.
      * @param options Options provided by the Command or Group.
      */
-    run(command: Command, message: Message, value: unknown, options: unknown): Promise<void>;
+    abstract run(command: Command, message: Message, value: unknown, options: unknown): Promise<void>;
   }
 
   /**
    * A condition that must be met in order to execute a Command.
    * @category Commands
    */
-  export class Precondition {
+  export abstract class Precondition {
     constructor(options?: ConditionOptions);
     /** The condition's name. */
     name: string;
     /**
      * Executes the Precondition on a Command.
-     * @remarks Abstract
      * @param command The Command being executed.
      * @param message The received Message.
      * @param options Options provided by the Command or Group.
      */
-    run(command: Command, message: Message, options: unknown): MaybePromise<PreconditionResult>;
+    abstract run(command: Command, message: Message, options: unknown): Promise<PreconditionResult> | PreconditionResult;
   }
-
-  type RegistryMap<V> = Map<string, V>;
 
   interface RegistryOptions {
     caseSensitive?: boolean;
@@ -623,29 +606,29 @@ declare module "patron" {
   }
 
   /**
-   * A Registry containing all [[Command]]s and other relevant items.
+   * A Registry containing all Commands and other relevant items.
    * @category Management
    */
   export class Registry {
     constructor(options?: RegistryOptions);
     /** Whether or not strings should be treated as case-sensitive. */
     caseSensitive: boolean;
-    /** Whether or not to register the default [[TypeReader]]s, which cover many commonly used [[Argument]] types. */
+    /** Whether or not to register the default TypeReaders, which cover many commonly used Argument types. */
     defaultReaders: boolean;
     /** A Map of all prefixes. */
-    prefixes: RegistryMap<string>;
-    /** A Map of all [[ArgumentPrecondition]]s. */
-    argumentPreconditions: RegistryMap<ArgumentPrecondition>;
+    prefixes: Map<string, string>;
+    /** A Map of all ArgumentPreconditions. */
+    argumentPreconditions: Map<string, ArgumentPrecondition>;
     /** A Map of all Commands. */
-    commands: RegistryMap<Command>;
-    /** A Map of all [[Group]]s. */
-    groups: RegistryMap<Group>;
-    /** A Map of all [[Postcondition]]s. */
-    postconditions: RegistryMap<Postcondition>;
-    /** A Map of all [[Precondition]]s. */
-    preconditions: RegistryMap<Precondition>;
+    commands: Map<string, Command>;
+    /** A Map of all Groups. */
+    groups: Map<string, Group>;
+    /** A Map of all Postconditions. */
+    postconditions: Map<string, Postcondition>;
+    /** A Map of all Preconditions. */
+    preconditions: Map<string, Precondition>;
     /** A Map of all TypeReaders. */
-    typeReaders: RegistryMap<TypeReader>;
+    typeReaders: Map<string, TypeReader>;
     /**
      * Collects a list of Commands in a Group.
      * @param groupName The Group's name.
@@ -784,7 +767,7 @@ declare module "patron" {
    * | user       | User         | Relies on cache when not using IDs     |
    * @category Commands
    */
-  export class TypeReader {
+  export abstract class TypeReader {
     constructor(options?: TypeReaderOptions);
     /** Whether this reader is a default reader or user-made. */
     default: boolean;
@@ -792,7 +775,6 @@ declare module "patron" {
     type: string;
     /**
      * Parses the provided input into a type.
-     * @remarks Abstract
      * @param input The input provided by a user.
      * @param command The executed Command.
      * @param message The received Message.
@@ -800,16 +782,19 @@ declare module "patron" {
      * @param arguments The values of previous Arguments.
      * @param options
      */
-    read(
+    abstract read(
       input: string,
       command: Command,
       message: Message,
       argument: Argument,
       arguments: unknown
-    ): MaybePromise<TypeReaderResult>;
+    ): Promise<TypeReaderResult> | TypeReaderResult;
   }
 
-  /** A Mutex. */
+  /**
+   * A Mutex.
+   * @category Management
+   */
   export class Mutex {
     constructor();
     /**
@@ -830,7 +815,7 @@ declare module "patron" {
   export function ImportAll(directory: string): Promise<any[]>;
 
   /**
-   * A function which requires all exports. This is only available when using CommonJS modules.
+   * A function which requires all exports in a folder.
    * @category Management
    * @param directory The file path of a directory.
    * @returns An array of all the exports.
@@ -838,7 +823,8 @@ declare module "patron" {
   export function RequireAll(directory: string): Promise<any[]>;
 
   /**
-   * A function which synchronously requires all exports. This is only available when using CommonJS modules.
+   * A function which synchronously requires all exports in a folder. This is only available when using CommonJS modules.
+   * @category Management
    * @param directory The file path of a directory.
    * @returns An array of all the exports.
    */

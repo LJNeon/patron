@@ -1,6 +1,7 @@
 language: "node_js"
 
-node_js: ["lts/*", "node"]
+# node_js: ["lts/*", "node"]
+node_js: "node"
 
 cache: {directories: ["node_modules"]}
 
