@@ -1,9 +1,3 @@
-// Documentation link rules:
-// 1. From a different Category.
-// 2. Not linked as a Type.
-// 3. Not linked previously in the Class / Object.
-// 4. Links are spaced out when possible.
-
 import {Message, PermissionName} from "./lib";
 
 declare module "patron" {
@@ -307,7 +301,7 @@ declare module "patron" {
   interface CommandOptions {
     arguments?: (ArgumentOptions | Argument)[];
     clientPermissions?: PermissionName[];
-    cooldowns?: (number | CooldownOptions)[];
+    cooldowns?: (number | CooldownOptions | Cooldown)[];
     description?: string;
     group?: string;
     memberPermissions?: PermissionName[];
@@ -321,7 +315,7 @@ declare module "patron" {
 
   interface DefaultCommandOptions {
     clientPermissions?: PermissionName[];
-    cooldowns?: (number | CooldownOptions)[];
+    cooldowns?: (number | CooldownOptions | Cooldown)[];
     memberPermissions?: PermissionName[];
     postconditionOptions?: any[];
     postconditions?: string[];
@@ -546,12 +540,6 @@ declare module "patron" {
      */
     parsePrefix(message: Message): string | void;
     /**
-     * Runs Preconditions for a Command.
-     * @param message The received Message.
-     * @param command The Command to run Preconditions on.
-     */
-    runPreconditions(message: Message, command: string | Command): Promise<PreconditionResult | void>
-    /**
      * Attempts to execute a Command.
      * @param message The received Message.
      * @param command The Command to execute.
@@ -562,7 +550,7 @@ declare module "patron" {
      * Attempts to find and execute a Command.
      * @param message The received Message.
      */
-    run(message: Message): Promise<AnyResult>;
+    run(message: Message, prefix?: string): Promise<AnyResult>;
   }
 
   /**
@@ -601,6 +589,7 @@ declare module "patron" {
   }
 
   interface RegistryOptions {
+    library: "eris" | "discordjs";
     caseSensitive?: boolean;
     defaultReaders?: boolean;
   }
@@ -610,13 +599,13 @@ declare module "patron" {
    * @category Management
    */
   export class Registry {
-    constructor(options?: RegistryOptions);
+    constructor(options: RegistryOptions);
     /** Whether or not strings should be treated as case-sensitive. */
     caseSensitive: boolean;
     /** Whether or not to register the default TypeReaders, which cover many commonly used Argument types. */
     defaultReaders: boolean;
     /** A Map of all prefixes. */
-    prefixes: Map<string, string>;
+    prefixes: Map<string, string[]>;
     /** A Map of all ArgumentPreconditions. */
     argumentPreconditions: Map<string, ArgumentPrecondition>;
     /** A Map of all Commands. */

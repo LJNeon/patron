@@ -1,8 +1,0 @@
-language: "node_js"
-
-# node_js: ["lts/*", "node"]
-node_js: "node"
-
-cache: {directories: ["node_modules"]}
-
-install: "npm i --no-optional eris && npm i --only=dev"

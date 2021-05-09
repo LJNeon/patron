@@ -1,9 +1,3 @@
-# Avoid publishing generated library files.
-libraryHandler.js
-lib.d.ts
-# Avoid publishing development files.
 node_modules/
 package-lock.json
-docs/
 .eslintrc.yml
-.travis.yml

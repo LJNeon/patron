@@ -1,0 +1,19 @@
+name: "test"
+on: ["push"]
+jobs:
+  node:
+    runs-on: "ubuntu-latest"
+    strategy:
+      matrix:
+        node-version: ["14.x", "15.x"]
+    steps:
+    - uses: "actions/checkout@v1"
+    - uses: "actions/setup-node@v1"
+      with:
+        node-version: "${{ matrix.node-version }}"
+    - name: "install dependencies"
+      run: "npm i --no-optional eris && npm i --only=dev"
+    - name: "require/import index.js"
+      run: "node lib/index.js && node lib/esm.mjs"
+    - name: "lint files"
+      run: "npm run lint"
