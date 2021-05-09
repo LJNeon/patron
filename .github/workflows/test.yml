@@ -12,7 +12,7 @@ jobs:
       with:
         node-version: "${{ matrix.node-version }}"
     - name: "install dependencies"
-      run: "npm i --no-optional eris && npm i --only=dev"
+      run: "npm i --only=dev"
     - name: "require/import index.js"
       run: "node lib/index.js && node lib/esm.mjs"
     - name: "lint files"
