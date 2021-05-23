@@ -589,7 +589,6 @@ declare module "patron" {
   }
 
   interface RegistryOptions {
-    library: "eris" | "discordjs";
     caseSensitive?: boolean;
     defaultReaders?: boolean;
   }
@@ -599,7 +598,7 @@ declare module "patron" {
    * @category Management
    */
   export class Registry {
-    constructor(options: RegistryOptions);
+    constructor(options?: RegistryOptions);
     /** Whether or not strings should be treated as case-sensitive. */
     caseSensitive: boolean;
     /** Whether or not to register the default TypeReaders, which cover many commonly used Argument types. */
@@ -618,6 +617,11 @@ declare module "patron" {
     preconditions: Map<string, Precondition>;
     /** A Map of all TypeReaders. */
     typeReaders: Map<string, TypeReader>;
+    /**
+     * Sets the library patron should use.
+     * @param library The library to use.
+     */
+    static setLibrary(library: "eris" | "discordjs"): void;
     /**
      * Collects a list of Commands in a Group.
      * @param groupName The Group's name.

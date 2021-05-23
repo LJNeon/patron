@@ -11,9 +11,9 @@ jobs:
     - uses: "actions/setup-node@v1"
       with:
         node-version: "${{ matrix.node-version }}"
-    - name: "install dependencies"
+    - name: "Install dependencies"
       run: "npm i --only=dev"
-    - name: "require/import index.js"
+    - name: "Load via require & import"
       run: "node lib/index.js && node lib/esm.mjs"
-    - name: "lint files"
+    - name: "Lint files"
       run: "npm run lint"
