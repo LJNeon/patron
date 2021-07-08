@@ -2,7 +2,7 @@
   "name": "patron",
   "version": "4.0.0",
   "author": "LJ Talbot",
-  "license": "LGPL-3.0-or-later",
+  "license": "LGPL-2.1-or-later",
   "description": "The cleanest command framework for discord.js and eris.",
   "keywords": [
     "discord",
